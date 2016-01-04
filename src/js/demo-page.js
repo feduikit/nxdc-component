@@ -1,0 +1,14 @@
+require(['./config'],function(){
+    require(['jquery','utils'],function($){
+        require(['bootstrap','./components/page'],function(){
+			$("div.page-wrapper[name=plain-page]").page({
+				totalPages:15
+			});
+			$("div.page-wrapper[name=drop-page]").page({
+				type:2,
+				totalItems:200,
+				perPage:10
+			});
+        });
+    });
+});

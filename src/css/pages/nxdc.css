@@ -1,0 +1,24 @@
+@import url(../../../lib/bootstrap/dist/css/bootstrap.min.css);
+@import url(../global/reset.css);
+@import url(../modules/animation.css);
+/**
+@import url(../modules/nxdc-header.css);
+
+@import url(../modules/nxdc-footer.css);
+*/
+@import url(../modules/nxdc-body.css);
+@import url(../modules/table.css);
+@import url(../modules/drop.css);
+@import url(../modules/page.css);
+@import url(../modules/bread.css);
+@import url(../modules/tab.css);
+@import url(../modules/sinput.css);
+@import url(../modules/switcher.css);
+@import url(../modules/tip.css);
+@import url(../modules/alert.css);
+@import url(../modules/confirm.css);
+@import url(../modules/prompt.css);
+@import url(../modules/tree.css);
+@import url(../modules/vList.css);
+@import url(../modules/search.css);
+@import url(../modules/navbar.css);

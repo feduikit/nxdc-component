@@ -1,0 +1,14 @@
+{
+  "name": "listManager",
+  "homepage": "https://github.com/baukh789/listManager",
+  "_release": "56ef2eef7d",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "56ef2eef7d12a7e4f6c4b47f259d85ca06bed083"
+  },
+  "_source": "https://github.com/baukh789/listManager.git",
+  "_target": "*",
+  "_originalSource": "https://github.com/baukh789/listManager.git",
+  "_direct": true
+}

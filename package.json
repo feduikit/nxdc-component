@@ -1,0 +1,21 @@
+{
+    "name": "NDPUI",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "ericever",
+    "license": "ISC",
+    "devDependencies": {
+        "bower": "*",
+        "grunt": "*",
+        "grunt-cli": "*",
+        "grunt-contrib-clean": "*",
+        "grunt-contrib-concat": "*",
+        "grunt-contrib-copy": "*",
+        "grunt-contrib-cssmin": "*",
+        "grunt-contrib-watch": "*",
+        "grunt-requirejs": "*"
+    }
+}
