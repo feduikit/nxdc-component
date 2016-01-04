@@ -4,6 +4,7 @@ require.config({
         'jquery':'../../lib/jquery/jquery.min',
         'bootstrap':'../../lib/bootstrap/dist/js/bootstrap.min',
 		'alert':'./components/alert',
+		'progressbar':'./components/progressbar',
 		'confirm':'./components/confirm',
 		'prompt':'./components/prompt',
 		'drop':'./components/drop',
