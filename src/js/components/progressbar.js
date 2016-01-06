@@ -69,13 +69,17 @@
             this.$bar.css('width', p);
             //环形的
             var angle = parseInt(p) * 3.6;
-            console.log(angle,p)
+            var eventType = 'webkitTransitionEnd mozTransitionEnd transitionEnd transitionend otransitionend oTransitionEnd';
             this.$circle.find('.progressbar-mask').html(p);
             if (angle <= 180) {
                 this.$circle.find('.progressbar-right').css('transform', "rotate(" + angle + "deg)");
             } else {
-                this.$circle.find('.progressbar-right').css('transform', "rotate(180deg)");
-                this.$circle.find('.progressbar-left').css('transform', "rotate(" + (angle - 180) + "deg)");
+                this.$circle.find('.progressbar-right').css('transform', "rotate(180deg)")
+                    .on(eventType, function(e) {
+                    	console.log(e.type)
+                        this.$circle.find('.progressbar-left').css('transform', "rotate(" + (angle - 180) + "deg)");
+                        //e.stopImmediatePropagation();
+                    }.bind(this));
             };
         },
         /**

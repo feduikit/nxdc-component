@@ -1,6 +1,7 @@
 .progressbar-auto {
-	height: 5px;
+    height: 5px;
 }
+
 .progressbar-circle {
     display: none;
     width: 100px;
@@ -37,15 +38,18 @@
     position: absolute;
     top: 0;
     left: 0;
+    transition: transform .5s linear;
 }
 
 .progressbar-pie-right,
 .progressbar-right {
+    clip: rect(0 auto auto 50px);
     clip: rect(0, auto, auto, 50px);
 }
 
 .progressbar-pie-left,
 .progressbar-left {
+    clip: rect(0 50px auto 0);
     clip: rect(0, 50px, auto, 0);
 }
 

@@ -11,7 +11,7 @@ require(['./config'], function() {
             s[0].progressbarInstance.setProgress('30%');
             // s[1].progressbarInstance.setProgress('30%');
             // s[2].progressbarInstance.setProgress('40%');
-            console.log(s[0].progressbarInstance.getProgress());
+            //console.log(s[0].progressbarInstance.getProgress());
         });
     });
 });
