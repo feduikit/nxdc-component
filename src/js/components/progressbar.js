@@ -15,7 +15,7 @@
 						<div class="progressbar-right">\
 						</div>\
 					</div>\
-					<div class="progressbar-mask"></div>\
+					<div class="progressbar-mask" data-progress="{{progress}}"></div>\
 				</div>\
 			</div>';
 
@@ -38,19 +38,12 @@
         init: function() {
             //获取进度的dom对象
             this.$progress = $(tpl.replace("{{css}}", this.config.css)
-                .replace("{{progress}}", this.config.progress)
+                .replace(/{{progress}}/ig, this.config.progress)
                 .replace("{{shape}}", this.config.shape));
             this.$bar = this.$progress.find('.progress-bar');
             this.$circle = this.$progress.find('.progressbar-circle');
             this.setShape(this.config.shape);
             this.buildDom();
-            this.bindEvent();
-        },
-        /**
-         * 绑定事件
-         */
-        bindEvent: function() {
-            this.listenProgress();
         },
         /**
          * 生成dom树
@@ -88,35 +81,6 @@
          */
         getProgress: function() {
             return this.config.progress;
-        },
-        /**
-         * 监听进度
-         */
-        listenProgress: function() {
-            var _this = this;
-            var MutationObserver = window.MutationObserver ||
-                window.WebKitMutationObserver ||
-                window.MozMutationObserver;
-
-            var mutationObserverSupport = !!MutationObserver;
-            if (mutationObserverSupport) {
-                var mo = new MutationObserver(function(records) {
-                    mo.disconnect();
-                    records.map(function(record) {
-                        var $target = record.target;
-                        var progress = 0;
-                        progress = $(this).hasClass('progressbar-mask') ? $target.dataset.progress : $target.style.width;
-                        progress && _this.setProgress(progress);
-                    });
-                    _this.listenProgress();
-                });
-                mo.observe(this.$bar.get(0), {
-                    attributeFilter: ['style']
-                });
-                mo.observe(this.$progress.find('.progressbar-mask').get(0), {
-                    attributeFilter: ['data-progress']
-                })
-            }
         },
         /**
          * 设置形状
