@@ -1,5 +1,4 @@
-;
-(function($) {
+;(function($) {
     var self = this;
 
     var tpl = '<div class="{{css}}" data-progressbar-shape="{{shape}}">\
@@ -69,17 +68,19 @@
             this.$bar.css('width', p);
             //环形的
             var angle = parseInt(p) * 3.6;
-            var eventType = 'webkitTransitionEnd mozTransitionEnd transitionEnd transitionend otransitionend oTransitionEnd';
-            this.$circle.find('.progressbar-mask').html(p);
+            var $right = this.$circle.find('.progressbar-right');
+            var $left = this.$circle.find('.progressbar-left');
+            this.$circle.find('.progressbar-mask').attr('data-progress', p);
             if (angle <= 180) {
-                this.$circle.find('.progressbar-right').css('transform', "rotate(" + angle + "deg)");
+                $left.css('transform', "rotate(0deg)");
+                setTimeout(function() {
+                    $right.css('transform', "rotate(" + angle + "deg)");
+                }, 500)
             } else {
-                this.$circle.find('.progressbar-right').css('transform', "rotate(180deg)")
-                    .on(eventType, function(e) {
-                    	console.log(e.type)
-                        this.$circle.find('.progressbar-left').css('transform', "rotate(" + (angle - 180) + "deg)");
-                        //e.stopImmediatePropagation();
-                    }.bind(this));
+                $right.css('transform', "rotate(180deg)");
+                setTimeout(function() {
+                    $left.css('transform', "rotate(" + (angle - 180) + "deg)");
+                }, 500)
             };
         },
         /**
@@ -100,15 +101,21 @@
             var mutationObserverSupport = !!MutationObserver;
             if (mutationObserverSupport) {
                 var mo = new MutationObserver(function(records) {
+                    mo.disconnect();
                     records.map(function(record) {
-                        if (record.attributeName == 'style') {
-                            _this.config.progress = record.target.style.width;
-                        }
+                        var $target = record.target;
+                        var progress = 0;
+                        progress = $(this).hasClass('progressbar-mask') ? $target.dataset.progress : $target.style.width;
+                        progress && _this.setProgress(progress);
                     });
+                    _this.listenProgress();
                 });
                 mo.observe(this.$bar.get(0), {
-                    attributes: true
+                    attributeFilter: ['style']
                 });
+                mo.observe(this.$progress.find('.progressbar-mask').get(0), {
+                    attributeFilter: ['data-progress']
+                })
             }
         },
         /**
@@ -118,13 +125,37 @@
             var attrShape = 'data-progressbar-shape';
             this.config.shape = shape;
             this.$progress.attr(attrShape, shape).parents('[' + attrShape + ']').attr(attrShape, shape);
+        },
+        /**
+         * 获取形状
+         */
+        getShape: function() {
+            return this.config.shape;
         }
     }
-    $.fn.progressbar = function(options) {
+    $.fn.progressbar = function(options, value) {
+        var returnVal = this;
         this.each(function(key, the) {
-            the.progressbarInstance = new Progressbar(the, options);
+            if (!the.progressbarInstance) {
+                the.progressbarInstance = new Progressbar(the, options);
+            } else {
+                if (options == 'progress') {
+                    if (value) {
+                        the.progressbarInstance.setProgress(value);
+                    } else {
+                        returnVal = the.progressbarInstance.getProgress();
+                    }
+                } else if (options == 'shape') {
+                    if (value) {
+                        the.progressbarInstance.setShape(value);
+                    } else {
+                        returnVal = the.progressbarInstance.getShape();
+                    }
+                }
+            }
+
         })
-        return this;
+        return returnVal;
     };
 
     $.fn.progressbar.defaults = {
