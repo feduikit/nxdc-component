@@ -1,7 +1,9 @@
 .progressbar-auto {
     height: 5px;
 }
-
+.progressbar-auto .progress-bar {
+	border-radius: 3px;
+}
 .progressbar-circle {
     display: none;
     width: 100px;

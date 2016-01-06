@@ -1,8 +1,7 @@
 require(['./config'], function() {
     require(['jquery', 'utils'], function($) {
         require(['bootstrap', 'progressbar'], function() {
-            var s = $('[name="progressbar-page"]');
-            s.progressbar({css: 'progressbar-test-style'});
+            $('[name="progressbar-page"]').progressbar({css: 'progressbar-test-style'});
         });
     });
 });
