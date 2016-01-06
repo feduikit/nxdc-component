@@ -10,18 +10,18 @@ module.exports=function (grunt) {
         var path = (ske.type=="1")?"src/js":'js';
         var arr = fs.readdirSync(path);
         for(var i=0;i<arr.length;i++){
-            var r = arr[i].match(/^([a-z]+)\.js$/i);
+            var r = arr[i].match(/^(.+)\.js$/i);
             if(r && r[1]!="config") modules.push({'name':r[1]});
         }
     }catch(err){}
     
     var cfg = (function(){
-        var o = {requirejs:{},clean:{},cssmin:{},copy:{},};//,watch:{}
+        var o = {requirejs:{},clean:{},concat:{},uglify:{},cssmin:{},copy:{}};//,watch:{}
         o.requirejs.tranditionCompile={
             options : {
                 baseUrl: ".",
                 appDir : (ske.type=="1")?'src/js':'js',
-                dir : './dist/js',
+                dir : './dist/demo/js',
                 optimize : 'uglify2',
                 generateSourceMaps: true,//是否生成source map
                 mainConfigFile : (ske.type=="1")?'src/js/config.js':'js/config.js',
@@ -33,20 +33,50 @@ module.exports=function (grunt) {
                 preserveLicenseComments: false
             }           
         };
-        o.clean.js = {src : ['dist/js/*/','dist/js/config.js',
-							 'dist/js/config.js.*','dist/js/config.js.map',
-							 'dist/js/*.txt','dist/css/pages/']};
-        o.cssmin.build={
-            expand: true,
-            cwd: (ske.type==1)?'src/css/':'css/',
-            src : ['pages/*.css'],
-            dest : 'dist/css'
+        o.clean.js = {src : ['dist/demo/js/*/','dist/demo/js/config.js',
+							 'dist/demo/js/config.js.*','dist/demo/js/config.js.map',
+							 'dist/demo/js/*.txt','dist/com/']
+					 };
+		/***
+		** 合并 js 代码
+		**/
+		o.concat = {
+			dist: {
+			  	src: ['src/js/Compatibility/**/*.js', 'src/js/components/**/*.js'],
+			  	dest: 'dist/com/ndpui.js'
+			}
+		 };	
+		 /***
+		 ** 压缩js 代码， 和上一步是前后脚的关系
+		 **/
+		 o.uglify = {
+			 options:{
+				 sourceMap:true
+			 },
+			 build: {  
+				src: 'dist/com/ndpui.js',//压缩源文件是之前合并的buildt.js文件  
+				dest: 'dist/com/ndpui.min.js'//压缩文件为built.min.js  
+			 }  
+		 };	
+		
+        o.cssmin={
+			options:{
+				report:"min",
+				sourceMap:true
+			},
+			build:{	
+				expand: true,
+				cwd: (ske.type==1)?'src/css/pages/':'css/pages/',
+				src : ['*.css'],
+				dest : 'dist/com/css/',
+				ext : ".min.css"
+			}
 		};
         o.copy.main = {
             files:[
             {expand: true,
              src: (ske.type==1)?['src/css/*font*/*.*','lib/**/*font*/*.*']:['css/fonts/*.*','lib/**/*font*/*.*'],
-             dest: 'dist/css/fonts/',
+             dest: 'dist/com/fonts/',
              flatten: true,
              filter: 'isFile'
             },      
@@ -80,16 +110,26 @@ module.exports=function (grunt) {
 	grunt.task.registerTask("replace","just for fun",function(arg1,arg2){
 		grunt.file.recurse('html/',function(abspath, rootdir, subdir, filename){
 			var html = grunt.file.read('html/'+ (subdir?subdir+"/":"") +filename);
+			/****
+			** 替换css
+			**/
 			var one = html.replace(/href=\"(.+?)\.css\"/i,function(all,a){ 
-				return "href="+"./css/pages/"+filename.replace(/\.html/i,".css"); 
+				return "href="+"../com/css/nxdc.min.css"; 
 			});
+			/***
+			** 替换 requirejs
+			**/
 			one = one.replace(/src=\"(.+?)require.js\"/i,function(all,b){ 
-				return "src="+"'./lib/require.js'";  
+				return "src="+"'../lib/require.js'";  
 			});
+			
+			/***
+			** 替换 data-main    js
+			**/
 			one = one.replace(/data-main=\"(.+?)\"/i,function(all,b){ 
-				return "data-main="+"./js/"+ filename.replace(/\.html/i,"");   
+				return "data-main="+"'./js/"+ filename.replace(/\.html/i,"'");   
 			});
-			grunt.file.write('dist/'+ (subdir?subdir+"/":"")+filename,one);
+			grunt.file.write('dist/demo/'+ (subdir?subdir+"/":"")+filename,one);
 		});
 		console.log("-------打包，压缩，合并，完成!------------");		
 	});		
