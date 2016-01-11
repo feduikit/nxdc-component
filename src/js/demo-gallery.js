@@ -1,0 +1,36 @@
+require(['./config'],function(){
+    require(['jquery','utils'],function($){
+        require(['bootstrap','./components/gallery'],function(){
+			$("div.ndp-gallery-wrapper[name=plain1]").gallery({
+				cover:'../assets/cover1.jpg',
+				data:[{small:"../assets/list1.jpg",big:"../assets/show1.jpg",w:1920,h:1283},
+					  {small:"../assets/list2.jpg",big:"../assets/show10.jpg",w:1920,h:1283},
+					  {small:"../assets/list3.jpg",big:"../assets/show3.jpg",w:1920,h:1280},
+					  {small:"../assets/list4.jpg",big:"../assets/show4.jpg",w:1920,h:1280},
+					  {small:"../assets/list5.jpg",big:"../assets/show5.jpg",w:1024,h:567},
+					  {small:"../assets/list2.jpg",big:"../assets/show6.jpg",w:355,h:501},
+					  {small:"../assets/list1.jpg",big:"../assets/show7.jpg",w:400,h:600},
+					  {small:"../assets/list3.jpg",big:"../assets/show8.jpg",w:533,h:798},
+					  {small:"../assets/list4.jpg",big:"../assets/show9.jpg",w:500,h:750}
+					 ]
+			});
+			
+			$("div.ndp-gallery-wrapper[name=plain2]").gallery({
+				cover:'../assets/cover3.jpg',
+				data:[{small:"",big:""},
+					  {small:"",big:""},
+					  {small:"",big:""},
+					  {small:"",big:""},
+					  {small:"",big:""},
+					  {small:"",big:""},
+					  {small:"",big:""},
+					  {small:"",big:""},
+					  {small:"",big:""},
+					  {small:"",big:""},
+					  {small:"",big:""}
+					 ]
+			});
+								
+        });
+    });
+});
