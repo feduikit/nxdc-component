@@ -20,7 +20,7 @@
     function Tabs(element, options) {
 		var self = this;
 		this.elem = element;
-		this.config = $.extend(true,{},$.fn.tabs.defaults,options);
+		this.config = $.extend(true,{},$.fn.tabs.defaults,element.data(),options);
 		this.init();	
     };
 

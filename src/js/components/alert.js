@@ -35,7 +35,7 @@
 			var content = $('<div id="content-holder"><div class="content-title"></div>\
 								<p class="content-itself"></p></div>');
 			body.append(icon).append(content);
-			var cfg = $.extend(true,{},defaults,options);
+			var cfg = $.extend(true,{},defaults,wrapper.data(),options);
 			if(cfg.icon){
 				icon.html(cfg.icon).addClass("showing");
 				content.addClass("showing");

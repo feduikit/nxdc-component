@@ -36,7 +36,7 @@
     function Confirm(element, options) {
 		var self = this;
 		this.elem = element;
-		this.config = $.extend(true,{},$.fn.confirm.defaults,options);
+		this.config = $.extend(true,{},$.fn.confirm.defaults,element.data(),options);
 		this.init();
 		
 		

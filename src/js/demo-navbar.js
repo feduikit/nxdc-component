@@ -1,7 +1,20 @@
 require(['./config'],function(){
     require(['jquery','utils'],function($){
         require(['bootstrap','./components/navbar'],function(){
-			$("div.navbar[name=plain]").navbar({});
+			$("nav.navbar[name='plain']").navbar({
+				type:1
+			});
+			
+			$("nav.navbar[name='brand']").navbar({
+				type:2,
+				data:[{label:"hello1",type:"link"},
+					  {label:"hello2",type:"link"},
+					  {label:"hello3",type:"link"},
+					  {label:"选择",type:"drop"},
+					  {label:"输入",type:"input"},
+					  {label:"发送",type:"button"},
+					 ]
+			});			
         });
     });
 });

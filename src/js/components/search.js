@@ -21,7 +21,7 @@
     function Search(element, options) {
 		var self = this;
 		this.elem = element;
-		this.config = $.extend(true,{},$.fn.search.defaults,options);
+		this.config = $.extend(true,{},$.fn.search.defaults,element.data(),options);
 		this.config.wi = this.elem.width();
 		this.init();	
     };

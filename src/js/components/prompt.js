@@ -57,7 +57,7 @@
     function Prompt(element, options) {
 		var self = this;
 		this.elem = element;
-		this.config = $.extend(true,{},$.fn.prompt.defaults,options);
+		this.config = $.extend(true,{},$.fn.prompt.defaults,element.data(),options);
 		this.init();
 		
 		

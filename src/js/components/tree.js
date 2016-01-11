@@ -47,7 +47,8 @@
 	function Tree(element, options) {
 		var self = this;
 		this.elem = element;
-		this.config = $.extend(true,{},$.fn.tree.defaults,options);
+		this.config = $.extend(true,{},$.fn.tree.defaults,element.data(),options);
+		console.log(this.config);
 		this.init();
 		
     };

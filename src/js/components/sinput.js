@@ -4,7 +4,7 @@
     function Sinput(element, options) {
 		var self = this;
 		this.elem = element;
-		this.config = $.extend(true,{},$.fn.sinput.defaults,options);
+		this.config = $.extend(true,{},$.fn.sinput.defaults,element.data(),options);
 		this._width = this.elem.width();
 		this.init();	
     };

@@ -5,7 +5,7 @@
     function Navbar(element, options) {
 		var self = this;
 		this.elem = element;
-		this.config = $.extend(true,{},$.fn.navbar.defaults,options);
+		this.config = $.extend(true,{},$.fn.navbar.defaults,element.data(),options);
 		this.init();	
     };
 
@@ -17,7 +17,15 @@
 		this.elem.addClass(this.config.containerClass);//设置 包裹容器的 dim,外观
         this.concrate();//构建下来菜单的样子
 		this.initConfig();
-
+		
+		
+		this.list.find("li:has(a)").click(function(e){
+			e.stopImmediatePropagation();
+			if(!$(this).hasClass("active")){
+				$(this).addClass("active");
+				$(this).siblings().removeClass("active");
+			}
+		});
     };
 	
 	/**
@@ -27,22 +35,55 @@
 		var _this = this;
 		var container = $('<div class="container-fluid" />');
 		var body = $('<div class="collapse navbar-collapse" />');
-		var list = $('<ul class="nav navbar-nav" />');
-		if(_this.config.type ==1){
+		this.list = $('<ul class="nav navbar-nav" />');
+		if(this.config.type ==1){
 			this.elem.addClass("nav-padding");
-			container.append(body.append(list));
-			_this.config.data.forEach(function(item,index){
-				var li = $('<li><a href="#"></a></li>');
-				if(typeof(item)=="string"){
-					li.text(item);
-				}else{
-					li.text(item.label||item.text||item.name);
-				}
-				list.append(li);
-			});
-			this.elem.append(container);
+			container.append(body.append(_this.list));
+		}else if(this.config.type == 2){
+			this.elem.addClass("nav-padding-multi");
+			var header = $('<div class="navbar-header">');
+			var logo = $('<a class="navbar-brand" href="#">Brand&Logo</a>');
+			header.append(logo);
+			container.append(header).append(body.append(_this.list));
+			this.list.addClass("nav-list-specify");
 		}
 		
+		this.config.data.forEach(function(item,index){
+			if(typeof(item)=="string"){
+				var txt = item;
+				var li = $('<li><a href="#">'+txt+'</a></li>');
+				_this.list.append(li);	
+			}else{
+				if(item.hasOwnProperty("type")){
+					txt = item.label||item.text||item.name;
+					switch(item.type){
+						case "link":
+							li = $('<li><a href="#">'+txt+'</a></li>');
+							_this.list.append(li);	
+							break;
+						case "input":
+						case "button":	
+							if(!_this.hasOwnProperty("form")) {
+								_this.form = $('<form class="navbar-form navbar-left navbar-form-specify" />'); 
+								body.prepend(_this.form);
+							}
+							li = $('<div class="form-group"></div>');
+							if(item.type=="input"){
+								li.html('<input type="text" class="form-control" placeholder="Search">',{
+									value:txt
+								});
+							}else if(item.type=="button"){
+								li = $('<button type="text" class="btn btn-default">'+txt+'</button>');
+							}
+							_this.form.append(li);
+							break;
+					}
+				}else{
+					_this.list.append(li);	
+				}
+			}	
+		});		
+		this.elem.append(container);
 	};
 
 	/**

@@ -4,13 +4,13 @@ require.config({
         'jquery':'../../lib/jquery/jquery.min',
         'bootstrap':'../../lib/bootstrap/dist/js/bootstrap.min',
 		'alert':'./components/alert',
-		'progressbar':'./components/progressbar',
 		'confirm':'./components/confirm',
 		'prompt':'./components/prompt',
 		'drop':'./components/drop',
 		'search':'./components/search',
-		'utils':'./Compatibility/utils'
-		
+		'gallery':'./components/gallery',
+		'utils':'./Compatibility/utils',
+		'progressbar':'./components/progressbar'
     },
     shim:{
 		bootstrap:{
@@ -26,6 +26,9 @@ require.config({
 			deps:['bootstrap']
 		},
 		prompt:{
+			deps:['bootstrap']
+		},
+		gallery:{
 			deps:['bootstrap']
 		}
     }

@@ -36,7 +36,7 @@
     function Table(element, options) {
 		var self = this;
 		this.elem = element;
-		this.config = $.extend(true,{},$.fn.table.defaults,options);
+		this.config = $.extend(true,{},$.fn.table.defaults,element.data(),options);
 		this.init();	
     };
 	

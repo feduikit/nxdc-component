@@ -1,4 +1,3 @@
-@import url(../../../lib/bootstrap/dist/css/bootstrap.min.css);
 @import url(../global/reset.css);
 @import url(../modules/animation.css);
 /**
@@ -21,5 +20,5 @@
 @import url(../modules/vList.css);
 @import url(../modules/search.css);
 @import url(../modules/navbar.css);
-@import url(../modules/progressbar.css);
 @import url(../modules/gallery.css);
+@import url(../modules/progressbar.css);

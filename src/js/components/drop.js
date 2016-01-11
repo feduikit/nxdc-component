@@ -4,7 +4,7 @@
     function Drop(element, options) {
 		var self = this;
 		this.elem = element;
-		this.config = $.extend(true,{},$.fn.drop.defaults,options);
+		this.config = $.extend(true,{},$.fn.drop.defaults,element.data(),options);
 		this.config.width = this.elem.width();
 		this.init();	
     };

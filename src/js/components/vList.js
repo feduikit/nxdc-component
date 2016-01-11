@@ -47,7 +47,7 @@
 	function VList(element, options) {
 		var self = this;
 		this.elem = element;
-		this.config = $.extend(true,{},$.fn.vList.defaults,options);
+		this.config = $.extend(true,{},$.fn.vList.defaults,element.data(),options);
 		this.config.wi = this.elem.width();
 		this.init();
 		

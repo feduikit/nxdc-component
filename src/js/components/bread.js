@@ -3,8 +3,8 @@
     function Bread(element, options) {
 		var self = this;
 		this.elem = element;
-		this.config = $.extend(true,{},$.fn.bread.defaults,options);
-		this.init();	
+		this.config = $.extend(true,{},$.fn.bread.defaults,element.data(),options);
+		this.init();
     };
 	/**
 	**列表组件的初始化
