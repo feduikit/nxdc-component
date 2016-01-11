@@ -107,14 +107,20 @@ module.exports=function (grunt) {
     var gs = JSON.stringify(pkg).match(/grunt-[a-z]+(-[a-z]+)?/ig);
         gs.forEach(function(item){grunt.loadNpmTasks(item);});
 		
-	grunt.task.registerTask("replace","just for fun",function(arg1,arg2){
+	grunt.task.registerTask("replace","for this one",function(arg1,arg2){
 		grunt.file.recurse('html/',function(abspath, rootdir, subdir, filename){
 			var html = grunt.file.read('html/'+ (subdir?subdir+"/":"") +filename);
 			/****
 			** 替换css
 			**/
-			var one = html.replace(/href=\"(.+?)\.css\"/i,function(all,a){ 
-				return "href="+"../com/css/nxdc.min.css"; 
+			var one = html.replace(/href=\"(.+?)\.css\"/ig,function(all,a){
+				var arr = a.split(/[\/\\]/);
+				var the = arr[arr.length-1];
+				if(the.indexOf("bootstrap")==-1){
+					return "href="+"../com/css/"+the+".min.css"; 
+				}else{
+					return all;
+				}
 			});
 			/***
 			** 替换 requirejs
@@ -131,6 +137,10 @@ module.exports=function (grunt) {
 			});
 			grunt.file.write('dist/demo/'+ (subdir?subdir+"/":"")+filename,one);
 		});
+        grunt.file.recurse('lib/bootstrap/', function(abspath, rootdir, subdir, filename) {
+            var src = 'lib/bootstrap/' + (subdir ? subdir + "/" : "") + filename;
+            grunt.file.copy(src, 'dist/lib/bootstrap/' + (subdir ? subdir + "/" : "") + filename);
+        });		
 		console.log("-------打包，压缩，合并，完成!------------");		
 	});		
 	grunt.registerTask('build', Object.keys(cfg));
