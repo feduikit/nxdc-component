@@ -56,7 +56,7 @@ module.exports=function (grunt) {
 			 build: {  
 				src: 'dist/com/nxdc.js',//压缩源文件是之前合并的buildt.js文件  
 				dest: 'dist/com/nxdc.min.js'//压缩文件为built.min.js  
-			 }  
+			 }
 		 };	
 		
         o.cssmin={
@@ -140,7 +140,12 @@ module.exports=function (grunt) {
         grunt.file.recurse('lib/bootstrap/', function(abspath, rootdir, subdir, filename) {
             var src = 'lib/bootstrap/' + (subdir ? subdir + "/" : "") + filename;
             grunt.file.copy(src, 'dist/lib/bootstrap/' + (subdir ? subdir + "/" : "") + filename);
-        });		
+        });
+		grunt.file.recurse('src/js/components/', function(abspath, rootdir, subdir, filename) {
+			var src = 'src/js/components/' + (subdir ? subdir + "/" : "") + filename;
+			grunt.file.copy(src, 'dist/com/split/' + (subdir ? subdir + "/" : "") + filename);
+		});		
+		
 		console.log("-------打包，压缩，合并，完成!------------");		
 	});		
 	grunt.registerTask('build', Object.keys(cfg));

@@ -604,7 +604,7 @@ define(function(){
 				list.append(itemBox);
 			});
 			
-			var ctlLeft = $('<a class="left carousel-control" href="#gallery-carousel" role="button" 					data-slide="prev">\
+			var ctlLeft = $('<a class="left carousel-control hidden" href="#gallery-carousel" role="button" 					data-slide="prev">\
     				<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>\
     				<span class="sr-only">Previous</span>\
   				</a>');
@@ -640,7 +640,8 @@ define(function(){
 		this.init();
 		
 		function setButton(){
-			if($("#gallery-holder").hasClass("in")) setTimeout(function(){
+			//if($("#gallery-holder").hasClass("in")) 
+			setTimeout(function(){
 				var a = _this.list.get(0).getBoundingClientRect();
 				var lfst = _this.list.find("ul>li:first");
 				var b = _this.list.find("ul>li:last").get(0).getBoundingClientRect();
@@ -686,22 +687,25 @@ define(function(){
 		** 显示图片查看器，弹出窗口
 		***/
 		this.elem.click(function(e){
+			var len = _this.config.data.length;
 			_this.body.empty().append(build(_this.config.data));
-			_this.list.find("ul").empty();
+			var ul = _this.list.find("ul");
+			ul.empty().attr("data-len",len);
 			_this.config.data.forEach(function(item,index){
 				var li = $("<li class='gallery-list-cell' index="+index+"></li>");
+				if(index==len-1) li.attr("lastone","true");
 				if(index==0) li.addClass("active");
 				var img = $("<img width='100%' height='100%' class='img-responsive' /> ");
 				if(item.small) img.attr("src",item.small);
 				li.append(img);
-				_this.list.find("ul").append(li);
+				ul.append(li);
 			});	
 			var gData = _this.config.data[_this.config.current];
 			scale(gData.w,gData.h);
 			_this.wrapper.modal();//显示图片查看器
 			setButton();
 			var theIMG = $("#gallery-carousel").find("img[data-img][index='1']");
-			theIMG.attr(src,theIMG.data("img"));
+			theIMG.attr("src",theIMG.data("img"));
 		});
 		
 		/***
@@ -717,19 +721,31 @@ define(function(){
 		** 点击 列表一项
 		**/
 		_this.list.find("ul").unbind("click").click(function(e){
+			var len = $(this).data("len");
 			if(e.target.tagName!="UL"){
 				var the = (e.target.tagName=="IMG")?$(e.target).parent():$(e.target);
 				var idx = the.attr("index");
-				_this.config.current = idx;
 				the.addClass("active").siblings().removeClass("active");
 				var t =_this.body.find("div.carousel-inner div.item[index="+(idx)+"]");
 				scale(t.attr("w"),t.attr("h"));
 				t.addClass("active").siblings().removeClass("active");	
 				showImg(idx);showImg(idx+1);
+				var leftBtn = _this.body.find("a.left.carousel-control");
+				var rightBtn = _this.body.find("a.right.carousel-control");				
+				if(idx==0){
+					leftBtn.addClass("hidden");
+					rightBtn.removeClass("hidden");
+				}else if(idx == len-1){
+					rightBtn.addClass("hidden");
+					leftBtn.removeClass("hidden");					
+				}else{
+					rightBtn.removeClass("hidden");
+					leftBtn.removeClass("hidden");						
+				}
 			}
 		});
 		/***
-		** dock左边的按钮
+		** dock左边的箭头
 		**/
 		_this.lfButton.click(function(e){
 			e.stopImmediatePropagation();
@@ -741,7 +757,7 @@ define(function(){
 			setButton();
 		});
 		/***
-		**dock 右边的按钮
+		**dock 右边的箭头
 		**/
 		_this.rtButton.click(function(e){
 			e.stopImmediatePropagation();
@@ -754,6 +770,9 @@ define(function(){
 		
 		//处理向左翻(上一张)<      还是向右翻（下一张） >
 		_this.body.unbind('click').click(function(e){
+			var len = _this.list.find("ul[data-len]").data("len");
+			var leftBtn = _this.body.find("a.left.carousel-control");
+			var rightBtn = _this.body.find("a.right.carousel-control");
 			//左翻
 			if((e.target.tagName=="A" && $(e.target).hasClass("left"))||
 			    e.target.tagName=="SPAN" && $(e.target).attr("class").indexOf("left")!=-1){
@@ -763,6 +782,8 @@ define(function(){
 					var next = 0;
 					return false;
 				}else{
+					leftBtn.removeClass("hidden");
+					rightBtn.removeClass("hidden");
 					next = current - 1;
 				}
 			var hwd = _this.list.find("ul>li[index="+(current-1)+"]");	 
@@ -770,22 +791,34 @@ define(function(){
 			var that = _this.body.find("div.carousel-inner");
 			var hwd2 = that.find("div.item[index="+(current-1)+"]");
 				scale(hwd2.attr("w"),hwd2.attr("h"));
-				hwd2.addClass("active").siblings().removeClass("active");						
+				hwd2.addClass("active").siblings().removeClass("active");
+				if(parseInt(the.attr("index"))<=1){
+					leftBtn.addClass("hidden");
+				}
 			}//右翻
 			else if((e.target.tagName=="A" && $(e.target).hasClass("right"))||
 					  e.target.tagName=="SPAN" && $(e.target).attr("class").indexOf("right")!=-1){
-			var the = _this.list.find("ul>li.active");
-			var current = parseInt(the.attr("index"));
-			var next = (current+1>=_this.config.data.length)?current:current+1;
-				hwd = _this.list.find("ul>li[index="+(next)+"]");
-				hwd.addClass("active").siblings().removeClass("active");					
-			var that = _this.body.find("div.carousel-inner");
-			var src = that.find("div.item[index="+(next)+"] img").data("src");
-			showImg(next); showImg(next+1);
-			hwd2 = 	that.find("div.item[index="+(next)+"]");
-			scale(hwd2.attr("w"),hwd2.attr("h"));	
-			hwd2.addClass("active").siblings().removeClass("active");
-				
+				var the = _this.list.find("ul>li.active");
+				var current = parseInt(the.attr("index"));
+					if(current>=len-1){
+						return false;
+					}else{
+						rightBtn.removeClass("hidden");
+						leftBtn.removeClass("hidden");
+					}
+				var next = (current+1>=len)?current:current+1;
+					hwd = _this.list.find("ul>li[index="+(next)+"]");
+					hwd.addClass("active").siblings().removeClass("active");				
+				var that = _this.body.find("div.carousel-inner");
+				var src = that.find("div.item[index="+(next)+"] img").data("src");
+				showImg(next); showImg(next+1);
+				hwd2 = 	that.find("div.item[index="+(next)+"]");
+				scale(hwd2.attr("w"),hwd2.attr("h"));	
+				hwd2.addClass("active").siblings().removeClass("active");
+				console.log(next+ " : " + len);
+				if(next >= len-1){
+				   	rightBtn.addClass("hidden");
+				  }
 			};			
 		});
 		
@@ -1303,22 +1336,22 @@ define(function(){
     var self = this;
 
     var tpl = '<div class="{{css}}" data-progressbar-shape="{{shape}}">\
-    			<div class="progress progressbar-auto">\
-					<div class="progress-bar" role="progressbar" style="width: {{progress}}">\
-					</div>\
-				</div>\
-				<div class="progressbar-circle">\
-					<div class="progressbar-pie-left">\
-						<div class="progressbar-left">\
-						</div>\
-					</div>\
-					<div class="progressbar-pie-right">\
-						<div class="progressbar-right">\
-						</div>\
-					</div>\
-					<div class="progressbar-mask" data-progress="{{progress}}"></div>\
-				</div>\
-			</div>';
+                <div class="progress progressbar-default" style="width: {{width}}px;">\
+                    <div class="progress-bar" role="progressbar" style="width: {{progress}}; height: {{size}}px;">\
+                    </div>\
+                </div>\
+                <div class="progressbar-circle" style="width: {{width}}px; height: {{width}}px;">\
+                    <div class="progressbar-pie-left" style="clip: rect(0, {{clip-width}}px, auto, 0);">\
+                        <div class="progressbar-left" style="clip: rect(0, {{clip-width}}px, auto, 0);">\
+                        </div>\
+                    </div>\
+                    <div class="progressbar-pie-right" style="clip: rect(0, auto, auto, {{clip-width}}px);">\
+                        <div class="progressbar-right" style="clip: rect(0, auto, auto, {{clip-width}}px);">\
+                        </div>\
+                    </div>\
+                    <div class="progressbar-mask" data-progress="{{progress}}" style="width: {{circle-inner}}px; height: {{circle-inner}}px; left: {{size}}px; top: {{size}}px;"></div>\
+                </div>\
+            </div>';
 
 
     function Progressbar(element, options) {
@@ -1326,7 +1359,9 @@ define(function(){
         this.$elem = $(element);
         this.config = $.extend(true, $.fn.progressbar.defaults, {
             css: this.$elem.attr('data-progressbar-css'),
-            progress: this.$elem.attr('data-progressbar-progress')
+            progress: this.$elem.attr('data-progressbar-progress'),
+            width: this.$elem.attr('data-progressbar-width'),
+            size: this.$elem.attr('data-progressbar-size')
         }, options);
         this.init(options);
     };
@@ -1338,20 +1373,23 @@ define(function(){
          */
         init: function() {
             //获取进度的dom对象
-            this.$progress = $(tpl.replace("{{css}}", this.config.css)
-                .replace(/{{progress}}/ig, this.config.progress)
-                .replace("{{shape}}", this.config.shape));
-            this.$bar = this.$progress.find('.progress-bar');
-            this.$circle = this.$progress.find('.progressbar-circle');
-            this.setShape(this.config.shape);
             this.buildDom();
         },
         /**
          * 生成dom树
          */
         buildDom: function() {
-            this.$elem.append(this.$progress);
-
+            this.$progress = $(tpl.replace("{{css}}", this.config.css)
+                .replace(/{{progress}}/ig, this.config.progress)
+                .replace(/{{width}}/ig, this.config.width)
+                .replace(/{{size}}/ig, this.config.size)
+                .replace(/{{clip-width}}/ig, this.config.width / 2)
+                .replace(/{{circle-inner}}/ig, this.config.width - this.config.size * 2)
+                .replace(/{{shape}}/ig, this.config.shape));
+            this.$bar = this.$progress.find('.progress-bar');
+            this.$circle = this.$progress.find('.progressbar-circle');
+            this.setProgress(this.config.progress);
+            this.$elem.html(this.$progress);
         },
         /**
          * 设置进度
@@ -1376,6 +1414,7 @@ define(function(){
                     $left.css('transform', "rotate(" + (angle - 180) + "deg)");
                 }, 500)
             };
+            return this;
         },
         /**
          * 获取进度
@@ -1387,34 +1426,59 @@ define(function(){
          * 设置形状
          */
         setShape: function(shape) {
-            var attrShape = 'data-progressbar-shape';
             this.config.shape = shape;
-            this.$progress.attr(attrShape, shape).parents('[' + attrShape + ']').attr(attrShape, shape);
+            this.init();
+            return this;
         },
         /**
          * 获取形状
          */
         getShape: function() {
             return this.config.shape;
-        }
+        },
+        /**
+         * 设置宽度
+         */
+        setWidth: function(width){
+            this.config.width = width;
+            this.init();
+            return this;
+        },
+        /**
+         * 获取宽度
+         */
+        getWidth: function(){
+            return this.config.width;
+        },
+        /**
+         * 设置进度条的尺寸
+         */
+        setSize: function(size){
+            this.config.size = size;
+            this.init();
+            return this;
+        },
+        /**
+         * 获取进度条的尺寸
+         */
+        getSize: function(){
+            return this.config.size;
+        },
+
     }
+
     $.fn.progressbar = function(options, value) {
         var returnVal = this;
         this.each(function(key, the) {
             if (!the.progressbarInstance) {
                 the.progressbarInstance = new Progressbar(the, options);
             } else {
-                if (options == 'progress') {
+                if(['progress', 'shape', 'size', 'width'].indexOf(options) > -1) {
+                    var method = options.toLowerCase().replace(/[a-zA-Z]/,function(s){return s.toUpperCase()});
                     if (value) {
-                        the.progressbarInstance.setProgress(value);
+                        the.progressbarInstance['set' + method](value);
                     } else {
-                        returnVal = the.progressbarInstance.getProgress();
-                    }
-                } else if (options == 'shape') {
-                    if (value) {
-                        the.progressbarInstance.setShape(value);
-                    } else {
-                        returnVal = the.progressbarInstance.getShape();
+                        returnVal = the.progressbarInstance['get' + method]();
                     }
                 }
             }
@@ -1425,11 +1489,12 @@ define(function(){
 
     $.fn.progressbar.defaults = {
         css: '',
-        progress: 0,
-        shape: 'circle'
+        progress: '80%',
+        shape: 'default',
+        width: 100,
+        size: 5
     };
 })(jQuery)
-
 ;(function ($,win) { //start with a [;] because if our code is combine or minification  with other code,AND other code not terminated with [;] then it will not infect ours.
     var self = this;
 	var wrapper,header,body,footer;

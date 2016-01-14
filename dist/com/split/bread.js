@@ -1,0 +1,97 @@
+;(function ($) { //start with a [;] because if our code is combine or minification  with other code,AND other code not terminated with [;] then it will not infect ours.
+    var self = this;    
+    function Bread(element, options) {
+		var self = this;
+		this.elem = element;
+		this.config = $.extend(true,{},$.fn.bread.defaults,element.data(),options);
+		this.init();
+    };
+	/**
+	**列表组件的初始化
+	**/
+    Bread.prototype.init = function () {
+        var _this = this;
+		this.elem.addClass(this.config.containerClass);//设置 包裹容器的 dim,外观
+        this.concrate();//构建下来菜单的样子
+		this.initConfig();
+      
+		
+		//监听事件
+		_this.breadwrapper.find("li:has(a)").click(function(e){
+			e.stopImmediatePropagation();
+			var index = $(this).attr("deep");
+			var value =  $(this).text();
+			if(_this.config.home && index==0){
+				$(this).addClass("active").empty().text(_this.config.list[index]).prepend(_this.config.home);
+			}else{
+				$(this).addClass("active").empty().text(_this.config.list[index]);
+			}
+			_this.breadwrapper.find("li:gt("+index+")").remove();
+			fireEvent(_this.elem.get(0),"layer_click",{deep:index,text:value});
+		});
+    };
+	
+	/**
+	** 构建下来菜单样子
+	**/
+	Bread.prototype.concrate = function(data){
+		var _this = this;
+		this.breadwrapper = $("<ol class='breadcrumb'/>");
+		_this.config.list.forEach(function(item,index){
+			if(typeof(item)=="string"||typeof(item)=="number"){
+				var str= item;
+			}else{
+				str = item.name||item.text||item.label;
+			}
+			if(index !=_this.config.list.length-1){
+				_this.breadwrapper.append("<li deep="+index+"><a href='#'>"+str+"</a></li>");
+			}else{
+				_this.breadwrapper.append("<li class='active' deep="+index+">"+str+"</li>");
+			}
+		});
+		_this.elem.append(_this.breadwrapper);
+	};
+
+    Bread.prototype.initConfig = function(){
+        var _this = this;
+		_this.breadwrapper.find("li:gt(0)").addClass("change").attr("data-content",_this.config.spliter);
+ 		if(_this.config.home){
+			_this.breadwrapper.find("li:first>a").prepend(_this.config.home).addClass("bread-home-decorate");
+		}
+	}
+    /**
+     * jquery 提供了一个objct 即 fn，which is a shotcut of jquery object prototype
+     * or you can call it jquery plugin shell  == fn
+     *  类似于  Class.prototype.jqplugin = function(){};0  
+     *  the   $.fn  [same as] Class.prototype
+     * plugin entrance
+     */
+    $.fn.bread = function (options) {
+		var the = this.first();
+        var bread = new Bread(the, options);
+        exchange.call(this,bread);
+		return the;
+    };
+	
+    /***
+    **和其他插件的交互
+	** factory Class
+    **@param {Drop} Bread :  instacne of the plugin builder
+    **/
+    function exchange(drop){
+        /**
+        **@param {Object} msg {type:"类型"}
+        **/
+        this.manipulate = function(msg){
+            
+        }
+    }
+	/***
+	** outside accessible default setting
+	**/
+	$.fn.bread.defaults = {
+		home:"",//图标 只能使用 bootstrap 里面的图标
+		spliter:"/",
+		list:[]
+	};
+}(jQuery));
