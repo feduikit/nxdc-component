@@ -2,22 +2,22 @@
     var self = this;
 
     var tpl = '<div class="{{css}}" data-progressbar-shape="{{shape}}">\
-    			<div class="progress progressbar-auto">\
-					<div class="progress-bar" role="progressbar" style="width: {{progress}}">\
-					</div>\
-				</div>\
-				<div class="progressbar-circle">\
-					<div class="progressbar-pie-left">\
-						<div class="progressbar-left">\
-						</div>\
-					</div>\
-					<div class="progressbar-pie-right">\
-						<div class="progressbar-right">\
-						</div>\
-					</div>\
-					<div class="progressbar-mask" data-progress="{{progress}}"></div>\
-				</div>\
-			</div>';
+                <div class="progress progressbar-default" style="width: {{width}}px;">\
+                    <div class="progress-bar" role="progressbar" style="width: {{progress}}; height: {{size}}px;">\
+                    </div>\
+                </div>\
+                <div class="progressbar-circle" style="width: {{width}}px; height: {{width}}px;">\
+                    <div class="progressbar-pie-left" style="clip: rect(0, {{clip-width}}px, auto, 0);">\
+                        <div class="progressbar-left" style="clip: rect(0, {{clip-width}}px, auto, 0);">\
+                        </div>\
+                    </div>\
+                    <div class="progressbar-pie-right" style="clip: rect(0, auto, auto, {{clip-width}}px);">\
+                        <div class="progressbar-right" style="clip: rect(0, auto, auto, {{clip-width}}px);">\
+                        </div>\
+                    </div>\
+                    <div class="progressbar-mask" data-progress="{{progress}}" style="width: {{circle-inner}}px; height: {{circle-inner}}px; left: {{size}}px; top: {{size}}px;"></div>\
+                </div>\
+            </div>';
 
 
     function Progressbar(element, options) {
@@ -25,7 +25,9 @@
         this.$elem = $(element);
         this.config = $.extend(true, $.fn.progressbar.defaults, {
             css: this.$elem.attr('data-progressbar-css'),
-            progress: this.$elem.attr('data-progressbar-progress')
+            progress: this.$elem.attr('data-progressbar-progress'),
+            width: this.$elem.attr('data-progressbar-width'),
+            size: this.$elem.attr('data-progressbar-size')
         }, options);
         this.init(options);
     };
@@ -37,20 +39,23 @@
          */
         init: function() {
             //获取进度的dom对象
-            this.$progress = $(tpl.replace("{{css}}", this.config.css)
-                .replace(/{{progress}}/ig, this.config.progress)
-                .replace("{{shape}}", this.config.shape));
-            this.$bar = this.$progress.find('.progress-bar');
-            this.$circle = this.$progress.find('.progressbar-circle');
-            this.setShape(this.config.shape);
             this.buildDom();
         },
         /**
          * 生成dom树
          */
         buildDom: function() {
-            this.$elem.append(this.$progress);
-
+            this.$progress = $(tpl.replace("{{css}}", this.config.css)
+                .replace(/{{progress}}/ig, this.config.progress)
+                .replace(/{{width}}/ig, this.config.width)
+                .replace(/{{size}}/ig, this.config.size)
+                .replace(/{{clip-width}}/ig, this.config.width / 2)
+                .replace(/{{circle-inner}}/ig, this.config.width - this.config.size * 2)
+                .replace(/{{shape}}/ig, this.config.shape));
+            this.$bar = this.$progress.find('.progress-bar');
+            this.$circle = this.$progress.find('.progressbar-circle');
+            this.setProgress(this.config.progress);
+            this.$elem.html(this.$progress);
         },
         /**
          * 设置进度
@@ -75,6 +80,7 @@
                     $left.css('transform', "rotate(" + (angle - 180) + "deg)");
                 }, 500)
             };
+            return this;
         },
         /**
          * 获取进度
@@ -86,34 +92,59 @@
          * 设置形状
          */
         setShape: function(shape) {
-            var attrShape = 'data-progressbar-shape';
             this.config.shape = shape;
-            this.$progress.attr(attrShape, shape).parents('[' + attrShape + ']').attr(attrShape, shape);
+            this.init();
+            return this;
         },
         /**
          * 获取形状
          */
         getShape: function() {
             return this.config.shape;
-        }
+        },
+        /**
+         * 设置宽度
+         */
+        setWidth: function(width){
+            this.config.width = width;
+            this.init();
+            return this;
+        },
+        /**
+         * 获取宽度
+         */
+        getWidth: function(){
+            return this.config.width;
+        },
+        /**
+         * 设置进度条的尺寸
+         */
+        setSize: function(size){
+            this.config.size = size;
+            this.init();
+            return this;
+        },
+        /**
+         * 获取进度条的尺寸
+         */
+        getSize: function(){
+            return this.config.size;
+        },
+
     }
+
     $.fn.progressbar = function(options, value) {
         var returnVal = this;
         this.each(function(key, the) {
             if (!the.progressbarInstance) {
                 the.progressbarInstance = new Progressbar(the, options);
             } else {
-                if (options == 'progress') {
+                if(['progress', 'shape', 'size', 'width'].indexOf(options) > -1) {
+                    var method = options.toLowerCase().replace(/[a-zA-Z]/,function(s){return s.toUpperCase()});
                     if (value) {
-                        the.progressbarInstance.setProgress(value);
+                        the.progressbarInstance['set' + method](value);
                     } else {
-                        returnVal = the.progressbarInstance.getProgress();
-                    }
-                } else if (options == 'shape') {
-                    if (value) {
-                        the.progressbarInstance.setShape(value);
-                    } else {
-                        returnVal = the.progressbarInstance.getShape();
+                        returnVal = the.progressbarInstance['get' + method]();
                     }
                 }
             }
@@ -124,7 +155,9 @@
 
     $.fn.progressbar.defaults = {
         css: '',
-        progress: 0,
-        shape: 'circle'
+        progress: '80%',
+        shape: 'default',
+        width: 100,
+        size: 5
     };
 })(jQuery)
