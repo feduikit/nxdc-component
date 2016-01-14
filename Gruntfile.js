@@ -43,7 +43,7 @@ module.exports=function (grunt) {
 		o.concat = {
 			dist: {
 			  	src: ['src/js/Compatibility/**/*.js', 'src/js/components/**/*.js'],
-			  	dest: 'dist/com/ndpui.js'
+			  	dest: 'dist/com/nxdc.js'
 			}
 		 };	
 		 /***
@@ -54,8 +54,8 @@ module.exports=function (grunt) {
 				 sourceMap:true
 			 },
 			 build: {  
-				src: 'dist/com/ndpui.js',//压缩源文件是之前合并的buildt.js文件  
-				dest: 'dist/com/ndpui.min.js'//压缩文件为built.min.js  
+				src: 'dist/com/nxdc.js',//压缩源文件是之前合并的buildt.js文件  
+				dest: 'dist/com/nxdc.min.js'//压缩文件为built.min.js  
 			 }  
 		 };	
 		

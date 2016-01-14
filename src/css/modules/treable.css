@@ -1,0 +1,84 @@
+.ndp-treable-wrapper{
+	position: relative;
+	min-width: 1000px;
+}
+
+/***
+**表头  表尾
+**/
+.treable-header,.treable-footer{
+	position: relative;
+	height: 36px;
+	background-color: #628bc3;
+}
+
+/***
+** 部分
+***/
+.treable-body{
+	position: relative;
+}
+.treable-row{
+	position: relative;
+	height: 36px;
+	border-bottom: 1px solid #ccc;
+	overflow: hidden;
+}
+div.dir-button{
+	position: relative;
+	display: inline-block;
+	width: 36px;
+	height: 36px;
+	line-height: 36px;
+	text-align: center;
+}
+/***
+** 内容部分，  内容部分和 按钮部分分开
+**/
+div.row-content-wrapper{
+	position: relative;
+	float: left;
+}
+.treable-col{
+	position: relative;
+	height: 36px;
+	line-height: 36px;
+	padding-left: 5px;
+	float: left;
+}
+.treable-col:nth-child(2){
+	width: 20%;
+}
+.treable-col:nth-child(3){
+	width: 10%;
+}
+.treable-col:nth-child(4){
+	width: 10%;
+}
+
+/***
+** 子集的 包装
+***/
+.treable-list{
+	padding-left: 18px;
+}
+.treable-list[data-deep='1']>li>.treable-row{
+	background-color: #ffffe6;
+}
+
+.treable-list[data-deep='1'] .treable-col:nth-child(2){
+	width:calc(20% - 14px)
+}
+
+
+
+.treable-list[data-deep="2"]>li>.treable-row{
+	background-color: #f8f8f8;
+}
+.treable-list[data-deep='2'] .treable-col:nth-child(2){
+	width:calc(20% - 29px);
+}
+
+
+
+

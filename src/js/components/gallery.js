@@ -16,7 +16,7 @@
 				list.append(itemBox);
 			});
 			
-			var ctlLeft = $('<a class="left carousel-control" href="#gallery-carousel" role="button" 					data-slide="prev">\
+			var ctlLeft = $('<a class="left carousel-control hidden" href="#gallery-carousel" role="button" 					data-slide="prev">\
     				<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>\
     				<span class="sr-only">Previous</span>\
   				</a>');
@@ -52,7 +52,8 @@
 		this.init();
 		
 		function setButton(){
-			if($("#gallery-holder").hasClass("in")) setTimeout(function(){
+			//if($("#gallery-holder").hasClass("in")) 
+			setTimeout(function(){
 				var a = _this.list.get(0).getBoundingClientRect();
 				var lfst = _this.list.find("ul>li:first");
 				var b = _this.list.find("ul>li:last").get(0).getBoundingClientRect();
@@ -98,22 +99,25 @@
 		** 显示图片查看器，弹出窗口
 		***/
 		this.elem.click(function(e){
+			var len = _this.config.data.length;
 			_this.body.empty().append(build(_this.config.data));
-			_this.list.find("ul").empty();
+			var ul = _this.list.find("ul");
+			ul.empty().attr("data-len",len);
 			_this.config.data.forEach(function(item,index){
 				var li = $("<li class='gallery-list-cell' index="+index+"></li>");
+				if(index==len-1) li.attr("lastone","true");
 				if(index==0) li.addClass("active");
 				var img = $("<img width='100%' height='100%' class='img-responsive' /> ");
 				if(item.small) img.attr("src",item.small);
 				li.append(img);
-				_this.list.find("ul").append(li);
+				ul.append(li);
 			});	
 			var gData = _this.config.data[_this.config.current];
 			scale(gData.w,gData.h);
 			_this.wrapper.modal();//显示图片查看器
 			setButton();
 			var theIMG = $("#gallery-carousel").find("img[data-img][index='1']");
-			theIMG.attr(src,theIMG.data("img"));
+			theIMG.attr("src",theIMG.data("img"));
 		});
 		
 		/***
@@ -129,19 +133,31 @@
 		** 点击 列表一项
 		**/
 		_this.list.find("ul").unbind("click").click(function(e){
+			var len = $(this).data("len");
 			if(e.target.tagName!="UL"){
 				var the = (e.target.tagName=="IMG")?$(e.target).parent():$(e.target);
 				var idx = the.attr("index");
-				_this.config.current = idx;
 				the.addClass("active").siblings().removeClass("active");
 				var t =_this.body.find("div.carousel-inner div.item[index="+(idx)+"]");
 				scale(t.attr("w"),t.attr("h"));
 				t.addClass("active").siblings().removeClass("active");	
 				showImg(idx);showImg(idx+1);
+				var leftBtn = _this.body.find("a.left.carousel-control");
+				var rightBtn = _this.body.find("a.right.carousel-control");				
+				if(idx==0){
+					leftBtn.addClass("hidden");
+					rightBtn.removeClass("hidden");
+				}else if(idx == len-1){
+					rightBtn.addClass("hidden");
+					leftBtn.removeClass("hidden");					
+				}else{
+					rightBtn.removeClass("hidden");
+					leftBtn.removeClass("hidden");						
+				}
 			}
 		});
 		/***
-		** dock左边的按钮
+		** dock左边的箭头
 		**/
 		_this.lfButton.click(function(e){
 			e.stopImmediatePropagation();
@@ -153,7 +169,7 @@
 			setButton();
 		});
 		/***
-		**dock 右边的按钮
+		**dock 右边的箭头
 		**/
 		_this.rtButton.click(function(e){
 			e.stopImmediatePropagation();
@@ -166,6 +182,9 @@
 		
 		//处理向左翻(上一张)<      还是向右翻（下一张） >
 		_this.body.unbind('click').click(function(e){
+			var len = _this.list.find("ul[data-len]").data("len");
+			var leftBtn = _this.body.find("a.left.carousel-control");
+			var rightBtn = _this.body.find("a.right.carousel-control");
 			//左翻
 			if((e.target.tagName=="A" && $(e.target).hasClass("left"))||
 			    e.target.tagName=="SPAN" && $(e.target).attr("class").indexOf("left")!=-1){
@@ -175,6 +194,8 @@
 					var next = 0;
 					return false;
 				}else{
+					leftBtn.removeClass("hidden");
+					rightBtn.removeClass("hidden");
 					next = current - 1;
 				}
 			var hwd = _this.list.find("ul>li[index="+(current-1)+"]");	 
@@ -182,22 +203,34 @@
 			var that = _this.body.find("div.carousel-inner");
 			var hwd2 = that.find("div.item[index="+(current-1)+"]");
 				scale(hwd2.attr("w"),hwd2.attr("h"));
-				hwd2.addClass("active").siblings().removeClass("active");						
+				hwd2.addClass("active").siblings().removeClass("active");
+				if(parseInt(the.attr("index"))<=1){
+					leftBtn.addClass("hidden");
+				}
 			}//右翻
 			else if((e.target.tagName=="A" && $(e.target).hasClass("right"))||
 					  e.target.tagName=="SPAN" && $(e.target).attr("class").indexOf("right")!=-1){
-			var the = _this.list.find("ul>li.active");
-			var current = parseInt(the.attr("index"));
-			var next = (current+1>=_this.config.data.length)?current:current+1;
-				hwd = _this.list.find("ul>li[index="+(next)+"]");
-				hwd.addClass("active").siblings().removeClass("active");					
-			var that = _this.body.find("div.carousel-inner");
-			var src = that.find("div.item[index="+(next)+"] img").data("src");
-			showImg(next); showImg(next+1);
-			hwd2 = 	that.find("div.item[index="+(next)+"]");
-			scale(hwd2.attr("w"),hwd2.attr("h"));	
-			hwd2.addClass("active").siblings().removeClass("active");
-				
+				var the = _this.list.find("ul>li.active");
+				var current = parseInt(the.attr("index"));
+					if(current>=len-1){
+						return false;
+					}else{
+						rightBtn.removeClass("hidden");
+						leftBtn.removeClass("hidden");
+					}
+				var next = (current+1>=len)?current:current+1;
+					hwd = _this.list.find("ul>li[index="+(next)+"]");
+					hwd.addClass("active").siblings().removeClass("active");				
+				var that = _this.body.find("div.carousel-inner");
+				var src = that.find("div.item[index="+(next)+"] img").data("src");
+				showImg(next); showImg(next+1);
+				hwd2 = 	that.find("div.item[index="+(next)+"]");
+				scale(hwd2.attr("w"),hwd2.attr("h"));	
+				hwd2.addClass("active").siblings().removeClass("active");
+				console.log(next+ " : " + len);
+				if(next >= len-1){
+				   	rightBtn.addClass("hidden");
+				  }
 			};			
 		});
 		
