@@ -125,6 +125,6 @@
     $.fn.progressbar.defaults = {
         css: '',
         progress: 0,
-        shape: 'circle'
+        shape: 'default'
     };
 })(jQuery)
