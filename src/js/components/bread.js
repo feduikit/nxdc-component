@@ -86,6 +86,16 @@
             
         }
     }
+	
+	
+	  var old = $.fn.bread;
+	  $.fn.bread.Constructor = Bread;
+	  // table NO CONFLICT
+	  // ===============
+	  $.fn.bread.noConflict = function () {
+		$.fn.bread = old;
+		return this;
+	  }		
 	/***
 	** outside accessible default setting
 	**/

@@ -1,15 +1,13 @@
 /***
 **兼容Object.keys 不支持情况iang
 **/
-define(function(){
-    if (!Object.keys) Object.keys = function(o) {
-        if (o !== Object(o))
-            throw new TypeError('Object.keys called on a non-object');
-        var k=[],p;
-        for (p in o) if (Object.prototype.hasOwnProperty.call(o,p)) k.push(p);
-        return k;
-    }
-});
+if (!Object.keys) Object.keys = function(o) {
+	if (o !== Object(o))
+		throw new TypeError('Object.keys called on a non-object');
+	var k=[],p;
+	for (p in o) if (Object.prototype.hasOwnProperty.call(o,p)) k.push(p);
+	return k;
+}
 ;(function(win){
     /**
     ** 派发自定义事件
@@ -176,6 +174,16 @@ define(function(){
             
         }
     }
+	
+	
+	  var old = $.fn.bread;
+	  $.fn.bread.Constructor = Bread;
+	  // table NO CONFLICT
+	  // ===============
+	  $.fn.bread.noConflict = function () {
+		$.fn.bread = old;
+		return this;
+	  }		
 	/***
 	** outside accessible default setting
 	**/
@@ -405,7 +413,7 @@ define(function(){
 		/***** 注册监听事件 *****/
 		
         _this.peal.click(function(e){
-            e.stopPropagation();
+            e.stopImmediatePropagation();
             _this.list.toggleClass("hidden");
             setDirect(_this);
         });
@@ -472,6 +480,12 @@ define(function(){
 				});
 				_this.peal.find("input").val(vals.join(","))
 				fireEvent(_this.elem.get(0),"item_apply_click",{checkedArr:cksArr});
+			});
+			
+			$("body").click(function(e){
+				if(!(e.target.tagName == "INPUT" && e.target.type == "checkbox")){
+					$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
+				}
 			});
 		}
     };
@@ -572,6 +586,16 @@ define(function(){
             
         }
     }
+	
+	
+	  var old = $.fn.drop;
+	  $.fn.drop.Constructor = Drop;
+	  // table NO CONFLICT
+	  // ===============
+	  $.fn.drop.noConflict = function () {
+		$.fn.drop = old;
+		return this;
+	  }		
 	/***
 	** outside accessible default setting
 	**/
@@ -922,6 +946,15 @@ define(function(){
             
         }
     }
+	
+	  var old = $.fn.gallery;
+	  $.fn.gallery.Constructor = Gallery;
+	  // gallery NO CONFLICT
+	  // ===============
+	  $.fn.gallery.noConflict = function () {
+		$.fn.gallery = old;
+		return this;
+	  }		
 	/***
 	** outside accessible default setting
 	**/
@@ -1316,6 +1349,15 @@ define(function(){
             
         }
     }
+	
+	  var old = $.fn.page;
+	  $.fn.page.Constructor = Page;
+	  // page NO CONFLICT
+	  // ===============
+	  $.fn.page.noConflict = function () {
+		$.fn.page = old;
+		return this;
+	  }		
 	/***
 	** outside accessible default setting
 	**/
@@ -1881,7 +1923,7 @@ define(function(){
 	** factory Class
     **@param {Drop} Bread :  instacne of the plugin builder
     **/
-    function exchange(drop){
+    function exchange(search){
         /**
         **@param {Object} msg {type:"类型"}
         **/
@@ -1889,6 +1931,15 @@ define(function(){
             
         }
     }
+	
+	  var old = $.fn.search;
+	  $.fn.search.Constructor = Search;
+	  // search NO CONFLICT
+	  // ===============
+	  $.fn.search.noConflict = function () {
+		$.fn.search = old;
+		return this;
+	  }		
 	/***
 	** outside accessible default setting
 	**/
@@ -2055,6 +2106,15 @@ define(function(){
             
         }
     }
+	
+	  var old = $.fn.sinput;
+	  $.fn.sinput.Constructor = Sinput;
+	  // sinput NO CONFLICT
+	  // ===============
+	  $.fn.sinput.noConflict = function () {
+		$.fn.sinput = old;
+		return this;
+	  }	
 	/***
 	** outside accessible default setting
 	**/
@@ -2302,6 +2362,16 @@ define(function(){
 		return the;
     };
 	
+	
+	  var old = $.fn.table;
+	  $.fn.table.Constructor = Table;
+	  // table NO CONFLICT
+	  // ===============
+	  $.fn.table.noConflict = function () {
+		$.fn.table = old;
+		return this;
+	  }	
+	
 	/***
 	** outside accessible default setting
 	**/
@@ -2322,8 +2392,7 @@ define(function(){
 	};
 }(jQuery));
 
-;(function ($) { //start with a [;] because if our code is combine or minification  with other code,AND other code not terminated with [;] then it will not infect ours.
-	
+;(function ($) { 
 	function setAble(_this){
 		//主需要  把整个 程序里面的 disabled 替换成 hidden 就可以实现，需要时再显示的效果
 		setTimeout(function(){
@@ -2501,6 +2570,16 @@ define(function(){
             
         }
     }
+	
+	  var old = $.fn.tabs;
+	  $.fn.tabs.Constructor = Tabs;
+	  // Tabs NO CONFLICT
+	  // ===============
+	  $.fn.tabs.noConflict = function () {
+		$.fn.tabs = old;
+		return this;
+	  }
+	
 	/***
 	** outside accessible default setting
 	**/
@@ -2701,6 +2780,15 @@ define(function(){
         this.manipulate = function(msg){    
         }
     }
+	
+	  var old = $.fn.tree;
+	  $.fn.tree.Constructor = Tree;
+	  // tree NO CONFLICT
+	  // ===============
+	  $.fn.tree.noConflict = function () {
+		$.fn.tree = old;
+		return this;
+	  }	
 	/***
 	** outside accessible default setting
 	**/
@@ -2857,6 +2945,15 @@ define(function(){
         this.manipulate = function(msg){    
         }
     }
+	
+	  var old = $.fn.vList;
+	  $.fn.vList.Constructor = VList;
+	  // vList NO CONFLICT
+	  // ===============
+	  $.fn.vList.noConflict = function () {
+		$.fn.vList = old;
+		return this;
+	  }	
 	/***
 	** outside accessible default setting
 	**/

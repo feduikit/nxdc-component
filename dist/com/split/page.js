@@ -251,6 +251,15 @@
             
         }
     }
+	
+	  var old = $.fn.page;
+	  $.fn.page.Constructor = Page;
+	  // page NO CONFLICT
+	  // ===============
+	  $.fn.page.noConflict = function () {
+		$.fn.page = old;
+		return this;
+	  }		
 	/***
 	** outside accessible default setting
 	**/

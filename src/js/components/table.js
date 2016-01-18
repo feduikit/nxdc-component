@@ -227,6 +227,16 @@
 		return the;
     };
 	
+	
+	  var old = $.fn.table;
+	  $.fn.table.Constructor = Table;
+	  // table NO CONFLICT
+	  // ===============
+	  $.fn.table.noConflict = function () {
+		$.fn.table = old;
+		return this;
+	  }	
+	
 	/***
 	** outside accessible default setting
 	**/

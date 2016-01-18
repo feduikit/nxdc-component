@@ -69,7 +69,7 @@
 		/***** 注册监听事件 *****/
 		
         _this.peal.click(function(e){
-            e.stopPropagation();
+            e.stopImmediatePropagation();
             _this.list.toggleClass("hidden");
             setDirect(_this);
         });
@@ -136,6 +136,12 @@
 				});
 				_this.peal.find("input").val(vals.join(","))
 				fireEvent(_this.elem.get(0),"item_apply_click",{checkedArr:cksArr});
+			});
+			
+			$("body").click(function(e){
+				if(!(e.target.tagName == "INPUT" && e.target.type == "checkbox")){
+					$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
+				}
 			});
 		}
     };
@@ -236,6 +242,16 @@
             
         }
     }
+	
+	
+	  var old = $.fn.drop;
+	  $.fn.drop.Constructor = Drop;
+	  // table NO CONFLICT
+	  // ===============
+	  $.fn.drop.noConflict = function () {
+		$.fn.drop = old;
+		return this;
+	  }		
 	/***
 	** outside accessible default setting
 	**/

@@ -1,5 +1,4 @@
-;(function ($) { //start with a [;] because if our code is combine or minification  with other code,AND other code not terminated with [;] then it will not infect ours.
-	
+;(function ($) { 
 	function setAble(_this){
 		//主需要  把整个 程序里面的 disabled 替换成 hidden 就可以实现，需要时再显示的效果
 		setTimeout(function(){
@@ -177,6 +176,16 @@
             
         }
     }
+	
+	  var old = $.fn.tabs;
+	  $.fn.tabs.Constructor = Tabs;
+	  // Tabs NO CONFLICT
+	  // ===============
+	  $.fn.tabs.noConflict = function () {
+		$.fn.tabs = old;
+		return this;
+	  }
+	
 	/***
 	** outside accessible default setting
 	**/

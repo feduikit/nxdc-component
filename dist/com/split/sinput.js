@@ -152,6 +152,15 @@
             
         }
     }
+	
+	  var old = $.fn.sinput;
+	  $.fn.sinput.Constructor = Sinput;
+	  // sinput NO CONFLICT
+	  // ===============
+	  $.fn.sinput.noConflict = function () {
+		$.fn.sinput = old;
+		return this;
+	  }	
 	/***
 	** outside accessible default setting
 	**/

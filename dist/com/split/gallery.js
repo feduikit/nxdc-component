@@ -334,6 +334,15 @@
             
         }
     }
+	
+	  var old = $.fn.gallery;
+	  $.fn.gallery.Constructor = Gallery;
+	  // gallery NO CONFLICT
+	  // ===============
+	  $.fn.gallery.noConflict = function () {
+		$.fn.gallery = old;
+		return this;
+	  }		
 	/***
 	** outside accessible default setting
 	**/

@@ -196,7 +196,7 @@
 	** factory Class
     **@param {Drop} Bread :  instacne of the plugin builder
     **/
-    function exchange(drop){
+    function exchange(search){
         /**
         **@param {Object} msg {type:"类型"}
         **/
@@ -204,6 +204,15 @@
             
         }
     }
+	
+	  var old = $.fn.search;
+	  $.fn.search.Constructor = Search;
+	  // search NO CONFLICT
+	  // ===============
+	  $.fn.search.noConflict = function () {
+		$.fn.search = old;
+		return this;
+	  }		
 	/***
 	** outside accessible default setting
 	**/

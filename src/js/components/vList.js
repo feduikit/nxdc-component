@@ -139,6 +139,15 @@
         this.manipulate = function(msg){    
         }
     }
+	
+	  var old = $.fn.vList;
+	  $.fn.vList.Constructor = VList;
+	  // vList NO CONFLICT
+	  // ===============
+	  $.fn.vList.noConflict = function () {
+		$.fn.vList = old;
+		return this;
+	  }	
 	/***
 	** outside accessible default setting
 	**/

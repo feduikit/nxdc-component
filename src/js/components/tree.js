@@ -133,6 +133,15 @@
         this.manipulate = function(msg){    
         }
     }
+	
+	  var old = $.fn.tree;
+	  $.fn.tree.Constructor = Tree;
+	  // tree NO CONFLICT
+	  // ===============
+	  $.fn.tree.noConflict = function () {
+		$.fn.tree = old;
+		return this;
+	  }	
 	/***
 	** outside accessible default setting
 	**/

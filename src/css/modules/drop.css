@@ -61,7 +61,7 @@ span.caret-wrapper.turnback{
     background-color: #9e9e9e;
 }
 .drop-split-peal>span.caret-wrapper:hover{
-    background-color: #a6a6a6;
+    background-color: #d4d4d4;
 }
 
 span.caret-wrapper>span.caret{
@@ -73,11 +73,11 @@ span.caret-wrapper>span.caret{
     position: absolute;
     box-sizing: border-box!important;
     z-index: 400;
-    width: calc(100% + 1.5px);
+    width: calc(100% + 2px);
     left: -1px;
-    top:100%;
+    top:101%;
     border:1px solid #ccc;
-    box-shadow: 2px 2px 0 rgba(227, 227, 227, 0.6);
+    box-shadow: 1px 1px 0 rgba(227, 227, 227, 0.6);
     max-height: 200px;
     overflow-y: auto;
 	background-color: white;
@@ -132,7 +132,7 @@ ul.sub-drop-list>li.drop-one-item{
 	
 }
 ul>li.drop-one-item:hover{
-    background-color: #bfbfbf;
+    background-color: #c6c6c6;
     color:white;
 }
 ul>li.drop-recursive:hover{
@@ -158,7 +158,7 @@ li[deep='0'].group-hilight li.drop-one-item{
 ** checkbox 层
 **/
 li.all-banner{
-	background-color: #aeaeae;
+	background-color: #d0d0d0;
 	color:white;
 }
 li.checkbox-item>input[type=checkbox]{
@@ -183,5 +183,5 @@ li.apply-item>button.btn{
 	border-radius: 0;
 	width: 100%;
 	color:white;
-	background-color: #aeaeae;
+	background-color: #d0d0d0;
 }
