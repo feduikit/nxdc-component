@@ -3,13 +3,11 @@ require(['./config'],function(){
         require(['bootstrap','prompt'],function(){
 			
 			$("button.btn-primary").click(function(){
-				$("#confirm-holder").prompt({
-					content:"您的述职报告已经完成，您确定提交吗？"
-				});
+				$("#prompt-holder").prompt();
 			});
 			
 			$("button.btn-warning").click(function(){
-				$("#confirm-holder").prompt({
+				$("#prompt-holder").prompt({
 					title:"登陆",
 					body:function(body,wrapper){
 						//DOM构建
@@ -43,7 +41,7 @@ require(['./config'],function(){
 			
 			//个人信息表单
 			$("button.btn-success").click(function(e){
-				$("#confirm-holder").prompt({
+				$("#prompt-holder").prompt({
 					title:"个人信息",
 					body:function(body,wrapper){
 						var form = $("<form class='form-horizontal' />");

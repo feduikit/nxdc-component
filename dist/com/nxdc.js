@@ -1541,8 +1541,8 @@ if (!Object.keys) Object.keys = function(o) {
     var self = this;
 	var wrapper,header,body,footer;
 	function build(){
-		if($(document.body).find("[id*='confirm'][class*='modal fade']").length==0){
-			wrapper = $('<div class="modal fade" tabindex="-1" role="dialog" id="confirm-holder">\
+		if($(document.body).find("[id*='prompt'][class*='modal fade']").length==0){
+			wrapper = $('<div class="modal fade" tabindex="-1" role="dialog" id="prompt-holder">\
 					  <div class="modal-dialog modal-md modal-dialog-ndp">\
 						<div class="modal-content"></div>\
 					  </div>\
@@ -1591,16 +1591,16 @@ if (!Object.keys) Object.keys = function(o) {
 		build();	
 	});    
 	/***
-	**@constructor Confirm
+	**@constructor Prompt
 	**/
     function Prompt(element, options) {
 		var self = this;
 		this.elem = element;
-		this.config = $.extend(true,{},$.fn.prompt.defaults,element.data(),options);
+		this.config = $.extend(true,{},$.fn.prompt.defaults,options);
 		this.init();
 		
 		
-		//显示confirm 窗口
+		//prompt 窗口
 		this.elem.modal();
     };
 	/**
