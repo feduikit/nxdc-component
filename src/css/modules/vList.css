@@ -26,12 +26,12 @@ li>ul.list-root{
 
 li[deep] span.list-txt-wrapper{
 	position: absolute;
+	display: block;
 	width: 100%;
 	top:0;
 	height: 40px;/** 行高 调整需要修改 **/
 	line-height: 40px;/** 行高 调整需要修改 **/
 	padding-left: 12px;
-	display: block;
 }
 li[deep="2"] span.list-txt-wrapper{
 	padding-left: 24px;
@@ -43,11 +43,11 @@ li[deep="4"] span.list-txt-wrapper{
 	padding-left: 48px;
 }
 
-ul[deep="2"]{
+.ndp-vList-wrapper ul[deep="2"]{
 	background-color: #f6f6f6;
 }
 
-ul[deep="3"]{
+.ndp-vList-wrapper ul[deep="3"]{
 	background-color: #eeeeee;
 }
 
@@ -99,4 +99,40 @@ li[deep="4"] .list-txt-wrapper.leaf-icon{
 }
 li[deep="4"] .list-txt-wrapper.leaf-icon>i{
 	left:48px;
+}
+
+.list-item-vlist2 li.list-leaf{
+	border-left:2px solid transparent;
+}
+
+.list-item-vlist2 li.list-leaf.active{
+	border-left-color:#fd9506;
+}
+
+
+.list-item-vlist2>.list-txt-wrapper{
+	padding-left: 24px;
+	overflow: hidden;	
+}
+
+.list-item-vlist2>.list-txt-wrapper>i{
+	display: inline-block;
+	left:0;
+	top:0;
+	margin-right:5px;
+	position: relative;
+}
+.list-item-vlist2>.list-txt-wrapper>span{
+	
+}
+
+ul.list-root-vlist2{
+	border-width:0;
+}
+
+ul.list-root-vlist2 li.list-item{
+	background-color: #daeaec;
+}
+ul.list-root-vlist2 li.list-item.active{
+	background-color: #f4fdff;
 }
