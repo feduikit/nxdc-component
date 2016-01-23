@@ -10,7 +10,6 @@ li.list-item{
 	position: relative;
 	min-height: 40px;
 	color:#808080;
-	
 	padding-top:10px;/** 行高 调整需要修改 **/
 }
 
@@ -101,38 +100,5 @@ li[deep="4"] .list-txt-wrapper.leaf-icon>i{
 	left:48px;
 }
 
-.list-item-vlist2 li.list-leaf{
-	border-left:2px solid transparent;
-}
-
-.list-item-vlist2 li.list-leaf.active{
-	border-left-color:#fd9506;
-}
 
 
-.list-item-vlist2>.list-txt-wrapper{
-	padding-left: 24px;
-	overflow: hidden;	
-}
-
-.list-item-vlist2>.list-txt-wrapper>i{
-	display: inline-block;
-	left:0;
-	top:0;
-	margin-right:5px;
-	position: relative;
-}
-.list-item-vlist2>.list-txt-wrapper>span{
-	
-}
-
-ul.list-root-vlist2{
-	border-width:0;
-}
-
-ul.list-root-vlist2 li.list-item{
-	background-color: #daeaec;
-}
-ul.list-root-vlist2 li.list-item.active{
-	background-color: #f4fdff;
-}

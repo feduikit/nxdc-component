@@ -7,6 +7,7 @@
 */
 @import url(../modules/table.css);
 @import url(../modules/drop.css);
+@import url(../modules/drop2.css);
 @import url(../modules/page.css);
 @import url(../modules/bread.css);
 @import url(../modules/tab.css);
@@ -18,6 +19,7 @@
 @import url(../modules/prompt.css);
 @import url(../modules/tree.css);
 @import url(../modules/vList.css);
+@import url(../modules/vList2.css);
 @import url(../modules/search.css);
 @import url(../modules/navbar.css);
 @import url(../modules/gallery.css);

@@ -8,36 +8,41 @@
 		var reg = /^<[^><]+>.+?>$/i
 		deep++;
 		var rec = arguments.callee;
-		var ul = $("<ul class='list-root list-root-vlist2' deep="+deep+"  />");
+		var ul = $("<ul class='list-root' deep="+deep+"  />");
 		if(deep==1) {
 			ul.addClass("list-deepest");
 		}
 		for(var i=0;i<arr.length;i++){
 			var o = arr[i];
 			var li = $("<li class='list-item' data-index="+i+"/>");
-			if(deep == 1) {
-				li.addClass("list-item-vlist2");
-			}
-			var ctxrow = $("<span class='list-txt-wrapper vlist2-specific' />");
-			li.append(ctxrow);
+			var ctx = $("<div class='content-part' />");
+			li.append(ctx);
+			var icon = $("<span class='icon-part' />");
+			ctx.append(icon);
+			var txt = $("<span class='txt-part' />");
+			ctx.append(txt);
 			if(typeof(o)=="object"){				
 				var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group||o.children;
 				var text = o[cfg.textKey]||o.text||o.label||o.title||o.name;
-				var txtbox = $("<span>"+text+"</span>");
-				ctxrow.html(txtbox);
+				txt.html(text);
 				li.attr({"value":text,"deep":deep});
 				if(array && array instanceof Array){
+					if(cfg.foldicon){
+						ctx.append(cfg.foldicon);
+					}
 					rec(array,cfg,li,deep);
 				}else{
 					li.addClass("list-leaf");
 				}
 				if(o.icon){
 					if(reg.test(o.icon)){
-						ctxrow.prepend(o.icon);
+						icon.append(o.icon);
+					}else{
+						icon.append("<img width='80%' height='80%' src="+o.icon+" />");
 					}
 				}
 			}else{
-				ctxrow.html("<span>"+o+"</span>");
+				txt.html(o);
 				li.attr({"value":o,"deep":deep}).addClass("list-leaf");
 			}
 			ul.append(li);
@@ -97,6 +102,17 @@
 			$(this).trigger("leaf_item_click",{deep:deep,value:val});
 		});
 		
+		/***
+		**
+		***/
+		$(".content-part>i.glyphicon-menu-up").click(function(e){
+			e.stopImmediatePropagation();
+			var li =  $(this).parent().parent();
+			li.children("ul").toggleClass("hidden");
+			$(this).toggleClass("open-hide");
+		});
+		
+		
 		_this.elem.trigger("mission_complete");
     };
 	
@@ -108,6 +124,7 @@
 		var cfg = _this.config;
 		recursive(cfg.data,cfg,_this.elem,0);
 		_this.elem.find("li.list-leaf:first").addClass("active");
+		_this.elem.find("li[deep='1'].list-item:last").siblings("li").append("<hr />");
 	};
 
     VList2.prototype.initConfig = function(){
@@ -125,13 +142,47 @@
 			_this.elem.find("li[asparent]>.list-txt-wraper").prepend(cfg.foldicon);
 		}
 	}
+	
+	VList2.prototype.transform = function(){
+		this.elem.toggleClass("mini-state");
+		var the =  this.elem.find("li>ul:has(li[deep='2'])");
+		if(!the.hasClass("menu-mini-mode") && the.hasClass("hidden")) the.removeClass("hidden");
+		the.toggleClass("menu-mini-mode hidden");
+		this.elem.find("li:has(li.active)>.content-part");
+		if(this.elem.hasClass("mini-state")){//mini模式
+			$("li[deep='1']:has(ul)").unbind("mouseenter").mouseenter(function(){
+				var face = $(this).find("ul:has(li[deep='2'])");
+				$(this).addClass("active");
+				$(this).find("ul:has(li[deep='2'])").removeClass("hidden");
+				setTimeout(function(){
+					var wh = window.innerHeight;
+					var h = face.get(0).getBoundingClientRect().bottom;
+					if(h+5>wh){
+						face.addClass("align-bottom");
+					}else{
+						face.removeClass("align-bottom");
+					}
+				});
+			});
+			$("li[deep='1']:has(ul)").unbind("mouseleave").mouseleave(function(){
+				$(this).removeClass("active");
+				$(this).children("ul:has(li[deep='2'])").addClass("hidden");
+			});			
+		}else{
+			$("li[deep='1']:has(ul)").unbind("mouseenter");
+			$("li[deep='1']:has(ul)").unbind("mouseleave");
+		}
+		
+		
+	}
     /**
 	* 入口
      */
     $.fn.vList2 = function (options) {
 		var the = this.first();
         var vList2 = new VList2(the, options);
-        exchange.call(this,vList2);
+		exchange.call(this,vList2);
+		the.fold = this.fold;
 		return the;
     };	
     /***
@@ -140,11 +191,9 @@
     **@param {Drop} Bread :  instacne of the plugin builder
     **/
     function exchange(vList2){
-        /**
-        **@param {Object} msg {type:"类型"}
-        **/
-        this.manipulate = function(msg){    
-        }
+		this.fold = function(){
+			vList2.transform();
+		}
     }
 	
 	  var old = $.fn.vList2;
@@ -160,6 +209,7 @@
 	**/
 	$.fn.vList2.defaults = {
 		data:[],
-		leaficon:"<i class='glyphicon glyphicon-list-alt'></i>"
+		leaficon:null,//"<i class='glyphicon glyphicon-list-alt'></i>"
+		foldicon:"<i class='glyphicon glyphicon-menu-up'></i>"
 	};
 }(jQuery));
