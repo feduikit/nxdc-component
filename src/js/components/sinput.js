@@ -135,7 +135,7 @@
     $.fn.sinput = function (options) {
 		var the = this.first();
         var sinput = new Sinput(the, options);
-        exchange.call(this,sinput);
+        the = $.extend(true,{},the,new exchange(sinput));
 		return the;
     };
 	

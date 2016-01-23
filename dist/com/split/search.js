@@ -187,7 +187,7 @@
     $.fn.search = function (options) {
 		var the = this.first();
         var search = new Search(the, options);
-        exchange.call(this,search);
+        the = $.extend(true,{},the,new exchange(search));
 		return the;
     };
 	

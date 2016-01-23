@@ -190,8 +190,7 @@
     $.fn.vList2 = function (options) {
 		var the = this.first();
         var vList2 = new VList2(the, options);
-		exchange.call(this,vList2);
-		the.fold = this.fold;
+		the = $.extend(true,{},the,new exchange(vList2));
 		return the;
     };	
     /***

@@ -69,7 +69,7 @@
     $.fn.bread = function (options) {
 		var the = this.first();
         var bread = new Bread(the, options);
-        exchange.call(this,bread);
+       the = $.extend(true,{},the,new exchange(bread));
 		return the;
     };
 	

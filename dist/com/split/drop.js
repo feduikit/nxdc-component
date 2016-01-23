@@ -225,7 +225,7 @@
     $.fn.drop = function (options) {
 		var the = this.first();
         var drop = new Drop(the, options);
-        exchange.call(this,drop);
+        the = $.extend(true,{},the,new exchange(drop));
 		return the;
     };
 	

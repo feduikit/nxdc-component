@@ -159,7 +159,7 @@
     $.fn.tabs = function (options) {
 		var the = this.first();
         var tabs = new Tabs(the, options);
-        exchange.call(this,tabs);
+		the = $.extend(true,{},the,new exchange(tabs));
 		return the;
     };
 	

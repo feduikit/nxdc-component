@@ -3,14 +3,17 @@ require.config({
     paths:{
         'jquery':'../../lib/jquery/jquery.min',
         'bootstrap':'../../lib/bootstrap/dist/js/bootstrap.min',
+		
+		'utils':'./Compatibility/utils',
+		
 		'alert':'./components/alert',
 		'confirm':'./components/confirm',
 		'prompt':'./components/prompt',
 		'drop':'./components/drop',
 		'search':'./components/search',
 		'gallery':'./components/gallery',
-		'utils':'./Compatibility/utils',
-		'progressbar':'./components/progressbar'
+		'progressbar':'./components/progressbar',
+		'drop2':'./components/drop2'
     },
     shim:{
 		bootstrap:{
@@ -19,6 +22,9 @@ require.config({
 		drop:{
 			deps:['jquery']	
 		},
+		drop2:{
+			deps:['bootstrap']	
+		},		
 		alert:{
 			deps:['bootstrap']	
 		},

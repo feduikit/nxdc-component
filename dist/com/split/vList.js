@@ -124,7 +124,7 @@
     $.fn.vList = function (options) {
 		var the = this.first();
         var vList = new VList(the, options);
-        exchange.call(this,vList);
+        the = $.extend(true,{},the,new exchange(vList));
 		return the;
     };	
     /***

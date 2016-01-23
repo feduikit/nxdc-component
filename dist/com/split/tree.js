@@ -118,7 +118,7 @@
     $.fn.tree = function (options) {
 		var the = this.first();
         var tree = new Tree(the, options);
-        exchange.call(this,tree);
+       the = $.extend(true,{},the,new exchange(tree));
 		return the;
     };	
     /***

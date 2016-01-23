@@ -317,7 +317,7 @@
     $.fn.gallery = function (options) {
 		var the = this.first();
         var gallery = new Gallery(the, options);
-        exchange.call(this,gallery);
+        the = $.extend(true,{},the,new exchange(gallery));
 		return the;
     };
 	

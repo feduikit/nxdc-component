@@ -234,7 +234,7 @@
     $.fn.page = function (options) {
 		var the = this.first();
         var page = new Page(the, options);
-        exchange.call(this,page);
+        the = $.extend(true,{},the,new exchange(page));
 		return the;
     };
 	
