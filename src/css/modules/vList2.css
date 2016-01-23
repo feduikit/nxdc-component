@@ -197,6 +197,6 @@ li[deep="1"].list-item>.content-part>i{
 
 .mini-state li>ul.menu-mini-mode.align-bottom{
 	top:inherit;
-	bottom: 0;
+	bottom: 1px;
 }
 

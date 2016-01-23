@@ -1,0 +1,1 @@
+{"version":3,"sources":["demo-treable.js"],"names":["define"],"mappings":"AAAA,AACAA,OAAA,eAAA;AAAA;AACA;AACA","file":"demo-treable.js","sourcesContent":[";\ndefine(\"demo-treable\", function(){});\n\n"]}

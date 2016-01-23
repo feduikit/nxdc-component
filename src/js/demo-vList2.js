@@ -14,7 +14,9 @@ require(['./config'],function(){
 					  sub:[
 							{label:"法国"},
 							{label:"意大利"},
-							{label:"德国"}							  
+							{label:"德国"},
+							{label:"卢森堡"},
+							{label:"荷兰"}
 					 ]},
 					 {label:"美洲每周",icon:"<i class='glyphicon glyphicon-knight'></i>",
 					  sub:[
@@ -24,6 +26,12 @@ require(['./config'],function(){
 						    {label:"阿根廷"}
 					 ]}					  
 				]
+			}).on("shrink_complete",function(){
+				console.log("收缩完成");
+			}).on("expand_complete",function(){
+				console.log("展开完成");
+			}).on("item_click",function(e,data){
+				console.log(data);
 			});
 			
 			$("#ok").click(function(){
