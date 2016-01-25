@@ -1,0 +1,44 @@
+.ndp-treable-wrapper{
+	position: relative;
+	box-sizing: border-box;
+	min-width: 1000px;
+	min-height: 100px;
+	height:400px;
+	border:1px solid #ccc;
+	overflow: hidden;
+}
+
+/***
+**表头  表尾
+**/
+.treable-header,.treable-footer{
+	position: relative;
+	height: 40px;
+	background-color: #628bc3;
+
+}
+
+/***
+** 部分
+***/
+.treable-body{
+	position: relative;
+	height: calc(100% - 80px);
+	overflow:auto;
+}
+.treable-layer{
+	position: relative;
+	height: auto;
+}
+
+.treable-row{
+	position: relative;
+	height: 36px;
+	border-bottom: 1px solid #ccc;
+	overflow: hidden;
+}
+
+
+
+
+

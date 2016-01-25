@@ -1,0 +1,142 @@
+div.ndp-page-wrapper[name]{
+	position: relative;
+	padding: 0;
+}
+/**
+div.page-wrapper[name]>nav{
+	position: relative;
+	padding: 0;
+	overflow: hidden;
+}
+*/
+/**
+div.page-wrapper[name]>nav>ul{
+	position: relative;
+	padding: 0;
+	margin: 5px 0;
+}
+*/
+div.ndp-page-wrapper[name]>ul{
+	position: relative;
+	margin: 0;
+	padding: 0;
+	height: auto;
+	border-radius: 0;
+	overflow: hidden;
+}
+ul>li.page-item{
+	position: relative;
+	display: block;
+	float: left;
+	margin:0;
+	margin-right: 10px;
+	padding: 5px 10px;
+	border:1px solid #ddd;
+	color:#222;
+	select-user:none;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	cursor:pointer;
+	overflow: hidden;
+}
+li.page-item:hover{
+	background-color: #ddd;
+	border-color: #adacac;
+}
+/***
+** 最后一个 取消margin
+**/
+li.page-item:nth-last-child(1){
+	margin: 0;
+}
+/**
+** 取消边框圆角
+**/
+ul.pagination>li.page-item{
+	border-radius: 0;
+}
+ul.pagination>li.page-item.active{
+	color:white;
+	background-color: #3e3e3e;
+}
+ul.pagination>li[role].page-item.disabled{
+	cursor: not-allowed;
+	color:#b3b3b3;
+	background-color: #ececec;
+	border-color:#ddd;
+}
+
+/******
+** 显示条数  的  分页控件
+**/
+span.page-choosed-text{
+	position: relative;
+	display: inline-block;
+	float: left;
+	min-width: 10px;
+	margin: 0 5px;
+	padding: 5px 0;
+	overflow: hidden;
+}
+/***
+** 下拉选择的
+**/
+span.page-drop-list{
+	position: relative;
+	display: inline-block;
+	box-sizing: border-box;
+	border:1px solid transparent;
+	float: left;
+	width: 60px;
+	color:#818181;
+	margin: 0;
+	margin-right: 20px;
+	text-align: center;
+	height: 2.4em;
+}
+span.page-drop-list:hover{
+	border:1px solid #ddd;
+	background-color: #fbfbfb;
+}
+span.page-drop-list>i.glyphicon.active{
+	color:black;
+}
+span.page-drop-list>i.glyphicon-menu-hamburger{
+	position: absolute;
+	font-size: 1.6em;
+	margin: 0;
+	left: 28%;
+	top:15%;
+}
+span.page-drop-list>i.glyphicon-triangle-bottom{
+	position: absolute;
+	font-size: 0.8em;
+	top:35%;
+	margin: 0 2px;
+	left: 61%;
+}
+span.page-drop-list>i.glyphicon-triangle-bottom.turnback{
+	transform: rotate(180deg);
+}
+ul.page-dropdown{
+	position: relative;
+	box-sizing: border-box;
+	width: calc(100% + 2px);
+	left:-1px;
+	top:100%;
+	border:1px solid #ddd;
+	border-top-color:white;
+	background-color: white;
+	z-index: 900;
+}
+ul.page-dropdown>li{
+	position: relative;
+	height: 25px;
+	color:black;
+	line-height: 25px;
+	user-select:none;
+	cursor: default;
+}
+ul.page-dropdown>li:hover{
+	background-color: #ddd;
+}

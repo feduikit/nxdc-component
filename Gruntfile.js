@@ -143,8 +143,12 @@ module.exports=function (grunt) {
         });
 		grunt.file.recurse('src/js/components/', function(abspath, rootdir, subdir, filename) {
 			var src = 'src/js/components/' + (subdir ? subdir + "/" : "") + filename;
-			grunt.file.copy(src, 'dist/com/split/' + (subdir ? subdir + "/" : "") + filename);
-		});		
+			grunt.file.copy(src, 'dist/com/splitjs/' + (subdir ? subdir + "/" : "") + filename);
+		});
+		grunt.file.recurse('src/css/modules/', function(abspath, rootdir, subdir, filename) {
+			var src = 'src/css/modules/' + (subdir ? subdir + "/" : "") + filename;
+			grunt.file.copy(src, 'dist/com/splitcss/' + (subdir ? subdir + "/" : "") + filename);
+		});			
 		
 		console.log("-------打包，压缩，合并，完成!------------");		
 	});		

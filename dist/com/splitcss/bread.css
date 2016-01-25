@@ -1,0 +1,10 @@
+ol.breadcrumb li i{
+	position: relative;
+	display: inline-block;
+	margin: 0;
+	margin-right: 5px;
+}
+
+ol.breadcrumb>li+li.change:before{
+	content:attr(data-content);
+}

@@ -1,0 +1,107 @@
+.ndp-sinput-wrapper{
+	position: relative;
+	display:inline-block;
+	height: 30px;/***这个值在实际使用中应该被覆盖 ***/
+	width: 120px;/***这个值在实际使用中应该被覆盖 ***/
+	min-height: 25px;
+	min-width: 60px;
+	border:1px solid #ccc;
+	padding: 0;
+	box-sizing: border-box;
+	transition: background,box-shadow 0.3s;
+}
+.ndp-sinput-wrapper:focus,.ndp-sinput-wrapper.active{
+	box-shadow:0 0 2px #ccc;
+/*	outline: 1px;*/
+}
+.ndp-sinput-wrapper.warning{
+	border-color:red;
+	box-shadow: 0 0 2px red;
+}
+.ndp-sinput-wrapper[disabled],.ndp-sinput-wrapper[disabled].active{
+	box-shadow: 0 0 0 transparent;
+	background-color: #eeeeee;
+	cursor:not-allowed;
+}
+.ndp-sinput-wrapper>input[type]{
+	position: relative;
+	height: 100%;
+	width: 100%;
+	border-width:0;
+	line-height: nornal;
+	padding: 0 5px;
+}
+.ndp-sinput-wrapper>input[type=password]{
+	letter-spacing: 2px;
+	font-size: 12px;
+}
+.ndp-sinput-wrapper[disabled] *{
+	background-color: #eeeeee;
+	color:#ccc;
+	cursor:not-allowed;
+}
+
+.sinput-title{
+	position: absolute;
+	display: inline-block;
+	padding: 0 4px;
+	color:red;
+	top:-8px;
+	left:15px;
+	font-size: 10px;
+	background-color: white;
+	z-index: 100;
+}
+
+/***
+** 图标
+**/
+.xion-cus{
+	position: absolute;
+	display: inline-block;
+	margin: 0;
+	height: 100%;
+	padding: 0;
+	text-align: center;
+	overflow: hidden;
+	z-index: 100;
+}
+
+.xion-cus>*{
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+/**
+**
+**/
+span.step-wrapper{
+	position: absolute;
+	display: inline-block;
+	height: 100%;
+	width: 20px;
+}
+span.step-wrapper>i{
+	position: absolute;
+	height: 50%;
+	width: 100%;
+	text-align: center;
+	background-color: #f6f6f6;
+	border:1px solid #ccc;
+	border-right-width:0;
+	border-bottom-width:0;
+	font-size: 10px;
+	line-height: 1.2em;
+}
+span.step-wrapper>i:hover{
+	background-color: #edeff0;
+}
+span.step-wrapper>i.glyphicon-triangle-top{
+	top:0;
+	border-top-width:0;
+}
+span.step-wrapper>i.glyphicon-triangle-bottom{
+	top:50%;
+	z-index: 300;
+}
