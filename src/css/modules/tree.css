@@ -63,11 +63,18 @@ span.tree-joint-wrapper>*{
 	user-select:none;
 	-webkit-user-select:none;
 }
-span.tree-joint-wrapper>*:nth-child(1){
+
+/***
+** + 号
+***/
+.tree-deepest span.tree-joint-wrapper>*:nth-child(1){
 	margin-top:-6px;
-	margin-left:0;
+	margin-left:1px;
 }
-span.tree-joint-wrapper>*:nth-child(2){
+/***
+** - 号
+***/
+.tree-deepest span.tree-joint-wrapper>*:nth-child(2){
 	margin-top:-6px;
 	margin-left:2px;
 	display: none;
