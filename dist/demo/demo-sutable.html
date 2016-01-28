@@ -8,9 +8,9 @@
     <meta content="black" name="apple-mobile-web-app-status-bar-style" />
     <meta name="format-detection" content="telephone=yes" />
     <meta content="false" name="twcClient" id="twcClient" />
-    <link href="../lib/bootstrap/dist/css/bootstrap.min.css" type="text/css" rel="stylesheet">
-     <link href="../src/css/pages/body.css" rel="stylesheet" type="text/css">
-    <link href="../src/css/pages/nxdc.css" rel="stylesheet" type="text/css">
+       <link href="../lib/bootstrap/dist/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+     <link href=../com/css/body.min.css rel="stylesheet" type="text/css"> 
+    <link href=../com/css/nxdc.min.css rel="stylesheet" type="text/css">
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
@@ -18,12 +18,16 @@
     <title>NDP media web ui lib</title>
 </head>
 <body>
-  <div class="container-fluid ndp-ui-header"></div> 
-	<div class="container ndp-ui-main" style="margin-top:200px;">
-		<button type="button" class="btn btn-primary" data-content="你还， 你是谁啊？">显示alert1</button>
-		<button type="button" class="btn btn-warning">显示alert2 icon</button>
-		<button type="button" class="btn btn-danger">显示alert2 custom  type 2</button>
-	</div>	   	 	   	  	   	 	   	  
-  <script src="../lib/requirejs/require.js" data-main="../src/js/demo-alert"></script> 
+  <div class="container-fluid ndp-ui-header"></div>
+  <div class="container-fluid ndp-ui-kitchen">
+      <div class="container">
+          <h1 class="com-title">COMPONENTS</h1>
+          <p class="com-desc">NDP MEDIA UI Components Library</p>
+      </div>
+  </div>
+  <div class="container ndp-ui-main">
+  	<div class="ndp-sutable-wrapper"></div>
+  </div>
+  <script src='../lib/require.js' data-main='./js/demo-sutable'></script>
 </body>
 </html>

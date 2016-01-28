@@ -1,6 +1,7 @@
 ;(function ($,win) { //start with a [;] because if our code is combine or minification  with other code,AND other code not terminated with [;] then it will not infect ours.
     var self = this;
 	var defaults = {
+		type:1,//2, 1 正常alert 2 异形alert, 不包含头和尾部，点击空白处，无法消失
 		title:"",
 		content:"这里填写你想要展示的提示内容！~~",// 可以使文字，也可以是html
 		btnOK:"OK",
@@ -47,7 +48,11 @@
 				body.find(".content-title").html(cfg.title);
 			}
 			if(cfg.content){
-				content.find(".content-itself").html(cfg.content);
+				if(typeof(cfg.content)=="function"){
+					cfg.content(content.find(".content-itself"));
+				}else{
+					content.find(".content-itself").html(cfg.content);
+				}
 			}
 			if(cfg.btnOK){
 				footer.find("button.btn").text(cfg.btnOK).attr("value",cfg.btnOK);
@@ -56,7 +61,18 @@
 				if(cfg.callback && typeof(cfg.callback)) cfg.callback(wrapper); 
 			})
 			
-			wrapper.modal();//显示alert
+			if(cfg.type==2){
+				header.remove();
+				footer.remove();
+				wrapper.unbind("click").click(function(e){
+					e.preventDefault();
+					e.stopImmediatePropagation();
+				});
+			}else{
+				wrapper.unbind("click");
+			}
+			
+			return wrapper.modal();//显示alert
 		}
 		
 		

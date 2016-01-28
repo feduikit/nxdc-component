@@ -227,7 +227,6 @@
 				hwd2 = 	that.find("div.item[index="+(next)+"]");
 				scale(hwd2.attr("w"),hwd2.attr("h"));	
 				hwd2.addClass("active").siblings().removeClass("active");
-				console.log(next+ " : " + len);
 				if(next >= len-1){
 				   	rightBtn.addClass("hidden");
 				  }

@@ -104,7 +104,7 @@
 		/***
 		**
 		***/
-		$(".content-part>i.glyphicon-menu-up").click(function(e){
+		_this.elem.find(".content-part>i.glyphicon-menu-up").click(function(e){
 			e.stopImmediatePropagation();
 			var li =  $(this).parent().parent();
 			li.children("ul").toggleClass("hidden");
@@ -162,7 +162,7 @@
 		the.toggleClass("menu-mini-mode hidden");
 		this.elem.find("li:has(li.active)>.content-part");
 		if(this.elem.hasClass("mini-state")){//mini模式
-			$("li[deep='1']:has(ul)").unbind("mouseenter").mouseenter(function(){
+			this.elem.find("li[deep='1']:has(ul)").unbind("mouseenter").mouseenter(function(){
 				var wh = window.innerHeight;
 				var face = $(this).find("ul:has(li[deep='2'])");
 				$(this).addClass("active");
@@ -175,13 +175,13 @@
 					face.removeClass("align-bottom");
 				}
 			});
-			$("li[deep='1']:has(ul)").unbind("mouseleave").mouseleave(function(){
+			this.elem.find("li[deep='1']:has(ul)").unbind("mouseleave").mouseleave(function(){
 				$(this).removeClass("active");
 				$(this).children("ul:has(li[deep='2'])").addClass("hidden");
 			});			
 		}else{
-			$("li[deep='1']:has(ul)").unbind("mouseenter");
-			$("li[deep='1']:has(ul)").unbind("mouseleave");
+			this.elem.find("li[deep='1']:has(ul)").unbind("mouseenter");
+			this.elem.find("li[deep='1']:has(ul)").unbind("mouseleave");
 		}	
 	}
     /**
