@@ -376,6 +376,8 @@
 		this.toolbar = function(bool){
 			treable.toolbar.toggleClass("active",bool);
 		}
+		
+		this.resize = treable.allocate;
     }
 	
 	
