@@ -6,6 +6,7 @@ require.config({
 		
 		'utils':'./Compatibility/utils',
 		
+		'tabs':'./components/tabs',
 		'alert':'./components/alert',
 		'confirm':'./components/confirm',
 		'prompt':'./components/prompt',
@@ -13,7 +14,8 @@ require.config({
 		'search':'./components/search',
 		'gallery':'./components/gallery',
 		'progressbar':'./components/progressbar',
-		'drop2':'./components/drop2'
+		'drop2':'./components/drop2',
+		'treable':'./components/treable'
     },
     shim:{
 		bootstrap:{
@@ -36,6 +38,9 @@ require.config({
 		},
 		gallery:{
 			deps:['bootstrap']
+		},
+		treable:{
+			deps:['bootstrap','tabs']
 		}
     }
 });

@@ -162,7 +162,7 @@
 }
 .sutable-header .sutable-col:nth-child(n+3){
 	line-height: 40px;
-	width: 95px;
+	min-width: 50px;
 }
 
 .sutable-body .sutable-col{
@@ -170,7 +170,7 @@
 }
 
 .sutable-row .sutable-col-name,.sutable-header .sutable-col-name{
-	min-width: 150px!important;
+	min-width: 100px!important;
 /*	width: 15%;*/
 }
 /*
