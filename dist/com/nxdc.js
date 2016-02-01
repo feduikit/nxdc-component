@@ -3101,6 +3101,10 @@ if (!Object.keys) Object.keys = function(o) {
 		
 		_this.elem.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
 		_this.scroll.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
+		
+		_this.elem.find(".sutable-col-status>.switcher").click(function(e){
+			e.stopImmediatePropagation();
+		});
 		/***
 		**状态的打开/关闭
 		***/
@@ -3109,7 +3113,7 @@ if (!Object.keys) Object.keys = function(o) {
 			var the = $(this).parent();
 			the.toggleClass("active");
 			if(!the.hasClass("active")){
-				var fa = $(this).parent().parent().parent().parent().parent();
+				var fa = $(this).parents(".sutable-item:first");
 				fa.find("ul .switcher>label").removeClass("active");
 			}
 			fireEvent(_this.elem.get(0),"STATUS_CHANGE",{status:the.hasClass("active")});
@@ -3206,6 +3210,7 @@ if (!Object.keys) Object.keys = function(o) {
 		
 		//测试用  tabs 图表层 展开/隐藏
 		_this.elem.find(".sutable-row-wrapper>.sutable-row").click(function(e){
+			e.stopImmediatePropagation();
 			if(!$(this).hasClass("focus")){
 				_this.elem.find(".sutable-row-wrapper>.sutable-row.focus").removeClass("focus");
 				$(this).addClass("focus");

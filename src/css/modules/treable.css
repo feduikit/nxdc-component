@@ -285,7 +285,7 @@
 }
 .sutable-row .sutable-col:nth-child(n+3){
 	line-height: 40px;
-	min-width: 40px;
+	min-width: 60px;
 	width:inherit;
 }
 /***
@@ -297,7 +297,7 @@
 	height: 100%;
 	width: 12px;
 	top:0;
-	margin-left: 5px;
+	margin-left: 4px;
 	cursor: pointer;
 	overflow: hidden;
 }
@@ -337,6 +337,7 @@
 	display: inline-block;
 	width: 5px;
 	height: 70%;
+	z-index: 20;
 	top:15%;
 	right: 0px;
 	overflow: visible;
