@@ -18,15 +18,31 @@
 	height: 0;
 	width: 100%;
 	top:0;
-	left: 0;
+	left: 0;tool
 	background-color: #878787;
 	overflow: hidden;
-	transition: height 0.3s ease-in-out;
+/*
+	-moz-transition: height 0.3s ease-in-out;
+	-webkit-transition: height 0.3s ease-in-out;
+*/
+	transition: height 0.3s ease-in-out ;
+}
+.extend .sutable-toolbar{
+	width: 400%;
+}
+
+.sutable-toolbar>*{
+	opacity:0;
 }
 .sutable-toolbar.active{
 	height: 40px;
 	color:white;
 	line-height: 38px;
+	background-color: #878787;
+/*	transition: "opacity" 0.3s ease-in-out*/
+}
+.sutable-toolbar.active>*{
+	opacity:1;
 }
 .sutable-toolbar .btn{
 	border:1px solid #fff;
@@ -49,6 +65,7 @@
 ***/
 .sutable-header{
 	position: relative;
+	min-width: 100%;
 	width: 400%;
     white-space: nowrap;
 	margin: 0;
@@ -82,18 +99,18 @@
 /***
 ** 横向滚动条
 ***/
-.vertical-scroll{
+.horiz-scroll{
 	position: fixed;
 	z-index: 200;
 	width: calc(100% - 15px - 15px - 200px - 6px);
 	bottom: 0;
 	background-color: white;
 }
-.vertical-scroll.show{
+.horiz-scroll.show{
 	height: 14px;
 	padding-top:2.8px;
 }
-.vertical-scroll.show .vertical-thumb{
+.horiz-scroll.show .horiz-thumb{
 	position: relative;
 	z-index: 100;
 	width: 99%;
@@ -108,9 +125,13 @@
 }
 
 
-.sutable-body{
+.treable-body{
+	position: relative;
 	min-height: calc(100% - 40px);
 	width: 100%;
+}
+.extend .treable-body{
+	width:400%;
 }
 
 /***
@@ -152,11 +173,11 @@
 /***
 ** 显示图表界面
 ***/
-.sutable-body .sutable-row.focus{
+.treable-body .sutable-row.focus{
 	background-color: rgba(80, 80, 80, 0.8);
 	color:white;
 }
-.sutable-body .sutable-row.focus:hover{
+.treable-body .sutable-row.focus:hover{
 	background-color: rgba(80, 80, 80, 0.8);
 }
 
@@ -192,28 +213,28 @@
 	opacity: 1;
 }
 
-.sutable-body li.sutable-item{
+.treable-body li.sutable-item{
 	position: relative;
 	height: auto;
 	transition: height 0.4s ease-in-out;
 }
 
-.sutable-body .sutable-row{
+.treable-body .sutable-row{
 	position: relative;
 	height: 42px;
 	background-color: #f4f4f4;
 	border:1px solid transparent;
 }
 
-.sutable-body .sutable-row{
+.treable-body .sutable-row{
 	border-bottom: 1px solid #dbdbdb;
 }
 
-.sutable-body>li>.sutable-row:nth-last-child(1){
+.treable-body>li>.sutable-row:nth-last-child(1){
 	border-bottom: 1px solid transparent;
 }
 
-.sutable-body .sutable-row:hover{
+.treable-body .sutable-row:hover{
 	background-color: #f6f6f6;
 }
 
@@ -316,7 +337,7 @@
 }
 
 
-.sutable-body .sutable-col{
+.treable-body .sutable-col{
 	line-height: 42px;
 }
 

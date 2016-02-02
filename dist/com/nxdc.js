@@ -2998,11 +2998,11 @@ if (!Object.keys) Object.keys = function(o) {
 		var gap = arguments[4]||5;
 		deep++;
 		var rec = arguments.callee;
-		var ul = $("<ul />");
+		var ul = $("<ul role='table' />");
 		if(deep>1){
 			ul.addClass("sub-layer");
 		}else{
-			ul.addClass("sutable-body");
+			ul.addClass("treable-body");
 		}
 		for(var i=0;i<arr.length;i++){
 			var o = arr[i];
@@ -3011,11 +3011,7 @@ if (!Object.keys) Object.keys = function(o) {
 			var li = $("<li class='sutable-item'  deep="+deep+" />");
 			var wrapper = $('<div class="sutable-row-wrapper">');
 			var row = $('<div class="sutable-row" deep='+deep+'></div>');
-//			var chart = '<ul class="nav nav-tabs nav-tabs-cus">\
-//			<li role="presentation" value="hello" index="0" class="active"><a href="#">图表1</a></li>\
-//			<li role="presentation" value="world" index="1"><a href="#">图表2</a></li>\
-//			<li role="presentation" value="china" index="2"><a href="#">图表3</a></li></ul>';	
-			var chart = $('<div class="ndp-tab-wrapper" deep='+deep+' index='+i+'></div>');
+			var chart = $('<div class="ndp-tab-wrapper" deep='+deep+' index='+i+' role="table" ></div>');
 			chart.tabs({list:["堆积图","趋势图","线状图"]});
 			wrapper.append(row).append(chart);
 			cols.forEach(function(col,idx){
@@ -3068,15 +3064,24 @@ if (!Object.keys) Object.keys = function(o) {
 	***/
 	Treable.prototype.scrollV = function(){
 		var _this = this;
+		var sdim = _this.scroll.get(0).getBoundingClientRect();//上下左右
+		var thumb = _this.scroll.find(".horiz-thumb");
+		var tdim = thumb.get(0).getBoundingClientRect();
 		var w = this.elem.width();
 		var colW = 40 + 12;//40 margin-left:40    12 border-right
 		this.head.find(".sutable-col[col]").each(function(idx,item){
 			colW += $(item).width();
 		});
+		if(tdim.left<sdim.left){
+			thumb.css("left",sdim.left+"px");
+		}else if(tdim.right>sdim.right){
+			thumb.css("left",(sdim.right-sdim.width)+"px");
+		}
 		_this.foot.toggleClass("repos",colW>w?true:false);
 		_this.scroll.toggleClass("show",colW>w?true:false).css("width",w+"px");
+		_this.elem.toggleClass("extend",colW>w?true:false)
 		if(colW>w){
-			_this.scroll.find(".vertical-thumb").css("width",(w/colW)*100+"%");	
+			thumb.css("width",(w/colW)*100+"%");	
 		}
 		
 	};
@@ -3174,37 +3179,52 @@ if (!Object.keys) Object.keys = function(o) {
 		
 		
 		/*****
-		** 横向滚动条拖动
+		** 横向滚动条拖动  thumb 拖动
 		****/ 
-		_this.scroll.find(".vertical-thumb").unbind("mousedown").mousedown(function(e){
-			e.stopImmediatePropagation();
-			var  $this = $(this);
-			var nlf = $this.get(0).getBoundingClientRect().left;
-			console.log(nlf);
-			var el = _this.elem.get(0).getBoundingClientRect();
-			var begin = e.clientX;
+		_this.scroll.find(".horiz-thumb").unbind("mousedown").mousedown(function(e){
+//			e.stopImmediatePropagation();
+			var thumb = $(this);
+			var sdim = _this.scroll.get(0).getBoundingClientRect();
+			var start = e.clientX;
 			_this.scroll.unbind("mousemove").mousemove(function(e){
 				e.stopImmediatePropagation();
-				var x = e.clientX - begin;
-				var dim = $this.get(0).getBoundingClientRect();
-				if(x>=0 && dim.right<=el.right){
-					_this.scroll.find(".vertical-thumb").css("left",x+"px");
-				}else if(x<0 && dim.left>=el.left){
-					
-					var lf = nlf + x;
-					console.log(x + " :" + lf);
-					_this.scroll.find(".vertical-thumb").css("left",lf+"px");
-				}
+				var tdim = thumb.get(0).getBoundingClientRect();
+				var end  = e.clientX;
+				var m = end - start;
+				start = end;
+				thumb.css("left",(tdim.left - sdim.left +m)+"px");
+				/***
+				** 超出边界的控制
+				***/
+				if(tdim.left<sdim.left){
+					thumb.css("left",0);
+				}else if(tdim.right>sdim.right){
+					thumb.css("left",(sdim.right-tdim.width - sdim.left)+"px");
+				}				
+				
+				var w = tdim.left - sdim.left; if(w<0) w = 0;
+				
+				_this.elem.children("[role=table]").css("left",-w+"px");
 			});
 		});
 		
 		_this.scroll.mouseleave(function(e){
 			_this.scroll.unbind("mousemove");
+			var lf = _this.scroll.find(".horiz-thumb").css("left");
+			_this.scroll.find(".horiz-thumb").css("left",lf+"px");
 		});
 		
 		_this.scroll.mouseup(function(e){
 			_this.scroll.unbind("mousemove");
-			
+			var thumb = $(this).children(":first");
+			var dim1 = $(this).get(0).getBoundingClientRect();
+			var dim2 = thumb.get(0).getBoundingClientRect();
+			if(dim2.right>=dim1.right){
+				var l = (dim1.right - dim2.width) - dim1.left;
+				thumb.css("left",l+"px");
+			}else if(dim2.left<=dim1.left){
+				thumb.css("left",0);
+			}
 		});
 		
 		
@@ -3215,8 +3235,6 @@ if (!Object.keys) Object.keys = function(o) {
 				_this.elem.find(".sutable-row-wrapper>.sutable-row.focus").removeClass("focus");
 				$(this).addClass("focus");
 			}
-			
-			//$(this).siblings(".ndp-tab-wrapper").toggleClass("open");
 		});
 		
 		_this.elem.find("#chart").click(function(e){
@@ -3246,13 +3264,13 @@ if (!Object.keys) Object.keys = function(o) {
 	**/
 	Treable.prototype.concrate = function(){
 		var _this = this;
-		this.toolbar = $("<div class='sutable-toolbar' />");
+		this.toolbar = $("<div class='sutable-toolbar' role='table' />");
 		var html = "<button class='btn btn-default' id='price'>调整预算出价<button>";
 		html+="<button class='btn btn-default' id='edit'>编辑</button>";
 		html+="<button class='btn btn-default' id='chart'>看图表</button>";
 		this.toolbar.html(html);
 		
-		this.head = $("<ul class='sutable-header'/>").html('<li class=" sutable-row"></li>');
+		this.head = $("<ul class='sutable-header' role='table' />").html('<li class=" sutable-row"></li>');
 		this.elem.append("<span class='split-line'></span>");
 		this.elem.append(this.toolbar).append(this.head);
 	};
@@ -3287,7 +3305,7 @@ if (!Object.keys) Object.keys = function(o) {
 			}
 		}
 		
-		_this.scroll = $("<div class='vertical-scroll' />").html("<div class='vertical-thumb' />");
+		_this.scroll = $("<div class='horiz-scroll' />").html("<div class='horiz-thumb' />");
 		_this.elem.append(_this.scroll);	
 		
 		
@@ -3363,6 +3381,8 @@ if (!Object.keys) Object.keys = function(o) {
 		this.toolbar = function(bool){
 			treable.toolbar.toggleClass("active",bool);
 		}
+		
+		this.resize = treable.allocate;
     }
 	
 	
