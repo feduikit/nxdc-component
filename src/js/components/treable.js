@@ -345,6 +345,7 @@
 	** 宽度发生变化
 	***/
 	Treable.prototype.allocate = function(w){
+		var w = w||this.elem.width();
 		var dom = this.elem
 		var cfg = this.config;
 		var rw  = w - 100 - 100 - 40;//100 第一列的宽度， 100 名称咧的宽度,40 : margin-left
@@ -395,7 +396,12 @@
 			treable.toolbar.toggleClass("active",bool);
 		}
 		
-		this.resize = treable.allocate;
+		/***
+		** 外部调用这里 resize 宽度
+		***/
+		this.resize = function(w){
+			treable.allocate(w);
+		}
     }
 	
 	
