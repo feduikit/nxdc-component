@@ -3009,8 +3009,8 @@ if (!Object.keys) Object.keys = function(o) {
 			var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group;
 			var cols = o[cfg.textKey]||o.text||o.label||o.title||o.name;
 			var li = $("<li class='sutable-item'  deep="+deep+" />");
-			var wrapper = $('<div class="sutable-row-wrapper">');
-			var row = $('<div class="sutable-row" deep='+deep+'></div>');
+			var wrapper = $('<div class="treable-row-wrapper">');
+			var row = $('<div class="treable-row" deep='+deep+'></div>');
 			var chart = $('<div class="ndp-tab-wrapper" deep='+deep+' index='+i+' role="table" ></div>');
 			chart.tabs({list:["堆积图","趋势图","线状图"]});
 			wrapper.append(row).append(chart);
@@ -3094,8 +3094,12 @@ if (!Object.keys) Object.keys = function(o) {
 		this.initConfig();
 		
 		
+		
+				
+		_this.elem.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
+		_this.scroll.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
 		/***
-		**事件  收起/展开按钮
+		**事件  收起/展开按钮  树桩菜单的 展开/收起
 		**/
 		_this.elem.find("span.btn-plus-minus").click(function(e){
 			e.stopImmediatePropagation();
@@ -3103,9 +3107,6 @@ if (!Object.keys) Object.keys = function(o) {
 			the.toggleClass("open");
 			the.find("li.sutable-item").toggleClass("open",the.hasClass("open"));
 		});
-		
-		_this.elem.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
-		_this.scroll.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
 		
 		_this.elem.find(".sutable-col-status>.switcher").click(function(e){
 			e.stopImmediatePropagation();
@@ -3227,18 +3228,65 @@ if (!Object.keys) Object.keys = function(o) {
 			}
 		});
 		
+		/***
+		** 点击滚动条空白处
+		***/
+		_this.scroll.unbind("click").click(function(e){
+			e.stopImmediatePropagation();
+			var thumb = $(this).find(".horiz-thumb");
+			var tdim = thumb.get(0).getBoundingClientRect();
+			var sdim = $(this).get(0).getBoundingClientRect();
+
+			if(e.clientX>=tdim.left){
+				thumb.css("left",(tdim.left - sdim.left + 20)+"px");
+			}else{
+				thumb.css("left",(tdim.left - sdim.left - 20)+"px");
+			}
+			/***
+			** 超出边界的控制
+			***/
+			if(tdim.left<sdim.left){
+				thumb.css("left",0);
+			}else if(tdim.right>sdim.right){
+				thumb.css("left",(sdim.right-tdim.width - sdim.left)+"px");
+			}				
+
+			var w = tdim.left - sdim.left; if(w<0) w = 0;
+			_this.elem.children("[role=table]").css("left",-w+"px");
+		});		
+		
+		
 		
 		//测试用  tabs 图表层 展开/隐藏
-		_this.elem.find(".sutable-row-wrapper>.sutable-row").click(function(e){
+		_this.elem.find(".treable-row-wrapper>.treable-row").click(function(e){
 			e.stopImmediatePropagation();
 			if(!$(this).hasClass("focus")){
-				_this.elem.find(".sutable-row-wrapper>.sutable-row.focus").removeClass("focus");
+				_this.elem.find(".treable-row-wrapper>.treable-row.focus").removeClass("focus");
 				$(this).addClass("focus");
+			}else{
+				$(this).removeClass("focus");
 			}
+			_this.toolbar.toggleClass("active",$(this).hasClass("focus"));
 		});
 		
+		/***
+		** 看图表 button 被点击 触发
+		***/
 		_this.elem.find("#chart").click(function(e){
-			_this.elem.find(".sutable-row-wrapper>.sutable-row.focus+.ndp-tab-wrapper").addClass("open");
+			_this.elem.find(".treable-row-wrapper>.treable-row.focus+.ndp-tab-wrapper").addClass("open");
+			_this.elem.find(".treable-row-wrapper>.treable-row:not(.focus)+.ndp-tab-wrapper.open").removeClass("open");//关闭其他的
+		});
+		
+		/***
+		** 点击工具栏按钮，发出事件。
+		***/		
+		$(".sutable-toolbar").click(function(e){
+			var ta = e.target;
+			var id = ta.getAttribute("id");
+			var val = ta.getAttribute("val");
+			if(id && val){
+				fireEvent(ta,"TOOLBAR_CLICK",{id:id,val:val});
+			}
 		});
 		
 		
@@ -3249,7 +3297,7 @@ if (!Object.keys) Object.keys = function(o) {
 		
 	
 		//组件构建完成
-		_this.elem.trigger("MISSION_COMPLETE");
+		this.elem.trigger("MISSION_COMPLETE");
     };
 
 	
@@ -3265,12 +3313,7 @@ if (!Object.keys) Object.keys = function(o) {
 	Treable.prototype.concrate = function(){
 		var _this = this;
 		this.toolbar = $("<div class='sutable-toolbar' role='table' />");
-		var html = "<button class='btn btn-default' id='price'>调整预算出价<button>";
-		html+="<button class='btn btn-default' id='edit'>编辑</button>";
-		html+="<button class='btn btn-default' id='chart'>看图表</button>";
-		this.toolbar.html(html);
-		
-		this.head = $("<ul class='sutable-header' role='table' />").html('<li class=" sutable-row"></li>');
+		this.head = $("<ul class='sutable-header' role='table' />").html('<li class=" treable-row"></li>');
 		this.elem.append("<span class='split-line'></span>");
 		this.elem.append(this.toolbar).append(this.head);
 	};
@@ -3278,6 +3321,19 @@ if (!Object.keys) Object.keys = function(o) {
     Treable.prototype.initConfig = function(){
         var _this = this;
 		var cfg = this.config;
+		if(cfg.todata){
+			if(cfg.todata instanceof Array){
+				var html = '';
+				cfg.todata.forEach(function(item,index){
+					var val = item.text||item.name||item.label;
+					html+="<button class='btn btn-default' id="+item.id+" val="+val+" >"+val+"</button>";
+				});
+				this.toolbar.html(html);
+			}else if(typeof(cfg.todata) == "function"){
+				cfg.todata(_this.toolbar);
+			}
+		}
+		
 		if(cfg.data){
 			if(cfg.data.head){
 				cfg.data.head.forEach(function(item,index){
@@ -3293,7 +3349,7 @@ if (!Object.keys) Object.keys = function(o) {
 						col.text(item);
 					}
 					col.append("<span class='inspliter'></span>");
-					_this.head.find(".sutable-row").append(col);
+					_this.head.find(".treable-row").append(col);
 				});
 			} 
 			if(cfg.data.body){
@@ -3379,6 +3435,7 @@ if (!Object.keys) Object.keys = function(o) {
             
         };
 		
+		//不能使用直接 == treable.toolbar的方式，因为，传入的 this 变了
 		this.toolbar = function(bool){
 			treable.toolbar.toggleClass("active",bool);
 		}
@@ -3388,6 +3445,15 @@ if (!Object.keys) Object.keys = function(o) {
 		***/
 		this.resize = function(w){
 			treable.allocate(w);
+		};
+		
+		/***
+		**外部调用，折叠展开树桩菜单
+		**@param {Boolean} bool  true:折叠，false展开
+		**/
+		this.fold = function(bool){
+			var rows = treable.elem.find(".treable-body>.sutable-item");
+			rows.toggleClass("open");
 		}
     }
 	
@@ -3405,7 +3471,8 @@ if (!Object.keys) Object.keys = function(o) {
 	**/
 	$.fn.treable.defaults = {
 		data:null,
-		sort:null
+		sort:null,
+		todata:null// toolbar 显示的数据 [{name:'',id:''},{name:'',id:''},{}], function 或者数据
 	};
 }(jQuery));
 

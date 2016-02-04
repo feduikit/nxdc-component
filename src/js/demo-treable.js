@@ -32,10 +32,16 @@ require(['./config'],function(){
 						 ],
 					tail:[{},{}]
 				},
-				sort:[3,5,7,9]//base from 0 
+				sort:[3,5,7,9],//base from 0 
+				todata:[{name:"调整预算出价",id:"price"},{name:"编辑",id:"edit"},{name:"看图表",id:"chart"}]//工具条上的按钮
 			}).on("MISSION_COMPLETE",function(e){
 				console.log("hello world");	
 			}).on("SORT_CLICK",function(e){
+				var evt = e.originalEvent;
+				console.log(evt.data);
+			}).on("TOOLBAR_CLICK",function(e){
+				console.log(e.originalEvent.data);
+			}).on("STATUS_CHANGE",function(e){
 				var evt = e.originalEvent;
 				console.log(evt.data);
 			});
@@ -44,6 +50,11 @@ require(['./config'],function(){
 				bool = !bool;
 				tre.toolbar(bool);
 			});
+			
+			$("#info").click(function(){
+//				bool = !bool;
+				tre.fold();
+			});			
         });
     });
 });
