@@ -16,6 +16,7 @@
 			ul.addClass("sub-layer");
 		}else{
 			ul.addClass("treable-body");
+			var root = fa;
 		}
 		for(var i=0;i<arr.length;i++){
 			var o = arr[i];
@@ -35,6 +36,9 @@
 				<label class = "active" ><input type = "checkbox" class = "scheckbox"> </label></span>';
 
 				var column = $('<span class="sutable-col" col='+idx+' />');
+				if(cfg.colDims&&cfg.colDims.length){
+					column.css("width",cfg.colDims[idx]+"px");
+				}
 				if(idx==0) {
 					column.addClass("sutable-col-status");
 					column.html(switcher);
@@ -161,7 +165,7 @@
 		
 		
 		/***
-		**鼠标按下
+		**鼠标按下 列缩放
 		***/
 		_this.elem.find("span.inspliter").mousedown(function(e){
 			var column = $(this).parent();
@@ -179,12 +183,13 @@
 				var w = e.clientX - column.get(0).getBoundingClientRect().left;
 				$(this).find(".split-line").css("left",end+"px");
 				if(start<end){//拉大
-						theCol.css("width",(w) + "px");
+						theCol.css("width",(w) + "px");				
 				}else{//缩小
 					var d = (parseInt(c)+1);
 					var next = $(".sutable-col[col="+d+"]");
-					theCol.css("width",w + "px");					
+					theCol.css("width",w + "px");
 				}
+				_this.config.colDims[c] = w;
 			});
 		});
 		/***
@@ -362,32 +367,32 @@
 				cfg.todata(_this.toolbar);
 			}
 		}
-		
-		if(cfg.data){
-			if(cfg.data.head){
-				cfg.data.head.forEach(function(item,index){
-					var col = $("<span class='sutable-col' col="+index+" />");
-					if(index==0) {
-						col.addClass("sutable-col-status");
-					}else if(index==1){
-						col.addClass("sutable-col-name");
-					}
-					if(typeof(item)=="object"){
-						col.text(item.label||item.text||item.name);
-					}else{
-						col.text(item);
-					}
-					col.append("<span class='inspliter'></span>");
-					_this.head.find(".treable-row").append(col);
-				});
-			} 
-			if(cfg.data.body){
-				Help.recursive(_this.elem,cfg.data.body,cfg);
-			}			
-			if(cfg.data.tail){
-				_this.foot = $("<ul class='sutable-footer'  />");
-				_this.elem.append(_this.foot);
-			}
+		//构建列表头部
+		if(cfg.head){
+			cfg.head.forEach(function(item,index){
+				var col = $("<span class='sutable-col' col="+index+" />");
+				if(index==0) {
+					col.addClass("sutable-col-status");
+				}else if(index==1){
+					col.addClass("sutable-col-name");
+				}
+				if(typeof(item)=="object"){
+					col.text(item.label||item.text||item.name);
+				}else{
+					col.text(item);
+				}
+				col.append("<span class='inspliter'></span>");
+				_this.head.find(".treable-row").append(col);
+			});
+		}
+		//构建列表内容
+		if(cfg.body){
+			Help.recursive(_this.elem,cfg.body,cfg);
+		}
+		//构建列表尾部
+		if(cfg.tail){
+			_this.foot = $("<ul class='sutable-footer'  />");
+			_this.elem.append(_this.foot);
 		}
 		
 		_this.scroll = $("<div class='horiz-scroll' />").html("<div class='horiz-thumb' />");
@@ -421,21 +426,20 @@
 		var dom = this.elem
 		var cfg = this.config;
 		var rw  = w - 100 - 100 - 40;//100 第一列的宽度， 100 名称咧的宽度,40 : margin-left
-		var ew = rw/(cfg.data.head.length - 2);
+		var ew = rw/(cfg.head.length - 2);
+		cfg.colDims = [100,100];//列宽度 存储 
 		if(ew>50){
-			dom.find(".sutable-col:gt(1)").css("width",ew+"px");//让他刚好
+			dom.find(".sutable-col:gt(1)").css("width",ew+"px").each(function(){
+				cfg.colDims.push(ew);
+			});
 		}else{
-			dom.find(".sutable-col:gt(2)").css("width",80+"px");//让他超出 ，无所谓
+			dom.find(".sutable-col:gt(2)").css("width",80+"px").each(function(){
+				cfg.colDims.push(ew);
+			});//让他超出 ，无所谓
 		}
 		this.foot.css("width",w+"px");//最下面的 
 		this.scroll.css("width",w+"px");//横向滚动条
 	};
-	/***
-	** 数据发生变化
-	***/
-	Treable.prototype.update = function(){
-		
-	}
 	
     /**
      * jquery 提供了一个objct 即 fn，which is a shotcut of jquery object prototype
@@ -484,6 +488,14 @@
 			var rows = treable.elem.find(".treable-body>.sutable-item");
 			rows.toggleClass("open");
 		}
+		
+		/***
+		** 更新列表
+		***/
+		this.update = function(data){
+			treable.elem.find(".treable-body").remove();
+			Help.recursive(treable.elem,data,treable.config);
+		}
     }
 	
 	
@@ -499,7 +511,9 @@
 	** outside accessible default setting
 	**/
 	$.fn.treable.defaults = {
-		data:null,
+		head:null,//列表头数据
+		body:null,//列表内容数据
+		tail:null,//列表尾部数据
 		caret:null,//展开，折叠的 图标是 默认是  +  - 号
 		sort:null,
 		todata:null// toolbar 显示的数据 [{name:'',id:''},{name:'',id:''},{}], function 或者数据
