@@ -24,9 +24,12 @@
 			var li = $("<li class='sutable-item'  deep="+deep+" />");
 			var wrapper = $('<div class="treable-row-wrapper">');
 			var row = $('<div class="treable-row" deep='+deep+'></div>');
+			var chartWrapper = $("<div class='chart-wrapper' />");//图表层
+			var chartClose = '<button type="button" class="close chart-close"><span aria-hidden="true">&times;</span></button>';//图标层关闭按钮
 			var chart = $('<div class="ndp-tab-wrapper" deep='+deep+' index='+i+' role="table" ></div>');
-			chart.tabs({list:["堆积图","趋势图","线状图"]});
-			wrapper.append(row).append(chart);
+			chart.tabs({list:["堆积图","趋势图","线状图"]});//图表层上面的 tabs 初始化
+			chartWrapper.append(chart).append(chartClose);//显示到层上
+			wrapper.append(row).append(chartWrapper);
 			cols.forEach(function(col,idx){
 				var switcher = '<span class="switcher">\
 				<label class = "active" ><input type = "checkbox" class = "scheckbox"> </label></span>';
@@ -50,10 +53,13 @@
 			});
 			
 			if(array && array instanceof Array){
-				var html = '<span class="btn-plus-minus">\
-  					    	<i class="line-hor"></i><i class="line-ver"></i>\
-  					    </span>';
-					li.append(html).append(wrapper).addClass("open");//row
+				var html = $('<span class="btn-plus-minus" />');
+				if(cfg.caret){
+					html.html(cfg.caret).addClass("custom-caret");
+				}else{
+					html.html('<i class="line-hor"></i><i class="line-ver"></i>');
+				}
+				li.append(html).append(wrapper).addClass("open");//row
 				rec(li,array,cfg,deep);
 			}else{
 				li.append(wrapper);//row
@@ -111,6 +117,16 @@
 				
 		_this.elem.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
 		_this.scroll.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
+		
+		
+		/***
+		** 关闭图表层
+		***/
+		_this.elem.find("button.close.chart-close").click(function(e){
+			e.stopImmediatePropagation();
+			$(this).parents(".chart-wrapper.open:first").removeClass("open");
+		});
+		
 		/***
 		**事件  收起/展开按钮  树桩菜单的 展开/收起
 		**/
@@ -286,8 +302,8 @@
 		** 看图表 button 被点击 触发
 		***/
 		_this.elem.find("#chart").click(function(e){
-			_this.elem.find(".treable-row-wrapper>.treable-row.focus+.ndp-tab-wrapper").addClass("open");
-			_this.elem.find(".treable-row-wrapper>.treable-row:not(.focus)+.ndp-tab-wrapper.open").removeClass("open");//关闭其他的
+			_this.elem.find(".treable-row-wrapper>.treable-row.focus+.chart-wrapper").addClass("open");
+			_this.elem.find(".treable-row-wrapper>.treable-row:not(.focus)+.chart-wrapper.open").removeClass("open");//关闭其他的
 		});
 		
 		/***
@@ -484,6 +500,7 @@
 	**/
 	$.fn.treable.defaults = {
 		data:null,
+		caret:null,//展开，折叠的 图标是 默认是  +  - 号
 		sort:null,
 		todata:null// toolbar 显示的数据 [{name:'',id:''},{name:'',id:''},{}], function 或者数据
 	};

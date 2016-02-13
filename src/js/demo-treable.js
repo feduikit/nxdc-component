@@ -3,6 +3,7 @@ require(['./config'],function(){
         require(['bootstrap','treable'],function(){
 			var bool = false;
 			var tre = $(".ndp-treable-wrapper").treable({
+//				caret:"<i class='glyphicon glyphicon-triangle-bottom'></i>",
 				data:{
 					head:[{label:"状态"},{label:"名称"},{label:"安装"},
 						  {label:"花费"},{label:"成本"},{label:"点击量"},

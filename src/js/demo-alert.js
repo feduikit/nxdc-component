@@ -18,7 +18,7 @@ require(['./config'],function(){
 				});
 			
 				$("button.btn-danger").click(function(){
-					showAlert({
+					var al = showAlert({
 						type:2,
 						content:function(ctx){
 							var desc = $("<div style='text-align:center;margin:20px 0;'>...注意同步中...</div>");
@@ -27,7 +27,17 @@ require(['./config'],function(){
 							ctx.append(desc).append(progress).css("height","100px");
 						}
 					});
+					
+					
+					window.setTimeout(function(){
+						var the = al.find(".progress>.progress-bar");
+						the.css("width","80%").text("80%");
+					},2000);					
+								
 				});
+			
+			
+			
         });
     });
 });
