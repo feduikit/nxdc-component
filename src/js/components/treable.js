@@ -108,25 +108,16 @@
 		}
 		
 	};
-	/**
-	**列表组件的初始化
-	**/
-    Treable.prototype.init = function () {
-        var _this = this;
-        this.concrate();//构建下来菜单的样子
-		this.initConfig();
-		
-		
-		
-				
-		_this.elem.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
-		_this.scroll.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
-		
-		
+	
+	/****
+	** body  row,col,caret 的监听
+	***/
+	Treable.prototype.listenBody = function(){
+		var _this = this;
 		/***
 		** 关闭图表层
 		***/
-		_this.elem.find("button.close.chart-close").click(function(e){
+		_this.elem.find("button.close.chart-close").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
 			$(this).parents(".chart-wrapper.open:first").removeClass("open");
 		});
@@ -134,7 +125,7 @@
 		/***
 		**事件  收起/展开按钮  树桩菜单的 展开/收起
 		**/
-		_this.elem.find("span.btn-plus-minus").click(function(e){
+		_this.elem.find("span.btn-plus-minus").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
 			var the = $(this).parents("li.sutable-item:first");
 			the.toggleClass("open");
@@ -147,7 +138,7 @@
 		/***
 		**状态的打开/关闭
 		***/
-		_this.elem.find(".sutable-col-status>.switcher>label>input").click(function(e){
+		_this.elem.find(".sutable-col-status>.switcher>label>input").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
 			var the = $(this).parent();
 			the.toggleClass("active");
@@ -158,12 +149,45 @@
 			fireEvent(_this.elem.get(0),"STATUS_CHANGE",{status:the.hasClass("active")});
 		});
 		
+		// 图表层 展开/隐藏
+		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("click").click(function(e){
+			e.stopImmediatePropagation();
+			if(!$(this).hasClass("focus")){
+				_this.elem.find(".treable-row-wrapper>.treable-row.focus").removeClass("focus");
+				$(this).addClass("focus");
+			}else{
+				$(this).removeClass("focus");
+			}
+			_this.toolbar.toggleClass("active",$(this).hasClass("focus"));
+		});
+		
+		/***
+		** 看图表 button 被点击 触发
+		***/
+		_this.elem.find("#chart").unbind("click").click(function(e){
+			_this.elem.find(".treable-row-wrapper>.treable-row.focus+.chart-wrapper").addClass("open");
+			_this.elem.find(".treable-row-wrapper>.treable-row:not(.focus)+.chart-wrapper.open").removeClass("open");//关闭其他的
+		});		
+	};
+	
+	/**
+	**列表组件的初始化
+	**/
+    Treable.prototype.init = function () {
+        var _this = this;
+        this.concrate();//构建下来菜单的样子
+		this.initConfig();
+				
+		_this.elem.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
+		_this.scroll.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
+		
+		/***
+		** 表头 某一列的排序按钮被点击
+		***/
 		_this.head.find(".sort-wrapper").click(function(e){
 			var fa = $(this).parent();
 			fireEvent(_this.elem.get(0),"SORT_CLICK",{col:fa.attr("col"),val:fa.text()});
-		});
-		
-		
+		});	
 		/***
 		**鼠标按下 列缩放
 		***/
@@ -289,28 +313,6 @@
 			_this.elem.children("[role=table]").css("left",-w+"px");
 		});		
 		
-		
-		
-		//测试用  tabs 图表层 展开/隐藏
-		_this.elem.find(".treable-row-wrapper>.treable-row").click(function(e){
-			e.stopImmediatePropagation();
-			if(!$(this).hasClass("focus")){
-				_this.elem.find(".treable-row-wrapper>.treable-row.focus").removeClass("focus");
-				$(this).addClass("focus");
-			}else{
-				$(this).removeClass("focus");
-			}
-			_this.toolbar.toggleClass("active",$(this).hasClass("focus"));
-		});
-		
-		/***
-		** 看图表 button 被点击 触发
-		***/
-		_this.elem.find("#chart").click(function(e){
-			_this.elem.find(".treable-row-wrapper>.treable-row.focus+.chart-wrapper").addClass("open");
-			_this.elem.find(".treable-row-wrapper>.treable-row:not(.focus)+.chart-wrapper.open").removeClass("open");//关闭其他的
-		});
-		
 		/***
 		** 点击工具栏按钮，发出事件。
 		***/		
@@ -323,6 +325,9 @@
 			}
 		});
 		
+		//body 里面的监听
+		_this.listenBody();
+		
 		
 		$(window).resize(function(e){
 			_this.config.wi = _this.elem.width();
@@ -334,13 +339,6 @@
 		this.elem.trigger("MISSION_COMPLETE");
     };
 
-	
-	/***
-	** 控制 chart 层的展现和隐藏
-	***/
-	Treable.prototype.chart = function(bool){
-		
-	}
 	/**
 	** 构建下来菜单样子
 	**/
@@ -495,6 +493,7 @@
 		this.update = function(data){
 			treable.elem.find(".treable-body").remove();
 			Help.recursive(treable.elem,data,treable.config);
+			treable.listenBody();
 		}
     }
 	
