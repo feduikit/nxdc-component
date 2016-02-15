@@ -345,11 +345,12 @@
 	margin-left: 4px;
 	cursor: pointer;
 	overflow: hidden;
+	padding-top:2px;
 }
 
 .sutable-header .sutable-col>.sort-wrapper>i{
 	display: block;
-	font-size: 8px;
+	font-size: 7px;
 	left: 0;
 }
 .sutable-col>.sort-wrapper>i:hover{
