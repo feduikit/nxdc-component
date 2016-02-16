@@ -1,5 +1,5 @@
 ;(function ($) {
-    var self = this;    
+    var self = this;
 	/***
 	** 处理树桩菜单
 	**/
@@ -21,10 +21,14 @@
 			ctx.append(icon);
 			var txt = $("<span class='txt-part' />");
 			ctx.append(txt);
-			if(typeof(o)=="object"){				
+			if(typeof(o)=="object"){
 				var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group||o.children;
 				var text = o[cfg.textKey]||o.text||o.label||o.title||o.name;
+				if(o.href){
+					text = '<a href="'+o.href+'">'+text+'</a>';
+				}
 				txt.html(text);
+
 				li.attr({"value":text,"deep":deep});
 				if(array && array instanceof Array){
 					if(cfg.foldicon){
@@ -48,7 +52,7 @@
 			ul.append(li);
 		}
 		fa.append(ul);
-	}	
+	}
 	/***
 	** 构造函数
 	**/
@@ -58,7 +62,7 @@
 		this.config = $.extend(true,{},$.fn.vList2.defaults,element.data(),options);
 		this.config.wi = this.elem.width();
 		this.init();
-		
+
     };
 	/**
 	**列表组件的初始化
@@ -69,7 +73,7 @@
         this.concrate();//构建下来菜单的样子
 		this.initConfig();
 
-		
+
 		/**
 		** 点击非叶子节点
 		**/
@@ -77,10 +81,10 @@
 			e.stopImmediatePropagation();
 
 		});
-		
+
 		/***
 		**点击叶子
-		**/	
+		**/
 		_this.elem.find("li.list-leaf").click(function(e){
 			e.stopImmediatePropagation();
 			_this.elem.find("li.list-leaf").removeClass("active");
@@ -100,7 +104,7 @@
 			}
 			$(this).trigger("item_click",{deep:deep,value:val});
 		});
-		
+
 		/***
 		**
 		***/
@@ -110,7 +114,7 @@
 			li.children("ul").toggleClass("hidden");
 			$(this).toggleClass("open-hide");
 		});
-		
+
 		_this.elem.on("webkitTransitionEnd oTransitionEnd otransitionend transitionend",function(e){
 			e.stopImmediatePropagation();
 			if($(this).hasClass("mini-state")){//shrink  缩起来
@@ -119,11 +123,11 @@
 				$(this).trigger("expand_complete");//展开事件
 			}
 		});
-		
-		
+
+
 		_this.elem.trigger("mission_complete");
     };
-	
+
 	/**
 	** 构建菜单样子
 	**/
@@ -138,19 +142,19 @@
     VList2.prototype.initConfig = function(){
         var _this = this;
 		var cfg = this.config;
-		
+
 		if(cfg.leaficon){
 			_this.elem.find("li.list-leaf>.list-txt-wrapper").prepend(cfg.leaficon).addClass("leaf-icon");
 		}else{
 			_this.elem.find("li.list-leaf>.list-txt-wrapper").removeClass("leaf-icon");
 		}
-		
+
 		if(cfg.foldicon){
 			var txt = _this.elem.find("li[asparent]").attr("value");
 			_this.elem.find("li[asparent]>.list-txt-wraper").prepend(cfg.foldicon);
 		}
 	}
-	
+
 	/***
 	** 组件变形调用
 	***/
@@ -178,11 +182,11 @@
 			this.elem.find("li[deep='1']:has(ul)").unbind("mouseleave").mouseleave(function(){
 				$(this).removeClass("active");
 				$(this).children("ul:has(li[deep='2'])").addClass("hidden");
-			});			
+			});
 		}else{
 			this.elem.find("li[deep='1']:has(ul)").unbind("mouseenter");
 			this.elem.find("li[deep='1']:has(ul)").unbind("mouseleave");
-		}	
+		}
 	}
     /**
 	* 入口
@@ -192,7 +196,7 @@
         var vList2 = new VList2(the, options);
 		the = $.extend(true,{},the,new exchange(vList2));
 		return the;
-    };	
+    };
     /***
     **和其他插件的交互
 	** factory Class
@@ -203,7 +207,7 @@
 			vList2.transform();
 		}
     }
-	
+
 	  var old = $.fn.vList2;
 	  $.fn.vList2.Constructor = VList2;
 	  // vList NO CONFLICT
@@ -211,7 +215,7 @@
 	  $.fn.vList2.noConflict = function () {
 		$.fn.vList2 = old;
 		return this;
-	  }	
+	  }
 	/***
 	** outside accessible default setting
 	**/
