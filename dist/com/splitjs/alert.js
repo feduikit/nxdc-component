@@ -57,13 +57,19 @@
 			if(cfg.btnOK){
 				footer.find("button.btn").text(cfg.btnOK).attr("value",cfg.btnOK);
 			}
+			/***
+			** 用户自定义内容
+			***/
 			wrapper.unbind("hide.bs.modal").on("hide.bs.modal",function(){
-				if(cfg.callback && typeof(cfg.callback)) cfg.callback(wrapper); 
+				if(cfg.callback && typeof(cfg.callback)=="function") cfg.callback(wrapper); 
 			})
 			
 			if(cfg.type==2){
 				header.remove();
 				footer.remove();
+				/****
+				** 点击空白处 无反应
+				***/
 				wrapper.unbind("click").click(function(e){
 					e.preventDefault();
 					e.stopImmediatePropagation();
@@ -72,9 +78,10 @@
 				wrapper.unbind("click");
 			}
 			
-			return wrapper.modal();//显示alert
+			
+			var the = $.extend(true,{},wrapper,wrapper.modal());
+			
+			return the;//显示alert
 		}
-		
-		
 	});
 }(jQuery,window));

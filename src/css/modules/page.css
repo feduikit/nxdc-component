@@ -78,12 +78,20 @@ span.page-choosed-text{
 	padding: 5px 0;
 	overflow: hidden;
 }
+.page-now{
+	position: relative;
+	display: inline-block;
+	min-width: 20px;
+	padding-right: 5px;
+	height: 100%;
+	line-height: 2.2em;
+}
 /***
 ** 下拉选择的
 **/
 span.page-drop-list{
 	position: relative;
-	display: inline-block;
+	display: block;
 	box-sizing: border-box;
 	border:1px solid transparent;
 	float: left;
@@ -118,8 +126,12 @@ span.page-drop-list>i.glyphicon-triangle-bottom{
 span.page-drop-list>i.glyphicon-triangle-bottom.turnback{
 	transform: rotate(180deg);
 }
+
+.page-now + ul.page-dropdown{
+	
+}
 ul.page-dropdown{
-	position: relative;
+	position: absolute;
 	box-sizing: border-box;
 	width: calc(100% + 2px);
 	left:-1px;

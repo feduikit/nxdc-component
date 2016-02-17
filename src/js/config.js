@@ -15,7 +15,8 @@ require.config({
 		'gallery':'./components/gallery',
 		'progressbar':'./components/progressbar',
 		'drop2':'./components/drop2',
-		'treable':'./components/treable'
+		'treable':'./components/treable',
+		'sutable':'./components/sutable'
     },
     shim:{
 		bootstrap:{
@@ -41,6 +42,9 @@ require.config({
 		},
 		treable:{
 			deps:['bootstrap','tabs']
-		}
+		},
+		sutable:{
+			deps:['bootstrap']
+		}		
     }
 });

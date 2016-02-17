@@ -16,6 +16,7 @@
 			ul.addClass("sub-layer");
 		}else{
 			ul.addClass("treable-body");
+			var root = fa;
 		}
 		for(var i=0;i<arr.length;i++){
 			var o = arr[i];
@@ -24,14 +25,20 @@
 			var li = $("<li class='sutable-item'  deep="+deep+" />");
 			var wrapper = $('<div class="treable-row-wrapper">');
 			var row = $('<div class="treable-row" deep='+deep+'></div>');
+			var chartWrapper = $("<div class='chart-wrapper' />");//图表层
+			var chartClose = '<button type="button" class="close chart-close"><span aria-hidden="true">&times;</span></button>';//图标层关闭按钮
 			var chart = $('<div class="ndp-tab-wrapper" deep='+deep+' index='+i+' role="table" ></div>');
-			chart.tabs({list:["堆积图","趋势图","线状图"]});
-			wrapper.append(row).append(chart);
+			chart.tabs({list:["堆积图","趋势图","线状图"]});//图表层上面的 tabs 初始化
+			chartWrapper.append(chart).append(chartClose);//显示到层上
+			wrapper.append(row).append(chartWrapper);
 			cols.forEach(function(col,idx){
 				var switcher = '<span class="switcher">\
 				<label class = "active" ><input type = "checkbox" class = "scheckbox"> </label></span>';
 
 				var column = $('<span class="sutable-col" col='+idx+' />');
+				if(cfg.colDims&&cfg.colDims.length){
+					column.css("width",cfg.colDims[idx]+"px");
+				}
 				if(idx==0) {
 					column.addClass("sutable-col-status");
 					column.html(switcher);
@@ -50,10 +57,13 @@
 			});
 			
 			if(array && array instanceof Array){
-				var html = '<span class="btn-plus-minus">\
-  					    	<i class="line-hor"></i><i class="line-ver"></i>\
-  					    </span>';
-					li.append(html).append(wrapper).addClass("open");//row
+				var html = $('<span class="btn-plus-minus" />');
+				if(cfg.caret){
+					html.html(cfg.caret).addClass("custom-caret");
+				}else{
+					html.html('<i class="line-hor"></i><i class="line-ver"></i>');
+				}
+				li.append(html).append(wrapper).addClass("open");//row
 				rec(li,array,cfg,deep);
 			}else{
 				li.append(wrapper);//row
@@ -98,23 +108,24 @@
 		}
 		
 	};
-	/**
-	**列表组件的初始化
-	**/
-    Treable.prototype.init = function () {
-        var _this = this;
-        this.concrate();//构建下来菜单的样子
-		this.initConfig();
+	
+	/****
+	** body  row,col,caret 的监听
+	***/
+	Treable.prototype.listenBody = function(){
+		var _this = this;
+		/***
+		** 关闭图表层
+		***/
+		_this.elem.find("button.close.chart-close").unbind("click").click(function(e){
+			e.stopImmediatePropagation();
+			$(this).parents(".chart-wrapper.open:first").removeClass("open");
+		});
 		
-		
-		
-				
-		_this.elem.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
-		_this.scroll.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
 		/***
 		**事件  收起/展开按钮  树桩菜单的 展开/收起
 		**/
-		_this.elem.find("span.btn-plus-minus").click(function(e){
+		_this.elem.find("span.btn-plus-minus").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
 			var the = $(this).parents("li.sutable-item:first");
 			the.toggleClass("open");
@@ -127,7 +138,7 @@
 		/***
 		**状态的打开/关闭
 		***/
-		_this.elem.find(".sutable-col-status>.switcher>label>input").click(function(e){
+		_this.elem.find(".sutable-col-status>.switcher>label>input").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
 			var the = $(this).parent();
 			the.toggleClass("active");
@@ -138,14 +149,47 @@
 			fireEvent(_this.elem.get(0),"STATUS_CHANGE",{status:the.hasClass("active")});
 		});
 		
+		// 图表层 展开/隐藏
+		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("click").click(function(e){
+			e.stopImmediatePropagation();
+			if(!$(this).hasClass("focus")){
+				_this.elem.find(".treable-row-wrapper>.treable-row.focus").removeClass("focus");
+				$(this).addClass("focus");
+			}else{
+				$(this).removeClass("focus");
+			}
+			_this.toolbar.toggleClass("active",$(this).hasClass("focus"));
+		});
+		
+		/***
+		** 看图表 button 被点击 触发
+		***/
+		_this.elem.find("#chart").unbind("click").click(function(e){
+			_this.elem.find(".treable-row-wrapper>.treable-row.focus+.chart-wrapper").addClass("open");
+			_this.elem.find(".treable-row-wrapper>.treable-row:not(.focus)+.chart-wrapper.open").removeClass("open");//关闭其他的
+		});		
+	};
+	
+	/**
+	**列表组件的初始化
+	**/
+    Treable.prototype.init = function () {
+        var _this = this;
+        this.concrate();//构建下来菜单的样子
+		this.initConfig();
+				
+		_this.elem.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
+		_this.scroll.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
+		
+		/***
+		** 表头 某一列的排序按钮被点击
+		***/
 		_this.head.find(".sort-wrapper").click(function(e){
 			var fa = $(this).parent();
 			fireEvent(_this.elem.get(0),"SORT_CLICK",{col:fa.attr("col"),val:fa.text()});
-		});
-		
-		
+		});	
 		/***
-		**鼠标按下
+		**鼠标按下 列缩放
 		***/
 		_this.elem.find("span.inspliter").mousedown(function(e){
 			var column = $(this).parent();
@@ -163,12 +207,13 @@
 				var w = e.clientX - column.get(0).getBoundingClientRect().left;
 				$(this).find(".split-line").css("left",end+"px");
 				if(start<end){//拉大
-						theCol.css("width",(w) + "px");
+						theCol.css("width",(w) + "px");				
 				}else{//缩小
 					var d = (parseInt(c)+1);
 					var next = $(".sutable-col[col="+d+"]");
-					theCol.css("width",w + "px");					
+					theCol.css("width",w + "px");
 				}
+				_this.config.colDims[c] = w;
 			});
 		});
 		/***
@@ -268,28 +313,6 @@
 			_this.elem.children("[role=table]").css("left",-w+"px");
 		});		
 		
-		
-		
-		//测试用  tabs 图表层 展开/隐藏
-		_this.elem.find(".treable-row-wrapper>.treable-row").click(function(e){
-			e.stopImmediatePropagation();
-			if(!$(this).hasClass("focus")){
-				_this.elem.find(".treable-row-wrapper>.treable-row.focus").removeClass("focus");
-				$(this).addClass("focus");
-			}else{
-				$(this).removeClass("focus");
-			}
-			_this.toolbar.toggleClass("active",$(this).hasClass("focus"));
-		});
-		
-		/***
-		** 看图表 button 被点击 触发
-		***/
-		_this.elem.find("#chart").click(function(e){
-			_this.elem.find(".treable-row-wrapper>.treable-row.focus+.ndp-tab-wrapper").addClass("open");
-			_this.elem.find(".treable-row-wrapper>.treable-row:not(.focus)+.ndp-tab-wrapper.open").removeClass("open");//关闭其他的
-		});
-		
 		/***
 		** 点击工具栏按钮，发出事件。
 		***/		
@@ -302,6 +325,9 @@
 			}
 		});
 		
+		//body 里面的监听
+		_this.listenBody();
+		
 		
 		$(window).resize(function(e){
 			_this.config.wi = _this.elem.width();
@@ -313,13 +339,6 @@
 		this.elem.trigger("MISSION_COMPLETE");
     };
 
-	
-	/***
-	** 控制 chart 层的展现和隐藏
-	***/
-	Treable.prototype.chart = function(bool){
-		
-	}
 	/**
 	** 构建下来菜单样子
 	**/
@@ -346,32 +365,32 @@
 				cfg.todata(_this.toolbar);
 			}
 		}
-		
-		if(cfg.data){
-			if(cfg.data.head){
-				cfg.data.head.forEach(function(item,index){
-					var col = $("<span class='sutable-col' col="+index+" />");
-					if(index==0) {
-						col.addClass("sutable-col-status");
-					}else if(index==1){
-						col.addClass("sutable-col-name");
-					}
-					if(typeof(item)=="object"){
-						col.text(item.label||item.text||item.name);
-					}else{
-						col.text(item);
-					}
-					col.append("<span class='inspliter'></span>");
-					_this.head.find(".treable-row").append(col);
-				});
-			} 
-			if(cfg.data.body){
-				Help.recursive(_this.elem,cfg.data.body,cfg);
-			}			
-			if(cfg.data.tail){
-				_this.foot = $("<ul class='sutable-footer'  />");
-				_this.elem.append(_this.foot);
-			}
+		//构建列表头部
+		if(cfg.head){
+			cfg.head.forEach(function(item,index){
+				var col = $("<span class='sutable-col' col="+index+" />");
+				if(index==0) {
+					col.addClass("sutable-col-status");
+				}else if(index==1){
+					col.addClass("sutable-col-name");
+				}
+				if(typeof(item)=="object"){
+					col.text(item.label||item.text||item.name);
+				}else{
+					col.text(item);
+				}
+				col.append("<span class='inspliter'></span>");
+				_this.head.find(".treable-row").append(col);
+			});
+		}
+		//构建列表内容
+		if(cfg.body){
+			Help.recursive(_this.elem,cfg.body,cfg);
+		}
+		//构建列表尾部
+		if(cfg.tail){
+			_this.foot = $("<ul class='sutable-footer'  />");
+			_this.elem.append(_this.foot);
 		}
 		
 		_this.scroll = $("<div class='horiz-scroll' />").html("<div class='horiz-thumb' />");
@@ -405,21 +424,20 @@
 		var dom = this.elem
 		var cfg = this.config;
 		var rw  = w - 100 - 100 - 40;//100 第一列的宽度， 100 名称咧的宽度,40 : margin-left
-		var ew = rw/(cfg.data.head.length - 2);
+		var ew = rw/(cfg.head.length - 2);
+		cfg.colDims = [100,100];//列宽度 存储 
 		if(ew>50){
-			dom.find(".sutable-col:gt(1)").css("width",ew+"px");//让他刚好
+			dom.find(".sutable-col:gt(1)").css("width",ew+"px").each(function(){
+				cfg.colDims.push(ew);
+			});
 		}else{
-			dom.find(".sutable-col:gt(2)").css("width",80+"px");//让他超出 ，无所谓
+			dom.find(".sutable-col:gt(2)").css("width",80+"px").each(function(){
+				cfg.colDims.push(ew);
+			});//让他超出 ，无所谓
 		}
 		this.foot.css("width",w+"px");//最下面的 
 		this.scroll.css("width",w+"px");//横向滚动条
 	};
-	/***
-	** 数据发生变化
-	***/
-	Treable.prototype.update = function(){
-		
-	}
 	
     /**
      * jquery 提供了一个objct 即 fn，which is a shotcut of jquery object prototype
@@ -468,6 +486,15 @@
 			var rows = treable.elem.find(".treable-body>.sutable-item");
 			rows.toggleClass("open");
 		}
+		
+		/***
+		** 更新列表
+		***/
+		this.update = function(data){
+			treable.elem.find(".treable-body").remove();
+			Help.recursive(treable.elem,data,treable.config);
+			treable.listenBody();
+		}
     }
 	
 	
@@ -483,7 +510,10 @@
 	** outside accessible default setting
 	**/
 	$.fn.treable.defaults = {
-		data:null,
+		head:null,//列表头数据
+		body:null,//列表内容数据
+		tail:null,//列表尾部数据
+		caret:null,//展开，折叠的 图标是 默认是  +  - 号
 		sort:null,
 		todata:null// toolbar 显示的数据 [{name:'',id:''},{name:'',id:''},{}], function 或者数据
 	};

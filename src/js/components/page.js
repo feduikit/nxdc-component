@@ -139,7 +139,7 @@
     function Page(element, options) {
 		var self = this;
 		this.elem = element;
-		this.config = $.extend(true,{},$.fn.page.defaults,options);
+		this.config = $.extend(true,{},$.fn.page.defaults,element.data(),options);
 		//显示几页，比如一共有20页，但是显示可点击的按钮5个  len = 5;
 		if(this.config.totalItems){
 			this.config.totalPages = Math.ceil(this.config.totalItems/this.config.perPage);
@@ -157,7 +157,7 @@
 		_this.initConfig();		
 
 		//如果是 带有选择每页显示多少页的 分页组件
-		if(_this.config.type==2){
+		if(_this.config.type>=2){
 			_this.dropwrapper.mouseenter(function(e){
 				e.stopImmediatePropagation();
 				$(this).find("ul.page-dropdown").toggleClass("hidden");
@@ -172,7 +172,7 @@
 				$(this).parent().addClass("hidden");
 				var per = $(this).text();
 				if(_this.pagetext.text()!=per){
-					_this.pagetext.text(per);
+					_this.pagetext.text(per);_this.num.html(per);
 					_this.config.perPage = parseInt(per);//每页显示多少条
 					_this.config.totalPages = Math.ceil(_this.config.totalItems/_this.config.perPage)
 					buildPageList(_this);
@@ -190,13 +190,18 @@
 		var _this = this;
 		var cfg = _this.config;	
 		//var wrapper = $("<nav />");
-		if(cfg.type==2){
-			_this.pagetext = $("<span class=' page-choosed-text'/>").text(30);//显示当前选定的 每页显示的条数
-			_this.dropwrapper = $("<span class=' page-drop-list'/>");
+		if(cfg.type>=2){
+			_this.pagetext = $("<span class=' page-choosed-text'/>").html(cfg.defItems);//显示当前选定的 每页显示的条数
+			_this.dropwrapper = $("<span class='page-drop-list'/>");
 			var more = $("<i class='glyphicon glyphicon-menu-hamburger' />");
 			var down = $("<i class='glyphicon glyphicon-triangle-bottom' />");
-			var drop = $("<ul class='page-dropdown hidden'/>")
-			_this.dropwrapper.append(more).append(down);
+			var drop = $("<ul class='page-dropdown hidden'/>");//
+			_this.num = $("<div class='page-now' />").text(cfg.defItems);
+			if(cfg.type==2){
+				_this.dropwrapper.append(more).append(down);
+			}else{
+				_this.dropwrapper.append(_this.num).append(down);
+			}
 			cfg.perPages.forEach(function(item){
 				if(typeof(item)=="string"||typeof(item)=="number"){
 					var str = item;
@@ -207,7 +212,11 @@
 				drop.append(li);
 			});
 			_this.dropwrapper.append(drop);
-			_this.elem.append(_this.pagetext).append(_this.dropwrapper);
+			if(cfg.type==2){
+				_this.elem.append(_this.pagetext).append(_this.dropwrapper);
+			}else{
+				_this.elem.append(_this.dropwrapper);
+			}
 		}
 		buildPageList(_this);
 	};
@@ -264,14 +273,14 @@
 	** outside accessible default setting
 	**/
 	$.fn.page.defaults = {
-		type:1,//1 普通分页，2 每页显示多少条的分页 3
+		type:1,//1 普通分页，2 每页显示多少条的分页 3,页数下拉菜单
 		begin:"<i class='glyphicon glyphicon-step-backward'></i>",//第一页
 		end:"<i class='glyphicon glyphicon-step-forward'></i>",//最后一页
 		totalPages:1,//总共有多少页
 		currentPage:1,//默认显示第一页
 		perPage:10,//每页显示多少条
+		defItems:10,
 		perPages:[10,20,30],//每页显示条数选择区间
-		totalItems:0//总共有多少条数据  如果这个数据存在，则totalPages 的数据就不用了，使用这里计算的结果
-		
+		totalItems:0//总共有多少条数据  如果这个数据存在，则totalPages 的数据就不用了，使用这里计算的结果	
 	};
 }(jQuery));

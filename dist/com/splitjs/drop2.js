@@ -54,12 +54,6 @@
 		this.elem.addClass(this.config.containerClass);//设置 包裹容器的 dim,外观
         this.concrate();//构建下来菜单的样子
 		this.initConfig();
-        
-		
-//		this.elem.on("hide.bs.dropdown",function(e){
-//			e.stopImmediatePropagation();
-//			console.log(e);
-//		});
 		/*******/
 		this.elem.find(".content-part.title-layer").click(function(e){
 			e.stopImmediatePropagation();
@@ -67,7 +61,12 @@
 		
 		this.elem.find(".content-part:not(:has(.title-layer))").click(function(e){
 			var val = $(this).text();
-			$(this).trigger("item_click",{value:$(this).data("val")});
+			if(_this.config.type==2) {//如果是 第二种类型的 下拉菜单
+				_this.hold.html(val).data("val",val);
+				if(_this.hold.data("val")!=val) $(this).trigger("item_click",{value:$(this).data("val")});	
+			}else{
+				$(this).trigger("item_click",{value:$(this).data("val")});	
+			}	
 		});		
 		
     };
@@ -78,15 +77,16 @@
 	Drop2.prototype.concrate = function(data){
 		var _this = this;
 		 _this.button = $("<button type='button' data-toggle='dropdown' />");
-		
+		 _this.hold = $("<span />");
+		 _this.button.append(_this.hold);
 	};
 
     Drop2.prototype.initConfig = function(){
         var _this = this;
 		var cfg = this.config;
 		_this.button.attr("id",cfg.id);
-		_this.button.html(cfg.caret);
-		_this.button.prepend(cfg.label);
+		_this.button.append(cfg.caret);
+		_this.hold.html(typeof(cfg.label)=="string"?cfg.label:cfg.label.text||cfg.label.label||cfg.label.name);
 		this.elem.append(_this.button);
 		recursive(cfg.data,cfg,_this.elem,0);
     }
@@ -128,6 +128,7 @@
 	** outside accessible default setting
 	**/
 	$.fn.drop2.defaults = {
+		type:1,//1 普通，2 选择之后更新的 文字下拉菜单
 		id:"drop"+(new Date().valueOf()),
 		caret:"<i class='glyphicon glyphicon-menu-down'></i>",
 		label:"undefined",

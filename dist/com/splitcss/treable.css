@@ -157,7 +157,7 @@
 /***
 ** 图表界面
 **/
-.treable-row-wrapper>.ndp-tab-wrapper{
+.treable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper{
 	position: relative;
 	top:0;
 	height: 0;
@@ -180,23 +180,48 @@
 	background-color: rgba(80, 80, 80, 0.8);
 }
 
-
-.treable-row-wrapper>.ndp-tab-wrapper.open{
-	height: 150px;
-	padding: 0;
+/****
+** 图表 所在层  chart 和 tabs 所在的层 
+***/
+.treable-row-wrapper>.chart-wrapper{
+	position: relative;
 	overflow: hidden;
 }
 
+/***
+** 图表层 关闭按钮
+***/
+.close.chart-close{
+	position: absolute;
+	z-index: 200;
+	top:0;
+	right: 0;
+	width: 30px;
+	height: 30px;
+	background-color: #eee;
+}
+.close.chart-close>*{
+	font-size: 24px;
+}
 
-.treable-row-wrapper>.ndp-tab-wrapper>ul.nav>li{
-	width: 120px;
+/***
+** 设置 tabs宽度
+***/
+.treable-row-wrapper>.chart-wrapper.open>.ndp-tab-wrapper{
+	height: 150px;
+	width: 150px;/*** tab 的 宽度***/
+	padding: 0;
+	overflow: hidden;
+}
+.treable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>ul.nav>li{
+	width: 100%;
 	clear:both;
 	padding:1px 0;
 }
-.treable-row-wrapper>.ndp-tab-wrapper>ul.nav>li>a:hover{
+.treable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>ul.nav>li>a:hover{
 	border-color: transparent;
 }
-.treable-row-wrapper>.ndp-tab-wrapper>ul.nav>li.active>a{
+.treable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>ul.nav>li.active>a{
 	border-width: 0;
 	border-left: 3px solid #f79d0c;
 	background-color: #f7f7f7;
@@ -204,11 +229,11 @@
 /***
 ** 图表界面 里面的部分
 **/
-.treable-row-wrapper>.ndp-tab-wrapper>*{
+.treable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>*{
 	opacity: 0;
 	height: 100%;
 }
-.treable-row-wrapper>.ndp-tab-wrapper.open>*{
+.treable-row-wrapper>.chart-wrapper.open>.ndp-tab-wrapper>*{
 	opacity: 1;
 }
 
@@ -320,11 +345,12 @@
 	margin-left: 4px;
 	cursor: pointer;
 	overflow: hidden;
+	padding-top:2px;
 }
 
 .sutable-header .sutable-col>.sort-wrapper>i{
 	display: block;
-	font-size: 8px;
+	font-size: 7px;
 	left: 0;
 }
 .sutable-col>.sort-wrapper>i:hover{
@@ -395,6 +421,23 @@
 	z-index: 10;
 	border:1px solid #d4d4d4;
 }
+/****
+** 用户自定义 caret
+***/
+.btn-plus-minus.custom-caret{
+	text-align: center;
+	padding-top:3px;
+	border:0;
+}
+.btn-plus-minus.custom-caret>*{
+	font-size:10px;
+	transition:all 0.3s linear;
+}
+
+.open>.btn-plus-minus.custom-caret>*{
+	transform: rotate(180deg);
+}
+
 .open>.btn-plus-minus>.line-ver{
 	display: none;
 }

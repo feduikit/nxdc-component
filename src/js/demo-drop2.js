@@ -16,7 +16,7 @@ require(['./config'],function(){
 			
 			
 			
-			$(".dropdown[name='bb']").drop2({
+			$(".dropdown.drop2-wrapper[name='bb']").drop2({
 				id:"meme",
 				caret:"<i class='glyphicon glyphicon-menu-down'></i>",
 				label:"多级菜单",
@@ -36,7 +36,24 @@ require(['./config'],function(){
 					 ]
 			}).on("item_click",function(e,data){
 				console.log(data);
-			});			
+			});	
+			
+			
+			$(".dropdown.drop2-wrapper[name='cc']").drop2({
+				type:2,
+				id:"meme2",
+				caret:"<i class='glyphicon glyphicon-menu-down'></i>",
+				label:{label:"用户设置"},
+				data:[
+					  {label:"用户设置"},
+					  {label:"修改密码"},
+					  {label:"接触绑定"},
+					  {label:"退出"}
+					 ]
+			}).on("item_click",function(e,data){
+				console.log(data);
+			});				
+			
 		});
 	});
 });
