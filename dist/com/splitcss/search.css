@@ -33,6 +33,7 @@
 	float: left;
 	padding-left: 5px;
 	border-width:0;
+	font-size: 12px;
 }
 .search-decoration>input[type]:focus{
 	outline:none;
@@ -41,10 +42,11 @@
 	display: none;
 }
 .search-decoration>i{
-	position: relative;
+	position: absolute;
 	text-align: center;
 	color:#656565;
-	float: left;
+	top:0;
+	right: 0;
 }
 .search-decoration>i:hover{
 	color:#1c1c1c;
@@ -159,6 +161,8 @@
 }
 
 .ndp-search-wrapper .dropdown-menu-cus>li>a{
+	padding: 0;
+	padding-left: 10px;
 	height: 30px;
 	line-height: 26px;
 }

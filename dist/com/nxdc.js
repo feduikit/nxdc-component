@@ -2215,17 +2215,22 @@ if (!Object.keys) Object.keys = function(o) {
 					_this.dropmenu.empty();
 					result.data.forEach(function(item,index){
 						var val = (typeof(item)=="string")?item:(item.text||item.label||item.name);
-						var re = new RegExp("["+key+"]+","i");	
+						var re2 = new RegExp("["+key+"]+","i");	
+						var re = new RegExp(key,"i");
 						if(String(val).match(re)){
 							var ma = String(val).match(re)[0];
-							var len = ma.length;
-							var ree = new RegExp(ma,"i");
-							var start = val.search(ree);
-							var arr = val.split("");
-							arr.splice(start,0,"<em>");
-							arr.splice((start+len+1),0,"</em>");
-							var val1 = arr.join("");
+						}else if(String(val).match(re2)){
+							ma = String(val).match(re2)[0];
+						}else{
+							ma = "";				
 						}
+						var len = ma.length;
+						var ree = new RegExp(ma,"i");
+						var start = val.search(ree);
+						var arr = val.split("");
+						arr.splice(start,0,"<em>");
+						arr.splice((start+len+1),0,"</em>");
+						var val1 = arr.join("");
 						var li = '<li val="'+val+'" index='+index+' tabIndex='+index+'><a href="#">'+(val1||val)+'</a></li>';
 						_this.dropmenu.append(li);
 					});
