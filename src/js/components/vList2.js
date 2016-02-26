@@ -106,15 +106,18 @@
 		});
 
 		/***
-		**
+		** 点击 标题行  展开/折叠
 		***/
-		_this.elem.find(".content-part>i.glyphicon-menu-up").click(function(e){
+		_this.elem.find(".content-part:has(i.glyphicon-menu-up)").addClass("cur").click(function(e){
 			e.stopImmediatePropagation();
-			var li =  $(this).parent().parent();
+			var li =  $(this).parents(".list-item:first");
 			li.children("ul").toggleClass("hidden");
 			$(this).toggleClass("open-hide");
 		});
 
+		/****
+		**收缩、展开 动画完成
+		***/
 		_this.elem.on("webkitTransitionEnd oTransitionEnd otransitionend transitionend",function(e){
 			e.stopImmediatePropagation();
 			if($(this).hasClass("mini-state")){//shrink  缩起来

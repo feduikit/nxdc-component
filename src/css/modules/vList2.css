@@ -41,6 +41,9 @@
 	border-left: 2px solid transparent;
 	
 }
+.ndp-vList2-wrapper li.list-item .content-part.cur:hover{
+	cursor: pointer;
+}
 .ndp-vList2-wrapper li.list-item .content-part.active{
 	background-color: #ffffff;
 	border-left-color: #ffa805;
@@ -75,7 +78,7 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	cursor: default;
+/*	cursor: default;*/
 }
 .ndp-vList2-wrapper li[deep="1"].list-item>.content-part>.txt-part{
 	font-size: 14px;
@@ -115,7 +118,7 @@
   transition-duration: 0.5s, 0.5s, 0.5s, 0.5s, 0.5s, 0.5s;		
 }
 
-.content-part>i.open-hide{
+.content-part.open-hide>i{
 	-moz-transform: rotate(180deg);
 	-webkit-transform: rotate(180deg);
 	transform: rotate(180deg);

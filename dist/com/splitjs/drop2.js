@@ -128,7 +128,7 @@
 	** outside accessible default setting
 	**/
 	$.fn.drop2.defaults = {
-		type:1,//1 普通，2 选择之后更新的 文字下拉菜单
+		type:1,//1 普通，2 选择之后更新的 文字下拉菜单，3 图标提示类popover  气泡
 		id:"drop"+(new Date().valueOf()),
 		caret:"<i class='glyphicon glyphicon-menu-down'></i>",
 		label:"undefined",

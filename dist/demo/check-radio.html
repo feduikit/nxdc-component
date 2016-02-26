@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=1;" name="viewport" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta name="format-detection" content="telephone=yes" />
+    <meta content="false" name="twcClient" id="twcClient" />
+    <link href="../lib/bootstrap/dist/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+     <link href=../com/css/body.min.css rel="stylesheet" type="text/css">
+    <link href=../com/css/nxdc.min.css rel="stylesheet" type="text/css">
+     <link href=../com/css/check-radio.min.css rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->       
+    <title>NDP media web ui lib</title>
+    <style type="text/css">
+		dd{
+			margin: 20px 0;
+		}
+	</style>
+</head>
+<body>
+  <div class="container-fluid ndp-ui-header"></div> 
+	<div class="container ndp-ui-main">
+		<dl>
+			<dd>
+				<input type="checkbox"  id="cus1">
+				<label for="cus1">选项1(多选)</label>				
+			</dd>
+			<dd>
+				<input type="checkbox"  id="cus2">
+				<label for="cus2">选项2(多选)</label>					
+			</dd>
+		</dl>
+		<dl>
+			<dd>
+				<input type="radio"  id="cus3" name="gp">
+				<label for="cus3">选项1222222</label>
+				<input type="radio"  id="cus4" name="gp">
+				<label for="cus4">选项2</label>											
+			</dd>			
+		</dl>				
+	</div>	   	 	   	  	   	 	   	  
+  <script src='../lib/require.js' data-main='./js/check-radio'></script> 
+</body>
+</html>

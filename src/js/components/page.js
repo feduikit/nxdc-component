@@ -6,8 +6,8 @@
     **下拉菜单展示的方向问题
     **/
     function setDirect(ta){
-        var peal = ta.dropwrapper;
-        var dp = ta.dropwrapper.find("ul.page-dropdown"); 
+        var peal = ta.dropwrapper||ta.find(".drop-wrapper"); // 下来菜单所在的盒子
+        var dp = (ta.dropwrapper && ta.dropwrapper.find("ul.page-dropdown"))||ta.find("ul.page-dropdown"); //下来菜单本身
         var ls = dp.get(0).getBoundingClientRect();
 		var p = peal.get(0).getBoundingClientRect();
 		if((window.innerHeight-p.bottom)>ls.height){//下面容得下 下拉菜单的展示，正常
@@ -157,7 +157,7 @@
 		_this.initConfig();		
 
 		//如果是 带有选择每页显示多少页的 分页组件
-		if(_this.config.type>=2){
+		if(_this.config.type ==2 || _this.config.type == 3){
 			_this.dropwrapper.mouseenter(function(e){
 				e.stopImmediatePropagation();
 				$(this).find("ul.page-dropdown").toggleClass("hidden");
@@ -181,6 +181,46 @@
 				}
 			});
 		}
+		if(_this.config.type ==4){
+			_this.elem.find(".drop-wrapper").click(function(e){
+				e.stopImmediatePropagation();
+				$(this).find("ul").toggleClass("hidden");
+				setDirect(_this.elem);
+			});
+			
+			/***
+			** 下拉菜单点击
+			***/
+			_this.elem.find(".drop-wrapper>ul>li").click(function(e){
+				$(this).parents(".drop-wrapper:first").find(".text-show").text("第" + $(this).attr("val") + "页");
+				$(this).addClass("active").siblings().removeClass("active");
+			});
+			
+			_this.elem.find(".pre-page").click(function(e){
+				e.stopImmediatePropagation();
+				var the = _this.elem.find(".drop-wrapper>ul>li.active");
+				var n = parseInt(the.attr("val"));
+				if(n>1){
+					n = n - 1;
+					the.removeClass("active").prev().addClass("active");
+					_this.elem.find(".text-show").text("第" + n + "页");
+				}
+			});
+			
+			_this.elem.find(".next-page").click(function(e){
+				e.stopImmediatePropagation();
+				var the = _this.elem.find(".drop-wrapper>ul>li.active");
+				var max = parseInt(_this.elem.find(".drop-wrapper>ul>li:last").attr("val"));
+				var n = parseInt(the.attr("val"));
+				if(n<max){
+					n = n + 1;
+					the.removeClass("active").next().addClass("active");
+					_this.elem.find(".text-show").text("第" + n + "页");
+				}
+			});			
+			
+		}
+		
     };
 	
 	/**
@@ -188,10 +228,9 @@
 	**/
 	Page.prototype.concrate = function(){
 		var _this = this;
-		var cfg = _this.config;	
-		//var wrapper = $("<nav />");
-		if(cfg.type>=2){
-			_this.pagetext = $("<span class=' page-choosed-text'/>").html(cfg.defItems);//显示当前选定的 每页显示的条数
+		var cfg = _this.config;
+		if(cfg.type==2 || cfg.type == 3){
+			_this.pagetext = $("<span class='page-choosed-text'/>").html(cfg.defItems);//显示当前选定的 每页显示的条数
 			_this.dropwrapper = $("<span class='page-drop-list'/>");
 			var more = $("<i class='glyphicon glyphicon-menu-hamburger' />");
 			var down = $("<i class='glyphicon glyphicon-triangle-bottom' />");
@@ -199,7 +238,7 @@
 			_this.num = $("<div class='page-now' />").text(cfg.defItems);
 			if(cfg.type==2){
 				_this.dropwrapper.append(more).append(down);
-			}else{
+			}else if(cfg.type==3){
 				_this.dropwrapper.append(_this.num).append(down);
 			}
 			cfg.perPages.forEach(function(item){
@@ -214,18 +253,33 @@
 			_this.dropwrapper.append(drop);
 			if(cfg.type==2){
 				_this.elem.append(_this.pagetext).append(_this.dropwrapper);
-			}else{
+			}else if(cfg.type==3){
 				_this.elem.append(_this.dropwrapper);
 			}
 		}
-		buildPageList(_this);
+		if(cfg.type<4) buildPageList(_this);
+		
+		if(cfg.type==4){
+			var pre = $("<span class='pre-page' />").html(cfg.pre);
+			var drop = $("<ul class='page-dropdown hidden' />");
+			var dropbox = $("<span class='drop-wrapper' />").append("<div class='text-show'></div>").append(drop);
+			var next = $("<span class='next-page' />").html(cfg.next);
+			if(cfg.currentPage||1) dropbox.find(".text-show").text("第"+(cfg.currentPage||1)+"页");
+			for(var i=1;i<=cfg.totalPages;i++){
+				var li = $("<li index="+i+"  val="+i+" >第"+i+"页</li>");
+				if(cfg.currentPage == i) li.addClass("active"); 
+				drop.append(li);
+			};
+				
+			_this.elem.append(pre).append(dropbox).append(next).addClass("special");
+		}
 	};
 
     Page.prototype.initConfig = function(){
         var _this = this;
 		var cfg = _this.config;
 		var cp = _this.config.currentPage||1;
-		if(cfg.currentPage||1){
+		if(cfg.type!=4 && (cfg.currentPage||1)){
 			_this.list.find("li.page-item[value="+cp+"]").addClass("active");			
 		}
 		
@@ -273,7 +327,7 @@
 	** outside accessible default setting
 	**/
 	$.fn.page.defaults = {
-		type:1,//1 普通分页，2 每页显示多少条的分页 3,页数下拉菜单
+		type:1,//1 普通分页，2 每页显示多少条的分页 3,页数下拉菜单，4 类似微博的翻页控件
 		begin:"<i class='glyphicon glyphicon-step-backward'></i>",//第一页
 		end:"<i class='glyphicon glyphicon-step-forward'></i>",//最后一页
 		totalPages:1,//总共有多少页
@@ -281,6 +335,8 @@
 		perPage:10,//每页显示多少条
 		defItems:10,
 		perPages:[10,20,30],//每页显示条数选择区间
-		totalItems:0//总共有多少条数据  如果这个数据存在，则totalPages 的数据就不用了，使用这里计算的结果	
+		totalItems:0,//总共有多少条数据  如果这个数据存在，则totalPages 的数据就不用了，使用这里计算的结果	
+		pre:"上一页",
+		next:"下一页"
 	};
 }(jQuery));

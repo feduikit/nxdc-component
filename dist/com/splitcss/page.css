@@ -152,3 +152,46 @@ ul.page-dropdown>li{
 ul.page-dropdown>li:hover{
 	background-color: #ddd;
 }
+
+/***type 4**/
+.ndp-page-wrapper.special[name]>*{
+	position: relative;
+	float: left;
+	height: 25px;
+	line-height: 25px;
+	text-align: center;
+	border:1px solid #eee;
+	user-select:none;
+	-webkit-user-select:none;
+	cursor: pointer;
+}
+.ndp-page-wrapper.special[name]>.pre-page,.ndp-page-wrapper.special[name]>.next-page{
+	width: 35%;
+}
+.ndp-page-wrapper.special[name]>.pre-page:hover,.ndp-page-wrapper.special[name]>.next-page:hover{
+	background-color: #dbdbdb;
+}
+
+.ndp-page-wrapper.special[name]>.drop-wrapper{
+	width: 30%;
+}
+.ndp-page-wrapper.special[name]>.drop-wrapper>ul{
+	position: absolute;
+	top:100%;
+	left: 0;
+	width: 100%;
+	box-shadow: 0 1px 0 1px #ccc;
+	cursor: pointer;
+	max-height: 300px;
+	overflow: auto;
+}
+
+.ndp-page-wrapper.special>.drop-wrapper>ul>li:hover{
+	background-color: #dfdfdf;
+}
+.ndp-page-wrapper.special>.drop-wrapper>ul>li.active{
+	background-color: #eeeeee;
+}
+
+
+

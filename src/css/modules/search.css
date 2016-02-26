@@ -1,5 +1,6 @@
 .ndp-search-wrapper{
 	position: relative;
+	display: inline-block;
 	min-height: 20px;
 	min-width: 100px;
 	width: 200px;/** 默认值 可以修改 **/
@@ -36,7 +37,9 @@
 .search-decoration>input[type]:focus{
 	outline:none;
 }
-
+.search-decoration.loading>i{
+	display: none;
+}
 .search-decoration>i{
 	position: relative;
 	text-align: center;
@@ -139,4 +142,35 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+}
+
+/**** ajax  返回  drop 显示 ****/
+.ndp-search-wrapper .dropdown-menu-cus{
+	position: absolute;
+	display: block;
+	border-radius: 0;
+	top:100%;
+	left:0;
+	width: 100%;
+	padding: 0;
+}
+.ndp-search-wrapper .dropdown-menu-cus>li.em>a{
+	background-color: #eee;
+}
+
+.ndp-search-wrapper .dropdown-menu-cus>li>a{
+	height: 30px;
+	line-height: 26px;
+}
+.ndp-search-wrapper .dropdown-menu-cus>li>a>em{
+	color:#f88945;
+	font-style: normal;
+}
+
+.close-cus{
+	position: absolute;
+	height: 100%;
+	top:0;
+	z-index: 101;
+	padding-top:2px;
 }

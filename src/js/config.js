@@ -16,7 +16,8 @@ require.config({
 		'progressbar':'./components/progressbar',
 		'drop2':'./components/drop2',
 		'treable':'./components/treable',
-		'sutable':'./components/sutable'
+		'sutable':'./components/sutable',
+		'bubble':'./components/bubble'
     },
     shim:{
 		bootstrap:{
@@ -45,6 +46,9 @@ require.config({
 		},
 		sutable:{
 			deps:['bootstrap']
-		}		
+		},
+		bubble:{
+			deps:['bootstrap']
+		}
     }
 });

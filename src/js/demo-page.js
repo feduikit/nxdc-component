@@ -17,8 +17,13 @@ require(['./config'],function(){
 				type:3,
 				totalItems:200,
 				perPage:10
-			});			
+			});	
 			
+			//微博翻页
+			$(".ndp-page-wrapper[name=drop-page3]").page({
+				type:4,
+				totalPages:1000
+			});			
         });
     });
 });

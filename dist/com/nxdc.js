@@ -217,6 +217,145 @@ if (!Object.keys) Object.keys = function(o) {
 	};
 }(jQuery));
 
+;(function ($) {
+    var self = this;    
+    function Bubble(element, options) {
+		var self = this;
+		this.elem = element;
+		this.config = $.extend(true,{},$.fn.bubble.defaults,element.data(),options);
+		this.init();
+    };
+	/**
+	**列表组件的初始化
+	**/
+    Bubble.prototype.init = function () {
+        var _this = this;
+		this.elem.addClass(this.config.containerClass);//设置 包裹容器的 dim,外观
+        this.concrate();//构建下来菜单的样子
+		this.initConfig();
+		//$('[data-toggle="popover"]').popover();	
+		
+		//处理事件	
+		//图标被点击之后
+		this.elem.popover(_this.config);
+		this.elem.click(function(e){
+			var id = _this.elem.attr("aria-describedby");
+			setTimeout(function(){
+				if(!id) { _this.elem.popover('show'); }
+				if(id){
+						var pop = $("#"+id);
+						//点击关闭按钮
+						pop.find("button.close").click(function(e){
+							e.stopImmediatePropagation();
+							_this.elem.popover('hide');
+						});
+
+						//点击cancel 按钮
+						pop.find("button[name=cancel]").click(function(e){
+							e.stopImmediatePropagation();
+							fireEvent(pop.get(0),"bubble_cancel");
+							_this.elem.popover('hide');
+						});
+
+						//点击ok 按钮
+						pop.find("button[name=ok]").click(function(e){
+							e.stopImmediatePropagation();
+							fireEvent(pop.get(0),"bubble_ok");
+							_this.elem.popover('hide');
+						});				
+				};				
+				
+			},150);			
+		});
+    };
+	
+	/***
+	**
+	***/
+	Bubble.prototype.concrate = function(data){
+		var _this = this;		
+	};
+
+    Bubble.prototype.initConfig = function(){
+		var _this = this;
+		var cfg = this.config;
+		if(cfg.icon){
+			var reg = /\.(jpg|jpeg|gif|png|bmp)(\?)?.?/i;
+			if(reg.test(cfg.icon)){
+				_this.img =  $("<img width='100%' height='100%' />").attr("src",cfg.icon);
+			}else{
+				_this.img = $(cfg.icon);
+			}
+			this.elem.append(_this.img);
+		}
+		
+		var html = $("<div />").append(cfg.template);
+			html.find("button.close").toggleClass("close2",cfg.title?true:false);
+		    html.find("button.close").toggleClass("hidden",cfg.close);
+			html.children().attr("type",cfg.type);
+			cfg.template = html.html();
+	}
+    /**
+     * jquery 提供了一个objct 即 fn，which is a shotcut of jquery object prototype
+     * or you can call it jquery plugin shell  == fn
+     *  类似于  Class.prototype.jqplugin = function(){};0  
+     *  the   $.fn  [same as] Class.prototype
+     * plugin entrance
+     */
+    $.fn.bubble = function (options) {
+		var the = this.first();
+        var bubble = new Bubble(the, options);
+        the = $.extend(true,{},the,new exchange(bubble));
+		return the;
+    };
+	
+    /***
+    **和其他插件的交互
+	** factory Class
+    **@param {Drop} Bread :  instacne of the plugin builder
+    **/
+    function exchange(bubble){
+        /**
+        **@param {Object} msg {type:"类型"}
+        **/
+        this.manipulate = function(msg){
+            
+        }
+    }
+	
+	
+	  var old = $.fn.bubble;
+	  $.fn.bubble.Constructor = Bubble;
+	  // table NO CONFLICT
+	  // ===============
+	  $.fn.bubble.noConflict = function () {
+		$.fn.bubble = old;
+		return this;
+	  }		
+	/***
+	** outside accessible default setting
+	**/
+	$.fn.bubble.defaults = {
+		type:1,//1 普通模板， 2 有footer 按钮的模板
+		icon:"<i class='glyphicon glyphicon-user'></i>",
+		placement:"bottom",
+		content:"",//文字或者内容
+		close:false,//是否显示 x  关闭按钮
+		template:'<div class="popover" role="tooltip">\
+						<div class="arrow"></div>\
+						 <button type="button" class="close" aria-label="Close">\
+							<span aria-hidden="true">&times;</span>\
+						 </button>\
+						<div class="popover-title"></div>\
+						<div class="popover-content"></div>\
+						<div class="popover-footer">\
+							<button class="btn btn-default" name="cancel" >取消</button>\
+							<button class="btn btn-default" name="ok" >确定</button>\
+						</div>\
+					</div>'
+	};
+}(jQuery));
+
 ;(function ($,win) { //start with a [;] because if our code is combine or minification  with other code,AND other code not terminated with [;] then it will not infect ours.
     var self = this;
 	var wrapper,header,body,footer;
@@ -763,7 +902,7 @@ if (!Object.keys) Object.keys = function(o) {
 	** outside accessible default setting
 	**/
 	$.fn.drop2.defaults = {
-		type:1,//1 普通，2 选择之后更新的 文字下拉菜单
+		type:1,//1 普通，2 选择之后更新的 文字下拉菜单，3 图标提示类popover  气泡
 		id:"drop"+(new Date().valueOf()),
 		caret:"<i class='glyphicon glyphicon-menu-down'></i>",
 		label:"undefined",
@@ -1264,8 +1403,8 @@ if (!Object.keys) Object.keys = function(o) {
     **下拉菜单展示的方向问题
     **/
     function setDirect(ta){
-        var peal = ta.dropwrapper;
-        var dp = ta.dropwrapper.find("ul.page-dropdown"); 
+        var peal = ta.dropwrapper||ta.find(".drop-wrapper"); // 下来菜单所在的盒子
+        var dp = (ta.dropwrapper && ta.dropwrapper.find("ul.page-dropdown"))||ta.find("ul.page-dropdown"); //下来菜单本身
         var ls = dp.get(0).getBoundingClientRect();
 		var p = peal.get(0).getBoundingClientRect();
 		if((window.innerHeight-p.bottom)>ls.height){//下面容得下 下拉菜单的展示，正常
@@ -1415,7 +1554,7 @@ if (!Object.keys) Object.keys = function(o) {
 		_this.initConfig();		
 
 		//如果是 带有选择每页显示多少页的 分页组件
-		if(_this.config.type>=2){
+		if(_this.config.type ==2 || _this.config.type == 3){
 			_this.dropwrapper.mouseenter(function(e){
 				e.stopImmediatePropagation();
 				$(this).find("ul.page-dropdown").toggleClass("hidden");
@@ -1439,6 +1578,46 @@ if (!Object.keys) Object.keys = function(o) {
 				}
 			});
 		}
+		if(_this.config.type ==4){
+			_this.elem.find(".drop-wrapper").click(function(e){
+				e.stopImmediatePropagation();
+				$(this).find("ul").toggleClass("hidden");
+				setDirect(_this.elem);
+			});
+			
+			/***
+			** 下拉菜单点击
+			***/
+			_this.elem.find(".drop-wrapper>ul>li").click(function(e){
+				$(this).parents(".drop-wrapper:first").find(".text-show").text("第" + $(this).attr("val") + "页");
+				$(this).addClass("active").siblings().removeClass("active");
+			});
+			
+			_this.elem.find(".pre-page").click(function(e){
+				e.stopImmediatePropagation();
+				var the = _this.elem.find(".drop-wrapper>ul>li.active");
+				var n = parseInt(the.attr("val"));
+				if(n>1){
+					n = n - 1;
+					the.removeClass("active").prev().addClass("active");
+					_this.elem.find(".text-show").text("第" + n + "页");
+				}
+			});
+			
+			_this.elem.find(".next-page").click(function(e){
+				e.stopImmediatePropagation();
+				var the = _this.elem.find(".drop-wrapper>ul>li.active");
+				var max = parseInt(_this.elem.find(".drop-wrapper>ul>li:last").attr("val"));
+				var n = parseInt(the.attr("val"));
+				if(n<max){
+					n = n + 1;
+					the.removeClass("active").next().addClass("active");
+					_this.elem.find(".text-show").text("第" + n + "页");
+				}
+			});			
+			
+		}
+		
     };
 	
 	/**
@@ -1446,10 +1625,9 @@ if (!Object.keys) Object.keys = function(o) {
 	**/
 	Page.prototype.concrate = function(){
 		var _this = this;
-		var cfg = _this.config;	
-		//var wrapper = $("<nav />");
-		if(cfg.type>=2){
-			_this.pagetext = $("<span class=' page-choosed-text'/>").html(cfg.defItems);//显示当前选定的 每页显示的条数
+		var cfg = _this.config;
+		if(cfg.type==2 || cfg.type == 3){
+			_this.pagetext = $("<span class='page-choosed-text'/>").html(cfg.defItems);//显示当前选定的 每页显示的条数
 			_this.dropwrapper = $("<span class='page-drop-list'/>");
 			var more = $("<i class='glyphicon glyphicon-menu-hamburger' />");
 			var down = $("<i class='glyphicon glyphicon-triangle-bottom' />");
@@ -1457,7 +1635,7 @@ if (!Object.keys) Object.keys = function(o) {
 			_this.num = $("<div class='page-now' />").text(cfg.defItems);
 			if(cfg.type==2){
 				_this.dropwrapper.append(more).append(down);
-			}else{
+			}else if(cfg.type==3){
 				_this.dropwrapper.append(_this.num).append(down);
 			}
 			cfg.perPages.forEach(function(item){
@@ -1472,18 +1650,33 @@ if (!Object.keys) Object.keys = function(o) {
 			_this.dropwrapper.append(drop);
 			if(cfg.type==2){
 				_this.elem.append(_this.pagetext).append(_this.dropwrapper);
-			}else{
+			}else if(cfg.type==3){
 				_this.elem.append(_this.dropwrapper);
 			}
 		}
-		buildPageList(_this);
+		if(cfg.type<4) buildPageList(_this);
+		
+		if(cfg.type==4){
+			var pre = $("<span class='pre-page' />").html(cfg.pre);
+			var drop = $("<ul class='page-dropdown hidden' />");
+			var dropbox = $("<span class='drop-wrapper' />").append("<div class='text-show'></div>").append(drop);
+			var next = $("<span class='next-page' />").html(cfg.next);
+			if(cfg.currentPage||1) dropbox.find(".text-show").text("第"+(cfg.currentPage||1)+"页");
+			for(var i=1;i<=cfg.totalPages;i++){
+				var li = $("<li index="+i+"  val="+i+" >第"+i+"页</li>");
+				if(cfg.currentPage == i) li.addClass("active"); 
+				drop.append(li);
+			};
+				
+			_this.elem.append(pre).append(dropbox).append(next).addClass("special");
+		}
 	};
 
     Page.prototype.initConfig = function(){
         var _this = this;
 		var cfg = _this.config;
 		var cp = _this.config.currentPage||1;
-		if(cfg.currentPage||1){
+		if(cfg.type!=4 && (cfg.currentPage||1)){
 			_this.list.find("li.page-item[value="+cp+"]").addClass("active");			
 		}
 		
@@ -1531,7 +1724,7 @@ if (!Object.keys) Object.keys = function(o) {
 	** outside accessible default setting
 	**/
 	$.fn.page.defaults = {
-		type:1,//1 普通分页，2 每页显示多少条的分页 3,页数下拉菜单
+		type:1,//1 普通分页，2 每页显示多少条的分页 3,页数下拉菜单，4 类似微博的翻页控件
 		begin:"<i class='glyphicon glyphicon-step-backward'></i>",//第一页
 		end:"<i class='glyphicon glyphicon-step-forward'></i>",//最后一页
 		totalPages:1,//总共有多少页
@@ -1539,7 +1732,9 @@ if (!Object.keys) Object.keys = function(o) {
 		perPage:10,//每页显示多少条
 		defItems:10,
 		perPages:[10,20,30],//每页显示条数选择区间
-		totalItems:0//总共有多少条数据  如果这个数据存在，则totalPages 的数据就不用了，使用这里计算的结果	
+		totalItems:0,//总共有多少条数据  如果这个数据存在，则totalPages 的数据就不用了，使用这里计算的结果	
+		pre:"上一页",
+		next:"下一页"
 	};
 }(jQuery));
 
@@ -1912,7 +2107,7 @@ if (!Object.keys) Object.keys = function(o) {
 			dp.css({"top":-(ls.height)+"px","box-shadow":"0 0 1px #ccc"});
 			ta.elem.find("i.glyphicon-menu-down").addClass("turnback");
 		}
-    };	
+    };
 	
     function Search(element, options) {
 		var self = this;
@@ -1930,36 +2125,79 @@ if (!Object.keys) Object.keys = function(o) {
         this.concrate();//构建下来菜单的样子
 		this.initConfig();
       	
-		
-		
 		/***
 		**输入框获得焦点
 		**/
 		this.input.focus(function(e){
+			e.stopImmediatePropagation();
 			_this.elem.addClass("focus");
 			fireEvent(_this.elem.get(0),"search_focus");
+			if(_this.config.type==3||_this.config.type==4){
+				if(_this.dropmenu.children().length>0) _this.dropmenu.removeClass("hidden");
+			}
+		});
+		this.input.click(function(e){
+			e.stopImmediatePropagation();
 		});
 		
 		/***
 		**输入框失去焦点
 		**/
 		this.input.blur(function(e){
+			e.stopImmediatePropagation();
 			_this.elem.removeClass("focus");
 		});
-		
 		/***
 		**点击搜索
 		**/
 		this.icon.click(function(){
 			if(_this.elem.hasClass("disabled")) return false;//如果是 disabled  不起作用
-			fireEvent(_this.elem.get(0),"do_search");
+			fireEvent(_this.elem.get(0),"do_search",{text:_this.input.val()});
 		});
 		/***
 		** 回车键
 		***/
 		this.input.keyup(function(e){
 			if(e.keyCode == 13){
-				fireEvent(_this.elem.get(0),"do_search");
+				fireEvent(_this.elem.get(0),"do_search",{text:$(this).val()});
+				
+				if(_this.config.type==3 || _this.config.type==4){
+					_this.dropmenu.addClass("hidden");
+				}
+			}
+			
+			if(e.keyCode == 40){//下
+				//默认选中下拉的 第一个
+				if(_this.dropmenu.find("li.em").length==0){
+					_this.dropmenu.find("li:first").addClass("em").siblings().removeClass("em");
+				}else{
+					var next = (parseInt(_this.dropmenu.find("li.em").attr("index"))+1);
+					var the = _this.dropmenu.find("li[index="+next+"]");
+					if(the.length>0){							
+						the.addClass("em").siblings().removeClass("em");
+					}else{
+						_this.dropmenu.find("li:first").addClass("em").siblings().removeClass("em");
+					}
+				}
+				var emed = _this.dropmenu.find("li.em");
+				_this.input.val(emed.attr("val"));
+				_this.wrapper.find(".close-cus").removeClass("hide");
+			}else if(e.keyCode == 38){//上
+				//默认选中下拉的最后一个
+				if(_this.dropmenu.find("li.em").length==0){
+					_this.dropmenu.focus().find("li:last").addClass("em").siblings().removeClass("em");
+				}else{
+					var pre = (parseInt(_this.dropmenu.find("li.em").attr("index"))-1);
+					the = _this.dropmenu.find("li[index="+pre+"]");
+					if(the.length>0){							
+						the.addClass("em").siblings().removeClass("em");
+					}else{
+						_this.dropmenu.find("li:last").addClass("em").siblings().removeClass("em");
+					}				
+				}
+				emed = _this.dropmenu.find("li.em");
+				_this.input.val(emed.attr("val")).attr("name",emed.attr("val"));
+				_this.wrapper.find(".close-cus").removeClass("hide");
 			}
 		});
 		/***
@@ -1967,7 +2205,48 @@ if (!Object.keys) Object.keys = function(o) {
 		**/
 		this.input.on("input",function(e){
 			e.stopImmediatePropagation();
-			fireEvent(_this.elem.get(0),"search_input_change");
+			if(_this.config.type==3||_this.config.type==4){
+				_this.wrapper.addClass("loading");
+				var opt = _this.config.ajaxOptions;
+				var key = $(this).val();
+				opt.data = {key:key};
+				$.ajax(opt).then(function(result){
+					if(typeof(result)=="string") result = JSON.parse(result);
+					_this.dropmenu.empty();
+					result.data.forEach(function(item,index){
+						var val = (typeof(item)=="string")?item:(item.text||item.label||item.name);
+						var re = new RegExp("["+key+"]+","i");	
+						if(String(val).match(re)){
+							var ma = String(val).match(re)[0];
+							var len = ma.length;
+							var ree = new RegExp(ma,"i");
+							var start = val.search(ree);
+							var arr = val.split("");
+							arr.splice(start,0,"<em>");
+							arr.splice((start+len+1),0,"</em>");
+							var val1 = arr.join("");
+						}
+						var li = '<li val="'+val+'" index='+index+' tabIndex='+index+'><a href="#">'+(val1||val)+'</a></li>';
+						_this.dropmenu.append(li);
+					});
+					_this.dropmenu.removeClass("hidden");
+					_this.wrapper.removeClass("loading");
+					
+					_this.dropmenu.find("li").unbind("click").click(function(e){
+						e.stopImmediatePropagation();
+						var val = $(this).attr('val'); 
+						_this.input.val(val).attr("name",val);
+						_this.dropmenu.addClass("hidden");
+						_this.wrapper.find(".close-cus").removeClass("hide");
+					});					
+					
+				},function(err){
+					console.log(err);
+					_this.wrapper.removeClass("loading");
+				});			
+			}
+			//发出事件
+			fireEvent(_this.elem.get(0),"input_change",{text:$(this).val()});			
 		});
 		
 		/***
@@ -1976,8 +2255,8 @@ if (!Object.keys) Object.keys = function(o) {
 		this.elem.find("span.search-drop").click(function(e){
 			e.stopImmediatePropagation();
 			if(_this.elem.hasClass("disabled")) return false;//如果是 disabled  不起作用
-			_this.elem.find("ul.search-drop-wrapper").toggleClass("in");
-			if(_this.elem.find("ul.search-drop-wrapper").hasClass("in")){
+			_this.elem.find("ul.search-drop-wrapper").toggleClass("hidden");
+			if(!_this.elem.find("ul.search-drop-wrapper").hasClass("hidden")){
 				setDirect(_this);
 			}	
 		});
@@ -1990,15 +2269,23 @@ if (!Object.keys) Object.keys = function(o) {
 			if(_this.elem.hasClass("disabled")) return false;//如果是 disabled  不起作用
 			var txt = $(this).attr("val");
 			var ind = $(this).attr("index");
-			_this.elem.find("ul.search-drop-wrapper").toggleClass("in");
+			_this.elem.find("ul.search-drop-wrapper").toggleClass("hidden");
 			if(ind == _this.elem.find("span.selected-item").attr("index")) return false;	
-			_this.elem.find("span.selected-item").text(txt).attr({"index":ind,val:txt});
+			_this.elem.find("span.selected-item").text(txt).attr({"index":ind,val:txt,name:txt});
 			
-			fireEvent(_this.elem.get(0),"search_scope_change",{index:ind,value:txt});
+			fireEvent(_this.elem.get(0),"scope_change",{index:ind,value:txt});
+		});
+		
+		
+		this.wrapper.find(".close-cus").click(function(e){
+			e.stopImmediatePropagation();
+			_this.input.val("").removeAttr("name");
+			$(this).addClass("hide");
 		});
 		
 		$(document).click(function(e){
-			_this.elem.find("ul.search-drop-wrapper").removeClass("in");
+			_this.elem.find("ul.search-drop-wrapper").addClass("hidden");
+			_this.elem.find(".dropdown-menu-cus").addClass("hidden");
 		});
 		
     };
@@ -2012,18 +2299,21 @@ if (!Object.keys) Object.keys = function(o) {
 		this.input = $("<input class='form-control search-input' type='text' />");
 		
 		this.wrapper.append(this.input);
+		
+		this.dropmenu = $('<ul class="dropdown-menu dropdown-menu-cus hidden" />');
+		this.wrapper.append(this.dropmenu);
 		this.elem.append(this.wrapper);
 	};
 
     Search.prototype.initConfig = function(){
         var _this = this;
 		var cfg = this.config;
-		if(cfg.type == 2){
+		if(cfg.type == 2 || cfg.type == 4){
 			this.peal = $("<span class='search-drop'/>");
-			var txtbox = $("<span class='selected-item' />");
+			var txtbox = $("<span class='selected-item' tabIndex='-1' />");
 			this.peal.append(txtbox).append("<i class='drop-spliter'></i>");
 			if(cfg.dropList && cfg.dropList.length>0){
-				this.list = $("<ul  class='search-drop-wrapper fade'/>");	
+				this.list = $("<ul  class='search-drop-wrapper hidden'/>");	
 				for(var i=0;i<cfg.dropList.length;i++){
 					var the = cfg.dropList[i];
 					if(typeof(the) == "object"){
@@ -2044,8 +2334,20 @@ if (!Object.keys) Object.keys = function(o) {
 			this.peal.css("line-height",this.elem.height()+"px");
 		}else{
 			this.wrapper.removeAttr("style");
-		}		
+		}
 		
+		if(cfg.type==3 || cfg.type==4){
+			var dim = _this.wrapper.height();
+			var spin = $('<div class="spinner">\
+						  <div class="bounce1"></div>\
+						  <div class="bounce2"></div>\
+						  <div class="bounce3"></div>\
+						</div>').css({"line-height":dim+"px","height":dim+"px"});
+			var wb = parseFloat(_this.input.css("height"));
+			var close = $('<span class="close close-cus hide">&times;</span>')
+						.css("right",wb+"px");
+			_this.wrapper.append(spin).append(close);
+		}
 		
 		if(cfg.magicon){
 			this.icon = $(cfg.magicon);
@@ -2113,11 +2415,16 @@ if (!Object.keys) Object.keys = function(o) {
 	** outside accessible default setting
 	**/
 	$.fn.search.defaults = {
-		type:1,// 默认 2 带下拉菜单的
+		type:1,// 默认 2 带前置下拉菜单  3 instance search 即时搜索,4 前置下拉才到呢 + instance search
 		magicon:"<i class='glyphicon glyphicon-search'></i>",
 		placeholder:"",// 提示文字
 		disabled:false,
-		dropList:[]
+		dropList:[],
+        ajaxOptions: {
+            type: "GET",
+            url: "../data/search.json",
+			xhrFields: { withCredentials: true}
+        }		
 	};
 }(jQuery));
 
@@ -4153,7 +4460,7 @@ if (!Object.keys) Object.keys = function(o) {
 }(jQuery));
 
 ;(function ($) {
-    var self = this;    
+    var self = this;
 	/***
 	** 处理树桩菜单
 	**/
@@ -4175,10 +4482,14 @@ if (!Object.keys) Object.keys = function(o) {
 			ctx.append(icon);
 			var txt = $("<span class='txt-part' />");
 			ctx.append(txt);
-			if(typeof(o)=="object"){				
+			if(typeof(o)=="object"){
 				var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group||o.children;
 				var text = o[cfg.textKey]||o.text||o.label||o.title||o.name;
+				if(o.href){
+					text = '<a href="'+o.href+'">'+text+'</a>';
+				}
 				txt.html(text);
+
 				li.attr({"value":text,"deep":deep});
 				if(array && array instanceof Array){
 					if(cfg.foldicon){
@@ -4202,7 +4513,7 @@ if (!Object.keys) Object.keys = function(o) {
 			ul.append(li);
 		}
 		fa.append(ul);
-	}	
+	}
 	/***
 	** 构造函数
 	**/
@@ -4212,7 +4523,7 @@ if (!Object.keys) Object.keys = function(o) {
 		this.config = $.extend(true,{},$.fn.vList2.defaults,element.data(),options);
 		this.config.wi = this.elem.width();
 		this.init();
-		
+
     };
 	/**
 	**列表组件的初始化
@@ -4223,7 +4534,7 @@ if (!Object.keys) Object.keys = function(o) {
         this.concrate();//构建下来菜单的样子
 		this.initConfig();
 
-		
+
 		/**
 		** 点击非叶子节点
 		**/
@@ -4231,10 +4542,10 @@ if (!Object.keys) Object.keys = function(o) {
 			e.stopImmediatePropagation();
 
 		});
-		
+
 		/***
 		**点击叶子
-		**/	
+		**/
 		_this.elem.find("li.list-leaf").click(function(e){
 			e.stopImmediatePropagation();
 			_this.elem.find("li.list-leaf").removeClass("active");
@@ -4254,17 +4565,20 @@ if (!Object.keys) Object.keys = function(o) {
 			}
 			$(this).trigger("item_click",{deep:deep,value:val});
 		});
-		
+
 		/***
-		**
+		** 点击 标题行  展开/折叠
 		***/
-		_this.elem.find(".content-part>i.glyphicon-menu-up").click(function(e){
+		_this.elem.find(".content-part:has(i.glyphicon-menu-up)").addClass("cur").click(function(e){
 			e.stopImmediatePropagation();
-			var li =  $(this).parent().parent();
+			var li =  $(this).parents(".list-item:first");
 			li.children("ul").toggleClass("hidden");
 			$(this).toggleClass("open-hide");
 		});
-		
+
+		/****
+		**收缩、展开 动画完成
+		***/
 		_this.elem.on("webkitTransitionEnd oTransitionEnd otransitionend transitionend",function(e){
 			e.stopImmediatePropagation();
 			if($(this).hasClass("mini-state")){//shrink  缩起来
@@ -4273,11 +4587,11 @@ if (!Object.keys) Object.keys = function(o) {
 				$(this).trigger("expand_complete");//展开事件
 			}
 		});
-		
-		
+
+
 		_this.elem.trigger("mission_complete");
     };
-	
+
 	/**
 	** 构建菜单样子
 	**/
@@ -4292,19 +4606,19 @@ if (!Object.keys) Object.keys = function(o) {
     VList2.prototype.initConfig = function(){
         var _this = this;
 		var cfg = this.config;
-		
+
 		if(cfg.leaficon){
 			_this.elem.find("li.list-leaf>.list-txt-wrapper").prepend(cfg.leaficon).addClass("leaf-icon");
 		}else{
 			_this.elem.find("li.list-leaf>.list-txt-wrapper").removeClass("leaf-icon");
 		}
-		
+
 		if(cfg.foldicon){
 			var txt = _this.elem.find("li[asparent]").attr("value");
 			_this.elem.find("li[asparent]>.list-txt-wraper").prepend(cfg.foldicon);
 		}
 	}
-	
+
 	/***
 	** 组件变形调用
 	***/
@@ -4332,11 +4646,11 @@ if (!Object.keys) Object.keys = function(o) {
 			this.elem.find("li[deep='1']:has(ul)").unbind("mouseleave").mouseleave(function(){
 				$(this).removeClass("active");
 				$(this).children("ul:has(li[deep='2'])").addClass("hidden");
-			});			
+			});
 		}else{
 			this.elem.find("li[deep='1']:has(ul)").unbind("mouseenter");
 			this.elem.find("li[deep='1']:has(ul)").unbind("mouseleave");
-		}	
+		}
 	}
     /**
 	* 入口
@@ -4346,7 +4660,7 @@ if (!Object.keys) Object.keys = function(o) {
         var vList2 = new VList2(the, options);
 		the = $.extend(true,{},the,new exchange(vList2));
 		return the;
-    };	
+    };
     /***
     **和其他插件的交互
 	** factory Class
@@ -4357,7 +4671,7 @@ if (!Object.keys) Object.keys = function(o) {
 			vList2.transform();
 		}
     }
-	
+
 	  var old = $.fn.vList2;
 	  $.fn.vList2.Constructor = VList2;
 	  // vList NO CONFLICT
@@ -4365,7 +4679,7 @@ if (!Object.keys) Object.keys = function(o) {
 	  $.fn.vList2.noConflict = function () {
 		$.fn.vList2 = old;
 		return this;
-	  }	
+	  }
 	/***
 	** outside accessible default setting
 	**/
