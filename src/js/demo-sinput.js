@@ -43,7 +43,24 @@ require(['./config'],function(){
 			$("div.ndp-sinput-wrapper[name=plain-pwd]").sinput({	
 				inputType:"password",
 				xion:'<span class="switcher"><label><input type="checkbox" class="scheckbox"></label></span>'
+			});	
+			
+			
+			var the =  $("div.ndp-sinput-wrapper[name=icon-sinput-validate]").sinput({
+				xion:"<span><i class='glyphicon glyphicon-remove-circle'></i></span>",
+				placeholder:"请输入",
+				pos:"right"
+			});
+			the.fail(true);//默认值是true 显示校验错误提示
+			
+			
+			var the2 =  $("div.ndp-sinput-wrapper[name=icon-sinput-validate2]").sinput({
+				xion:"<span><i class='glyphicon glyphicon-warning-sign'></i></span>",
+				placeholder:"请输入",
+				pos:"right"
 			});			
+			
+			the2.warning(true);//默认值是true  显示警告信息
         });
     });
 });

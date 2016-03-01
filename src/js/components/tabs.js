@@ -28,6 +28,7 @@
 	**/
     Tabs.prototype.init = function () {
         var _this = this;
+		var que = null;
 		this.elem.addClass(this.config.containerClass);//设置 包裹容器的 dim,外观
         this.concrate();//构建下来菜单的样子
 		this.initConfig();
@@ -65,40 +66,53 @@
 			});			
 		}
 		
-		if(_this.config.type==2){
-			_this.preButton.click(function(e){
-				var now = parseInt($(this).attr("now"));
-				if(now==0) return false;
-				$(this).attr("now",now);
-				var w = _this.tabwrapper.find("li[index="+(now-1)+"]").width();
-				var currW = parseInt(_this.tabwrapper.css("left"));//ul left
-				_this.tabwrapper.css("left",(currW + w)+"px");
-				now--;
-				$(this).attr("now",now);
-				_this.moreButton.attr("now",now);
-				if(now==0){ $(this).addClass(_this.config.negClass);  }
-				setAble(_this);				
+//		if(_this.config.type==2){
+			//向左的按钮
+			_this.preButton.unbind("click").click(function(e){
+				var _self = this;
+				clearTimeout(que);
+				que = setTimeout(function(){
+					var now = parseInt($(_self).attr("now"));
+					if(now==0) return false;
+					$(_self).attr("now",now);
+					var w = _this.tabwrapper.find("li[index="+(now-1)+"]").width();
+					var currW = parseInt(_this.tabwrapper.css("left"));//ul left
+					_this.tabwrapper.css("left",(currW + w)+"px");
+					now--;
+					$(_self).attr("now",now);
+					_this.moreButton.attr("now",now);
+					if(now==0){ $(_self).addClass(_this.config.negClass);  }
+					setAble(_this);						
+				},250);		
 			});
+			
+			
 			//右侧的 按钮点击
 			_this.moreButton.click(function(e){
 				var _self = this;
-				if($(this).attr("stop")) {
+				clearTimeout(que);
+				que = setTimeout(function(){
+				if($(_self).attr("stop")) {
 					e.preventDefault();
 					e.stopImmediatePropagation();
 					return false;
 				}
-				var now = parseInt($(this).attr("now"));
-				$(this).attr("now",now);
+				var now = parseInt($(_self).attr("now"));
+				$(_self).attr("now",now);
+
 				var w = _this.tabwrapper.find("li[index="+now+"]").width();
 				var currW = parseInt(_this.tabwrapper.css("left"));
 				_this.tabwrapper.css("left",(currW - w) + "px");
 				now++;
-				$(this).attr("now",now);
+				$(_self).attr("now",now);
 				_this.preButton.attr("now",now);
-				if(now>0){ _this.preButton.removeClass(_this.config.negClass);  }	
-				setAble(_this);
-			});			
-		}
+				if(now>0){ 
+					_this.preButton.removeClass(_this.config.negClass);  
+				}
+				setAble(_this);					
+				},250);
+			});
+//		}
     };
 	
 	/**
@@ -130,7 +144,7 @@
 			_this.tabwrapper.find("li>a").append("<i class='glyphicon glyphicon-remove transparent'></i>");
 		}
 		
-		if(_this.config.type==2){
+//		if(_this.config.type==2){
 			_this.elem.addClass("specialWrapper");
 			_this.tabwrapper.addClass("one-line");
 			_this.tabwrapper.find("li").addClass("carousel");
@@ -145,9 +159,7 @@
 				_this.moreButton.hide();
 				_this.preButton.hide();
 			}
-			
-			
-		}
+//		}
     }
     /**
      * jquery 提供了一个objct 即 fn，which is a shotcut of jquery object prototype
@@ -190,7 +202,6 @@
 	** outside accessible default setting
 	**/
 	$.fn.tabs.defaults = {
-		type:1,//2 特殊类型
 		list:[],
 		badge:false,// 是否显示badge
 		rm:false,//是否允许删除tab

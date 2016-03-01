@@ -238,7 +238,7 @@
 					if(i==0){
 						txtbox.text(txt).attr("index",0);
 					}		
-					var li = $("<li class='search-item' />").text(txt).attr({"index":i,"val":txt});
+					var li = $("<li class='search-item' />").text(txt).attr({"index":i,"val":txt,title:txt});
 					_this.list.append(li);
 				}
 				this.peal.append(_this.list).append("<i class='glyphicon glyphicon-menu-down' />");

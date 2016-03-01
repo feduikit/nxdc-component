@@ -31,8 +31,14 @@
 			}
 			if(!cfg.through){
 				elem.addClass("tip-spec");
-				var w = elem.width();
-				elem.css("margin-left",-(w/2)+"px");			
+				var rw = window.innerWidth;
+				if(rw<=960){
+					elem.css({"width":"100%","margin-left":0});	
+				}else{
+					if(cfg.content.length<100){
+						elem.css({"width":"50%","margin-left":"25%"});	
+					}
+				}				
 			}
 			elem.addClass("alert alert-"+cfg.type);
 			if(cfg.holdon && /^[\-\.]?(\d+)?\.?(\d+)?$/.test(cfg.holdon)){
@@ -47,6 +53,7 @@
 			elem.css("opacity",0).removeClass("alert");
 			if(tim) clearTimeout(tim);
 		});
+		
 		
 	});
 }(jQuery,window));

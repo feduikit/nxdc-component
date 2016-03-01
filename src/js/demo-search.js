@@ -11,7 +11,7 @@ require(['./config'],function(){
 			
 			$(".ndp-search-wrapper[name=mix]").search({
 				type:2,
-				dropList:[1,2,3]
+				dropList:[1,2,3,4,5,6,7,8,9,10,11,12]
 			}).on("scope_change",function(e){
 				//前置下拉菜单 更新
 				console.log(e.originalEvent.data);

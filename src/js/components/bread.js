@@ -1,9 +1,10 @@
-;(function ($) { //start with a [;] because if our code is combine or minification  with other code,AND other code not terminated with [;] then it will not infect ours.
+;(function ($) { //start with a [;] 
     var self = this;    
     function Bread(element, options) {
 		var self = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.bread.defaults,element.data(),options);
+		this.config.w = this.elem.width();
 		this.init();
     };
 	/**
@@ -15,7 +16,6 @@
         this.concrate();//构建下来菜单的样子
 		this.initConfig();
       
-		
 		//监听事件
 		_this.breadwrapper.find("li:has(a)").click(function(e){
 			e.stopImmediatePropagation();
@@ -36,19 +36,42 @@
 	**/
 	Bread.prototype.concrate = function(data){
 		var _this = this;
+		var w = 0;
 		this.breadwrapper = $("<ol class='breadcrumb'/>");
+		var thespan = document.createElement("span");
+		thespan.style.opacity = "0";
+		thespan.style.visibility="hidden";
+		thespan.style.position="absolute";
+		document.body.appendChild(thespan);
 		_this.config.list.forEach(function(item,index){
 			if(typeof(item)=="string"||typeof(item)=="number"){
 				var str= item;
 			}else{
 				str = item.name||item.text||item.label;
 			}
+			thespan.innerHTML = str;
+			var thew = thespan.getBoundingClientRect().width;
+			w+= thew;
 			if(index !=_this.config.list.length-1){
-				_this.breadwrapper.append("<li deep="+index+"><a href='#'>"+str+"</a></li>");
+				_this.breadwrapper.append("<li deep="+index+" w="+thew+" title="+str+" ><a href='#'><span>"+str+"</span></a></li>");
 			}else{
-				_this.breadwrapper.append("<li class='active' deep="+index+">"+str+"</li>");
+				_this.breadwrapper.append("<li class='active' deep="+index+" w="+thew+" title="+str+" ><span>"+str+"</span></li>");
+			}
+			
+			// 最后一个数组元素处理完毕
+			if(index == _this.config.list.length-1){
+				document.body.removeChild(thespan);
 			}
 		});
+		
+		//如果超出长度
+		if(w>=(_this.config.w-50)){
+			var perw = (_this.config.w-50)/_this.config.list.length;
+			_this.breadwrapper.find("li").css({"maxWidth":perw+"px"}).addClass("cus");
+		}else{
+			_this.breadwrapper.find("li").removeAttr("style").removeClass("cus");
+		}
+		
 		_this.elem.append(_this.breadwrapper);
 	};
 

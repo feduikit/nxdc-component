@@ -3,18 +3,13 @@ require(['./config'],function(){
         require(['bootstrap','./components/drop'],function(){
             $("div.ndp-drop-wrapper[name=inline-drop]").drop({
                 data:[1,2,3,4,5,6]
-            });
-            $("div.ndp-drop-wrapper[name=split-drop]").drop({
-                type:2,
-                data:[1,2,3]
-            });
-            $("div.ndp-drop-wrapper[name=inline-drop2]").drop({
-                data:[1,2,3,4,5,6,7,8]
-            }); 
-            $("div.ndp-drop-wrapper[name=split-drop2]").drop({
-                type:2,
-                data:[1,2,3]
-            }); 
+            }).on("drop_item_click",function(e){
+				//下拉选择项点击事件
+				//返回的数据有  data = {val:选中项的值,deep:深度(如果是多级) }
+				console.log(e.originalEvent.data);
+			});
+			
+
             $("div.ndp-drop-wrapper[name=tree-drop2]").drop({
                 data:[{text:"新疆"},
 					  {text:"陕西",sub:[{text:"西安"},
@@ -28,12 +23,12 @@ require(['./config'],function(){
 					  {text:"湖南"}],
 				caret:"glyphicon-menu-right"
             }).on("drop_item_click",function(e){
-				alert(11111);
+				console.log(e.originalEvent.data);
 			});  
             $("div.ndp-drop-wrapper[name=group-drop2]").drop({
 				type:3,
                 data:[
-					  {name:"中国区",group:[{text:"四川省"},
+					  {name:"中国区",group:[{text:"四川省11111111111sfsf"},
 									  {text:"河北省"}]},
 					  {name:"东亚区",group:[{text:"日本"},
 									  {text:"韩国"}]},
@@ -47,13 +42,20 @@ require(['./config'],function(){
                 data:[{name:"中国",disable:true},{name:"美国"},"德国","加拿大","澳大利亚"]
             }); 
             $("div.ndp-drop-wrapper[name=line-drop2]").drop({
-                data:["中国",{name:"美国"},{name:"德国",split:true},
+				//所有插件只要是数组类型的，都支持，字符串或者 object {} 类型的数据，也支持二者混合
+                data:["中国",{name:"美国"},
+					  {name:"德国",split:true},//是否显示分割线
 					  "加拿大","澳大利亚","法国","爱尔兰","以色列"]
-            }); 
+            });
+			
             $("div.ndp-drop-wrapper[name=checkbox-drop2]").drop({
 				type:4,
                 data:["中国","加拿大","澳大利亚","法国"]
-            }); 			
+            }).on("item_apply_click",function(e){
+				//多选 点击y应用按钮
+				//data = {checkedArr:cksArr}
+				console.log(e.originalEvent.data);
+			}); 			
         });
     });
 });

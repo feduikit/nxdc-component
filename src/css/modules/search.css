@@ -87,10 +87,14 @@
 }
 .search-drop-wrapper{
 	position: absolute;
+	z-index: 500;
 	width: 102%;
 	top:100%;
 	left:-1px;
 	border:1px solid #ccc;
+	max-height: 250px;
+	overflow-y: auto;
+	background-color: white;
 }
 /***
 **下拉列表的每一项
@@ -100,9 +104,7 @@
 	padding: 0;
 	height: 25px;
 	line-height: 25px;
-	padding-left: 5px;
-	background-color: white;
-	z-index: 400;
+	padding-left: 5px;	
 }
 /***
 ** 显示选中的项

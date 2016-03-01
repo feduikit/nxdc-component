@@ -93,7 +93,7 @@
 		if(cfg.xion&&cfg.type!=2){
 			var ru = this.elem.height();
 			var xion = $(cfg.xion).addClass('xion-cus')
-				.css({width:(ru-2)+"px",height:ru+"px",lineHeight:ru+"px"});
+				.css({width:(ru-2)+"px",height:ru+"px",lineHeight:(ru+4)+"px"});
 			if(cfg.pos=="left"){
 				_this.elem.prepend(xion);
 				_this.input.css({"left":ru+"px","paddingLeft":"0"});
@@ -144,13 +144,27 @@
 	** factory Class
     **@param {Drop} Bread :  instacne of the plugin builder
     **/
-    function exchange(drop){
+    function exchange(sinput){
         /**
         **@param {Object} msg {type:"类型"}
         **/
         this.manipulate = function(msg){
             
         }
+		
+		/***
+		** 校验告警提示
+		***/
+		this.warning = function(bool){
+			sinput.elem.toggleClass("warning",bool?true:bool);
+		}
+		
+		/***
+		** 校验失败提示
+		***/
+		this.fail = function(bool){
+			sinput.elem.toggleClass("fail",bool?true:bool);
+		}		
     }
 	
 	  var old = $.fn.sinput;
@@ -168,9 +182,9 @@
 		type:"1",//类型 1,普通输入框，2 stepper
 		title:"",//出现title 
 		xion:"",//接受3种类型，bootstrap 里面的icon 接受小图片jpg, png，或者文字
-		pos:"right",//默认图标放在最左边
+		pos:"right",//默认图标放在最左边 left, right 两个选项
 		placeholder:"请输入文字",// 占位提示文字
-		inputType:"text",//password,"float"  文本，数字，密码
+		inputType:"text",//password,"float"  文本，浮点数字，密码
 		min:0,
 		max:Infinity,
 		step:1,

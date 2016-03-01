@@ -3,7 +3,7 @@ require(['./config'],function(){
         require(['bootstrap','./components/bread'],function(){
 			$("div.ndp-bread-wrapper[name=plain-bread]").bread({
 				home:"<i class='glyphicon glyphicon-home'></i>",
-				list:["Home","Library","Data"],
+				list:["Homeqeqweqwewqeqwewqewqewqqqwewqeqweqweqeqweqweqweqweqweqw","Libraryaaaaaaaaaaaaaaaaaaaaaaaaaaaa","Dataasdsadasdsfsfsafasfsfsafsdfsdfdswqwqewqwqeqweqweqweqwewqewqewqeweqweweqeqwqweqwfwefwe"],
 				spliter:">"
 			});
 			$("div.ndp-bread-wrapper[name=drop-bread]").bread({

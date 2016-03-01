@@ -3,6 +3,7 @@
         "/Users/ericever/Desktop/develop/nxdc_ui/src/js/components/table.js",
         "/Users/ericever/Desktop/develop/nxdc_ui/src/js/components/vList.js",
         "/Users/ericever/Desktop/develop/nxdc_ui/src/js/components/treable.js",
-        "demo.js"
+        "demo.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/lib/bootstrap/js/transition.js"
     ]
 }

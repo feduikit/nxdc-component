@@ -2,7 +2,7 @@ require(['./config'],function(){
     require(['jquery','utils'],function($){
         require(['bootstrap','./components/tabs'],function(){
 			$("div.ndp-tab-wrapper[name=plain-tab]").tabs({
-				list:["hello","world","china"]
+				list:["hello","world","china","hello11111"]
 			});
 			
 			$("div.ndp-tab-wrapper[name=badge-tab]").tabs({
