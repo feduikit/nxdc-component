@@ -8,13 +8,13 @@ require(['./config'],function(){
 			});
 			
 			$(".ndp-page-wrapper[name=drop-page]").page({
-				type:2,
-				totalItems:200,
-				perPage:10
+				type:2,//每页展示多少条，和 条目下拉菜单分开显示
+				totalItems:200,//总共200页
+				perPage:10//每页10条
 			});
 			
 			$(".ndp-page-wrapper[name=drop-page2]").page({
-				type:3,
+				type:3,//条目下拉菜单和选择的展示条目数合并展示
 				totalItems:200,
 				perPage:10
 			});	

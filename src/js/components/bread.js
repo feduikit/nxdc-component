@@ -1,6 +1,17 @@
 ;(function ($) { //start with a [;] 
     var self = this;    
-    function Bread(element, options) {
+    
+	function ellipsis(_this){
+		var w = _this.elem.width();
+		if(_this.config.wis>=(w-40)){
+			var perw = (w-40)/_this.config.list.length;
+			_this.breadwrapper.find("li").css({"maxWidth":perw+"px"}).addClass("cus");
+		}else{
+			_this.breadwrapper.find("li").removeAttr("style").removeClass("cus");
+		}		
+	}
+	
+	function Bread(element, options) {
 		var self = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.bread.defaults,element.data(),options);
@@ -28,6 +39,10 @@
 			}
 			_this.breadwrapper.find("li:gt("+index+")").remove();
 			fireEvent(_this.elem.get(0),"layer_click",{deep:index,text:value});
+		});
+		
+		$(window).resize(function(){
+			ellipsis(_this);
 		});
     };
 	
@@ -61,17 +76,12 @@
 			// 最后一个数组元素处理完毕
 			if(index == _this.config.list.length-1){
 				document.body.removeChild(thespan);
+				_this.config.wis = w;
 			}
 		});
 		
-		//如果超出长度
-		if(w>=(_this.config.w-50)){
-			var perw = (_this.config.w-50)/_this.config.list.length;
-			_this.breadwrapper.find("li").css({"maxWidth":perw+"px"}).addClass("cus");
-		}else{
-			_this.breadwrapper.find("li").removeAttr("style").removeClass("cus");
-		}
-		
+		//如果文字超出长度		
+		ellipsis(_this);
 		_this.elem.append(_this.breadwrapper);
 	};
 

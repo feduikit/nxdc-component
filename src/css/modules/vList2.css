@@ -28,7 +28,9 @@
 	padding: 0;
 	background-color: #f7f7f7;
 }
-
+/****
+** content-part  是放置文字内容的部分
+****/
 .ndp-vList2-wrapper li.list-item .content-part{
 	position: relative;
 	top:0;
@@ -52,6 +54,7 @@
 
 .ndp-vList2-wrapper li[deep='2'].list-item .content-part:hover{
 	background-color: #f0f0f0;
+	cursor: default;
 }
 .ndp-vList2-wrapper li.list-item.active .content-part,.ndp-vList2-wrapper li.list-item.active .content-part:hover{
 	background-color: #ffffff;

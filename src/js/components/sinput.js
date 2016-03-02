@@ -153,10 +153,19 @@
         }
 		
 		/***
+		** 给 输入框设置默认值
+		***/
+		this.val = function(o){
+			var txt = (typeof(o)=="string"||typeof(o)=="number")?o:(o.label||o.text||o.name||o.value);
+			sinput.elem.find("input").val(txt);
+			return sinput.elem;
+		}
+		/***
 		** 校验告警提示
 		***/
 		this.warning = function(bool){
 			sinput.elem.toggleClass("warning",bool?true:bool);
+			return sinput.elem;
 		}
 		
 		/***
@@ -164,6 +173,7 @@
 		***/
 		this.fail = function(bool){
 			sinput.elem.toggleClass("fail",bool?true:bool);
+			return sinput.elem;
 		}		
     }
 	

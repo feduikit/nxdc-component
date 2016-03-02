@@ -2,7 +2,8 @@ require(['./config'],function(){
     require(['jquery','utils'],function($){
         require(['bootstrap','./components/drop'],function(){
             $("div.ndp-drop-wrapper[name=inline-drop]").drop({
-                data:[1,2,3,4,5,6]
+                data:["中国","日本",3,4,5,6],
+				val:"中国"
             }).on("drop_item_click",function(e){
 				//下拉选择项点击事件
 				//返回的数据有  data = {val:选中项的值,deep:深度(如果是多级) }
@@ -24,11 +25,11 @@ require(['./config'],function(){
 				caret:"glyphicon-menu-right"
             }).on("drop_item_click",function(e){
 				console.log(e.originalEvent.data);
-			});  
+			}).val("新疆");  
             $("div.ndp-drop-wrapper[name=group-drop2]").drop({
 				type:3,
                 data:[
-					  {name:"中国区",group:[{text:"四川省11111111111sfsf"},
+					  {name:"中国区s",group:[{text:"四川省11111111111sfsfsssasassdsdsadsasaassdaas"},
 									  {text:"河北省"}]},
 					  {name:"东亚区",group:[{text:"日本"},
 									  {text:"韩国"}]},

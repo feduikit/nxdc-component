@@ -48,7 +48,14 @@ require(['./config'],function(){
 					  {label:"用户设置"},
 					  {label:"修改密码"},
 					  {label:"接触绑定"},
-					  {label:"退出"}
+					  {label:"退出"},
+					  {label:"退出1"},
+					  {label:"退出2"},
+					  {label:"退出3"},
+					  {label:"退出4"},
+					  {label:"退出5"},
+					  {label:"退出6"},
+					  {label:"退出7"}
 					 ]
 			}).on("item_click",function(e,data){
 				console.log(data);

@@ -31,6 +31,10 @@ li[deep] span.list-txt-wrapper{
 	height: 40px;/** 行高 调整需要修改 **/
 	line-height: 40px;/** 行高 调整需要修改 **/
 	padding-left: 12px;
+	overflow:hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	cursor: pointer;
 }
 li[deep="2"] span.list-txt-wrapper{
 	padding-left: 24px;

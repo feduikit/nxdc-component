@@ -4,7 +4,7 @@ require(['./config'],function(){
 			$(".ndp-vList-wrapper[name=plain]").vList({
 				data:[{label:"FATHER ONE",sub:[
 					  	{label:"1-1",sub:[
-							{label:"1-1-1"},
+							{label:"1-1-1ewrewrewrewrewreerwerwerwe"},
 							{label:"1-1-2"},
 							{label:"1-1-3"}
 						]},

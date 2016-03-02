@@ -219,7 +219,11 @@
 				}
 			});			
 			
-		}
+		};
+		
+		$(document).click(function(e){
+			_this.elem.find(".drop-wrapper>.page-dropdown").addClass("hidden");
+		});
 		
     };
 	
@@ -230,12 +234,13 @@
 		var _this = this;
 		var cfg = _this.config;
 		if(cfg.type==2 || cfg.type == 3){
-			_this.pagetext = $("<span class='page-choosed-text'/>").html(cfg.defItems);//显示当前选定的 每页显示的条数
+			if(cfg.defItems>=cfg.perPages.length) cfg.defItems = 0;// 默认选择下拉菜单的第一项
+			_this.pagetext = $("<span class='page-choosed-text'/>").html(cfg.perPages[cfg.defItems]);//显示当前选定的 每页显示的条数
 			_this.dropwrapper = $("<span class='page-drop-list'/>");
 			var more = $("<i class='glyphicon glyphicon-menu-hamburger' />");
 			var down = $("<i class='glyphicon glyphicon-triangle-bottom' />");
 			var drop = $("<ul class='page-dropdown hidden'/>");//
-			_this.num = $("<div class='page-now' />").text(cfg.defItems);
+			_this.num = $("<div class='page-now' />").text(cfg.perPages[cfg.defItems]);
 			if(cfg.type==2){
 				_this.dropwrapper.append(more).append(down);
 			}else if(cfg.type==3){
@@ -322,7 +327,7 @@
 	  $.fn.page.noConflict = function () {
 		$.fn.page = old;
 		return this;
-	  }		
+	  }
 	/***
 	** outside accessible default setting
 	**/
@@ -333,7 +338,7 @@
 		totalPages:1,//总共有多少页
 		currentPage:1,//默认显示第一页
 		perPage:10,//每页显示多少条
-		defItems:10,
+		defItems:0,//默认每页展示多少条，下来数组中的第几个选项，必须和perPages联用
 		perPages:[10,20,30],//每页显示条数选择区间
 		totalItems:0,//总共有多少条数据  如果这个数据存在，则totalPages 的数据就不用了，使用这里计算的结果	
 		pre:"上一页",

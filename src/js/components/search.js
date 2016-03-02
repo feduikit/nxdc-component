@@ -267,7 +267,7 @@
 			this.icon = $(cfg.magicon);
 			this.wrapper.append(this.icon);
 			var h = this.elem.height();
-			this.input.css({"width":(_this.wrapper.width()-h-2)+"px","height":h+"px"});
+			this.input.css({"width":(_this.wrapper.width()-h-2)+"px","height":h+"px","line-height":h+"px"});
 			this.icon.css({"width":h+"px","height":h+"px","line-height":h+"px"});
 		}
 		
@@ -312,9 +312,11 @@
         /**
         **@param {Object} msg {type:"类型"}
         **/
-        this.manipulate = function(msg){
-            
-        }
+		this.val = function(o){
+			var txt = (typeof(o)=="string"||typeof(o)=="number")?o:(o.label||o.text||o.name||o.value);
+			search.elem.find("input").val(txt).attr("name",txt);
+			return search.elem;
+		}
     }
 	
 	  var old = $.fn.search;

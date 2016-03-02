@@ -63,7 +63,7 @@
 /***
 **列表头
 ***/
-.sutable-header{
+.treable-header{
 	position: relative;
 	min-width: 100%;
 	width: 400%;
@@ -144,7 +144,7 @@
 	overflow: hidden;
 }
 
-.sutable-header>.treable-row{
+.treable-header>.treable-row{
 	position: relative;
 	height: 40px;
 	width: 100%;
@@ -300,7 +300,7 @@
 	margin-left: 40px;
 	width: 100px!important;
 }
-.sutable-header .treable-row>.sutable-col-status{
+.treable-header .treable-row>.sutable-col-status{
 	margin-left: 41px;/*****修正问题****/
 }
 .treable-row[deep='2']>.sutable-col-status{
@@ -325,7 +325,7 @@
 }
 
 
-.sutable-header .sutable-col{
+.treable-header .sutable-col{
 	line-height: 40px;
 }
 .treable-row .sutable-col:nth-child(n+3){
@@ -336,7 +336,7 @@
 /***
 ** 排序
 ***/
-.sutable-header .sutable-col>.sort-wrapper{
+.treable-header .sutable-col>.sort-wrapper{
 	position: absolute;
 	display: inline-block;
 	height: 100%;
@@ -348,14 +348,20 @@
 	padding-top:2px;
 }
 
-.sutable-header .sutable-col>.sort-wrapper>i{
+.treable-header .sutable-col>.sort-wrapper>i{
 	display: block;
 	font-size: 7px;
 	left: 0;
+	color:#8c8c8c;
 }
+.treable-header .sutable-col>.sort-wrapper>i.hi{
+	color:black;
+}
+/*
 .sutable-col>.sort-wrapper>i:hover{
 	color:#dfdfdf;
 }
+*/
 
 .sutable-col>.sort-wrapper>i.glyphicon-triangle-top{
 	margin-top:85%;
@@ -366,7 +372,7 @@
 	line-height: 42px;
 }
 
-.treable-row .sutable-col-name,.sutable-header .sutable-col-name{
+.treable-row .sutable-col-name,.treable-header .sutable-col-name{
 	min-width: 100px!important;
 /*	width: 15%;*/
 }

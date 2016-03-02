@@ -35,6 +35,11 @@
 	border-width:0;
 	font-size: 12px;
 }
+.search-decoration>input[type][disabled]{
+	color:#bcbcbc;
+}
+
+
 .search-decoration>input[type]:focus{
 	outline:none;
 }

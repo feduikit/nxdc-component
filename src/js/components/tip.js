@@ -54,6 +54,6 @@
 			if(tim) clearTimeout(tim);
 		});
 		
-		
+
 	});
 }(jQuery,window));

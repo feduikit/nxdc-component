@@ -2,8 +2,8 @@ require(['./config'],function(){
     require(['jquery','utils'],function($){
         require(['bootstrap','./components/tree'],function(){
 		$("div[name='plain-tree']").tree({
-				data:[{label:"FATHER ONE",sub:[
-					  	{label:"1-1",sub:[
+				data:[{label:"FATHER ONEs",sub:[
+					  	{label:"1-1dddddddd",sub:[
 							{label:"1-1-1"},
 							{label:"1-1-2"},
 							{label:"1-1-3"}

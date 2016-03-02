@@ -12,9 +12,9 @@
                 var o = arr[i];
                 var text = (typeof(o)=="string"||typeof(o)=="number")?o:(o.name||o.txt);
                 if(args[2]){
-					var col = $('<span class="ndp-table-col"><span class="head-txt">'+text+'</span></span>');
+					var col = $('<span class="ndp-table-col" title='+text+'><span class="head-txt">'+text+'</span></span>');
 				}else{
-					col = $('<span class="ndp-table-col">'+text+'</span>');
+					col = $('<span class="ndp-table-col" title='+text+'>'+text+'</span>');
 				}
 				
                 row.append(col);
@@ -22,9 +22,9 @@
         }else{
             Object.keys(arr).forEach(function(item){
 				if(args[2]){
-					col = $('<span class="ndp-table-col"><span class="head-txt">'+arr[item]+'</span></span>');
+					col = $('<span class="ndp-table-col" title='+arr[item]+'><span class="head-txt">'+arr[item]+'</span></span>');
 				}else{
-					col = $('<span class="ndp-table-col">'+arr[item]+'</span>');
+					col = $('<span class="ndp-table-col" title='+arr[item]+'>'+arr[item]+'</span>');
 				}    
                 row.append(col);               
             });
@@ -223,9 +223,26 @@
      */
     $.fn.table = function (options) {
 		var the = this.first();
-        new Table(the, options);
+        var table = new Table(the, options);
+		the = $.extend(true,{},the,new exchange(table));
 		return the;
     };
+	
+    /***
+    **和其他插件的交互
+	** factory Class
+    **@param {Drop} drop :  instacne of the plugin builder
+    **/
+    function exchange(table){
+        /**
+        **@param {Object} msg {type:"类型"}
+        **/
+		this.update = function(data){
+			table.body.empty();
+			table.buildBody(data);
+			return table.elem;
+		}
+    }	
 	
 	
 	  var old = $.fn.table;
@@ -235,7 +252,7 @@
 	  $.fn.table.noConflict = function () {
 		$.fn.table = old;
 		return this;
-	  }	
+	  }
 	
 	/***
 	** outside accessible default setting

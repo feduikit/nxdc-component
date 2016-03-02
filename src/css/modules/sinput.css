@@ -85,10 +85,12 @@
 	z-index: 100;
 	cursor: pointer;
 }
+/**
 .xion-cus>i:hover{
 	color:#823030;
 	font-size: 14px;
 }
+*/
 
 .xion-cus>*{
 	position: relative;

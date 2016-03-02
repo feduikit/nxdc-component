@@ -34,7 +34,6 @@
 			cols.forEach(function(col,idx){
 				var switcher = '<span class="switcher">\
 				<label class = "active" ><input type = "checkbox" class = "scheckbox"> </label></span>';
-
 				var column = $('<span class="sutable-col" col='+idx+' />');
 				if(cfg.colDims&&cfg.colDims.length){
 					column.css("width",cfg.colDims[idx]+"px");
@@ -48,9 +47,9 @@
 				if(idx>0){
 					if(typeof(col)=="object"){
 						var val = col.label||col.text||col.name;
-						column.attr("data-val",val).html(val);
+						column.attr({"data-val":val,title:val}).html(val);
 					}else{
-						column.attr("data-val",val).html(col);
+						column.attr({"data-val":val,"title":val}).html(col);
 					}
 				}		
 				row.append(column);
@@ -185,7 +184,12 @@
 		** 表头 某一列的排序按钮被点击
 		***/
 		_this.head.find(".sort-wrapper").click(function(e){
+			e.stopImmediatePropagation();
 			var fa = $(this).parent();
+			$(this).children().toggleClass("hi");
+			var siblings = fa.siblings();
+			siblings.find(".sort-wrapper").children("i").removeClass("hi");
+			siblings.find(".sort-wrapper").children("i.glyphicon-triangle-bottom").addClass("hi");
 			fireEvent(_this.elem.get(0),"SORT_CLICK",{col:fa.attr("col"),val:fa.text()});
 		});	
 		/***
@@ -345,7 +349,7 @@
 	Treable.prototype.concrate = function(){
 		var _this = this;
 		this.toolbar = $("<div class='sutable-toolbar' role='table' />");
-		this.head = $("<ul class='sutable-header' role='table' />").html('<li class=" treable-row"></li>');
+		this.head = $("<ul class='treable-header' role='table' />").html('<li class=" treable-row"></li>');
 		this.elem.append("<span class='split-line'></span>");
 		this.elem.append(this.toolbar).append(this.head);
 	};
@@ -403,7 +407,7 @@
 		** 显示 排序图标
 		***/
 		if(cfg.sort){
-			var st = "<span class='sort-wrapper'><i class='glyphicon glyphicon-triangle-top'></i><i class='glyphicon glyphicon-triangle-bottom'></i></span>";			
+			var st = "<span class='sort-wrapper'><i class='glyphicon glyphicon-triangle-top'></i><i class='glyphicon glyphicon-triangle-bottom hi'></i></span>";			
 			if(cfg.sort instanceof Array){
 				cfg.sort.forEach(function(num,idx){
 					_this.head.find(".sutable-col[col="+num+"]").append(st);

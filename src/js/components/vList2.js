@@ -27,7 +27,7 @@
 				if(o.href){
 					text = '<a href="'+o.href+'">'+text+'</a>';
 				}
-				txt.html(text);
+				txt.html(text).attr("title",text);
 
 				li.attr({"value":text,"deep":deep});
 				if(array && array instanceof Array){
@@ -208,6 +208,7 @@
     function exchange(vList2){
 		this.fold = function(){
 			vList2.transform();
+			return vList2.elem;
 		}
     }
 

@@ -2,7 +2,7 @@ require(['./config'],function(){
     require(['jquery','utils'],function($){
         require(['bootstrap','./components/vList2'],function(){
 			var me = $(".ndp-vList2-wrapper[name=plain]").vList2({
-				data:[{label:"广告投放",
+				data:[{label:"广告投放112132321312",
 					   icon:"<i class='glyphicon glyphicon-home'></i>",
 					   sub:[
 					  	{label:"河北"},
@@ -12,7 +12,7 @@ require(['./config'],function(){
 					 ]},
 					 {label:"资源监控",icon:"<i class='glyphicon glyphicon-book'></i>",
 					  sub:[
-							{label:"法国"},
+							{label:"法国13"},
 							{label:"意大利"},
 							{label:"德国"},
 							{label:"卢森堡"},
@@ -26,9 +26,9 @@ require(['./config'],function(){
 						    {label:"阿根廷"}
 					 ]}					  
 				]
-			}).on("shrink_complete",function(){
+			}).on("shrink_complete",function(e){
 				console.log("收缩完成");
-			}).on("expand_complete",function(){
+			}).on("expand_complete",function(e){
 				console.log("展开完成");
 			}).on("item_click",function(e,data){
 				console.log(data);

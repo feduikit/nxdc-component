@@ -7,7 +7,7 @@ require(['./config'],function(){
 			
 			$(".ndp-search-wrapper[name=dis]").search({
 				disabled:true
-			});
+			}).val("你好 zhongguo1");
 			
 			$(".ndp-search-wrapper[name=mix]").search({
 				type:2,

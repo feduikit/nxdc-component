@@ -229,6 +229,9 @@
 		}
 	};
 
+	/***
+	** 设置用户配置选项
+	***/
     Drop.prototype.initConfig = function(){
         var _this = this;
         if(this.placeholder){
@@ -292,7 +295,7 @@
     $.fn.drop = function (options) {
 		var the = this.first();
         var drop = new Drop(the, options);
-        exchange.call(this,drop);
+		the = $.extend(true,{},the,new exchange(drop));
 		return the;
     };
 	
@@ -308,6 +311,14 @@
         this.manipulate = function(msg){
             
         }
+		/***
+		** 设置显示的值
+		***/
+		this.val = function(o){
+			var txt = (typeof(o)=="string"||typeof(o)=="number")?o:(o.label||o.text||o.name||o.value);
+			drop.elem.find("input").val(txt).attr("name",txt);
+			return drop.elem;
+		}
     }
 	/***
 	** outside accessible default setting

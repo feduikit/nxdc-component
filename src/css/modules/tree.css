@@ -105,8 +105,11 @@ span.tree-joint-wrapper.active>*:nth-child(2){
 }
 
 .tree-txt-wrapper{
+	position: relative;
 	font-weight: normal;
 	cursor: default;
+	white-space: nowrap;
+	word-wrap: normal;
 }
 /***
 ** 文字前面的图标
