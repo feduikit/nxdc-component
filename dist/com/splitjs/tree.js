@@ -1,5 +1,19 @@
 ;(function ($) {
-    var self = this;    
+    var self = this;
+	
+	/***
+	**加 ... 对于比较长的字符串
+	***/
+	function ellipsis(_this){
+		var w = _this.elem.width();
+		if(_this.config.wis>=(w-40)){
+			var perw = (w-40)/_this.config.list.length;
+			_this.breadwrapper.find("li").css({"maxWidth":perw+"px"}).addClass("cus");
+		}else{
+			_this.breadwrapper.find("li").removeAttr("style").removeClass("cus");
+		}		
+	}
+	
 	/***
 	** 处理树桩菜单
 	**/
@@ -21,7 +35,7 @@
 			if(typeof(o)=="object"){
 				var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group||o.children;
 				var text = o[cfg.textKey]||o.text||o.label||o.title||o.name;
-				txtWrapper.html(text);
+				txtWrapper.html(text).attr("title",text);
 				li.attr({"value":text,"deep":deep});
 				if(array && array instanceof Array){
 					li.prepend($("<span class='tree-joint-wrapper' />").html(cfg.joint));

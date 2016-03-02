@@ -22,7 +22,7 @@
 			if(typeof(o)=="object"){
 				var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group||o.children;
 				var text = o[cfg.textKey]||o.text||o.label||o.title||o.name;
-				txtWrapper.html(text);
+				txtWrapper.html(text).attr("title",text);
 				li.attr({"value":text,"deep":deep});
 				if(array && array instanceof Array){
 					if(cfg.expicon){

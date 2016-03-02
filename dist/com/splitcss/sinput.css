@@ -14,10 +14,28 @@
 	box-shadow:0 0 2px #ccc;
 /*	outline: 1px;*/
 }
-.ndp-sinput-wrapper.warning{
-	border-color:red;
-	box-shadow: 0 0 2px red;
+/***
+** 校验失败
+***/
+.ndp-sinput-wrapper.fail{
+	border-color:#e40000;
 }
+
+.ndp-sinput-wrapper.fail>.xion-cus>i{
+	color:#e40000;
+}
+
+/***
+** 校验提示
+***/
+.ndp-sinput-wrapper.warning{
+	border-color:#ffb000;
+/*	box-shadow: 0 0 2px #db9905;*/
+}
+.ndp-sinput-wrapper.warning>.xion-cus>i{
+	color:#ffb000;
+}
+
 .ndp-sinput-wrapper[disabled],.ndp-sinput-wrapper[disabled].active{
 	box-shadow: 0 0 0 transparent;
 	background-color: #eeeeee;
@@ -65,12 +83,19 @@
 	text-align: center;
 	overflow: hidden;
 	z-index: 100;
+	cursor: pointer;
 }
+/**
+.xion-cus>i:hover{
+	color:#823030;
+	font-size: 14px;
+}
+*/
 
 .xion-cus>*{
 	position: relative;
 	width: 100%;
-	height: 100%;
+	font-size: 16px;
 }
 
 /**

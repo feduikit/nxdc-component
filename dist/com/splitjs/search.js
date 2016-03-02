@@ -238,7 +238,7 @@
 					if(i==0){
 						txtbox.text(txt).attr("index",0);
 					}		
-					var li = $("<li class='search-item' />").text(txt).attr({"index":i,"val":txt});
+					var li = $("<li class='search-item' />").text(txt).attr({"index":i,"val":txt,title:txt});
 					_this.list.append(li);
 				}
 				this.peal.append(_this.list).append("<i class='glyphicon glyphicon-menu-down' />");
@@ -267,7 +267,7 @@
 			this.icon = $(cfg.magicon);
 			this.wrapper.append(this.icon);
 			var h = this.elem.height();
-			this.input.css({"width":(_this.wrapper.width()-h-2)+"px","height":h+"px"});
+			this.input.css({"width":(_this.wrapper.width()-h-2)+"px","height":h+"px","line-height":h+"px"});
 			this.icon.css({"width":h+"px","height":h+"px","line-height":h+"px"});
 		}
 		
@@ -312,9 +312,11 @@
         /**
         **@param {Object} msg {type:"类型"}
         **/
-        this.manipulate = function(msg){
-            
-        }
+		this.val = function(o){
+			var txt = (typeof(o)=="string"||typeof(o)=="number")?o:(o.label||o.text||o.name||o.value);
+			search.elem.find("input").val(txt).attr("name",txt);
+			return search.elem;
+		}
     }
 	
 	  var old = $.fn.search;

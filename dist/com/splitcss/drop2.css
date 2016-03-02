@@ -9,7 +9,9 @@
 }
 .dropdown>.dropdown-menu{
 	position: absolute;
-	border-radius: 0;	
+	border-radius: 0;
+	max-height: 250px;
+	overflow: auto;
 }
 
 .dropdown.drop2-wrapper button{

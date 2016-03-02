@@ -5,17 +5,18 @@
 	right: 0;
 	opacity:0;
 	border-radius: 0;
-	transition: padding,margin-left,height,opacity 0.6s;
+	transition:opacity 0.5s;
 	display: hidden;
 	overflow: hidden;
 	z-index: 9999;
+	overflow: hidden
 }
 
 .tip-spec{
-	min-width: 500px;
-	left:50%;
+	width: 80%;
+/*	left:10%;*/
 	right:inherit;
-	margin-left: -250px;
+	margin-left: 10%;
 }
 .tip.alert{
 	display:block;

@@ -41,7 +41,7 @@
 			var o = arr[i];
 			var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group;
 			var text = o[cfg.textKey]||o.text||o.label||o.title||o.name;
-			var li = $("<li class='drop-one-item' value="+text+" deep="+deep+"/>");
+			var li = $("<li class='drop-one-item' value="+text+" deep="+deep+" title="+text+" />");
 			var pad = (deep+2)*5 + 2;
 			li.css({"padding-left":pad+"px"});
 			if(array && array instanceof Array){
@@ -70,20 +70,86 @@
 		
         _this.peal.click(function(e){
             e.stopImmediatePropagation();
+			_this.elem.toggleClass("focus");
             _this.list.toggleClass("hidden");
             setDirect(_this);
         });
         
+		
+		/****
+		** 下拉选项被点击
+		***/
         _this.list.find("li[class='drop-one-item'],li[class='drop-one-item split-line']").click(function(e){
             e.stopImmediatePropagation();
             _this.list.addClass("hidden");
 			var itemIndex = $(this).index();
 			var deep = $(this).attr("deep");
             var value = $(this).attr("value");
-            _this.peal.find("input").val(value);
+            _this.peal.find("input").val(value).attr("name",value);
 			//deep 表示树桩菜单第几层 base from 0。index:表示这一层的第几个， base from 1
             fireEvent(_this.elem.get(0),"drop_item_click",{val:value,deep:deep,index:itemIndex});
         });
+		
+		
+		/***
+		** input 输入框里面 点击键盘
+		***/
+		_this.peal.keyup(function(e){			
+			if(e.keyCode == 13){//回车
+				if(!_this.list.hasClass("hidden") && _this.list.find("li.em").length){
+					var item = _this.list.find("li.em");
+					var val = item.attr("value");
+					var deep = item.attr("deep");
+					$(this).find("input").val(val).attr("name",val);
+					 fireEvent(_this.elem.get(0),"drop_item_click",{val:val,deep:deep});
+					_this.list.addClass("hidden");
+				}
+			}
+
+			var items = _this.list.find("li[class='drop-one-item'],li[class='drop-one-item split-line'],li[class='drop-one-item em'],li[class='drop-one-item split-line em']");	
+			var arr = [].slice.call(items,0);
+			if(e.keyCode == 40){//下
+				//默认选中下拉的 第一个
+				//_this.list.focus();
+				if(_this.list.find("li.em").length){//存在
+					//这个em 处在 items数组中的第几个
+					var now = _this.list.data("now")||(function(){
+						for(var i=0;i<arr.length;i++){
+							if($(arr[i]).hasClass("em")) return i;
+						};						
+					}());
+					var the = items.filter(".em").first();
+					var next = $(items[parseInt(now)+1]);
+					if(next.get(0)){
+						next.addClass("em");
+					}else{
+						items.first().addClass("em");
+					}
+					the.removeClass("em");
+				}else{//不存在
+					items.first().addClass("em");
+				}
+			}else if(e.keyCode == 38){//上
+				//默认选中下拉的最后一个
+				the = items.filter(".em").first();
+				if(_this.list.find("li.em").length){
+					now = _this.list.data("now")||(function(){
+						for(var i=0;i<arr.length;i++){
+							if($(arr[i]).hasClass("em")) return i;
+						};						
+					}());
+					var prev = $(items[parseInt(now)-1]);
+					if(prev.get(0)){
+						prev.addClass("em");
+					}else{
+						items.last().addClass("em");
+					}
+					the.removeClass("em");
+				}else{
+					items.last().addClass("em");
+				}				
+			}			
+		});		
 		
 		/***
 		** 如果是树桩菜单，加监听
@@ -134,14 +200,15 @@
 					cksArr.push({index:$(item).index(),value:val});
 					vals.push(val);
 				});
-				_this.peal.find("input").val(vals.join(","))
+				_this.peal.find("input").val(vals.join(",")).attr("name",vals.join(","));
 				fireEvent(_this.elem.get(0),"item_apply_click",{checkedArr:cksArr});
 			});
 			
-			$("body").click(function(e){
+			$(document).click(function(e){
 				if(!(e.target.tagName == "INPUT" && e.target.type == "checkbox")){
 					$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
 				}
+				$(".ndp-drop-wrapper").removeClass("focus");
 			});
 		}
     };
@@ -151,10 +218,10 @@
 	**/
 	Drop.prototype.concrate = function(data){
 		var _this = this;
-        this.peal = $("<div class='drop-peal'/>");//外观包装
+        this.peal = $("<div class='drop-peal' tabIndex='-1' />");//外观包装
         if(this.config.type==2) this.peal.addClass("drop-split-peal");
-        this.list = $("<ul class='drop-list hidden' />");
-        this.peal.html('<input type="text" readonly="true"><span class="caret-wrapper"><span class="caret glyphicon '+_this.config.caret+'"></span></span>');
+        this.list = $("<ul class='drop-list hidden' tabIndex='-1' tabIndex='-1' />");
+        this.peal.html('<input type="text" readonly="true"><span class="caret-wrapper" tabIndex=-1><span class="caret glyphicon '+_this.config.caret+'"></span></span>');
         this.elem.append(_this.peal).append(_this.list);
 		if(_this.config.type == 4){
 			var all = $("<li class='drop-one-item checkbox-item all-banner'><span>All</span><input type='checkbox'/></li>");
@@ -162,14 +229,17 @@
 		}
 	};
 
+	/***
+	** 设置用户配置选项
+	***/
     Drop.prototype.initConfig = function(){
         var _this = this;
         if(this.placeholder){
             _this.peal.find("input").attr("placeholder",_this.placeholder);
         }
         
-        if(_this.val){
-            _this.peal.find("input").val(_this.val);
+        if(_this.config.val){
+            _this.peal.find("input").val(_this.config.val).attr("name",_this.config.val);
         }
         
 		/**
@@ -182,7 +252,7 @@
 				var sub = item[key2]||item.sub||item.son||item.next||item.group;
 				var text = item[key1]||item.text||item.label||item.title||item.name;
 				if(sub && sub instanceof Array){//存在下一层数组，说明这是一个
-					var li = $("<li class='drop-one-item drop-recursive' deep='0'/>");
+					var li = $("<li class='drop-one-item drop-recursive' deep='0' />");
 					if(_this.config.type!=3){
 						var ca = $("<i/>",{class:"glyphicon"});
 						ca.addClass(_this.config.caret);
@@ -190,11 +260,11 @@
 					}else{
 						li.addClass("group-hilight");
 					}
-					li.append(text);
-					recursive(li,sub,_this.config);
+					li.append(text).attr("title",text);
+					recursive(li,sub,_this.config,0);
 					_this.list.append(li);
 				}else{
-					li = $("<li class='drop-one-item' value="+text+" deep='0'>"+text+"</li>");
+					li = $("<li class='drop-one-item' value="+text+" deep='0' title="+text+" >"+text+"</li>");
 					if(item.disable) li.addClass("disabled");
 					if(item.split) li.addClass("split-line");
 					if(_this.config.type==4){
@@ -204,8 +274,8 @@
 					_this.list.append(li);	
 				}
 			}else if(typeof(item)=="number"||typeof(item)=="string"){
-				li = $("<li class='drop-one-item'></li>");
-				li.attr("value",item).append("<span>"+item+"</span>");
+				li = $("<li class='drop-one-item' />");
+				li.attr("value",item).append("<span title="+item+" >"+item+"</span>");
 				if(_this.config.type==4){
 					li.addClass("checkbox-item");
 					var check = $("<input type='checkbox' />");
@@ -225,7 +295,7 @@
     $.fn.drop = function (options) {
 		var the = this.first();
         var drop = new Drop(the, options);
-        the = $.extend(true,{},the,new exchange(drop));
+		the = $.extend(true,{},the,new exchange(drop));
 		return the;
     };
 	
@@ -241,17 +311,15 @@
         this.manipulate = function(msg){
             
         }
+		/***
+		** 设置显示的值
+		***/
+		this.val = function(o){
+			var txt = (typeof(o)=="string"||typeof(o)=="number")?o:(o.label||o.text||o.name||o.value);
+			drop.elem.find("input").val(txt).attr("name",txt);
+			return drop.elem;
+		}
     }
-	
-	
-	  var old = $.fn.drop;
-	  $.fn.drop.Constructor = Drop;
-	  // table NO CONFLICT
-	  // ===============
-	  $.fn.drop.noConflict = function () {
-		$.fn.drop = old;
-		return this;
-	  }		
 	/***
 	** outside accessible default setting
 	**/

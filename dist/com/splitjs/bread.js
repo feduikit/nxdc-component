@@ -1,9 +1,21 @@
-;(function ($) { //start with a [;] because if our code is combine or minification  with other code,AND other code not terminated with [;] then it will not infect ours.
+;(function ($) { //start with a [;] 
     var self = this;    
-    function Bread(element, options) {
+    
+	function ellipsis(_this){
+		var w = _this.elem.width();
+		if(_this.config.wis>=(w-40)){
+			var perw = (w-40)/_this.config.list.length;
+			_this.breadwrapper.find("li").css({"maxWidth":perw+"px"}).addClass("cus");
+		}else{
+			_this.breadwrapper.find("li").removeAttr("style").removeClass("cus");
+		}		
+	}
+	
+	function Bread(element, options) {
 		var self = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.bread.defaults,element.data(),options);
+		this.config.w = this.elem.width();
 		this.init();
     };
 	/**
@@ -15,7 +27,6 @@
         this.concrate();//构建下来菜单的样子
 		this.initConfig();
       
-		
 		//监听事件
 		_this.breadwrapper.find("li:has(a)").click(function(e){
 			e.stopImmediatePropagation();
@@ -29,6 +40,10 @@
 			_this.breadwrapper.find("li:gt("+index+")").remove();
 			fireEvent(_this.elem.get(0),"layer_click",{deep:index,text:value});
 		});
+		
+		$(window).resize(function(){
+			ellipsis(_this);
+		});
     };
 	
 	/**
@@ -36,19 +51,37 @@
 	**/
 	Bread.prototype.concrate = function(data){
 		var _this = this;
+		var w = 0;
 		this.breadwrapper = $("<ol class='breadcrumb'/>");
+		var thespan = document.createElement("span");
+		thespan.style.opacity = "0";
+		thespan.style.visibility="hidden";
+		thespan.style.position="absolute";
+		document.body.appendChild(thespan);
 		_this.config.list.forEach(function(item,index){
 			if(typeof(item)=="string"||typeof(item)=="number"){
 				var str= item;
 			}else{
 				str = item.name||item.text||item.label;
 			}
+			thespan.innerHTML = str;
+			var thew = thespan.getBoundingClientRect().width;
+			w+= thew;
 			if(index !=_this.config.list.length-1){
-				_this.breadwrapper.append("<li deep="+index+"><a href='#'>"+str+"</a></li>");
+				_this.breadwrapper.append("<li deep="+index+" w="+thew+" title="+str+" ><a href='#'><span>"+str+"</span></a></li>");
 			}else{
-				_this.breadwrapper.append("<li class='active' deep="+index+">"+str+"</li>");
+				_this.breadwrapper.append("<li class='active' deep="+index+" w="+thew+" title="+str+" ><span>"+str+"</span></li>");
+			}
+			
+			// 最后一个数组元素处理完毕
+			if(index == _this.config.list.length-1){
+				document.body.removeChild(thespan);
+				_this.config.wis = w;
 			}
 		});
+		
+		//如果文字超出长度		
+		ellipsis(_this);
 		_this.elem.append(_this.breadwrapper);
 	};
 

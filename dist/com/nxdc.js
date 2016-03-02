@@ -109,12 +109,24 @@ if (!Object.keys) Object.keys = function(o) {
 	});
 }(jQuery,window));
 
-;(function ($) { //start with a [;] because if our code is combine or minification  with other code,AND other code not terminated with [;] then it will not infect ours.
+;(function ($) { //start with a [;] 
     var self = this;    
-    function Bread(element, options) {
+    
+	function ellipsis(_this){
+		var w = _this.elem.width();
+		if(_this.config.wis>=(w-40)){
+			var perw = (w-40)/_this.config.list.length;
+			_this.breadwrapper.find("li").css({"maxWidth":perw+"px"}).addClass("cus");
+		}else{
+			_this.breadwrapper.find("li").removeAttr("style").removeClass("cus");
+		}		
+	}
+	
+	function Bread(element, options) {
 		var self = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.bread.defaults,element.data(),options);
+		this.config.w = this.elem.width();
 		this.init();
     };
 	/**
@@ -126,7 +138,6 @@ if (!Object.keys) Object.keys = function(o) {
         this.concrate();//构建下来菜单的样子
 		this.initConfig();
       
-		
 		//监听事件
 		_this.breadwrapper.find("li:has(a)").click(function(e){
 			e.stopImmediatePropagation();
@@ -140,6 +151,10 @@ if (!Object.keys) Object.keys = function(o) {
 			_this.breadwrapper.find("li:gt("+index+")").remove();
 			fireEvent(_this.elem.get(0),"layer_click",{deep:index,text:value});
 		});
+		
+		$(window).resize(function(){
+			ellipsis(_this);
+		});
     };
 	
 	/**
@@ -147,19 +162,37 @@ if (!Object.keys) Object.keys = function(o) {
 	**/
 	Bread.prototype.concrate = function(data){
 		var _this = this;
+		var w = 0;
 		this.breadwrapper = $("<ol class='breadcrumb'/>");
+		var thespan = document.createElement("span");
+		thespan.style.opacity = "0";
+		thespan.style.visibility="hidden";
+		thespan.style.position="absolute";
+		document.body.appendChild(thespan);
 		_this.config.list.forEach(function(item,index){
 			if(typeof(item)=="string"||typeof(item)=="number"){
 				var str= item;
 			}else{
 				str = item.name||item.text||item.label;
 			}
+			thespan.innerHTML = str;
+			var thew = thespan.getBoundingClientRect().width;
+			w+= thew;
 			if(index !=_this.config.list.length-1){
-				_this.breadwrapper.append("<li deep="+index+"><a href='#'>"+str+"</a></li>");
+				_this.breadwrapper.append("<li deep="+index+" w="+thew+" title="+str+" ><a href='#'><span>"+str+"</span></a></li>");
 			}else{
-				_this.breadwrapper.append("<li class='active' deep="+index+">"+str+"</li>");
+				_this.breadwrapper.append("<li class='active' deep="+index+" w="+thew+" title="+str+" ><span>"+str+"</span></li>");
+			}
+			
+			// 最后一个数组元素处理完毕
+			if(index == _this.config.list.length-1){
+				document.body.removeChild(thespan);
+				_this.config.wis = w;
 			}
 		});
+		
+		//如果文字超出长度		
+		ellipsis(_this);
 		_this.elem.append(_this.breadwrapper);
 	};
 
@@ -547,7 +580,7 @@ if (!Object.keys) Object.keys = function(o) {
 			var o = arr[i];
 			var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group;
 			var text = o[cfg.textKey]||o.text||o.label||o.title||o.name;
-			var li = $("<li class='drop-one-item' value="+text+" deep="+deep+"/>");
+			var li = $("<li class='drop-one-item' value="+text+" deep="+deep+" title="+text+" />");
 			var pad = (deep+2)*5 + 2;
 			li.css({"padding-left":pad+"px"});
 			if(array && array instanceof Array){
@@ -576,20 +609,86 @@ if (!Object.keys) Object.keys = function(o) {
 		
         _this.peal.click(function(e){
             e.stopImmediatePropagation();
+			_this.elem.toggleClass("focus");
             _this.list.toggleClass("hidden");
             setDirect(_this);
         });
         
+		
+		/****
+		** 下拉选项被点击
+		***/
         _this.list.find("li[class='drop-one-item'],li[class='drop-one-item split-line']").click(function(e){
             e.stopImmediatePropagation();
             _this.list.addClass("hidden");
 			var itemIndex = $(this).index();
 			var deep = $(this).attr("deep");
             var value = $(this).attr("value");
-            _this.peal.find("input").val(value);
+            _this.peal.find("input").val(value).attr("name",value);
 			//deep 表示树桩菜单第几层 base from 0。index:表示这一层的第几个， base from 1
             fireEvent(_this.elem.get(0),"drop_item_click",{val:value,deep:deep,index:itemIndex});
         });
+		
+		
+		/***
+		** input 输入框里面 点击键盘
+		***/
+		_this.peal.keyup(function(e){			
+			if(e.keyCode == 13){//回车
+				if(!_this.list.hasClass("hidden") && _this.list.find("li.em").length){
+					var item = _this.list.find("li.em");
+					var val = item.attr("value");
+					var deep = item.attr("deep");
+					$(this).find("input").val(val).attr("name",val);
+					 fireEvent(_this.elem.get(0),"drop_item_click",{val:val,deep:deep});
+					_this.list.addClass("hidden");
+				}
+			}
+
+			var items = _this.list.find("li[class='drop-one-item'],li[class='drop-one-item split-line'],li[class='drop-one-item em'],li[class='drop-one-item split-line em']");	
+			var arr = [].slice.call(items,0);
+			if(e.keyCode == 40){//下
+				//默认选中下拉的 第一个
+				//_this.list.focus();
+				if(_this.list.find("li.em").length){//存在
+					//这个em 处在 items数组中的第几个
+					var now = _this.list.data("now")||(function(){
+						for(var i=0;i<arr.length;i++){
+							if($(arr[i]).hasClass("em")) return i;
+						};						
+					}());
+					var the = items.filter(".em").first();
+					var next = $(items[parseInt(now)+1]);
+					if(next.get(0)){
+						next.addClass("em");
+					}else{
+						items.first().addClass("em");
+					}
+					the.removeClass("em");
+				}else{//不存在
+					items.first().addClass("em");
+				}
+			}else if(e.keyCode == 38){//上
+				//默认选中下拉的最后一个
+				the = items.filter(".em").first();
+				if(_this.list.find("li.em").length){
+					now = _this.list.data("now")||(function(){
+						for(var i=0;i<arr.length;i++){
+							if($(arr[i]).hasClass("em")) return i;
+						};						
+					}());
+					var prev = $(items[parseInt(now)-1]);
+					if(prev.get(0)){
+						prev.addClass("em");
+					}else{
+						items.last().addClass("em");
+					}
+					the.removeClass("em");
+				}else{
+					items.last().addClass("em");
+				}				
+			}			
+		});		
 		
 		/***
 		** 如果是树桩菜单，加监听
@@ -640,14 +739,15 @@ if (!Object.keys) Object.keys = function(o) {
 					cksArr.push({index:$(item).index(),value:val});
 					vals.push(val);
 				});
-				_this.peal.find("input").val(vals.join(","))
+				_this.peal.find("input").val(vals.join(",")).attr("name",vals.join(","));
 				fireEvent(_this.elem.get(0),"item_apply_click",{checkedArr:cksArr});
 			});
 			
-			$("body").click(function(e){
+			$(document).click(function(e){
 				if(!(e.target.tagName == "INPUT" && e.target.type == "checkbox")){
 					$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
 				}
+				$(".ndp-drop-wrapper").removeClass("focus");
 			});
 		}
     };
@@ -657,10 +757,10 @@ if (!Object.keys) Object.keys = function(o) {
 	**/
 	Drop.prototype.concrate = function(data){
 		var _this = this;
-        this.peal = $("<div class='drop-peal'/>");//外观包装
+        this.peal = $("<div class='drop-peal' tabIndex='-1' />");//外观包装
         if(this.config.type==2) this.peal.addClass("drop-split-peal");
-        this.list = $("<ul class='drop-list hidden' />");
-        this.peal.html('<input type="text" readonly="true"><span class="caret-wrapper"><span class="caret glyphicon '+_this.config.caret+'"></span></span>');
+        this.list = $("<ul class='drop-list hidden' tabIndex='-1' tabIndex='-1' />");
+        this.peal.html('<input type="text" readonly="true"><span class="caret-wrapper" tabIndex=-1><span class="caret glyphicon '+_this.config.caret+'"></span></span>');
         this.elem.append(_this.peal).append(_this.list);
 		if(_this.config.type == 4){
 			var all = $("<li class='drop-one-item checkbox-item all-banner'><span>All</span><input type='checkbox'/></li>");
@@ -668,14 +768,17 @@ if (!Object.keys) Object.keys = function(o) {
 		}
 	};
 
+	/***
+	** 设置用户配置选项
+	***/
     Drop.prototype.initConfig = function(){
         var _this = this;
         if(this.placeholder){
             _this.peal.find("input").attr("placeholder",_this.placeholder);
         }
         
-        if(_this.val){
-            _this.peal.find("input").val(_this.val);
+        if(_this.config.val){
+            _this.peal.find("input").val(_this.config.val).attr("name",_this.config.val);
         }
         
 		/**
@@ -688,7 +791,7 @@ if (!Object.keys) Object.keys = function(o) {
 				var sub = item[key2]||item.sub||item.son||item.next||item.group;
 				var text = item[key1]||item.text||item.label||item.title||item.name;
 				if(sub && sub instanceof Array){//存在下一层数组，说明这是一个
-					var li = $("<li class='drop-one-item drop-recursive' deep='0'/>");
+					var li = $("<li class='drop-one-item drop-recursive' deep='0' />");
 					if(_this.config.type!=3){
 						var ca = $("<i/>",{class:"glyphicon"});
 						ca.addClass(_this.config.caret);
@@ -696,11 +799,11 @@ if (!Object.keys) Object.keys = function(o) {
 					}else{
 						li.addClass("group-hilight");
 					}
-					li.append(text);
-					recursive(li,sub,_this.config);
+					li.append(text).attr("title",text);
+					recursive(li,sub,_this.config,0);
 					_this.list.append(li);
 				}else{
-					li = $("<li class='drop-one-item' value="+text+" deep='0'>"+text+"</li>");
+					li = $("<li class='drop-one-item' value="+text+" deep='0' title="+text+" >"+text+"</li>");
 					if(item.disable) li.addClass("disabled");
 					if(item.split) li.addClass("split-line");
 					if(_this.config.type==4){
@@ -710,8 +813,8 @@ if (!Object.keys) Object.keys = function(o) {
 					_this.list.append(li);	
 				}
 			}else if(typeof(item)=="number"||typeof(item)=="string"){
-				li = $("<li class='drop-one-item'></li>");
-				li.attr("value",item).append("<span>"+item+"</span>");
+				li = $("<li class='drop-one-item' />");
+				li.attr("value",item).append("<span title="+item+" >"+item+"</span>");
 				if(_this.config.type==4){
 					li.addClass("checkbox-item");
 					var check = $("<input type='checkbox' />");
@@ -731,7 +834,7 @@ if (!Object.keys) Object.keys = function(o) {
     $.fn.drop = function (options) {
 		var the = this.first();
         var drop = new Drop(the, options);
-        the = $.extend(true,{},the,new exchange(drop));
+		the = $.extend(true,{},the,new exchange(drop));
 		return the;
     };
 	
@@ -747,17 +850,15 @@ if (!Object.keys) Object.keys = function(o) {
         this.manipulate = function(msg){
             
         }
+		/***
+		** 设置显示的值
+		***/
+		this.val = function(o){
+			var txt = (typeof(o)=="string"||typeof(o)=="number")?o:(o.label||o.text||o.name||o.value);
+			drop.elem.find("input").val(txt).attr("name",txt);
+			return drop.elem;
+		}
     }
-	
-	
-	  var old = $.fn.drop;
-	  $.fn.drop.Constructor = Drop;
-	  // table NO CONFLICT
-	  // ===============
-	  $.fn.drop.noConflict = function () {
-		$.fn.drop = old;
-		return this;
-	  }		
 	/***
 	** outside accessible default setting
 	**/
@@ -795,7 +896,7 @@ if (!Object.keys) Object.keys = function(o) {
 			if(typeof(o)=="object"){				
 				var array = o.sub||o.son||o.next||o.group||o.children;
 				var text = o.text||o.label||o.title||o.name;
-				txt.html(text); ctx.data("val",text)
+				txt.html(text).attr("title",text); ctx.data("val",text);
 				li.attr({"value":text,"deep":deep});
 				if(array && array instanceof Array){
 					ctx.addClass("title-layer");
@@ -1616,7 +1717,11 @@ if (!Object.keys) Object.keys = function(o) {
 				}
 			});			
 			
-		}
+		};
+		
+		$(document).click(function(e){
+			_this.elem.find(".drop-wrapper>.page-dropdown").addClass("hidden");
+		});
 		
     };
 	
@@ -1627,12 +1732,13 @@ if (!Object.keys) Object.keys = function(o) {
 		var _this = this;
 		var cfg = _this.config;
 		if(cfg.type==2 || cfg.type == 3){
-			_this.pagetext = $("<span class='page-choosed-text'/>").html(cfg.defItems);//显示当前选定的 每页显示的条数
+			if(cfg.defItems>=cfg.perPages.length) cfg.defItems = 0;// 默认选择下拉菜单的第一项
+			_this.pagetext = $("<span class='page-choosed-text'/>").html(cfg.perPages[cfg.defItems]);//显示当前选定的 每页显示的条数
 			_this.dropwrapper = $("<span class='page-drop-list'/>");
 			var more = $("<i class='glyphicon glyphicon-menu-hamburger' />");
 			var down = $("<i class='glyphicon glyphicon-triangle-bottom' />");
 			var drop = $("<ul class='page-dropdown hidden'/>");//
-			_this.num = $("<div class='page-now' />").text(cfg.defItems);
+			_this.num = $("<div class='page-now' />").text(cfg.perPages[cfg.defItems]);
 			if(cfg.type==2){
 				_this.dropwrapper.append(more).append(down);
 			}else if(cfg.type==3){
@@ -1719,7 +1825,7 @@ if (!Object.keys) Object.keys = function(o) {
 	  $.fn.page.noConflict = function () {
 		$.fn.page = old;
 		return this;
-	  }		
+	  }
 	/***
 	** outside accessible default setting
 	**/
@@ -1730,7 +1836,7 @@ if (!Object.keys) Object.keys = function(o) {
 		totalPages:1,//总共有多少页
 		currentPage:1,//默认显示第一页
 		perPage:10,//每页显示多少条
-		defItems:10,
+		defItems:0,//默认每页展示多少条，下来数组中的第几个选项，必须和perPages联用
 		perPages:[10,20,30],//每页显示条数选择区间
 		totalItems:0,//总共有多少条数据  如果这个数据存在，则totalPages 的数据就不用了，使用这里计算的结果	
 		pre:"上一页",
@@ -2329,7 +2435,7 @@ if (!Object.keys) Object.keys = function(o) {
 					if(i==0){
 						txtbox.text(txt).attr("index",0);
 					}		
-					var li = $("<li class='search-item' />").text(txt).attr({"index":i,"val":txt});
+					var li = $("<li class='search-item' />").text(txt).attr({"index":i,"val":txt,title:txt});
 					_this.list.append(li);
 				}
 				this.peal.append(_this.list).append("<i class='glyphicon glyphicon-menu-down' />");
@@ -2358,7 +2464,7 @@ if (!Object.keys) Object.keys = function(o) {
 			this.icon = $(cfg.magicon);
 			this.wrapper.append(this.icon);
 			var h = this.elem.height();
-			this.input.css({"width":(_this.wrapper.width()-h-2)+"px","height":h+"px"});
+			this.input.css({"width":(_this.wrapper.width()-h-2)+"px","height":h+"px","line-height":h+"px"});
 			this.icon.css({"width":h+"px","height":h+"px","line-height":h+"px"});
 		}
 		
@@ -2403,9 +2509,11 @@ if (!Object.keys) Object.keys = function(o) {
         /**
         **@param {Object} msg {type:"类型"}
         **/
-        this.manipulate = function(msg){
-            
-        }
+		this.val = function(o){
+			var txt = (typeof(o)=="string"||typeof(o)=="number")?o:(o.label||o.text||o.name||o.value);
+			search.elem.find("input").val(txt).attr("name",txt);
+			return search.elem;
+		}
     }
 	
 	  var old = $.fn.search;
@@ -2528,7 +2636,7 @@ if (!Object.keys) Object.keys = function(o) {
 		if(cfg.xion&&cfg.type!=2){
 			var ru = this.elem.height();
 			var xion = $(cfg.xion).addClass('xion-cus')
-				.css({width:(ru-2)+"px",height:ru+"px",lineHeight:ru+"px"});
+				.css({width:(ru-2)+"px",height:ru+"px",lineHeight:(ru+4)+"px"});
 			if(cfg.pos=="left"){
 				_this.elem.prepend(xion);
 				_this.input.css({"left":ru+"px","paddingLeft":"0"});
@@ -2579,13 +2687,37 @@ if (!Object.keys) Object.keys = function(o) {
 	** factory Class
     **@param {Drop} Bread :  instacne of the plugin builder
     **/
-    function exchange(drop){
+    function exchange(sinput){
         /**
         **@param {Object} msg {type:"类型"}
         **/
         this.manipulate = function(msg){
             
         }
+		
+		/***
+		** 给 输入框设置默认值
+		***/
+		this.val = function(o){
+			var txt = (typeof(o)=="string"||typeof(o)=="number")?o:(o.label||o.text||o.name||o.value);
+			sinput.elem.find("input").val(txt);
+			return sinput.elem;
+		}
+		/***
+		** 校验告警提示
+		***/
+		this.warning = function(bool){
+			sinput.elem.toggleClass("warning",bool?true:bool);
+			return sinput.elem;
+		}
+		
+		/***
+		** 校验失败提示
+		***/
+		this.fail = function(bool){
+			sinput.elem.toggleClass("fail",bool?true:bool);
+			return sinput.elem;
+		}		
     }
 	
 	  var old = $.fn.sinput;
@@ -2603,9 +2735,9 @@ if (!Object.keys) Object.keys = function(o) {
 		type:"1",//类型 1,普通输入框，2 stepper
 		title:"",//出现title 
 		xion:"",//接受3种类型，bootstrap 里面的icon 接受小图片jpg, png，或者文字
-		pos:"right",//默认图标放在最左边
+		pos:"right",//默认图标放在最左边 left, right 两个选项
 		placeholder:"请输入文字",// 占位提示文字
-		inputType:"text",//password,"float"  文本，数字，密码
+		inputType:"text",//password,"float"  文本，浮点数字，密码
 		min:0,
 		max:Infinity,
 		step:1,
@@ -3127,9 +3259,9 @@ if (!Object.keys) Object.keys = function(o) {
                 var o = arr[i];
                 var text = (typeof(o)=="string"||typeof(o)=="number")?o:(o.name||o.txt);
                 if(args[2]){
-					var col = $('<span class="ndp-table-col"><span class="head-txt">'+text+'</span></span>');
+					var col = $('<span class="ndp-table-col" title='+text+'><span class="head-txt">'+text+'</span></span>');
 				}else{
-					col = $('<span class="ndp-table-col">'+text+'</span>');
+					col = $('<span class="ndp-table-col" title='+text+'>'+text+'</span>');
 				}
 				
                 row.append(col);
@@ -3137,9 +3269,9 @@ if (!Object.keys) Object.keys = function(o) {
         }else{
             Object.keys(arr).forEach(function(item){
 				if(args[2]){
-					col = $('<span class="ndp-table-col"><span class="head-txt">'+arr[item]+'</span></span>');
+					col = $('<span class="ndp-table-col" title='+arr[item]+'><span class="head-txt">'+arr[item]+'</span></span>');
 				}else{
-					col = $('<span class="ndp-table-col">'+arr[item]+'</span>');
+					col = $('<span class="ndp-table-col" title='+arr[item]+'>'+arr[item]+'</span>');
 				}    
                 row.append(col);               
             });
@@ -3338,9 +3470,26 @@ if (!Object.keys) Object.keys = function(o) {
      */
     $.fn.table = function (options) {
 		var the = this.first();
-        new Table(the, options);
+        var table = new Table(the, options);
+		the = $.extend(true,{},the,new exchange(table));
 		return the;
     };
+	
+    /***
+    **和其他插件的交互
+	** factory Class
+    **@param {Drop} drop :  instacne of the plugin builder
+    **/
+    function exchange(table){
+        /**
+        **@param {Object} msg {type:"类型"}
+        **/
+		this.update = function(data){
+			table.body.empty();
+			table.buildBody(data);
+			return table.elem;
+		}
+    }	
 	
 	
 	  var old = $.fn.table;
@@ -3350,7 +3499,7 @@ if (!Object.keys) Object.keys = function(o) {
 	  $.fn.table.noConflict = function () {
 		$.fn.table = old;
 		return this;
-	  }	
+	  }
 	
 	/***
 	** outside accessible default setting
@@ -3402,6 +3551,7 @@ if (!Object.keys) Object.keys = function(o) {
 	**/
     Tabs.prototype.init = function () {
         var _this = this;
+		var que = null;
 		this.elem.addClass(this.config.containerClass);//设置 包裹容器的 dim,外观
         this.concrate();//构建下来菜单的样子
 		this.initConfig();
@@ -3439,40 +3589,53 @@ if (!Object.keys) Object.keys = function(o) {
 			});			
 		}
 		
-		if(_this.config.type==2){
-			_this.preButton.click(function(e){
-				var now = parseInt($(this).attr("now"));
-				if(now==0) return false;
-				$(this).attr("now",now);
-				var w = _this.tabwrapper.find("li[index="+(now-1)+"]").width();
-				var currW = parseInt(_this.tabwrapper.css("left"));//ul left
-				_this.tabwrapper.css("left",(currW + w)+"px");
-				now--;
-				$(this).attr("now",now);
-				_this.moreButton.attr("now",now);
-				if(now==0){ $(this).addClass(_this.config.negClass);  }
-				setAble(_this);				
+//		if(_this.config.type==2){
+			//向左的按钮
+			_this.preButton.unbind("click").click(function(e){
+				var _self = this;
+				clearTimeout(que);
+				que = setTimeout(function(){
+					var now = parseInt($(_self).attr("now"));
+					if(now==0) return false;
+					$(_self).attr("now",now);
+					var w = _this.tabwrapper.find("li[index="+(now-1)+"]").width();
+					var currW = parseInt(_this.tabwrapper.css("left"));//ul left
+					_this.tabwrapper.css("left",(currW + w)+"px");
+					now--;
+					$(_self).attr("now",now);
+					_this.moreButton.attr("now",now);
+					if(now==0){ $(_self).addClass(_this.config.negClass);  }
+					setAble(_this);						
+				},250);		
 			});
+			
+			
 			//右侧的 按钮点击
 			_this.moreButton.click(function(e){
 				var _self = this;
-				if($(this).attr("stop")) {
+				clearTimeout(que);
+				que = setTimeout(function(){
+				if($(_self).attr("stop")) {
 					e.preventDefault();
 					e.stopImmediatePropagation();
 					return false;
 				}
-				var now = parseInt($(this).attr("now"));
-				$(this).attr("now",now);
+				var now = parseInt($(_self).attr("now"));
+				$(_self).attr("now",now);
+
 				var w = _this.tabwrapper.find("li[index="+now+"]").width();
 				var currW = parseInt(_this.tabwrapper.css("left"));
 				_this.tabwrapper.css("left",(currW - w) + "px");
 				now++;
-				$(this).attr("now",now);
+				$(_self).attr("now",now);
 				_this.preButton.attr("now",now);
-				if(now>0){ _this.preButton.removeClass(_this.config.negClass);  }	
-				setAble(_this);
-			});			
-		}
+				if(now>0){ 
+					_this.preButton.removeClass(_this.config.negClass);  
+				}
+				setAble(_this);					
+				},250);
+			});
+//		}
     };
 	
 	/**
@@ -3504,7 +3667,7 @@ if (!Object.keys) Object.keys = function(o) {
 			_this.tabwrapper.find("li>a").append("<i class='glyphicon glyphicon-remove transparent'></i>");
 		}
 		
-		if(_this.config.type==2){
+//		if(_this.config.type==2){
 			_this.elem.addClass("specialWrapper");
 			_this.tabwrapper.addClass("one-line");
 			_this.tabwrapper.find("li").addClass("carousel");
@@ -3519,9 +3682,7 @@ if (!Object.keys) Object.keys = function(o) {
 				_this.moreButton.hide();
 				_this.preButton.hide();
 			}
-			
-			
-		}
+//		}
     }
     /**
      * jquery 提供了一个objct 即 fn，which is a shotcut of jquery object prototype
@@ -3564,7 +3725,6 @@ if (!Object.keys) Object.keys = function(o) {
 	** outside accessible default setting
 	**/
 	$.fn.tabs.defaults = {
-		type:1,//2 特殊类型
 		list:[],
 		badge:false,// 是否显示badge
 		rm:false,//是否允许删除tab
@@ -3605,8 +3765,14 @@ if (!Object.keys) Object.keys = function(o) {
 			}
 			if(!cfg.through){
 				elem.addClass("tip-spec");
-				var w = elem.width();
-				elem.css("margin-left",-(w/2)+"px");			
+				var rw = window.innerWidth;
+				if(rw<=960){
+					elem.css({"width":"100%","margin-left":0});	
+				}else{
+					if(cfg.content.length<100){
+						elem.css({"width":"50%","margin-left":"25%"});	
+					}
+				}				
 			}
 			elem.addClass("alert alert-"+cfg.type);
 			if(cfg.holdon && /^[\-\.]?(\d+)?\.?(\d+)?$/.test(cfg.holdon)){
@@ -3622,6 +3788,7 @@ if (!Object.keys) Object.keys = function(o) {
 			if(tim) clearTimeout(tim);
 		});
 		
+
 	});
 }(jQuery,window));
 
@@ -3661,7 +3828,6 @@ if (!Object.keys) Object.keys = function(o) {
 			cols.forEach(function(col,idx){
 				var switcher = '<span class="switcher">\
 				<label class = "active" ><input type = "checkbox" class = "scheckbox"> </label></span>';
-
 				var column = $('<span class="sutable-col" col='+idx+' />');
 				if(cfg.colDims&&cfg.colDims.length){
 					column.css("width",cfg.colDims[idx]+"px");
@@ -3675,9 +3841,9 @@ if (!Object.keys) Object.keys = function(o) {
 				if(idx>0){
 					if(typeof(col)=="object"){
 						var val = col.label||col.text||col.name;
-						column.attr("data-val",val).html(val);
+						column.attr({"data-val":val,title:val}).html(val);
 					}else{
-						column.attr("data-val",val).html(col);
+						column.attr({"data-val":val,"title":val}).html(col);
 					}
 				}		
 				row.append(column);
@@ -3812,7 +3978,12 @@ if (!Object.keys) Object.keys = function(o) {
 		** 表头 某一列的排序按钮被点击
 		***/
 		_this.head.find(".sort-wrapper").click(function(e){
+			e.stopImmediatePropagation();
 			var fa = $(this).parent();
+			$(this).children().toggleClass("hi");
+			var siblings = fa.siblings();
+			siblings.find(".sort-wrapper").children("i").removeClass("hi");
+			siblings.find(".sort-wrapper").children("i.glyphicon-triangle-bottom").addClass("hi");
 			fireEvent(_this.elem.get(0),"SORT_CLICK",{col:fa.attr("col"),val:fa.text()});
 		});	
 		/***
@@ -3972,7 +4143,7 @@ if (!Object.keys) Object.keys = function(o) {
 	Treable.prototype.concrate = function(){
 		var _this = this;
 		this.toolbar = $("<div class='sutable-toolbar' role='table' />");
-		this.head = $("<ul class='sutable-header' role='table' />").html('<li class=" treable-row"></li>');
+		this.head = $("<ul class='treable-header' role='table' />").html('<li class=" treable-row"></li>');
 		this.elem.append("<span class='split-line'></span>");
 		this.elem.append(this.toolbar).append(this.head);
 	};
@@ -4030,7 +4201,7 @@ if (!Object.keys) Object.keys = function(o) {
 		** 显示 排序图标
 		***/
 		if(cfg.sort){
-			var st = "<span class='sort-wrapper'><i class='glyphicon glyphicon-triangle-top'></i><i class='glyphicon glyphicon-triangle-bottom'></i></span>";			
+			var st = "<span class='sort-wrapper'><i class='glyphicon glyphicon-triangle-top'></i><i class='glyphicon glyphicon-triangle-bottom hi'></i></span>";			
 			if(cfg.sort instanceof Array){
 				cfg.sort.forEach(function(num,idx){
 					_this.head.find(".sutable-col[col="+num+"]").append(st);
@@ -4147,7 +4318,21 @@ if (!Object.keys) Object.keys = function(o) {
 }(jQuery));
 
 ;(function ($) {
-    var self = this;    
+    var self = this;
+	
+	/***
+	**加 ... 对于比较长的字符串
+	***/
+	function ellipsis(_this){
+		var w = _this.elem.width();
+		if(_this.config.wis>=(w-40)){
+			var perw = (w-40)/_this.config.list.length;
+			_this.breadwrapper.find("li").css({"maxWidth":perw+"px"}).addClass("cus");
+		}else{
+			_this.breadwrapper.find("li").removeAttr("style").removeClass("cus");
+		}		
+	}
+	
 	/***
 	** 处理树桩菜单
 	**/
@@ -4169,7 +4354,7 @@ if (!Object.keys) Object.keys = function(o) {
 			if(typeof(o)=="object"){
 				var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group||o.children;
 				var text = o[cfg.textKey]||o.text||o.label||o.title||o.name;
-				txtWrapper.html(text);
+				txtWrapper.html(text).attr("title",text);
 				li.attr({"value":text,"deep":deep});
 				if(array && array instanceof Array){
 					li.prepend($("<span class='tree-joint-wrapper' />").html(cfg.joint));
@@ -4328,7 +4513,7 @@ if (!Object.keys) Object.keys = function(o) {
 			if(typeof(o)=="object"){
 				var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group||o.children;
 				var text = o[cfg.textKey]||o.text||o.label||o.title||o.name;
-				txtWrapper.html(text);
+				txtWrapper.html(text).attr("title",text);
 				li.attr({"value":text,"deep":deep});
 				if(array && array instanceof Array){
 					if(cfg.expicon){
@@ -4493,7 +4678,7 @@ if (!Object.keys) Object.keys = function(o) {
 				if(o.href){
 					text = '<a href="'+o.href+'">'+text+'</a>';
 				}
-				txt.html(text);
+				txt.html(text).attr("title",text);
 
 				li.attr({"value":text,"deep":deep});
 				if(array && array instanceof Array){
@@ -4674,6 +4859,7 @@ if (!Object.keys) Object.keys = function(o) {
     function exchange(vList2){
 		this.fold = function(){
 			vList2.transform();
+			return vList2.elem;
 		}
     }
 
