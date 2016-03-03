@@ -78,7 +78,7 @@
 		** 允许选中列的，一列被点击
 		***/
 		this.head.find(".ndp-table-col").click(function(e){
-			fireEvent($(this).get(0),"COL_CLICK",{col:parseInt($(this).attr("col"))});//第几行被点击
+			fireEvent($(this).get(0),"COL_CLICK",{col:parseInt($(this).attr("col")),name:$(this).attr("title")});//第几行被点击
 		});
     };
 	
