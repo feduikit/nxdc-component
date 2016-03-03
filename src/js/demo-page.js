@@ -24,7 +24,7 @@ require(['./config'],function(){
 				perPage:10
 			}).on("PAGE_CHANGE",function(e){
 				console.log(e.originalEvent.data);
-			});;	
+			});	
 			
 			//微博翻页
 			$(".ndp-page-wrapper[name=drop-page3]").page({
@@ -32,7 +32,7 @@ require(['./config'],function(){
 				totalPages:1000
 			}).on("PAGE_CHANGE",function(e){
 				console.log(e.originalEvent.data);
-			});;			
+			});			
         });
     });
 });

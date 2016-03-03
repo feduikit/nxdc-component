@@ -3,7 +3,9 @@ require(['./config'],function(){
         require(['bootstrap','search'],function(){		
 			$(".ndp-search-wrapper[name=plain]").search({
 				placeholder:"请输入字符"
-			}).val("hello");//设置input 显示的值
+			}).val("hello").on("do_search",function(e){//点击放大镜进行搜索，触发事件
+				console.log(e.originalEvent.data);//,{text:input内输入的值}
+			});//设置input 显示的值
 			
 			$(".ndp-search-wrapper[name=dis]").search({
 				disabled:true
@@ -20,9 +22,7 @@ require(['./config'],function(){
 			$(".ndp-search-wrapper[name=mix2]").search({
 				type:2,
 				dropList:[{text:"china"},{text:"USA"},{text:"德国"}],
-				disabled:true
-			}).on("INPUT_CHANGE",function(e){
-				console.log(e.originalEvent.data);// {text:string}  输入框选中内容发生改变
+				disabled:false
 			});
 			
 			
@@ -30,11 +30,15 @@ require(['./config'],function(){
 			$(".ndp-search-wrapper[name=plain2]").search({
 				type:3,
 				dropList:[{text:"china"},{text:"USA"},{text:"德国"}],
-			}).on("input_change",function(e){
-				console.log(e.originalEvent.data);
+			}).on("INPUT_CHANGE",function(e){//输入内容发生改变 触发
+				console.log(e.originalEvent.data);//{text:输入内容}
 			}).on("do_search",function(e){
 				//用户输入内容，回车 或者点击搜索(放大镜) 触发这个事件
 				console.log(e.originalEvent.data);//数据
+			}).on("ITEM_SELECT",function(e){//点击下拉菜单内容，针对有ajax 请求的情况
+				console.log(e.originalEvent.data);//{text:内容}
+			}).on("INPUT_CLEAR",function(e){//点击x 清除内容
+				console.log(e.originalEvent.data);//{text:内容}
 			});
 			
 			$(".ndp-search-wrapper[name=mixall]").search({
@@ -46,6 +50,10 @@ require(['./config'],function(){
 			}).on("do_search",function(e){
 				//用户输入内容，回车 或者点击搜索(放大镜) 触发这个事件
 				console.log(e.originalEvent.data);//数据
+			}).on("ITEM_SELECT",function(e){//点击下拉菜单内容，针对有ajax 请求的情况
+				console.log(e.originalEvent.data);//{text:内容}
+			}).on("INPUT_CLEAR",function(e){//点击x 清除内容
+				console.log(e.originalEvent.data);//{val:内容}
 			});			
 			
         });

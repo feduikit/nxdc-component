@@ -2316,10 +2316,9 @@ if (!Object.keys) Object.keys = function(o) {
 		***/
 		this.input.keyup(function(e){
 			if(e.keyCode == 13){
-				fireEvent(_this.elem.get(0),"do_search",{text:$(this).val()});
-				
 				if(_this.config.type==3 || _this.config.type==4){
 					_this.dropmenu.addClass("hidden");
+					fireEvent(_this.elem.get(0),"ITEM_SELECT",{text:$(this).val()});	
 				}
 			}
 			
@@ -2361,6 +2360,7 @@ if (!Object.keys) Object.keys = function(o) {
 		** 里面输入内容发生改变
 		**/
 		this.input.on("input",function(e){
+			var input = $(this);
 			e.stopImmediatePropagation();
 			if(_this.config.type==3||_this.config.type==4){
 				_this.wrapper.addClass("loading");
@@ -2400,8 +2400,9 @@ if (!Object.keys) Object.keys = function(o) {
 						_this.input.val(val).attr("name",val);
 						_this.dropmenu.addClass("hidden");
 						_this.wrapper.find(".close-cus").removeClass("hide");
-					});					
-					
+						fireEvent(_this.elem.get(0),"ITEM_SELECT",{text:val});
+					});	
+		
 				},function(err){
 					_this.wrapper.removeClass("loading");
 				});			
@@ -2409,7 +2410,7 @@ if (!Object.keys) Object.keys = function(o) {
 			//发出事件
 			fireEvent(_this.elem.get(0),"INPUT_CHANGE",{text:$(this).val()});			
 		});
-		
+	
 		/***
 		**点击 展开下拉菜单
 		***/
@@ -2423,7 +2424,7 @@ if (!Object.keys) Object.keys = function(o) {
 		});
 		
 		/***
-		** 下拉菜单被点击
+		** 前置下拉菜单被点击
 		**/
 		this.elem.find("li.search-item").click(function(e){
 			e.stopImmediatePropagation();
@@ -2440,8 +2441,9 @@ if (!Object.keys) Object.keys = function(o) {
 		
 		this.wrapper.find(".close-cus").click(function(e){
 			e.stopImmediatePropagation();
-			_this.input.val("").removeAttr("name");
+			fireEvent(_this.wrapper.get(0),"INPUT_CLEAR",{text:_this.input.val()});
 			$(this).addClass("hide");
+			_this.input.val("").removeAttr("name");
 		});
 		
 		$(document).click(function(e){
