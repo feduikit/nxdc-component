@@ -84,7 +84,8 @@
 		if(_this.config.checkbox){
 			_this.elem.find("li>.tree-txt-wrapper").unbind("click").click(function(e){
 				e.stopImmediatePropagation();
-				$(this).parent().toggleClass("active");	
+				$(this).parent().toggleClass("active");
+				var fa = $(this).parent();
 				var the = $(this).parent().find("input[type=checkbox]")
 				if($(this).parent().hasClass("active")){
 					the.prop("checked",true).parents("li").addClass("active");
@@ -93,12 +94,15 @@
 					var theLI = $(this).parent().parents("li:not(.tree-leaf)");
 						theLI.removeClass("active").find("input[type=checkbox]:first").removeAttr("checked");
 				}
+
+				fireEvent(_this.elem.get(0),"LEAF_CHECK",{val:$(this).attr("title"),check:$(this).find("input").prop("checked")});
 			});
 		}else{
 			_this.elem.find("li.tree-leaf").unbind("click").click(function(e){
 				_this.elem.find("li.tree-leaf").removeClass("active");
 				$(this).addClass("active");	
-			});							
+				fireEvent(_this.elem.get(0),"LEAF_CLICK",{val:$(this).attr("value")});//点击节点
+			});
 		}
     };
 	

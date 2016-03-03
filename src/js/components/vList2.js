@@ -102,7 +102,8 @@
 				$(this).parent().parent().siblings("li[asparent]").removeClass(" active").children("ul");
 				$(this).siblings("li").removeClass("active").children("ul");
 			}
-			$(this).trigger("item_click",{deep:deep,value:val});
+			//$(this).trigger("item_click",{deep:deep,value:val});
+			fireEvent($(this).get(0),"item_click",{deep:deep,value:val});//点击叶子节点
 		});
 
 		/***
@@ -126,9 +127,6 @@
 				$(this).trigger("expand_complete");//展开事件
 			}
 		});
-
-
-		_this.elem.trigger("mission_complete");
     };
 
 	/**
@@ -206,6 +204,10 @@
     **@param {Drop} Bread :  instacne of the plugin builder
     **/
     function exchange(vList2){
+		
+		/***
+		*** 展开，折叠
+		****/
 		this.fold = function(){
 			vList2.transform();
 			return vList2.elem;

@@ -2,12 +2,15 @@ require(['./config'],function(){
     require(['jquery','utils'],function($){
         require(['bootstrap','./components/sinput'],function(){
 			$("div.ndp-sinput-wrapper[name=plain-sinput]").sinput({
-				placeholder:"请输入"
+				placeholder:"请输入",
+				default:"hello world"
 			});	
 			
 			$("div.ndp-sinput-wrapper[name=icon-sinput1]").sinput({
 				xion:"<span><i class='glyphicon glyphicon-lock'></i></span>",
 				placeholder:"请输入"
+			}).on("ICON_CLICK",function(e){
+				console.log("点击了图标");
 			});	
 			
 			$("div.ndp-sinput-wrapper[name=icon-sinput2]").sinput({
@@ -29,6 +32,8 @@ require(['./config'],function(){
 				step:1,
 				min:1,
 				default:1
+			}).on("STEP_CHANGE",function(e){
+				console.log(e.originalEvent.data);//{val:当前值 float}
 			});	
 			
 			$("div.ndp-sinput-wrapper[name=plain-title]").sinput({

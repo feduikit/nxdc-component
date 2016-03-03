@@ -83,8 +83,8 @@ if (!Object.keys) Object.keys = function(o) {
 			/***
 			** 用户自定义内容
 			***/
-			wrapper.unbind("hide.bs.modal").on("hide.bs.modal",function(){
-				if(cfg.callback && typeof(cfg.callback)=="function") cfg.callback(wrapper); 
+			wrapper.unbind("hide.bs.modal").on("hide.bs.modal",function(e){
+				if(cfg.callback && typeof(cfg.callback)=="function") cfg.callback(wrapper);
 			})
 			
 			if(cfg.type==2){
@@ -141,7 +141,7 @@ if (!Object.keys) Object.keys = function(o) {
 		//监听事件
 		_this.breadwrapper.find("li:has(a)").click(function(e){
 			e.stopImmediatePropagation();
-			var index = $(this).attr("deep");
+			var index = parseInt($(this).attr("deep"));
 			var value =  $(this).text();
 			if(_this.config.home && index==0){
 				$(this).addClass("active").empty().text(_this.config.list[index]).prepend(_this.config.home);
@@ -149,7 +149,8 @@ if (!Object.keys) Object.keys = function(o) {
 				$(this).addClass("active").empty().text(_this.config.list[index]);
 			}
 			_this.breadwrapper.find("li:gt("+index+")").remove();
-			fireEvent(_this.elem.get(0),"layer_click",{deep:index,text:value});
+			//面包屑的层级发生改变
+			fireEvent(_this.elem.get(0),"LAYER_CHANGE",{index:index,text:value});
 		});
 		
 		$(window).resize(function(){
@@ -400,16 +401,16 @@ if (!Object.keys) Object.keys = function(o) {
 					  </div>\
 					</div>');
 			header = $('<div class="modal-header">\
-						  		<button class="close" data-dismiss="modal">\
-						  			<span aria-hidden="true">&times;</span>\
-						  		</button>\
+								<button class="close" data-dismiss="modal">\
+									<span aria-hidden="true">&times;</span>\
+								</button>\
 								<span class="top-title"></span>\
-						    </div>');
+							</div>');
 			body = $('<div class="modal-body"></div>');
 			footer = $('<div class="modal-footer">\
 								<button class="btn btn-default btn-ok" data-dismiss="modal"></button>\
 								<button class="btn btn-default btn-cancel" data-dismiss="modal"></button>\
-						    </div>');
+							</div>');			
 			wrapper.find("div.modal-content").append(header).append(body).append(footer);
 			$(document.body).append(wrapper);
 		}		
@@ -425,14 +426,21 @@ if (!Object.keys) Object.keys = function(o) {
 	**@constructor Confirm
 	**/
     function Confirm(element, options) {
-		var self = this;
+		var _this = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.confirm.defaults,element.data(),options);
 		this.init();
-		
+		this.status = "";
 		
 		//显示confirm 窗口
-		this.elem.modal();
+		this.elem.modal().unbind("hide.bs.modal").on("hide.bs.modal",function(e){
+			e.stopImmediatePropagation();
+			if(_this.status=="ok"){
+				_this.config.onOK();
+			}else{
+				_this.config.onCancel();
+			}
+		});
     };
 	/**
 	**列表组件的初始化
@@ -445,11 +453,11 @@ if (!Object.keys) Object.keys = function(o) {
 		
 		
 		this.elem.find("button.btn-ok").unbind("click").click(function(e){
-			fireEvent(_this.elem.get(0),"click_ok",{value:1,desc:"ok"});
+			_this.status = "ok";
 		});
 		
-		this.elem.find("button.btn-cancel").unbind("click").click(function(e){
-			fireEvent(_this.elem.get(0),"click_cancel",{value:0,desc:"no"});
+		this.elem.find("button.btn-cancel,button.close").unbind("click").click(function(e){
+			_this.status = "cancel";
 		});
     };
 	
@@ -458,7 +466,6 @@ if (!Object.keys) Object.keys = function(o) {
 	**/
 	Confirm.prototype.concrate = function(data){
 		var _this = this;
-		build();//在判断一次，万一不存在
 	};
 
     Confirm.prototype.initConfig = function(){
@@ -508,23 +515,9 @@ if (!Object.keys) Object.keys = function(o) {
     $.fn.confirm = function (options) {
 		var the = this.first();
         var confirm = new Confirm(the, options);
-        exchange.call(this,confirm);
 		return the;
     };
 	
-    /***
-    **和其他插件的交互
-	** factory Class
-    **@param {Drop} Bread :  instacne of the plugin builder
-    **/
-    function exchange(confirm){
-        /**
-        **@param {Object} msg {type:"类型"}
-        **/
-        this.manipulate = function(confirm){
-            
-        }
-    }
 	/***
 	** outside accessible default setting
 	**/
@@ -533,8 +526,15 @@ if (!Object.keys) Object.keys = function(o) {
 		content:"你确定留空白什么也不写吗？ 请选择",//提示文字
 		icon:"",//是否显示图标 图片 80X80
 		btnOK:"确定", //确定
-		btnCANCEL:"取消"//取消
+		btnCANCEL:"取消",//取消
+		onOK:function(){},//确定的处理回调函数
+		onCancel:function(){}//取消的处理 回调函数
 	};
+	
+	win.showConfirm = function(options){
+		return $("#confirm-holder").confirm(options);	
+	}
+	
 }(jQuery,window));
 
 ;(function ($) { //start with a [;] because if our code is combine or minification  with other code,AND other code not terminated with [;] then it will not infect ours.
@@ -574,7 +574,9 @@ if (!Object.keys) Object.keys = function(o) {
 		deep++;
 		var rec = arguments.callee;
 		var ul = $("<ul class='sub-drop-list'/>");
-		if(cfg.type!=3) ul.addClass("hidden");
+		if(cfg.type!=3){
+			ul.addClass("hidden");
+		}
 		ul.css({width:(cfg.width+gap+5)+"px",left:-(gap)+"px"});
 		for(var i=0;i<arr.length;i++){
 			var o = arr[i];
@@ -622,11 +624,16 @@ if (!Object.keys) Object.keys = function(o) {
             e.stopImmediatePropagation();
             _this.list.addClass("hidden");
 			var itemIndex = $(this).index();
-			var deep = $(this).attr("deep");
+//			var deep = parseInt($(this).attr("deep"));
             var value = $(this).attr("value");
             _this.peal.find("input").val(value).attr("name",value);
 			//deep 表示树桩菜单第几层 base from 0。index:表示这一层的第几个， base from 1
-            fireEvent(_this.elem.get(0),"drop_item_click",{val:value,deep:deep,index:itemIndex});
+			if(_this.config.type==3){
+				var gp = $(this).parents(".drop-one-item[deep='0']:first");
+				fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,group:gp.index(),gpname:gp.attr("title")});
+			}else{
+            	fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value});
+			}
         });
 		
 		
@@ -640,7 +647,12 @@ if (!Object.keys) Object.keys = function(o) {
 					var val = item.attr("value");
 					var deep = item.attr("deep");
 					$(this).find("input").val(val).attr("name",val);
-					 fireEvent(_this.elem.get(0),"drop_item_click",{val:val,deep:deep});
+					if(_this.config.type==3){
+						var gp = item.parents(".drop-one-item[deep='0']:first");
+						fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:val,group:gp.index(),gpname:gp.attr("title")});
+					}else{
+						fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:val});
+					} 
 					_this.list.addClass("hidden");
 				}
 			}
@@ -740,7 +752,7 @@ if (!Object.keys) Object.keys = function(o) {
 					vals.push(val);
 				});
 				_this.peal.find("input").val(vals.join(",")).attr("name",vals.join(","));
-				fireEvent(_this.elem.get(0),"item_apply_click",{checkedArr:cksArr});
+				fireEvent(_this.elem.get(0),"APPLY_CLICK",{checkedArr:cksArr});
 			});
 			
 			$(document).click(function(e){
@@ -937,10 +949,12 @@ if (!Object.keys) Object.keys = function(o) {
 		this.elem.find(".content-part:not(:has(.title-layer))").click(function(e){
 			var val = $(this).text();
 			if(_this.config.type==2) {//如果是 第二种类型的 下拉菜单
+				if(_this.hold.data("val")!=val) {
+					fireEvent($(this).get(0),"SELECT_CHANGE",{value:$(this).data("val")});
+				}
 				_this.hold.html(val).data("val",val);
-				if(_this.hold.data("val")!=val) $(this).trigger("item_click",{value:$(this).data("val")});	
-			}else{
-				$(this).trigger("item_click",{value:$(this).data("val")});	
+			}else{	
+				fireEvent($(this).get(0),"ITEM_CLICK",{value:$(this).data("val")});
 			}	
 		});		
 		
@@ -982,12 +996,13 @@ if (!Object.keys) Object.keys = function(o) {
     **@param {Drop} drop :  instacne of the plugin builder
     **/
     function exchange(drop2){
-        /**
-        **@param {Object} msg {type:"类型"}
-        **/
-        this.manipulate = function(msg){
-            
-        }
+		this.val = function(o){
+			if(drop2.config.type==2){
+				var txt = o.text||o.label||o.name||o.value||o;
+				drop2.hold.html(txt).data("val",txt);
+			}
+			return drop2.elem;
+		}
     }
 	
 	
@@ -1577,7 +1592,7 @@ if (!Object.keys) Object.keys = function(o) {
 				list.find("li.page-item[role]").removeClass("disabled");
 			}
 			//val:第几页
-			fireEvent(_this.elem.get(0),"page_change",{currentPage:current});
+			fireEvent(_this.elem.get(0),"PAGE_CHANGE",{currentPage:parseInt(current)});
 		});	
 	};
 	
@@ -1629,7 +1644,7 @@ if (!Object.keys) Object.keys = function(o) {
 				$(this).addClass("disabled").siblings().removeClass("disabled");
 				page = _this.config.totalPages;
 			}
-			fireEvent(_this.elem.get(0),"page_change",{currentPage:page});
+			fireEvent(_this.elem.get(0),"PAGE_CHANGE",{currentPage:page});
 		});		
 	}
 	
@@ -1654,6 +1669,7 @@ if (!Object.keys) Object.keys = function(o) {
 		_this.concrate();
 		_this.initConfig();		
 
+		
 		//如果是 带有选择每页显示多少页的 分页组件
 		if(_this.config.type ==2 || _this.config.type == 3){
 			_this.dropwrapper.mouseenter(function(e){
@@ -1668,14 +1684,14 @@ if (!Object.keys) Object.keys = function(o) {
 			_this.dropwrapper.find("ul.page-dropdown>li").click(function(e){
 				e.stopImmediatePropagation();
 				$(this).parent().addClass("hidden");
-				var per = $(this).text();
+				var per = parseInt($(this).text());
 				if(_this.pagetext.text()!=per){
 					_this.pagetext.text(per);_this.num.html(per);
 					_this.config.perPage = parseInt(per);//每页显示多少条
 					_this.config.totalPages = Math.ceil(_this.config.totalItems/_this.config.perPage)
 					buildPageList(_this);
 					//currentPage 当前页，perpage ： 没页显示多少条
-					fireEvent(_this.elem.get(0),"per_page_change",{currentPage:1,perpage:per});//
+					fireEvent(_this.elem.get(0),"SHOW_ITEMS_CHANGE",{currentPage:1,perpage:per});//
 				}
 			});
 		}
@@ -1687,13 +1703,16 @@ if (!Object.keys) Object.keys = function(o) {
 			});
 			
 			/***
-			** 下拉菜单点击
+			**  页数项 被点击
 			***/
 			_this.elem.find(".drop-wrapper>ul>li").click(function(e){
 				$(this).parents(".drop-wrapper:first").find(".text-show").text("第" + $(this).attr("val") + "页");
 				$(this).addClass("active").siblings().removeClass("active");
+				var p = parseInt($(this).attr("val"));
+				fireEvent(_this.elem.get(0),"PAGE_CHANGE",{currentPage:p});
 			});
 			
+			//上一页 按钮 点击
 			_this.elem.find(".pre-page").click(function(e){
 				e.stopImmediatePropagation();
 				var the = _this.elem.find(".drop-wrapper>ul>li.active");
@@ -1703,8 +1722,11 @@ if (!Object.keys) Object.keys = function(o) {
 					the.removeClass("active").prev().addClass("active");
 					_this.elem.find(".text-show").text("第" + n + "页");
 				}
+				fireEvent(_this.elem.get(0),"PAGE_CHANGE",{currentPage:n});
 			});
 			
+			
+			//下一页 按钮 点击
 			_this.elem.find(".next-page").click(function(e){
 				e.stopImmediatePropagation();
 				var the = _this.elem.find(".drop-wrapper>ul>li.active");
@@ -1715,8 +1737,8 @@ if (!Object.keys) Object.keys = function(o) {
 					the.removeClass("active").next().addClass("active");
 					_this.elem.find(".text-show").text("第" + n + "页");
 				}
-			});			
-			
+				fireEvent(_this.elem.get(0),"PAGE_CHANGE",{currentPage:n});
+			});
 		};
 		
 		$(document).click(function(e){
@@ -1790,6 +1812,16 @@ if (!Object.keys) Object.keys = function(o) {
 			_this.pagetext.text(cfg.perPage);
 		}
     }
+	
+	/***
+	** 设置 具体的页数
+	**@params {int} num
+	***/
+	Page.prototype.setpage = function(num){
+		var total = this.config.totalPages;
+		
+	};
+	
     /**
      * jquery 提供了一个objct 即 fn，which is a shotcut of jquery object prototype
      * or you can call it jquery plugin shell  == fn
@@ -1810,12 +1842,15 @@ if (!Object.keys) Object.keys = function(o) {
     **@param {Page} page :  instacne of the plugin builder
     **/
     function exchange(page){
-        /**
-        **@param {Object} msg {type:"类型"}
-        **/
-        this.manipulate = function(msg){
-            
-        }
+		/***
+		** 设置 第几页
+		***/
+		this.val = function(num){
+			var num = parseInt(num)||1; //默认第一页
+			//设置 显示到第几页
+			page.setpage(num);
+			return page.elem;
+		}
     }
 	
 	  var old = $.fn.page;
@@ -2025,7 +2060,7 @@ if (!Object.keys) Object.keys = function(o) {
 						    </div>');
 			body = $('<div class="modal-body"></div>');
 			footer = $('<div class="modal-footer">\
-								<button class="btn btn-default btn-ok disabled" data-dismiss="modal"></button>\
+								<button class="btn btn-default btn-ok" data-dismiss="modal"></button>\
 								<button class="btn btn-default btn-cancel" data-dismiss="modal"></button>\
 						    </div>');
 			wrapper.find("div.modal-content").append(header).append(body).append(footer);
@@ -2041,10 +2076,10 @@ if (!Object.keys) Object.keys = function(o) {
 	
 	
 	
-	function listen(){
+	function listen(instance){
 		if(footer){
 			footer.find("button.btn-ok:not(.disabled)").unbind("click").click(function(e){
-				fireEvent(_this.elem.get(0),"click_ok",{value:1,desc:"ok"});
+				instance.status = "ok";
 			});
 
 			footer.find("button.btn-ok.disabled").unbind("click").click(function(e){
@@ -2064,14 +2099,21 @@ if (!Object.keys) Object.keys = function(o) {
 	**@constructor Prompt
 	**/
     function Prompt(element, options) {
-		var self = this;
+		var _this = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.prompt.defaults,options);
 		this.init();
-		
+		this.status = "";
 		
 		//prompt 窗口
-		this.elem.modal();
+		this.elem.modal().unbind("hide.bs.modal").on("hide.bs.modal",function(e){
+			e.stopImmediatePropagation();
+			if(_this.status == "ok"){
+				_this.config.onOk();
+			}else{
+				_this.config.onCancel();
+			}
+		});
     };
 	/**
 	**列表组件的初始化
@@ -2083,10 +2125,10 @@ if (!Object.keys) Object.keys = function(o) {
 		this.initConfig();
 		
 			
-		listen();
+		listen(this);
 		
 		this.elem.find("button.btn-cancel").unbind("click").click(function(e){
-			fireEvent(_this.elem.get(0),"click_no",{value:0,desc:"no"});
+			this.status = "cancel";
 		});
     };
 	
@@ -2150,7 +2192,7 @@ if (!Object.keys) Object.keys = function(o) {
 			}else{//校验不合法
 				footer.find("button.btn-ok").addClass("disabled");
 			}
-			listen();
+			listen(_this);
 		}
 		
 	}
@@ -2191,8 +2233,17 @@ if (!Object.keys) Object.keys = function(o) {
 		validate:null,//表单校验， 返回 true,校验成功，返回false 校验失败
 		header:null,
 		body:null,
-		footer:null
+		footer:null,
+		onOk:function(){},//点击确认按钮回调函数
+		onCancel:function(){}//点击取消按钮 回调函数
 	};
+	
+	/***
+	** 全局快捷使用方式
+ 	***/
+	win.showPrompt = function(options){
+		$("#prompt-holder").prompt(options);
+	}
 }(jQuery,window));
 
 ;(function ($) { 
@@ -2352,12 +2403,11 @@ if (!Object.keys) Object.keys = function(o) {
 					});					
 					
 				},function(err){
-					console.log(err);
 					_this.wrapper.removeClass("loading");
 				});			
 			}
 			//发出事件
-			fireEvent(_this.elem.get(0),"input_change",{text:$(this).val()});			
+			fireEvent(_this.elem.get(0),"INPUT_CHANGE",{text:$(this).val()});			
 		});
 		
 		/***
@@ -2384,7 +2434,7 @@ if (!Object.keys) Object.keys = function(o) {
 			if(ind == _this.elem.find("span.selected-item").attr("index")) return false;	
 			_this.elem.find("span.selected-item").text(txt).attr({"index":ind,val:txt,name:txt});
 			
-			fireEvent(_this.elem.get(0),"scope_change",{index:ind,value:txt});
+			fireEvent(_this.elem.get(0),"SCOPE_CHANGE",{index:ind,value:txt});
 		});
 		
 		
@@ -2507,7 +2557,7 @@ if (!Object.keys) Object.keys = function(o) {
     **/
     function exchange(search){
         /**
-        **@param {Object} msg {type:"类型"}
+        **默认input 值
         **/
 		this.val = function(o){
 			var txt = (typeof(o)=="string"||typeof(o)=="number")?o:(o.label||o.text||o.name||o.value);
@@ -2579,7 +2629,7 @@ if (!Object.keys) Object.keys = function(o) {
 						_this.input.attr("type","password");
 					}
 				}
-				fireEvent(_this.elem.get(0),"icon_click");
+				fireEvent(_this.elem.get(0),"ICON_CLICK");
 			});
 		}
 		
@@ -2589,7 +2639,8 @@ if (!Object.keys) Object.keys = function(o) {
 				var val = parseFloat(_this.input.val());
 				val = val+_this.config.step;
 				if(val>_this.config.max) val = _this.config.max;
-				_this.input.val(val);
+				_this.input.val(val).attr("name",val);
+				fireEvent($(this).get(0),"STEP_CHANGE",{val:val});
 			});
 
 			//减
@@ -2597,7 +2648,8 @@ if (!Object.keys) Object.keys = function(o) {
 				var val = _this.input.val();
 				val = val - _this.config.step;
 				if(val<_this.config.min) val=_this.config.min
-				_this.input.val(val);
+				_this.input.val(val).attr("name",val);
+				fireEvent($(this).get(0),"STEP_CHANGE",{val:val});
 			});
 			//是否提示用户，输入错误
 			_this.input.keyup(function(e){
@@ -2605,7 +2657,7 @@ if (!Object.keys) Object.keys = function(o) {
 					if(_this.input.val()>_this.config.max){
 						_this.input.val(_this.config.max);
 					}else if(_this.input.val()<_this.config.min){
-						_this.input.val(_this.config.min);
+						_this.input.val(_this.config.min).attr("name",_this.config.min);
 					}
 					_this.elem.removeClass("warning");
 				}else{//非数字
@@ -2732,7 +2784,7 @@ if (!Object.keys) Object.keys = function(o) {
 	** outside accessible default setting
 	**/
 	$.fn.sinput.defaults = {
-		type:"1",//类型 1,普通输入框，2 stepper
+		type:1,//类型 1,普通输入框，2 stepper
 		title:"",//出现title 
 		xion:"",//接受3种类型，bootstrap 里面的icon 接受小图片jpg, png，或者文字
 		pos:"right",//默认图标放在最左边 left, right 两个选项
@@ -3259,19 +3311,19 @@ if (!Object.keys) Object.keys = function(o) {
                 var o = arr[i];
                 var text = (typeof(o)=="string"||typeof(o)=="number")?o:(o.name||o.txt);
                 if(args[2]){
-					var col = $('<span class="ndp-table-col" title='+text+'><span class="head-txt">'+text+'</span></span>');
+					var col = $('<span class="ndp-table-col" title='+text+' col='+i+' ><span class="head-txt">'+text+'</span></span>');
 				}else{
-					col = $('<span class="ndp-table-col" title='+text+'>'+text+'</span>');
+					col = $('<span class="ndp-table-col" title='+text+' col='+i+' >'+text+'</span>');
 				}
 				
                 row.append(col);
             }
         }else{
-            Object.keys(arr).forEach(function(item){
+            Object.keys(arr).forEach(function(item,index){
 				if(args[2]){
-					col = $('<span class="ndp-table-col" title='+arr[item]+'><span class="head-txt">'+arr[item]+'</span></span>');
+					col = $('<span class="ndp-table-col" title='+arr[item]+' col='+index+' ><span class="head-txt">'+arr[item]+'</span></span>');
 				}else{
-					col = $('<span class="ndp-table-col" title='+arr[item]+'>'+arr[item]+'</span>');
+					col = $('<span class="ndp-table-col" title='+arr[item]+'  col='+index+'>'+arr[item]+'</span>');
 				}    
                 row.append(col);               
             });
@@ -3299,6 +3351,34 @@ if (!Object.keys) Object.keys = function(o) {
 		this.buildBody(this.config.data);//构建列表体
 		this.elem.append(this.head).append(this.body);
 		this.initConfig();
+		
+		
+		//监听用户交互
+		
+		/***
+		**  用户点击排序
+		***/
+		this.head.find(".sort-direct").click(function(e){
+			e.stopPropagation();
+			var fa = $(this).parent();
+			fireEvent($(this).get(0),"SORT_CHANGE",{col:parseInt(fa.attr("col")),name:fa.attr("title")});
+		});
+		
+		/***
+		** 用户点击 一行
+		***/
+		this.body.find(".ndp-table-row").click(function(e){
+			e.stopPropagation();
+			var row = $(this).index();//第几行
+			fireEvent($(this).get(0),"ROW_CLICK",{row:row});//第几行被点击
+		});
+		
+		/***
+		** 允许选中列的，一列被点击
+		***/
+		this.head.find(".ndp-table-col").click(function(e){
+			fireEvent($(this).get(0),"COL_CLICK",{col:parseInt($(this).attr("col"))});//第几行被点击
+		});
     };
 	
 	/***
@@ -3560,15 +3640,15 @@ if (!Object.keys) Object.keys = function(o) {
 		this.tabwrapper.find("li").click(function(e){
 			if(!$(this).hasClass("active")){
 				$(this).addClass("active").siblings().removeClass("active");
-				var idx = $(this).attr("index");
-				fireEvent(_this.elem.get(0),"tab_change",{index:idx,activeData:_this.config.list[idx]});
+				var idx = parseInt($(this).attr("index"));
+				fireEvent(_this.elem.get(0),"TAB_CHANGE",{index:idx,name:_this.config.list[idx]});
 			}
 		});
 		
 		if(_this.config.rm){
 			this.tabwrapper.find("li>a>i").click(function(e){
 				e.preventDefault();			
-				var index = $(this).parent().parent().attr("index");//删除的数据索引
+				var index = parseInt($(this).parent().parent().attr("index"));//删除的数据索引
 				var the = _this.tabwrapper.find("li[index="+index+"]");					
 				var  yon = the.hasClass("active");
 				the.remove();
@@ -3578,8 +3658,8 @@ if (!Object.keys) Object.keys = function(o) {
 				if(_this.tabwrapper.children().length==1) {
 					_this.tabwrapper.find("li>a>i").addClass("hidden");
 				}
-				var aindex = _this.tabwrapper.find("li.active").attr("index");
-				fireEvent(_this.elem.get(0),"tab_removed",{rmData:_this.config.list[index],activeData:_this.config.list[aindex]});
+				var aindex = parseInt(_this.tabwrapper.find("li.active").attr("index"));
+				fireEvent(_this.elem.get(0),"TAB_REMOVED",{rm:_this.config.list[index],active:_this.config.list[aindex],current:aindex});
 			});
 			this.tabwrapper.find("li").mouseenter(function(){
 				$(this).find("i").removeClass("transparent");
@@ -3651,8 +3731,8 @@ if (!Object.keys) Object.keys = function(o) {
 			}else{
 				str = item;
 			}
-			var li = $("<li role='presentation' value="+str+"  index="+index+"><a href='#'>"+str+"</a></li>");
-			if(index==0) {li.addClass("active")};
+			var li = $("<li role='presentation' value="+str+"  index="+index+" title="+str+" ><a href='#'>"+str+"</a></li>");
+			if(index==_this.config.default) {li.addClass("active")};
 			if(_this.config.badge && ba){//是否显示 badge 
 				li.find("a").append("<span class='badge'>"+ba+"</span>");
 			}
@@ -3703,13 +3783,16 @@ if (!Object.keys) Object.keys = function(o) {
 	** factory Class
     **@param {Drop} drop :  instacne of the plugin builder
     **/
-    function exchange(tab){
-        /**
-        **@param {Object} msg {type:"类型"}
-        **/
-        this.manipulate = function(msg){
-            
-        }
+    function exchange(tabs){
+		/***
+		**选中 第几个tab
+		**@params {int} idx  从0开始
+		**/
+		this.val = function(idx){
+			tabs.tabwrapper.find("li[role=presentation][index='"+idx+"']").addClass("active")
+				.siblings().removeClass("active");
+			return tabs.elem;
+		}
     }
 	
 	  var old = $.fn.tabs;
@@ -3725,6 +3808,7 @@ if (!Object.keys) Object.keys = function(o) {
 	** outside accessible default setting
 	**/
 	$.fn.tabs.defaults = {
+		default:0,//默认选中第几个tab 
 		list:[],
 		badge:false,// 是否显示badge
 		rm:false,//是否允许删除tab
@@ -3778,14 +3862,18 @@ if (!Object.keys) Object.keys = function(o) {
 			if(cfg.holdon && /^[\-\.]?(\d+)?\.?(\d+)?$/.test(cfg.holdon)){
 				tim = setTimeout(function(){
 					elem.css("opacity",0).removeClass("alert");
+					fireEvent(elem.get(0),"TIP_CLOSE");//tip 消失
 				},cfg.holdon*1000);				
 			}
+			
+			return elem;
 		}
 		
 		elem.find("span.close-hold").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
 			elem.css("opacity",0).removeClass("alert");
 			if(tim) clearTimeout(tim);
+			fireEvent(elem.get(0),"TIP_CLOSE");//tip 被手动关闭
 		});
 		
 
@@ -4403,7 +4491,8 @@ if (!Object.keys) Object.keys = function(o) {
 		if(_this.config.checkbox){
 			_this.elem.find("li>.tree-txt-wrapper").unbind("click").click(function(e){
 				e.stopImmediatePropagation();
-				$(this).parent().toggleClass("active");	
+				$(this).parent().toggleClass("active");
+				var fa = $(this).parent();
 				var the = $(this).parent().find("input[type=checkbox]")
 				if($(this).parent().hasClass("active")){
 					the.prop("checked",true).parents("li").addClass("active");
@@ -4412,12 +4501,15 @@ if (!Object.keys) Object.keys = function(o) {
 					var theLI = $(this).parent().parents("li:not(.tree-leaf)");
 						theLI.removeClass("active").find("input[type=checkbox]:first").removeAttr("checked");
 				}
+
+				fireEvent(_this.elem.get(0),"LEAF_CHECK",{val:$(this).attr("title"),check:$(this).find("input").prop("checked")});
 			});
 		}else{
 			_this.elem.find("li.tree-leaf").unbind("click").click(function(e){
 				_this.elem.find("li.tree-leaf").removeClass("active");
 				$(this).addClass("active");	
-			});							
+				fireEvent(_this.elem.get(0),"LEAF_CLICK",{val:$(this).attr("value")});//点击节点
+			});
 		}
     };
 	
@@ -4582,6 +4674,7 @@ if (!Object.keys) Object.keys = function(o) {
 				$(this).parent().parent().siblings("li[asparent]").removeClass(" active").removeClass("focus").children("ul").addClass("hide");
 				$(this).siblings("li").removeClass("active").removeClass("focus").children("ul").addClass("hide");
 			}
+			fireEvent($(this).get(0),"ITEM_CLICK",{val:$(this).attr("value")});
 		});
     };
 	
@@ -4753,7 +4846,8 @@ if (!Object.keys) Object.keys = function(o) {
 				$(this).parent().parent().siblings("li[asparent]").removeClass(" active").children("ul");
 				$(this).siblings("li").removeClass("active").children("ul");
 			}
-			$(this).trigger("item_click",{deep:deep,value:val});
+			//$(this).trigger("item_click",{deep:deep,value:val});
+			fireEvent($(this).get(0),"item_click",{deep:deep,value:val});//点击叶子节点
 		});
 
 		/***
@@ -4777,9 +4871,6 @@ if (!Object.keys) Object.keys = function(o) {
 				$(this).trigger("expand_complete");//展开事件
 			}
 		});
-
-
-		_this.elem.trigger("mission_complete");
     };
 
 	/**
@@ -4857,6 +4948,10 @@ if (!Object.keys) Object.keys = function(o) {
     **@param {Drop} Bread :  instacne of the plugin builder
     **/
     function exchange(vList2){
+		
+		/***
+		*** 展开，折叠
+		****/
 		this.fold = function(){
 			vList2.transform();
 			return vList2.elem;

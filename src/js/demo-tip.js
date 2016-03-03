@@ -3,17 +3,28 @@ require(['./config'],function(){
         require(['bootstrap','./components/tip'],function(){
 				$("button.btn-primary").click(function(){
 					showTip({
+						holdon:10,//默认 10秒消失
 						content:"This is tip for showing people some thing!<button class='btn btn-primary btn2'>button</button>"
 					});
+				}).on("TIP_CLOSE",function(e){
+					console.log("tip 关闭");
 				});
 				$("button.btn-success").click(function(){
 					showTip({type:"success",
 							 close:true,
 							 icon:"<i class='glyphicon glyphicon-home'></i>"});
+				}).on("TIP_CLOSE",function(e){
+					console.log("tip 关闭");
 				});
+			
+			
 				$("button.btn-danger").click(function(){
 					showTip({type:"danger",close:true});
+				}).on("TIP_CLOSE",function(e){
+					console.log("tip 关闭");
 				});	
+			
+			
 				$("button.btn-warning").click(function(){
 					showTip({type:"warning",close:true});
 				});	

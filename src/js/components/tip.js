@@ -44,14 +44,18 @@
 			if(cfg.holdon && /^[\-\.]?(\d+)?\.?(\d+)?$/.test(cfg.holdon)){
 				tim = setTimeout(function(){
 					elem.css("opacity",0).removeClass("alert");
+					fireEvent(elem.get(0),"TIP_CLOSE");//tip 消失
 				},cfg.holdon*1000);				
 			}
+			
+			return elem;
 		}
 		
 		elem.find("span.close-hold").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
 			elem.css("opacity",0).removeClass("alert");
 			if(tim) clearTimeout(tim);
+			fireEvent(elem.get(0),"TIP_CLOSE");//tip 被手动关闭
 		});
 		
 

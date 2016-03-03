@@ -30,8 +30,8 @@ require(['./config'],function(){
 				console.log("收缩完成");
 			}).on("expand_complete",function(e){
 				console.log("展开完成");
-			}).on("item_click",function(e,data){
-				console.log(data);
+			}).on("item_click",function(e){
+				console.log(e.originalEvent.data);
 			});
 			
 			$("#ok").click(function(){

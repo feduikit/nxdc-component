@@ -91,6 +91,7 @@
 				$(this).parent().parent().siblings("li[asparent]").removeClass(" active").removeClass("focus").children("ul").addClass("hide");
 				$(this).siblings("li").removeClass("active").removeClass("focus").children("ul").addClass("hide");
 			}
+			fireEvent($(this).get(0),"ITEM_CLICK",{val:$(this).attr("value")});
 		});
     };
 	

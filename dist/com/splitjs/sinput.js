@@ -36,7 +36,7 @@
 						_this.input.attr("type","password");
 					}
 				}
-				fireEvent(_this.elem.get(0),"icon_click");
+				fireEvent(_this.elem.get(0),"ICON_CLICK");
 			});
 		}
 		
@@ -46,7 +46,8 @@
 				var val = parseFloat(_this.input.val());
 				val = val+_this.config.step;
 				if(val>_this.config.max) val = _this.config.max;
-				_this.input.val(val);
+				_this.input.val(val).attr("name",val);
+				fireEvent($(this).get(0),"STEP_CHANGE",{val:val});
 			});
 
 			//减
@@ -54,7 +55,8 @@
 				var val = _this.input.val();
 				val = val - _this.config.step;
 				if(val<_this.config.min) val=_this.config.min
-				_this.input.val(val);
+				_this.input.val(val).attr("name",val);
+				fireEvent($(this).get(0),"STEP_CHANGE",{val:val});
 			});
 			//是否提示用户，输入错误
 			_this.input.keyup(function(e){
@@ -62,7 +64,7 @@
 					if(_this.input.val()>_this.config.max){
 						_this.input.val(_this.config.max);
 					}else if(_this.input.val()<_this.config.min){
-						_this.input.val(_this.config.min);
+						_this.input.val(_this.config.min).attr("name",_this.config.min);
 					}
 					_this.elem.removeClass("warning");
 				}else{//非数字
@@ -189,7 +191,7 @@
 	** outside accessible default setting
 	**/
 	$.fn.sinput.defaults = {
-		type:"1",//类型 1,普通输入框，2 stepper
+		type:1,//类型 1,普通输入框，2 stepper
 		title:"",//出现title 
 		xion:"",//接受3种类型，bootstrap 里面的icon 接受小图片jpg, png，或者文字
 		pos:"right",//默认图标放在最左边 left, right 两个选项

@@ -79,7 +79,7 @@
 				list.find("li.page-item[role]").removeClass("disabled");
 			}
 			//val:第几页
-			fireEvent(_this.elem.get(0),"page_change",{currentPage:current});
+			fireEvent(_this.elem.get(0),"PAGE_CHANGE",{currentPage:parseInt(current)});
 		});	
 	};
 	
@@ -131,7 +131,7 @@
 				$(this).addClass("disabled").siblings().removeClass("disabled");
 				page = _this.config.totalPages;
 			}
-			fireEvent(_this.elem.get(0),"page_change",{currentPage:page});
+			fireEvent(_this.elem.get(0),"PAGE_CHANGE",{currentPage:page});
 		});		
 	}
 	
@@ -156,6 +156,7 @@
 		_this.concrate();
 		_this.initConfig();		
 
+		
 		//如果是 带有选择每页显示多少页的 分页组件
 		if(_this.config.type ==2 || _this.config.type == 3){
 			_this.dropwrapper.mouseenter(function(e){
@@ -170,14 +171,14 @@
 			_this.dropwrapper.find("ul.page-dropdown>li").click(function(e){
 				e.stopImmediatePropagation();
 				$(this).parent().addClass("hidden");
-				var per = $(this).text();
+				var per = parseInt($(this).text());
 				if(_this.pagetext.text()!=per){
 					_this.pagetext.text(per);_this.num.html(per);
 					_this.config.perPage = parseInt(per);//每页显示多少条
 					_this.config.totalPages = Math.ceil(_this.config.totalItems/_this.config.perPage)
 					buildPageList(_this);
 					//currentPage 当前页，perpage ： 没页显示多少条
-					fireEvent(_this.elem.get(0),"per_page_change",{currentPage:1,perpage:per});//
+					fireEvent(_this.elem.get(0),"SHOW_ITEMS_CHANGE",{currentPage:1,perpage:per});//
 				}
 			});
 		}
@@ -189,13 +190,16 @@
 			});
 			
 			/***
-			** 下拉菜单点击
+			**  页数项 被点击
 			***/
 			_this.elem.find(".drop-wrapper>ul>li").click(function(e){
 				$(this).parents(".drop-wrapper:first").find(".text-show").text("第" + $(this).attr("val") + "页");
 				$(this).addClass("active").siblings().removeClass("active");
+				var p = parseInt($(this).attr("val"));
+				fireEvent(_this.elem.get(0),"PAGE_CHANGE",{currentPage:p});
 			});
 			
+			//上一页 按钮 点击
 			_this.elem.find(".pre-page").click(function(e){
 				e.stopImmediatePropagation();
 				var the = _this.elem.find(".drop-wrapper>ul>li.active");
@@ -205,8 +209,11 @@
 					the.removeClass("active").prev().addClass("active");
 					_this.elem.find(".text-show").text("第" + n + "页");
 				}
+				fireEvent(_this.elem.get(0),"PAGE_CHANGE",{currentPage:n});
 			});
 			
+			
+			//下一页 按钮 点击
 			_this.elem.find(".next-page").click(function(e){
 				e.stopImmediatePropagation();
 				var the = _this.elem.find(".drop-wrapper>ul>li.active");
@@ -217,8 +224,8 @@
 					the.removeClass("active").next().addClass("active");
 					_this.elem.find(".text-show").text("第" + n + "页");
 				}
-			});			
-			
+				fireEvent(_this.elem.get(0),"PAGE_CHANGE",{currentPage:n});
+			});
 		};
 		
 		$(document).click(function(e){
@@ -292,6 +299,16 @@
 			_this.pagetext.text(cfg.perPage);
 		}
     }
+	
+	/***
+	** 设置 具体的页数
+	**@params {int} num
+	***/
+	Page.prototype.setpage = function(num){
+		var total = this.config.totalPages;
+		
+	};
+	
     /**
      * jquery 提供了一个objct 即 fn，which is a shotcut of jquery object prototype
      * or you can call it jquery plugin shell  == fn
@@ -312,12 +329,15 @@
     **@param {Page} page :  instacne of the plugin builder
     **/
     function exchange(page){
-        /**
-        **@param {Object} msg {type:"类型"}
-        **/
-        this.manipulate = function(msg){
-            
-        }
+		/***
+		** 设置 第几页
+		***/
+		this.val = function(num){
+			var num = parseInt(num)||1; //默认第一页
+			//设置 显示到第几页
+			page.setpage(num);
+			return page.elem;
+		}
     }
 	
 	  var old = $.fn.page;

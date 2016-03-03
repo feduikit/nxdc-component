@@ -62,10 +62,12 @@
 		this.elem.find(".content-part:not(:has(.title-layer))").click(function(e){
 			var val = $(this).text();
 			if(_this.config.type==2) {//如果是 第二种类型的 下拉菜单
+				if(_this.hold.data("val")!=val) {
+					fireEvent($(this).get(0),"SELECT_CHANGE",{value:$(this).data("val")});
+				}
 				_this.hold.html(val).data("val",val);
-				if(_this.hold.data("val")!=val) $(this).trigger("item_click",{value:$(this).data("val")});	
-			}else{
-				$(this).trigger("item_click",{value:$(this).data("val")});	
+			}else{	
+				fireEvent($(this).get(0),"ITEM_CLICK",{value:$(this).data("val")});
 			}	
 		});		
 		
@@ -107,12 +109,13 @@
     **@param {Drop} drop :  instacne of the plugin builder
     **/
     function exchange(drop2){
-        /**
-        **@param {Object} msg {type:"类型"}
-        **/
-        this.manipulate = function(msg){
-            
-        }
+		this.val = function(o){
+			if(drop2.config.type==2){
+				var txt = o.text||o.label||o.name||o.value||o;
+				drop2.hold.html(txt).data("val",txt);
+			}
+			return drop2.elem;
+		}
     }
 	
 	

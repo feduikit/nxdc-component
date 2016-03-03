@@ -37,15 +37,15 @@
 		this.tabwrapper.find("li").click(function(e){
 			if(!$(this).hasClass("active")){
 				$(this).addClass("active").siblings().removeClass("active");
-				var idx = $(this).attr("index");
-				fireEvent(_this.elem.get(0),"tab_change",{index:idx,activeData:_this.config.list[idx]});
+				var idx = parseInt($(this).attr("index"));
+				fireEvent(_this.elem.get(0),"TAB_CHANGE",{index:idx,name:_this.config.list[idx]});
 			}
 		});
 		
 		if(_this.config.rm){
 			this.tabwrapper.find("li>a>i").click(function(e){
 				e.preventDefault();			
-				var index = $(this).parent().parent().attr("index");//删除的数据索引
+				var index = parseInt($(this).parent().parent().attr("index"));//删除的数据索引
 				var the = _this.tabwrapper.find("li[index="+index+"]");					
 				var  yon = the.hasClass("active");
 				the.remove();
@@ -55,8 +55,8 @@
 				if(_this.tabwrapper.children().length==1) {
 					_this.tabwrapper.find("li>a>i").addClass("hidden");
 				}
-				var aindex = _this.tabwrapper.find("li.active").attr("index");
-				fireEvent(_this.elem.get(0),"tab_removed",{rmData:_this.config.list[index],activeData:_this.config.list[aindex]});
+				var aindex = parseInt(_this.tabwrapper.find("li.active").attr("index"));
+				fireEvent(_this.elem.get(0),"TAB_REMOVED",{rm:_this.config.list[index],active:_this.config.list[aindex],current:aindex});
 			});
 			this.tabwrapper.find("li").mouseenter(function(){
 				$(this).find("i").removeClass("transparent");
@@ -128,8 +128,8 @@
 			}else{
 				str = item;
 			}
-			var li = $("<li role='presentation' value="+str+"  index="+index+"><a href='#'>"+str+"</a></li>");
-			if(index==0) {li.addClass("active")};
+			var li = $("<li role='presentation' value="+str+"  index="+index+" title="+str+" ><a href='#'>"+str+"</a></li>");
+			if(index==_this.config.default) {li.addClass("active")};
 			if(_this.config.badge && ba){//是否显示 badge 
 				li.find("a").append("<span class='badge'>"+ba+"</span>");
 			}
@@ -180,13 +180,16 @@
 	** factory Class
     **@param {Drop} drop :  instacne of the plugin builder
     **/
-    function exchange(tab){
-        /**
-        **@param {Object} msg {type:"类型"}
-        **/
-        this.manipulate = function(msg){
-            
-        }
+    function exchange(tabs){
+		/***
+		**选中 第几个tab
+		**@params {int} idx  从0开始
+		**/
+		this.val = function(idx){
+			tabs.tabwrapper.find("li[role=presentation][index='"+idx+"']").addClass("active")
+				.siblings().removeClass("active");
+			return tabs.elem;
+		}
     }
 	
 	  var old = $.fn.tabs;
@@ -202,6 +205,7 @@
 	** outside accessible default setting
 	**/
 	$.fn.tabs.defaults = {
+		default:0,//默认选中第几个tab 
 		list:[],
 		badge:false,// 是否显示badge
 		rm:false,//是否允许删除tab

@@ -35,7 +35,9 @@
 		deep++;
 		var rec = arguments.callee;
 		var ul = $("<ul class='sub-drop-list'/>");
-		if(cfg.type!=3) ul.addClass("hidden");
+		if(cfg.type!=3){
+			ul.addClass("hidden");
+		}
 		ul.css({width:(cfg.width+gap+5)+"px",left:-(gap)+"px"});
 		for(var i=0;i<arr.length;i++){
 			var o = arr[i];
@@ -83,11 +85,16 @@
             e.stopImmediatePropagation();
             _this.list.addClass("hidden");
 			var itemIndex = $(this).index();
-			var deep = $(this).attr("deep");
+//			var deep = parseInt($(this).attr("deep"));
             var value = $(this).attr("value");
             _this.peal.find("input").val(value).attr("name",value);
 			//deep 表示树桩菜单第几层 base from 0。index:表示这一层的第几个， base from 1
-            fireEvent(_this.elem.get(0),"drop_item_click",{val:value,deep:deep,index:itemIndex});
+			if(_this.config.type==3){
+				var gp = $(this).parents(".drop-one-item[deep='0']:first");
+				fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,group:gp.index(),gpname:gp.attr("title")});
+			}else{
+            	fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value});
+			}
         });
 		
 		
@@ -101,7 +108,12 @@
 					var val = item.attr("value");
 					var deep = item.attr("deep");
 					$(this).find("input").val(val).attr("name",val);
-					 fireEvent(_this.elem.get(0),"drop_item_click",{val:val,deep:deep});
+					if(_this.config.type==3){
+						var gp = item.parents(".drop-one-item[deep='0']:first");
+						fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:val,group:gp.index(),gpname:gp.attr("title")});
+					}else{
+						fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:val});
+					} 
 					_this.list.addClass("hidden");
 				}
 			}
@@ -201,7 +213,7 @@
 					vals.push(val);
 				});
 				_this.peal.find("input").val(vals.join(",")).attr("name",vals.join(","));
-				fireEvent(_this.elem.get(0),"item_apply_click",{checkedArr:cksArr});
+				fireEvent(_this.elem.get(0),"APPLY_CLICK",{checkedArr:cksArr});
 			});
 			
 			$(document).click(function(e){

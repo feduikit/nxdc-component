@@ -16,7 +16,7 @@
 						    </div>');
 			body = $('<div class="modal-body"></div>');
 			footer = $('<div class="modal-footer">\
-								<button class="btn btn-default btn-ok disabled" data-dismiss="modal"></button>\
+								<button class="btn btn-default btn-ok" data-dismiss="modal"></button>\
 								<button class="btn btn-default btn-cancel" data-dismiss="modal"></button>\
 						    </div>');
 			wrapper.find("div.modal-content").append(header).append(body).append(footer);
@@ -32,10 +32,10 @@
 	
 	
 	
-	function listen(){
+	function listen(instance){
 		if(footer){
 			footer.find("button.btn-ok:not(.disabled)").unbind("click").click(function(e){
-				fireEvent(_this.elem.get(0),"click_ok",{value:1,desc:"ok"});
+				instance.status = "ok";
 			});
 
 			footer.find("button.btn-ok.disabled").unbind("click").click(function(e){
@@ -55,14 +55,21 @@
 	**@constructor Prompt
 	**/
     function Prompt(element, options) {
-		var self = this;
+		var _this = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.prompt.defaults,options);
 		this.init();
-		
+		this.status = "";
 		
 		//prompt 窗口
-		this.elem.modal();
+		this.elem.modal().unbind("hide.bs.modal").on("hide.bs.modal",function(e){
+			e.stopImmediatePropagation();
+			if(_this.status == "ok"){
+				_this.config.onOk();
+			}else{
+				_this.config.onCancel();
+			}
+		});
     };
 	/**
 	**列表组件的初始化
@@ -74,10 +81,10 @@
 		this.initConfig();
 		
 			
-		listen();
+		listen(this);
 		
 		this.elem.find("button.btn-cancel").unbind("click").click(function(e){
-			fireEvent(_this.elem.get(0),"click_no",{value:0,desc:"no"});
+			this.status = "cancel";
 		});
     };
 	
@@ -141,7 +148,7 @@
 			}else{//校验不合法
 				footer.find("button.btn-ok").addClass("disabled");
 			}
-			listen();
+			listen(_this);
 		}
 		
 	}
@@ -182,6 +189,15 @@
 		validate:null,//表单校验， 返回 true,校验成功，返回false 校验失败
 		header:null,
 		body:null,
-		footer:null
+		footer:null,
+		onOk:function(){},//点击确认按钮回调函数
+		onCancel:function(){}//点击取消按钮 回调函数
 	};
+	
+	/***
+	** 全局快捷使用方式
+ 	***/
+	win.showPrompt = function(options){
+		$("#prompt-holder").prompt(options);
+	}
 }(jQuery,window));

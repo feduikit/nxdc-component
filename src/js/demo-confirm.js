@@ -3,16 +3,20 @@ require(['./config'],function(){
         require(['bootstrap','confirm'],function(){
 			
 			$("button.btn-primary").click(function(){
-				$("#confirm-holder").confirm({
+				showConfirm({
 					content:"您的述职报告已经完成，您确定提交吗？"
 				});
 			});
 			
 			$("button.btn-warning").click(function(){
-				$("#confirm-holder").confirm({
-					icon:"<i class='glyphicon glyphicon-phone'></i>"
-				}).on("click_ok",function(){ 
-					console.log("-----");
+				showConfirm({
+					icon:"<i class='glyphicon glyphicon-phone'></i>",
+					onOK:function(){// 点击 “确认” 按钮回调函数
+						console.log("ok 了");
+					},
+					onCancel:function(){// 点击 “取消” 按钮回调函数
+						console.log("取消le");
+					}
 				});
 			});
 			

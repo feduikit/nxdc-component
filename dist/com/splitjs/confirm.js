@@ -9,16 +9,16 @@
 					  </div>\
 					</div>');
 			header = $('<div class="modal-header">\
-						  		<button class="close" data-dismiss="modal">\
-						  			<span aria-hidden="true">&times;</span>\
-						  		</button>\
+								<button class="close" data-dismiss="modal">\
+									<span aria-hidden="true">&times;</span>\
+								</button>\
 								<span class="top-title"></span>\
-						    </div>');
+							</div>');
 			body = $('<div class="modal-body"></div>');
 			footer = $('<div class="modal-footer">\
 								<button class="btn btn-default btn-ok" data-dismiss="modal"></button>\
 								<button class="btn btn-default btn-cancel" data-dismiss="modal"></button>\
-						    </div>');
+							</div>');			
 			wrapper.find("div.modal-content").append(header).append(body).append(footer);
 			$(document.body).append(wrapper);
 		}		
@@ -34,14 +34,21 @@
 	**@constructor Confirm
 	**/
     function Confirm(element, options) {
-		var self = this;
+		var _this = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.confirm.defaults,element.data(),options);
 		this.init();
-		
+		this.status = "";
 		
 		//显示confirm 窗口
-		this.elem.modal();
+		this.elem.modal().unbind("hide.bs.modal").on("hide.bs.modal",function(e){
+			e.stopImmediatePropagation();
+			if(_this.status=="ok"){
+				_this.config.onOK();
+			}else{
+				_this.config.onCancel();
+			}
+		});
     };
 	/**
 	**列表组件的初始化
@@ -54,11 +61,11 @@
 		
 		
 		this.elem.find("button.btn-ok").unbind("click").click(function(e){
-			fireEvent(_this.elem.get(0),"click_ok",{value:1,desc:"ok"});
+			_this.status = "ok";
 		});
 		
-		this.elem.find("button.btn-cancel").unbind("click").click(function(e){
-			fireEvent(_this.elem.get(0),"click_cancel",{value:0,desc:"no"});
+		this.elem.find("button.btn-cancel,button.close").unbind("click").click(function(e){
+			_this.status = "cancel";
 		});
     };
 	
@@ -67,7 +74,6 @@
 	**/
 	Confirm.prototype.concrate = function(data){
 		var _this = this;
-		build();//在判断一次，万一不存在
 	};
 
     Confirm.prototype.initConfig = function(){
@@ -117,23 +123,9 @@
     $.fn.confirm = function (options) {
 		var the = this.first();
         var confirm = new Confirm(the, options);
-        exchange.call(this,confirm);
 		return the;
     };
 	
-    /***
-    **和其他插件的交互
-	** factory Class
-    **@param {Drop} Bread :  instacne of the plugin builder
-    **/
-    function exchange(confirm){
-        /**
-        **@param {Object} msg {type:"类型"}
-        **/
-        this.manipulate = function(confirm){
-            
-        }
-    }
 	/***
 	** outside accessible default setting
 	**/
@@ -142,6 +134,13 @@
 		content:"你确定留空白什么也不写吗？ 请选择",//提示文字
 		icon:"",//是否显示图标 图片 80X80
 		btnOK:"确定", //确定
-		btnCANCEL:"取消"//取消
+		btnCANCEL:"取消",//取消
+		onOK:function(){},//确定的处理回调函数
+		onCancel:function(){}//取消的处理 回调函数
 	};
+	
+	win.showConfirm = function(options){
+		return $("#confirm-holder").confirm(options);	
+	}
+	
 }(jQuery,window));

@@ -12,19 +12,19 @@
                 var o = arr[i];
                 var text = (typeof(o)=="string"||typeof(o)=="number")?o:(o.name||o.txt);
                 if(args[2]){
-					var col = $('<span class="ndp-table-col" title='+text+'><span class="head-txt">'+text+'</span></span>');
+					var col = $('<span class="ndp-table-col" title='+text+' col='+i+' ><span class="head-txt">'+text+'</span></span>');
 				}else{
-					col = $('<span class="ndp-table-col" title='+text+'>'+text+'</span>');
+					col = $('<span class="ndp-table-col" title='+text+' col='+i+' >'+text+'</span>');
 				}
 				
                 row.append(col);
             }
         }else{
-            Object.keys(arr).forEach(function(item){
+            Object.keys(arr).forEach(function(item,index){
 				if(args[2]){
-					col = $('<span class="ndp-table-col" title='+arr[item]+'><span class="head-txt">'+arr[item]+'</span></span>');
+					col = $('<span class="ndp-table-col" title='+arr[item]+' col='+index+' ><span class="head-txt">'+arr[item]+'</span></span>');
 				}else{
-					col = $('<span class="ndp-table-col" title='+arr[item]+'>'+arr[item]+'</span>');
+					col = $('<span class="ndp-table-col" title='+arr[item]+'  col='+index+'>'+arr[item]+'</span>');
 				}    
                 row.append(col);               
             });
@@ -52,6 +52,34 @@
 		this.buildBody(this.config.data);//构建列表体
 		this.elem.append(this.head).append(this.body);
 		this.initConfig();
+		
+		
+		//监听用户交互
+		
+		/***
+		**  用户点击排序
+		***/
+		this.head.find(".sort-direct").click(function(e){
+			e.stopPropagation();
+			var fa = $(this).parent();
+			fireEvent($(this).get(0),"SORT_CHANGE",{col:parseInt(fa.attr("col")),name:fa.attr("title")});
+		});
+		
+		/***
+		** 用户点击 一行
+		***/
+		this.body.find(".ndp-table-row").click(function(e){
+			e.stopPropagation();
+			var row = $(this).index();//第几行
+			fireEvent($(this).get(0),"ROW_CLICK",{row:row});//第几行被点击
+		});
+		
+		/***
+		** 允许选中列的，一列被点击
+		***/
+		this.head.find(".ndp-table-col").click(function(e){
+			fireEvent($(this).get(0),"COL_CLICK",{col:parseInt($(this).attr("col"))});//第几行被点击
+		});
     };
 	
 	/***

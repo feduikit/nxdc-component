@@ -29,6 +29,8 @@ require(['./config'],function(){
 							{label:"5-2-3"}							  
 					  ]}
 				]
+			}).on("ITEM_CLICK",function(e){
+				console.log(e.originalEvent.data);//{val:选中的叶子节点值 string}
 			});
         });
     });

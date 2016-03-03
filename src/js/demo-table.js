@@ -20,7 +20,9 @@ require(['./config'],function(){
                 data:[{id:1101,name:"hello123",info:"hello -china 123",gender:"man"},
                       {id:1102,name:"hello_23",info:"hello - japan 34",gender:"woman"},
                       {id:1103,name:"hello_34",info:"hello - euro 23",gender:"no sign"}]
-            });
+            }).on("ROW_CLICK",function(e){//行被点击
+				console.log(e.originalEvent.data);// {row：第几行 int}//第几行
+			});
 			
 			$("button#up").click(function(){
 				bool= !bool;
@@ -43,7 +45,9 @@ require(['./config'],function(){
                       {id:1103,name:"hello_34",info:"hello - euro 23",gender:"no sign"}],
                 colNail:true,//允许选中行
                 activeCol:1//默认选中的行索引，base 0
-            });
+            }).on("COL_CLICK",function(e){//列被点击
+				console.log(e.originalEvent.data); //{col:第几列 int }
+			});
 			
             $(".ndp-js-example4 .ndp-table-wrapper").table({
                 head:{col1:"第一列",col2:"第二列",col3:"第三列",col4:"第四列"},
@@ -66,7 +70,10 @@ require(['./config'],function(){
 					 {id:1105,name:"bllo_36",info:"Alo - usa 23",gender:"woman",nation:"USA"},
 					 {id:1106,name:"clo_37",info:"Do - usa 23",gender:"man",nation:"USA"},
 					 {id:1107,name:"hello_38",info:"dllo - usa 23",gender:"man",nation:"USA"}],					sort:[1,3,4]
-            });  
+            }).on("SORT_CHANGE",function(e){
+				//用户点击排序
+				console.log(e.originalEvent.data);//{col:第几列（from 0  int）， name:列名 字符串}
+			});  
 			
             $(".ndp-js-example6.ndp-table-wrapper").table({
                head:{col1:"第一列",col2:"第二列",col3:"第三列",col4:"第四列",col5:"第五列"},

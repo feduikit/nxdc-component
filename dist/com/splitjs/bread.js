@@ -30,7 +30,7 @@
 		//监听事件
 		_this.breadwrapper.find("li:has(a)").click(function(e){
 			e.stopImmediatePropagation();
-			var index = $(this).attr("deep");
+			var index = parseInt($(this).attr("deep"));
 			var value =  $(this).text();
 			if(_this.config.home && index==0){
 				$(this).addClass("active").empty().text(_this.config.list[index]).prepend(_this.config.home);
@@ -38,7 +38,8 @@
 				$(this).addClass("active").empty().text(_this.config.list[index]);
 			}
 			_this.breadwrapper.find("li:gt("+index+")").remove();
-			fireEvent(_this.elem.get(0),"layer_click",{deep:index,text:value});
+			//面包屑的层级发生改变
+			fireEvent(_this.elem.get(0),"LAYER_CHANGE",{index:index,text:value});
 		});
 		
 		$(window).resize(function(){

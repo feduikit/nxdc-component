@@ -155,12 +155,11 @@
 					});					
 					
 				},function(err){
-					console.log(err);
 					_this.wrapper.removeClass("loading");
 				});			
 			}
 			//发出事件
-			fireEvent(_this.elem.get(0),"input_change",{text:$(this).val()});			
+			fireEvent(_this.elem.get(0),"INPUT_CHANGE",{text:$(this).val()});			
 		});
 		
 		/***
@@ -187,7 +186,7 @@
 			if(ind == _this.elem.find("span.selected-item").attr("index")) return false;	
 			_this.elem.find("span.selected-item").text(txt).attr({"index":ind,val:txt,name:txt});
 			
-			fireEvent(_this.elem.get(0),"scope_change",{index:ind,value:txt});
+			fireEvent(_this.elem.get(0),"SCOPE_CHANGE",{index:ind,value:txt});
 		});
 		
 		
@@ -310,7 +309,7 @@
     **/
     function exchange(search){
         /**
-        **@param {Object} msg {type:"类型"}
+        **默认input 值
         **/
 		this.val = function(o){
 			var txt = (typeof(o)=="string"||typeof(o)=="number")?o:(o.label||o.text||o.name||o.value);

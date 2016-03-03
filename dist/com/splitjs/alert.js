@@ -60,8 +60,8 @@
 			/***
 			** 用户自定义内容
 			***/
-			wrapper.unbind("hide.bs.modal").on("hide.bs.modal",function(){
-				if(cfg.callback && typeof(cfg.callback)=="function") cfg.callback(wrapper); 
+			wrapper.unbind("hide.bs.modal").on("hide.bs.modal",function(e){
+				if(cfg.callback && typeof(cfg.callback)=="function") cfg.callback(wrapper);
 			})
 			
 			if(cfg.type==2){

@@ -3,11 +3,18 @@ require(['./config'],function(){
         require(['bootstrap','prompt'],function(){
 			
 			$("button.btn-primary").click(function(){
-				$("#prompt-holder").prompt();
+				showPrompt({
+					onOk:function(){
+						console.log("点击了ok按钮");
+					},
+					onCancel:function(){
+						console.log("点击了 取消 按钮");
+					}
+				});
 			});
 			
 			$("button.btn-warning").click(function(){
-				$("#prompt-holder").prompt({
+				showPrompt({
 					title:"登陆",
 					body:function(body,wrapper){
 						//DOM构建
@@ -33,15 +40,13 @@ require(['./config'],function(){
 					},
 					btnOK:"登陆",
 					btnCANCAEL:"取消"
-				}).on("click_ok",function(){
-					console.log();
 				});
 			});
 			
 			
 			//个人信息表单
 			$("button.btn-success").click(function(e){
-				$("#prompt-holder").prompt({
+				showPrompt({
 					title:"个人信息",
 					body:function(body,wrapper){
 						var form = $("<form class='form-horizontal' />");
@@ -95,7 +100,7 @@ require(['./config'],function(){
 			
 			//复杂表单
 			$("button.btn-danger").click(function(e){
-				$("#confirm-holder").prompt({
+				showPrompt({
 					title:"<i class='glyphicon glyphicon-home'></i>&nbsp;复杂表单",
 					body:function(body){
 						body.addClass("body-fixed-height");

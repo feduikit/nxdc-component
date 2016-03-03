@@ -7,13 +7,16 @@ require(['./config'],function(){
 							console.log(modal.text());
 						}
 					});
-				});	
+				});
 			
 				$("button.btn-warning").click(function(){
 					showAlert({
 						icon:"<i class='glyphicon glyphicon-globe'></i>",
 						content:"这里显示的是一个地球，用来测试图片在右边，文字在左边问题！dddddddd！dsfdfbdshjfdfdhfdsfhdjfdshfdsfhjdfdsjfhdsfjdhfdjfkdhsfjdfhdsjfdshfjdsfhdsjfhdsjfdhsfjdshfdsjfdhsfjdshfjdsfhdsjfdsfhdjfdhdsjfhdsjkfdhskfdhsghdgdsjdshjhdsjhdsjgkdlsdsldhdsfdskfhdsfjdsfjdfhdjfhdfjdfhdsjfvdsjddfdsfdsfdfdsfdsfhdsfdsfdbdb db",
-						btnOK:"确定"
+						btnOK:"确定",
+						callback:function(modal){// alert 关闭 回调这里
+							console.log(111);
+						}
 					});
 				});
 			

@@ -12,6 +12,9 @@ require(['./config'],function(){
 					  {label:"接触绑定"},
 					  {label:"退出"}
 					 ]
+			}).on("ITEM_CLICK",function(e){
+				//下拉选项被点击
+				console.log(e.originalEvent.data);//{value:选中的值 string}
 			});
 			
 			
@@ -34,10 +37,10 @@ require(['./config'],function(){
 						  {label:"中国3"}
 					  ]}
 					 ]
-			}).on("item_click",function(e,data){
-				console.log(data);
+			}).on("ITEM_CLICK",function(e){
+				console.log(e.originalEvent.data); //{value:选中的值 string}
 			});	
-			
+
 			
 			$(".dropdown.drop2-wrapper[name='cc']").drop2({
 				type:2,
@@ -57,9 +60,27 @@ require(['./config'],function(){
 					  {label:"退出6"},
 					  {label:"退出7"}
 					 ]
-			}).on("item_click",function(e,data){
-				console.log(data);
-			});				
+			}).on("SELECT_CHANGE",function(e){
+				console.log(e.originalEvent.data);
+			}).val("修改密码");	
+			
+			
+			//glyphicon glyphicon-tag
+			$(".dropdown[name='tag']").drop2({
+				id:"meme3",
+				caret:"<i class='glyphicon glyphicon-menu-down'></i>",
+				label:"<i class='glyphicon glyphicon-th-list'></i>",
+				data:[
+					  {label:"用户设置"},
+					  {label:"修改密码"},
+					  {label:"接触绑定"},
+					  {label:"退出"}
+					 ]
+			}).on("ITEM_CLICK",function(e){
+				//下拉选项被点击
+				console.log(e.originalEvent.data);//{value:选中的值 string}
+			});		
+			
 			
 		});
 	});
