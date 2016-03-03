@@ -30,6 +30,7 @@
     width: calc(100% - 25px);
     padding: 0 5px;
     background-color:transparent;
+	border-color: transparent;
 }
 .drop-peal>span.caret-wrapper{
     position: absolute;
