@@ -2,10 +2,10 @@
 	position: relative;
 	display:inline-block;
 	height: 30px;/***这个值在实际使用中应该被覆盖 ***/
-	width: 120px;/***这个值在实际使用中应该被覆盖 ***/
+	width: 140px;/***这个值在实际使用中应该被覆盖 ***/
 	min-height: 25px;
 	min-width: 60px;
-	border:1px solid #ccc;
+	border:1px solid #b9c3cd;
 	padding: 0;
 	box-sizing: border-box;
 	transition: background,box-shadow 0.3s;
@@ -38,7 +38,7 @@
 
 .ndp-sinput-wrapper[disabled],.ndp-sinput-wrapper[disabled].active{
 	box-shadow: 0 0 0 transparent;
-	background-color: #eeeeee;
+	background-color: #dee7e7;
 	cursor:not-allowed;
 }
 .ndp-sinput-wrapper>input[type]{
@@ -54,7 +54,7 @@
 	font-size: 12px;
 }
 .ndp-sinput-wrapper[disabled] *{
-	background-color: #eeeeee;
+	background-color: #dee7e7;
 	color:#ccc;
 	cursor:not-allowed;
 }

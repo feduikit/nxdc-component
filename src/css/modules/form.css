@@ -1,0 +1,14 @@
+input[type=text]{
+	font-size: 14px;
+	padding: 0 10px;
+	border:1px solid #b9c3cd;
+}
+
+input[type=text][disabled]{
+	background-color: #dee7e7;
+}
+
+.form-input{
+	width: 140px;
+	height: 30px;
+}

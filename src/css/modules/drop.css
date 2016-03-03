@@ -7,7 +7,7 @@
 	box-sizing: border-box;
     min-width:120px;
     min-height: 30px;
-    border:1px solid #ccc;
+    border:1px solid #b9c3cd;
     height: 30px;
     padding: 0;
 }
@@ -118,7 +118,7 @@ li.drop-one-item>i.glyphicon{
 li.drop-one-item.disabled,li.drop-one-item.disabled:hover{
 	opacity: 0.7;
 	color:#b5b5b5;
-	background-color: #f2f6f7;
+	background-color: #dee7e7;
 	cursor: not-allowed;
 }
 /***

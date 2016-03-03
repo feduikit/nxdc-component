@@ -43,7 +43,6 @@ require(['./config'],function(){
 			
 			$(".ndp-search-wrapper[name=mixall]").search({
 				type:4,
-				dropList:["china","usa","world"],
 				dropList:[{text:"china"},{text:"USA"},{text:"德国"}],
 			}).on("input_change",function(e){
 				console.log(e.originalEvent.data);
