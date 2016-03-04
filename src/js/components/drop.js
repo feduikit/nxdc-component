@@ -87,7 +87,7 @@
 			var itemIndex = $(this).index();
 //			var deep = parseInt($(this).attr("deep"));
             var value = $(this).attr("value");
-            _this.peal.find("input").val(value).attr("name",value);
+            _this.peal.find("input").val(value);
 			//deep 表示树桩菜单第几层 base from 0。index:表示这一层的第几个， base from 1
 			if(_this.config.type==3){
 				var gp = $(this).parents(".drop-one-item[deep='0']:first");
@@ -107,7 +107,7 @@
 					var item = _this.list.find("li.em");
 					var val = item.attr("value");
 					var deep = item.attr("deep");
-					$(this).find("input").val(val).attr("name",val);
+					$(this).find("input").val(val);
 					if(_this.config.type==3){
 						var gp = item.parents(".drop-one-item[deep='0']:first");
 						fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:val,group:gp.index(),gpname:gp.attr("title")});
@@ -212,7 +212,7 @@
 					cksArr.push({index:$(item).index(),value:val});
 					vals.push(val);
 				});
-				_this.peal.find("input").val(vals.join(",")).attr("name",vals.join(","));
+				_this.peal.find("input").val(vals.join(","));
 				fireEvent(_this.elem.get(0),"APPLY_CLICK",{checkedArr:cksArr});
 			});
 			
@@ -251,9 +251,14 @@
         }
         
         if(_this.config.val){
-            _this.peal.find("input").val(_this.config.val).attr("name",_this.config.val);
+            _this.peal.find("input").val(_this.config.val);
         }
         
+		//ser 需要设置名字
+        if(_this.config.name){
+            _this.peal.find("input").attr("name",_this.config.name);
+        }	
+		
 		/**
 		**构建下拉列表
 		**/
@@ -317,18 +322,12 @@
     **@param {Drop} drop :  instacne of the plugin builder
     **/
     function exchange(drop){
-        /**
-        **@param {Object} msg {type:"类型"}
-        **/
-        this.manipulate = function(msg){
-            
-        }
 		/***
 		** 设置显示的值
 		***/
 		this.val = function(o){
 			var txt = (typeof(o)=="string"||typeof(o)=="number")?o:(o.label||o.text||o.name||o.value);
-			drop.elem.find("input").val(txt).attr("name",txt);
+			drop.elem.find("input").val(txt);
 			return drop.elem;
 		}
     }
@@ -337,6 +336,7 @@
 	**/
 	$.fn.drop.defaults = {
         type:1,//1，inline; 2 split dropdown下拉,3 分组显示菜单，组名高亮，不能被点击,4 checkbox,多选
+		name:"drop",//为了便于serialize 设置name属性
         placeholder:null,//提示文字
 		textKey:"",//默认猜测，text,label,title,name
 		subKey:"",//默认猜测，sub, son, next

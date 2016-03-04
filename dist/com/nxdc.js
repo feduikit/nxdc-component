@@ -626,7 +626,7 @@ if (!Object.keys) Object.keys = function(o) {
 			var itemIndex = $(this).index();
 //			var deep = parseInt($(this).attr("deep"));
             var value = $(this).attr("value");
-            _this.peal.find("input").val(value).attr("name",value);
+            _this.peal.find("input").val(value);
 			//deep 表示树桩菜单第几层 base from 0。index:表示这一层的第几个， base from 1
 			if(_this.config.type==3){
 				var gp = $(this).parents(".drop-one-item[deep='0']:first");
@@ -646,7 +646,7 @@ if (!Object.keys) Object.keys = function(o) {
 					var item = _this.list.find("li.em");
 					var val = item.attr("value");
 					var deep = item.attr("deep");
-					$(this).find("input").val(val).attr("name",val);
+					$(this).find("input").val(val);
 					if(_this.config.type==3){
 						var gp = item.parents(".drop-one-item[deep='0']:first");
 						fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:val,group:gp.index(),gpname:gp.attr("title")});
@@ -751,7 +751,7 @@ if (!Object.keys) Object.keys = function(o) {
 					cksArr.push({index:$(item).index(),value:val});
 					vals.push(val);
 				});
-				_this.peal.find("input").val(vals.join(",")).attr("name",vals.join(","));
+				_this.peal.find("input").val(vals.join(","));
 				fireEvent(_this.elem.get(0),"APPLY_CLICK",{checkedArr:cksArr});
 			});
 			
@@ -790,9 +790,14 @@ if (!Object.keys) Object.keys = function(o) {
         }
         
         if(_this.config.val){
-            _this.peal.find("input").val(_this.config.val).attr("name",_this.config.val);
+            _this.peal.find("input").val(_this.config.val);
         }
         
+		//ser 需要设置名字
+        if(_this.config.name){
+            _this.peal.find("input").attr("name",_this.config.name);
+        }	
+		
 		/**
 		**构建下拉列表
 		**/
@@ -856,18 +861,12 @@ if (!Object.keys) Object.keys = function(o) {
     **@param {Drop} drop :  instacne of the plugin builder
     **/
     function exchange(drop){
-        /**
-        **@param {Object} msg {type:"类型"}
-        **/
-        this.manipulate = function(msg){
-            
-        }
 		/***
 		** 设置显示的值
 		***/
 		this.val = function(o){
 			var txt = (typeof(o)=="string"||typeof(o)=="number")?o:(o.label||o.text||o.name||o.value);
-			drop.elem.find("input").val(txt).attr("name",txt);
+			drop.elem.find("input").val(txt);
 			return drop.elem;
 		}
     }
@@ -876,6 +875,7 @@ if (!Object.keys) Object.keys = function(o) {
 	**/
 	$.fn.drop.defaults = {
         type:1,//1，inline; 2 split dropdown下拉,3 分组显示菜单，组名高亮，不能被点击,4 checkbox,多选
+		name:"drop",//为了便于serialize 设置name属性
         placeholder:null,//提示文字
 		textKey:"",//默认猜测，text,label,title,name
 		subKey:"",//默认猜测，sub, son, next
@@ -2352,7 +2352,7 @@ if (!Object.keys) Object.keys = function(o) {
 					}				
 				}
 				emed = _this.dropmenu.find("li.em");
-				_this.input.val(emed.attr("val")).attr("name",emed.attr("val"));
+				_this.input.val(emed.attr("val"));
 				_this.wrapper.find(".close-cus").removeClass("hide");
 			}
 		});
@@ -2397,7 +2397,7 @@ if (!Object.keys) Object.keys = function(o) {
 					_this.dropmenu.find("li").unbind("click").click(function(e){
 						e.stopImmediatePropagation();
 						var val = $(this).attr('val'); 
-						_this.input.val(val).attr("name",val);
+						_this.input.val(val);
 						_this.dropmenu.addClass("hidden");
 						_this.wrapper.find(".close-cus").removeClass("hide");
 						fireEvent(_this.elem.get(0),"ITEM_SELECT",{text:val});
@@ -2537,6 +2537,11 @@ if (!Object.keys) Object.keys = function(o) {
 				this.peal.removeClass("disabled");
 			}			
 		}
+		
+		if(cfg.name){
+			this.input.attr("name",cfg.name);
+		}
+		
 	}
     /**
      * jquery 提供了一个objct 即 fn，which is a shotcut of jquery object prototype
@@ -2563,7 +2568,7 @@ if (!Object.keys) Object.keys = function(o) {
         **/
 		this.val = function(o){
 			var txt = (typeof(o)=="string"||typeof(o)=="number")?o:(o.label||o.text||o.name||o.value);
-			search.elem.find("input").val(txt).attr("name",txt);
+			search.elem.find("input").val(txt);
 			return search.elem;
 		}
     }
@@ -2581,6 +2586,7 @@ if (!Object.keys) Object.keys = function(o) {
 	**/
 	$.fn.search.defaults = {
 		type:1,// 默认 2 带前置下拉菜单  3 instance search 即时搜索,4 前置下拉才到呢 + instance search
+		name:"search",//为了serialize 方便设置 name属性
 		magicon:"<i class='glyphicon glyphicon-search'></i>",
 		placeholder:"",// 提示文字
 		disabled:false,
@@ -2641,7 +2647,7 @@ if (!Object.keys) Object.keys = function(o) {
 				var val = parseFloat(_this.input.val());
 				val = val+_this.config.step;
 				if(val>_this.config.max) val = _this.config.max;
-				_this.input.val(val).attr("name",val);
+				_this.input.val(val);
 				fireEvent($(this).get(0),"STEP_CHANGE",{val:val});
 			});
 
@@ -2650,7 +2656,7 @@ if (!Object.keys) Object.keys = function(o) {
 				var val = _this.input.val();
 				val = val - _this.config.step;
 				if(val<_this.config.min) val=_this.config.min
-				_this.input.val(val).attr("name",val);
+				_this.input.val(val);
 				fireEvent($(this).get(0),"STEP_CHANGE",{val:val});
 			});
 			//是否提示用户，输入错误
@@ -2659,7 +2665,7 @@ if (!Object.keys) Object.keys = function(o) {
 					if(_this.input.val()>_this.config.max){
 						_this.input.val(_this.config.max);
 					}else if(_this.input.val()<_this.config.min){
-						_this.input.val(_this.config.min).attr("name",_this.config.min);
+						_this.input.val(_this.config.min);
 					}
 					_this.elem.removeClass("warning");
 				}else{//非数字
@@ -2686,6 +2692,7 @@ if (!Object.keys) Object.keys = function(o) {
 		if(cfg.placeholder) _this.input.attr("placeholder",cfg.placeholder);
 		
 		if(cfg.default) _this.input.val(cfg.default);
+		if(cfg.name) _this.input.attr("name",cfg.name);
 		//前缀或者后缀
 		if(cfg.xion&&cfg.type!=2){
 			var ru = this.elem.height();
@@ -2742,13 +2749,6 @@ if (!Object.keys) Object.keys = function(o) {
     **@param {Drop} Bread :  instacne of the plugin builder
     **/
     function exchange(sinput){
-        /**
-        **@param {Object} msg {type:"类型"}
-        **/
-        this.manipulate = function(msg){
-            
-        }
-		
 		/***
 		** 给 输入框设置默认值
 		***/
@@ -2787,6 +2787,7 @@ if (!Object.keys) Object.keys = function(o) {
 	**/
 	$.fn.sinput.defaults = {
 		type:1,//类型 1,普通输入框，2 stepper
+		name:"uname",//为了便于serialize  设置name
 		title:"",//出现title 
 		xion:"",//接受3种类型，bootstrap 里面的icon 接受小图片jpg, png，或者文字
 		pos:"right",//默认图标放在最左边 left, right 两个选项

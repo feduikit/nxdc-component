@@ -2,7 +2,8 @@ require(['./config'],function(){
     require(['jquery','utils'],function($){
         require(['bootstrap','search'],function(){		
 			$(".ndp-search-wrapper[name=plain]").search({
-				placeholder:"请输入字符"
+				placeholder:"请输入字符",
+				name:"username"// 为了便于 serialize  最好定义一个名字
 			}).val("hello").on("do_search",function(e){//点击放大镜进行搜索，触发事件
 				console.log(e.originalEvent.data);//,{text:input内输入的值}
 			});//设置input 显示的值

@@ -104,7 +104,7 @@
 					}				
 				}
 				emed = _this.dropmenu.find("li.em");
-				_this.input.val(emed.attr("val")).attr("name",emed.attr("val"));
+				_this.input.val(emed.attr("val"));
 				_this.wrapper.find(".close-cus").removeClass("hide");
 			}
 		});
@@ -149,7 +149,7 @@
 					_this.dropmenu.find("li").unbind("click").click(function(e){
 						e.stopImmediatePropagation();
 						var val = $(this).attr('val'); 
-						_this.input.val(val).attr("name",val);
+						_this.input.val(val);
 						_this.dropmenu.addClass("hidden");
 						_this.wrapper.find(".close-cus").removeClass("hide");
 						fireEvent(_this.elem.get(0),"ITEM_SELECT",{text:val});
@@ -289,6 +289,11 @@
 				this.peal.removeClass("disabled");
 			}			
 		}
+		
+		if(cfg.name){
+			this.input.attr("name",cfg.name);
+		}
+		
 	}
     /**
      * jquery 提供了一个objct 即 fn，which is a shotcut of jquery object prototype
@@ -315,7 +320,7 @@
         **/
 		this.val = function(o){
 			var txt = (typeof(o)=="string"||typeof(o)=="number")?o:(o.label||o.text||o.name||o.value);
-			search.elem.find("input").val(txt).attr("name",txt);
+			search.elem.find("input").val(txt);
 			return search.elem;
 		}
     }
@@ -333,6 +338,7 @@
 	**/
 	$.fn.search.defaults = {
 		type:1,// 默认 2 带前置下拉菜单  3 instance search 即时搜索,4 前置下拉才到呢 + instance search
+		name:"search",//为了serialize 方便设置 name属性
 		magicon:"<i class='glyphicon glyphicon-search'></i>",
 		placeholder:"",// 提示文字
 		disabled:false,

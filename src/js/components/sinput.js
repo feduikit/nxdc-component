@@ -46,7 +46,7 @@
 				var val = parseFloat(_this.input.val());
 				val = val+_this.config.step;
 				if(val>_this.config.max) val = _this.config.max;
-				_this.input.val(val).attr("name",val);
+				_this.input.val(val);
 				fireEvent($(this).get(0),"STEP_CHANGE",{val:val});
 			});
 
@@ -55,7 +55,7 @@
 				var val = _this.input.val();
 				val = val - _this.config.step;
 				if(val<_this.config.min) val=_this.config.min
-				_this.input.val(val).attr("name",val);
+				_this.input.val(val);
 				fireEvent($(this).get(0),"STEP_CHANGE",{val:val});
 			});
 			//是否提示用户，输入错误
@@ -64,7 +64,7 @@
 					if(_this.input.val()>_this.config.max){
 						_this.input.val(_this.config.max);
 					}else if(_this.input.val()<_this.config.min){
-						_this.input.val(_this.config.min).attr("name",_this.config.min);
+						_this.input.val(_this.config.min);
 					}
 					_this.elem.removeClass("warning");
 				}else{//非数字
@@ -91,6 +91,7 @@
 		if(cfg.placeholder) _this.input.attr("placeholder",cfg.placeholder);
 		
 		if(cfg.default) _this.input.val(cfg.default);
+		if(cfg.name) _this.input.attr("name",cfg.name);
 		//前缀或者后缀
 		if(cfg.xion&&cfg.type!=2){
 			var ru = this.elem.height();
@@ -147,13 +148,6 @@
     **@param {Drop} Bread :  instacne of the plugin builder
     **/
     function exchange(sinput){
-        /**
-        **@param {Object} msg {type:"类型"}
-        **/
-        this.manipulate = function(msg){
-            
-        }
-		
 		/***
 		** 给 输入框设置默认值
 		***/
@@ -192,6 +186,7 @@
 	**/
 	$.fn.sinput.defaults = {
 		type:1,//类型 1,普通输入框，2 stepper
+		name:"uname",//为了便于serialize  设置name
 		title:"",//出现title 
 		xion:"",//接受3种类型，bootstrap 里面的icon 接受小图片jpg, png，或者文字
 		pos:"right",//默认图标放在最左边 left, right 两个选项

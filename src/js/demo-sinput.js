@@ -3,7 +3,8 @@ require(['./config'],function(){
         require(['bootstrap','./components/sinput'],function(){
 			$("div.ndp-sinput-wrapper[name=plain-sinput]").sinput({
 				placeholder:"请输入",
-				default:"hello world"
+				name:"username",//为了序列化方便，最好定义一个name
+				default:"hello_world"
 			});	
 			
 			$("div.ndp-sinput-wrapper[name=icon-sinput1]").sinput({

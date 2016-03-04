@@ -3,7 +3,8 @@ require(['./config'],function(){
         require(['bootstrap','./components/drop'],function(){
             $("div.ndp-drop-wrapper[name=inline-drop]").drop({
                 data:["中国","日本",3,4,5,6],
-				val:"中国"
+				val:"中国",
+				name:"country"// 为了便于 serialize  最好定义一个名字
             }).on("ITEM_CLICK",function(e){
 				//下拉选择项点击事件
 				//返回的数据有  data = {val:选中项的值,deep:深度(如果是多级) }

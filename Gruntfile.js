@@ -145,6 +145,11 @@ module.exports=function (grunt) {
 			var src = 'src/js/components/' + (subdir ? subdir + "/" : "") + filename;
 			grunt.file.copy(src, 'dist/com/splitjs/' + (subdir ? subdir + "/" : "") + filename);
 		});
+		// 提取工具类的js 放到发布目录
+		grunt.file.recurse('src/js/Compatibility/', function(abspath, rootdir, subdir, filename) {
+			var src = 'src/js/Compatibility/' + (subdir ? subdir + "/" : "") + filename;
+			grunt.file.copy(src, 'dist/com/splitjs/' + (subdir ? subdir + "/" : "") + filename);
+		});	
 		grunt.file.recurse('src/css/modules/', function(abspath, rootdir, subdir, filename) {
 			var src = 'src/css/modules/' + (subdir ? subdir + "/" : "") + filename;
 			grunt.file.copy(src, 'dist/com/splitcss/' + (subdir ? subdir + "/" : "") + filename);
