@@ -43,7 +43,8 @@
 			var o = arr[i];
 			var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group;
 			var text = o[cfg.textKey]||o.text||o.label||o.title||o.name;
-			var li = $("<li class='drop-one-item' value="+text+" deep="+deep+" title="+text+" />");
+			var val =o.val||o.text;
+			var li = $("<li class='drop-one-item' value="+val+" deep="+deep+" title="+text+" />");
 			var pad = (deep+2)*5 + 2;
 			li.css({"padding-left":pad+"px"});
 			if(array && array instanceof Array){
@@ -268,6 +269,7 @@
 				var key1 = _this.config.textkey;
 				var sub = item[key2]||item.sub||item.son||item.next||item.group;
 				var text = item[key1]||item.text||item.label||item.title||item.name;
+				var val = item.val || text;
 				if(sub && sub instanceof Array){//存在下一层数组，说明这是一个
 					var li = $("<li class='drop-one-item drop-recursive' deep='0' />");
 					if(_this.config.type!=3){
@@ -281,11 +283,11 @@
 					recursive(li,sub,_this.config,0);
 					_this.list.append(li);
 				}else{
-					li = $("<li class='drop-one-item' value="+text+" deep='0' title="+text+" >"+text+"</li>");
+					li = $("<li class='drop-one-item' value="+val+" deep='0' title="+text+" >"+text+"</li>");
 					if(item.disable) li.addClass("disabled");
 					if(item.split) li.addClass("split-line");
 					if(_this.config.type==4){
-						var check = $("<input type='checkbox' />");
+						var check = $("<input type='checkbox' value='" + val + "' />");
 						li.addClass("checkbox-item").append(check);
 					}
 					_this.list.append(li);	
@@ -295,7 +297,7 @@
 				li.attr("value",item).append("<span title="+item+" >"+item+"</span>");
 				if(_this.config.type==4){
 					li.addClass("checkbox-item");
-					var check = $("<input type='checkbox' />");
+					var check = $("<input type='checkbox' value='" + val + "' />");
 					li.append(check);
 				}
 				_this.list.append(li);
