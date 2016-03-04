@@ -271,6 +271,7 @@
 				var sub = item[key2]||item.sub||item.son||item.next||item.group;
 				var text = item[key1]||item.text||item.label||item.title||item.name;
 				var val = item.val || text;
+				var other = item.other;
 				if(sub && sub instanceof Array){//存在下一层数组，说明这是一个
 					var li = $("<li class='drop-one-item drop-recursive' deep='0' />");
 					if(_this.config.type!=3){
@@ -291,6 +292,9 @@
 						var check = $("<input type='checkbox' value='" + val + "' />");
 						li.addClass("checkbox-item").append(check);
 					}
+					if (other) {
+                        li.attr('data-other', other);
+                    }
 					_this.list.append(li);
 				}
 			}else if(typeof(item)=="number"||typeof(item)=="string"){
