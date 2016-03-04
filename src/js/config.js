@@ -1,11 +1,9 @@
 require.config({
-    urlArgs:"rnd="+(new Date()).getTime(),
+    // urlArgs:"rnd="+(new Date()).getTime(),
     paths:{
         'jquery':'../../lib/jquery/jquery.min',
         'bootstrap':'../../lib/bootstrap/dist/js/bootstrap.min',
-		
 		'utils':'./Compatibility/utils',
-		
 		'tabs':'./components/tabs',
 		'alert':'./components/alert',
 		'confirm':'./components/confirm',
@@ -24,13 +22,13 @@ require.config({
 			deps:['jquery']
 		},
 		drop:{
-			deps:['jquery']	
+			deps:['jquery']
 		},
 		drop2:{
-			deps:['bootstrap']	
-		},		
+			deps:['bootstrap']
+		},
 		alert:{
-			deps:['bootstrap']	
+			deps:['bootstrap']
 		},
 		confirm:{
 			deps:['bootstrap']

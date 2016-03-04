@@ -21,6 +21,12 @@
 			if(typeof(o)=="object"){				
 				var array = o.sub||o.son||o.next||o.group||o.children;
 				var text = o.text||o.label||o.title||o.name;
+				if(o.href){
+					text = '<a href="'+o.href+'">'+text+'</a>';
+				}
+				if(o.class){
+					li.addClass(o.class);
+				}
 				txt.html(text).attr("title",text); ctx.data("val",text);
 				li.attr({"value":text,"deep":deep});
 				if(array && array instanceof Array){

@@ -22,9 +22,16 @@
 			var o = arr[i];
 			var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group;
 			var cols = o[cfg.textKey]||o.text||o.label||o.title||o.name;
+			var id = o.id;
 			var li = $("<li class='sutable-item'  deep="+deep+" />");
+			if(id){
+				li.attr('data-id',id);
+			}
 			var wrapper = $('<div class="treable-row-wrapper">');
 			var row = $('<div class="treable-row" deep='+deep+'></div>');
+			if(deep==1){//对第一级加租
+				row.addClass('treable-row-wrapper-parent');
+			}
 			var chartWrapper = $("<div class='chart-wrapper' />");//图表层
 			var chartClose = '<button type="button" class="close chart-close"><span aria-hidden="true">&times;</span></button>';//图标层关闭按钮
 			var chart = $('<div class="ndp-tab-wrapper" deep='+deep+' index='+i+' role="table" ></div>');
@@ -41,6 +48,10 @@
 				if(idx==0) {
 					column.addClass("sutable-col-status");
 					column.html(switcher);
+					if(typeof(col)=="object" && col.status===false){
+						column.find('[type="checkbox"]').attr("checked",false);
+						column.find('label.active').removeClass('active');
+					}
 				}else if(idx==1){
 					column.addClass("sutable-col-name");
 				}
@@ -362,7 +373,8 @@
 				var html = '';
 				cfg.todata.forEach(function(item,index){
 					var val = item.text||item.name||item.label;
-					html+="<button class='btn btn-default' id="+item.id+" val="+val+" >"+val+"</button>";
+					var className = item.class?item.class:'';
+					html+="<button class='btn btn-default "+className+"' id="+item.id+" val="+val+" >"+val+"</button>";
 				});
 				this.toolbar.html(html);
 			}else if(typeof(cfg.todata) == "function"){
