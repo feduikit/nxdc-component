@@ -29,11 +29,11 @@ require(['./config'],function(){
 			
 			
 			$(".ndp-sutable-wrapper").sutable({
-				caret:"<i class='glyphicon glyphicon-triangle-right'></i>",
-				head:[{label:"状态"},{label:"名称"},{label:"安装"},
-					  {label:"花费"},{label:"成本"},{label:"点击量"},
-					  {label:"点击率"},{label:"总花费"},{label:"预算"},
-					  {label:"出价"},{label:"转化率"},{label:"留存率"}
+				head:[{label:"广告活动"},{label:"状态"},{label:"展示数"},
+					  {label:"点击数"},{label:"点击率"},{label:"转化数"},
+					  {label:"转化率"},{label:"CPC"},{label:"CPM"},
+					  {label:"CPA"},{label:"花费"},{label:"赢价率"},
+					  {label:"开启/暂停"},{label:"操作"}
 					 ],				
 				body:data1,
 				tail:[{},{}],

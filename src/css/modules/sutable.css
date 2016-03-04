@@ -3,6 +3,7 @@
 	padding: 0!important;
 	box-sizing: border-box;
 	width: 100%;
+	min-width: 1200px;
 	overflow: hidden;
 }
 .ndp-sutable-wrapper.resize-cursor{
@@ -19,7 +20,7 @@
     white-space: nowrap;
 	margin: 0;
 	padding: 0;
-/*	transition:all 0.5s linear 0.2s;*/
+	border:1px solid #ccc;
 }
 
 
@@ -85,7 +86,7 @@
 /***
 **  列表 行
 ***/
-.treable-row{
+.sutable-row{
 	position: relative;
 	margin: 0;
 	height: 100%;
@@ -93,7 +94,7 @@
 	overflow: hidden;
 }
 
-.sutable-header>.treable-row{
+.sutable-header>.sutable-row{
 	position: relative;
 	height: 40px;
 	width: 100%;
@@ -106,7 +107,7 @@
 /***
 ** 图表界面
 **/
-.treable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper{
+.sutable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper{
 	position: relative;
 	top:0;
 	height: 0;
@@ -121,18 +122,18 @@
 /***
 ** 显示图表界面
 ***/
-.sutable-body .treable-row.focus{
+.sutable-body .sutable-row.focus{
 	background-color: rgba(80, 80, 80, 0.8);
 	color:white;
 }
-.sutable-body .treable-row.focus:hover{
+.sutable-body .sutable-row.focus:hover{
 	background-color: rgba(80, 80, 80, 0.8);
 }
 
 /****
 ** 图表 所在层  chart 和 tabs 所在的层 
 ***/
-.treable-row-wrapper>.chart-wrapper{
+.sutable-row-wrapper>.chart-wrapper{
 	position: relative;
 	overflow: hidden;
 }
@@ -156,21 +157,21 @@
 /***
 ** 设置 tabs宽度
 ***/
-.treable-row-wrapper>.chart-wrapper.open>.ndp-tab-wrapper{
+.sutable-row-wrapper>.chart-wrapper.open>.ndp-tab-wrapper{
 	height: 150px;
 	width: 150px;/*** tab 的 宽度***/
 	padding: 0;
 	overflow: hidden;
 }
-.treable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>ul.nav>li{
+.sutable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>ul.nav>li{
 	width: 100%;
 	clear:both;
 	padding:1px 0;
 }
-.treable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>ul.nav>li>a:hover{
+.sutable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>ul.nav>li>a:hover{
 	border-color: transparent;
 }
-.treable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>ul.nav>li.active>a{
+.sutable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>ul.nav>li.active>a{
 	border-width: 0;
 	border-left: 3px solid #f79d0c;
 	background-color: #f7f7f7;
@@ -178,11 +179,11 @@
 /***
 ** 图表界面 里面的部分
 **/
-.treable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>*{
+.sutable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>*{
 	opacity: 0;
 	height: 100%;
 }
-.treable-row-wrapper>.chart-wrapper.open>.ndp-tab-wrapper>*{
+.sutable-row-wrapper>.chart-wrapper.open>.ndp-tab-wrapper>*{
 	opacity: 1;
 }
 
@@ -192,22 +193,22 @@
 	transition: height 0.4s ease-in-out;
 }
 
-.sutable-body .treable-row{
+.sutable-body .sutable-row{
 	position: relative;
 	height: 42px;
 	background-color: #f4f4f4;
 	border:1px solid transparent;
 }
 
-.sutable-body .treable-row{
+.sutable-body .sutable-row{
 	border-bottom: 1px solid #dbdbdb;
 }
 
-.sutable-body>li>.treable-row:nth-last-child(1){
+.sutable-body>li>.sutable-row:nth-last-child(1){
 	border-bottom: 1px solid transparent;
 }
 
-.sutable-body .treable-row:hover{
+.sutable-body .sutable-row:hover{
 	background-color: #f6f6f6;
 }
 
@@ -215,7 +216,7 @@
 	padding-left: 20px;
 }
 
-.sub-layer .treable-row{
+.sub-layer .sutable-row{
 	border-bottom: 1px solid #dbdbdb;
 	border-left-color:#dbdbdb;
 	border-right-color:#dbdbdb;
@@ -225,7 +226,7 @@
 /***
 ** col  列
 ***/
-.treable-row>.sutable-col{
+.sutable-row>.sutable-col{
 	position: relative;
 	display:inline-block;
 	height:100%;
@@ -241,22 +242,34 @@
 	cursor:default;
 /*	transition:all 0.1s linear;*/
 }
-.treable-row>.sutable-col.active{
+.sutable-row>.sutable-col.active{
 	border-right-color:deepskyblue;
 }
 
-.treable-row .sutable-col-status{
+/***
+** 第一列
+***/
+.sutable-row .sutable-col-name{
 	margin-left: 40px;
-	width: 100px!important;
+	width: 150px!important;
 }
-.sutable-header .treable-row>.sutable-col-status{
+
+/***
+** 第二列
+***/
+.sutable-row .sutable-col-status,.treable-header .sutable-col-status{
+	width: 100px!important;
+	margin: 0;
+}
+.sutable-header .sutable-row>.sutable-col-name{
 	margin-left: 41px;/*****修正问题****/
 }
-.treable-row[deep='2']>.sutable-col-status{
+.sutable-row[deep='2']>.sutable-col-name{
+	margin:0;
 	margin-left: 20px;/***还有20px padding***/ 
 	width: 100px;
 }
-.treable-row[deep='3']>.sutable-col-status{
+.sutable-row[deep='3']>.sutable-col-name{
 	margin: 0;/***还有40px padding***/ 
 	width: 100px;
 }
@@ -277,7 +290,7 @@
 .sutable-header .sutable-col{
 	line-height: 40px;
 }
-.treable-row .sutable-col:nth-child(n+3){
+.sutable-row .sutable-col:nth-child(n+3){
 	line-height: 40px;
 	min-width: 60px;
 	width:inherit;
@@ -316,32 +329,25 @@
 	line-height: 42px;
 }
 
-.treable-row .sutable-col-name,.sutable-header .sutable-col-name{
+.sutable-row .sutable-col-name,.sutable-header .sutable-col-name{
 	min-width: 100px!important;
 /*	width: 15%;*/
 }
-/*
-.treable-row[deep='2']>.sutable-col-name{
-	width: calc((100% + 20px) * 0.15)
-}
-.treable-row[deep='3']>.sutable-col-name{
-	width: calc((100% + 40px) * 0.15)
-}
-*/
-.treable-row>.sutable-col>.inspliter{
+
+.sutable-row>.sutable-col>.inspliter{
 	position: absolute;
 	display: inline-block;
-	width: 5px;
+	width: 0;
 	height: 70%;
-	z-index: 20;
+	z-index: -1;
 	top:15%;
 	right: 0px;
 	overflow: visible;
-	border-right: 1px solid #ccc;
+	border-right: 1px solid trapsparent;
 /*	background-color: red;*/
 }
 
-.treable-row>.sutable-col>.inspliter:hover{
+.sutable-row>.sutable-col>.inspliter:hover{
 	cursor: col-resize;
 }
 

@@ -2826,8 +2826,8 @@ if (!Object.keys) Object.keys = function(o) {
 			var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group;
 			var cols = o[cfg.textKey]||o.text||o.label||o.title||o.name;
 			var li = $("<li class='sutable-item'  deep="+deep+" />");
-			var wrapper = $('<div class="treable-row-wrapper">');
-			var row = $('<div class="treable-row" deep='+deep+'></div>');
+			var wrapper = $('<div class="sutable-row-wrapper">');
+			var row = $('<div class="sutable-row" deep='+deep+'></div>');
 			var chartWrapper = $("<div class='chart-wrapper' />");//图表层
 			var chartClose = '<button type="button" class="close chart-close"><span aria-hidden="true">&times;</span></button>';//图标层关闭按钮
 			var chart = $('<div class="ndp-tab-wrapper" deep='+deep+' index='+i+' role="table" ></div>');
@@ -2842,11 +2842,16 @@ if (!Object.keys) Object.keys = function(o) {
 				if(cfg.colDims&&cfg.colDims.length){
 					column.css("width",cfg.colDims[idx]+"px");
 				}
-				if(idx==0) {
-					column.addClass("sutable-col-status");
+				//设置特殊列 css
+				if(idx==0) {//第一列 名称
+					column.addClass("sutable-col-name");//150px
 					column.html(switcher);
-				}else if(idx==1){
-					column.addClass("sutable-col-name");
+				}else if(idx==1){//第二列 状态
+					column.addClass("sutable-col-status");//100px
+				}else if(idx = (cols.length-2)){//倒数第二列 开启/暂停
+					column.addClass("sutable-col-oc");//80px
+				}else if(idx =(cols.length-1)){//最后一列 操作
+					column.addClass("sutable-col-operation");//150px
 				}
 				if(idx>0){
 					if(typeof(col)=="object"){
@@ -2953,10 +2958,10 @@ if (!Object.keys) Object.keys = function(o) {
 		});
 		
 		// 图表层 展开/隐藏
-		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("click").click(function(e){
+		_this.elem.find(".sutable-row-wrapper>.sutable-row").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
 			if(!$(this).hasClass("focus")){
-				_this.elem.find(".treable-row-wrapper>.treable-row.focus").removeClass("focus");
+				_this.elem.find(".sutable-row-wrapper>.sutable-row.focus").removeClass("focus");
 				$(this).addClass("focus");
 			}else{
 				$(this).removeClass("focus");
@@ -3106,7 +3111,7 @@ if (!Object.keys) Object.keys = function(o) {
 		** 表头 列点击
 		***/
 		_this.head.find(".sutable-col").mouseenter(function(e){
-			$(this).addClass("active").siblings().removeClass("active");
+			//$(this).addClass("active").siblings().removeClass("active");
 		});
 		
 		/***
@@ -3139,7 +3144,7 @@ if (!Object.keys) Object.keys = function(o) {
 	Sutable.prototype.concrate = function(){
 		var _this = this;
 //		this.toolbar = $("<div class='sutable-toolbar' role='table' />");
-		this.head = $("<ul class='sutable-header' role='table' />").html('<li class=" treable-row"></li>');
+		this.head = $("<ul class='sutable-header' role='table' />").html('<li class=" sutable-row"></li>');
 		this.elem.append("<span class='split-line'></span>");
 		this.elem.append(this.head);
 	};
@@ -3152,17 +3157,23 @@ if (!Object.keys) Object.keys = function(o) {
 			cfg.head.forEach(function(item,index){
 				var col = $("<span class='sutable-col' col="+index+" />");
 				if(index==0) {
-					col.addClass("sutable-col-status");
+					col.addClass("sutable-col-name");//150px
 				}else if(index==1){
-					col.addClass("sutable-col-name");
+					col.addClass("sutable-col-status");//100px
+				}else if(index = (cfg.head.length-2)){//倒数第二列 开启/暂停
+					col.addClass("sutable-col-oc");//80px
+				}else if(index =(cfg.head.length-1)){//最后一列 操作
+					col.addClass("sutable-col-operation");//150px
 				}
+				
+		
 				if(typeof(item)=="object"){
 					col.text(item.label||item.text||item.name);
 				}else{
 					col.text(item);
 				}
 				col.append("<span class='inspliter'></span>");
-				_this.head.find(".treable-row").append(col);
+				_this.head.find(".sutable-row").append(col);
 			});
 		}
 		//构建列表内容
@@ -3205,7 +3216,7 @@ if (!Object.keys) Object.keys = function(o) {
 		var w = w||this.elem.width();
 		var dom = this.elem
 		var cfg = this.config;
-		var rw  = w - 100 - 100 - 40;//100 第一列的宽度， 100 名称咧的宽度,40 : margin-left
+		var rw  = w - 150 - 100 - 40;//100 第一列的宽度， 150 名称咧的宽度,40 : margin-left
 		var ew = rw/(cfg.head.length - 2);
 		cfg.colDims = [100,100];//列宽度 存储 
 		if(ew>50){
@@ -3267,6 +3278,7 @@ if (!Object.keys) Object.keys = function(o) {
 		this.fold = function(bool){
 			var rows = sutable.elem.find(".sutable-body>.sutable-item");
 			rows.toggleClass("open");
+			return sutable.elem; 
 		}
 		
 		/***
@@ -3276,6 +3288,7 @@ if (!Object.keys) Object.keys = function(o) {
 			sutable.elem.find(".sutable-body").remove();
 			Help.recursive(sutable.elem,data,sutable.config);
 			sutable.listenBody();
+			return sutable.elem;
 		}
     }
 	
@@ -4374,6 +4387,7 @@ if (!Object.keys) Object.keys = function(o) {
 		this.fold = function(bool){
 			var rows = treable.elem.find(".treable-body>.sutable-item");
 			rows.toggleClass("open");
+			return treable.elem;
 		}
 		
 		/***
@@ -4383,6 +4397,7 @@ if (!Object.keys) Object.keys = function(o) {
 			treable.elem.find(".treable-body").remove();
 			Help.recursive(treable.elem,data,treable.config);
 			treable.listenBody();
+			return treable.elem;
 		}
     }
 	

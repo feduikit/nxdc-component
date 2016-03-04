@@ -81,7 +81,7 @@ span.caret-wrapper>span.caret{
     width: calc(100% + 2px);
     left: -1px;
     top:101%;
-    border:1px solid #ccc;
+    border:1px solid #b9c3cd;
     box-shadow: 0 3px 1px  1px rgba(227, 227, 227, 0.5);
     max-height: 300px;
     overflow-y: auto;

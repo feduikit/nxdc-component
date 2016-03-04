@@ -489,6 +489,7 @@
 		this.fold = function(bool){
 			var rows = treable.elem.find(".treable-body>.sutable-item");
 			rows.toggleClass("open");
+			return treable.elem;
 		}
 		
 		/***
@@ -498,6 +499,7 @@
 			treable.elem.find(".treable-body").remove();
 			Help.recursive(treable.elem,data,treable.config);
 			treable.listenBody();
+			return treable.elem;
 		}
     }
 	
