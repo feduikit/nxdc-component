@@ -539,21 +539,21 @@ if (!Object.keys) Object.keys = function(o) {
 
 ;(function ($) { //start with a [;] because if our code is combine or minification  with other code,AND other code not terminated with [;] then it will not infect ours.
     var self = this;
-    
+
     function Drop(element, options) {
 		var self = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.drop.defaults,element.data(),options);
 		this.config.width = this.elem.width();
-		this.init();	
+		this.init();
     };
-    
+
     /**
     **下拉菜单展示的方向问题
     **/
     function setDirect(ta){
         var peal = ta.peal;
-        var dp = ta.list; 
+        var dp = ta.list;
         var ls = dp.get(0).getBoundingClientRect();
 		var p = peal.get(0).getBoundingClientRect();
 		if((window.innerHeight-p.bottom)>ls.height){//下面容得下 下拉菜单的展示，正常
@@ -564,7 +564,7 @@ if (!Object.keys) Object.keys = function(o) {
 			ta.elem.find("span.caret-wrapper").addClass("turnback");
 		}
     };
-	
+
 	/***
 	** 处理树桩菜单
 	**/
@@ -607,17 +607,17 @@ if (!Object.keys) Object.keys = function(o) {
 		this.elem.addClass(this.config.containerClass);//设置 包裹容器的 dim,外观
         this.concrate();//构建下来菜单的样子
 		this.initConfig();
-        
+
 		/***** 注册监听事件 *****/
-		
+
         _this.peal.click(function(e){
             e.stopImmediatePropagation();
 			_this.elem.toggleClass("focus");
             _this.list.toggleClass("hidden");
             setDirect(_this);
         });
-        
-		
+
+
 		/****
 		** 下拉选项被点击
 		***/
@@ -636,12 +636,12 @@ if (!Object.keys) Object.keys = function(o) {
             	fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value});
 			}
         });
-		
-		
+
+
 		/***
 		** input 输入框里面 点击键盘
 		***/
-		_this.peal.keyup(function(e){			
+		_this.peal.keyup(function(e){
 			if(e.keyCode == 13){//回车
 				if(!_this.list.hasClass("hidden") && _this.list.find("li.em").length){
 					var item = _this.list.find("li.em");
@@ -653,12 +653,12 @@ if (!Object.keys) Object.keys = function(o) {
 						fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:val,group:gp.index(),gpname:gp.attr("title")});
 					}else{
 						fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:val});
-					} 
+					}
 					_this.list.addClass("hidden");
 				}
 			}
 
-			var items = _this.list.find("li[class='drop-one-item'],li[class='drop-one-item split-line'],li[class='drop-one-item em'],li[class='drop-one-item split-line em']");	
+			var items = _this.list.find("li[class='drop-one-item'],li[class='drop-one-item split-line'],li[class='drop-one-item em'],li[class='drop-one-item split-line em']");
 			var arr = [].slice.call(items,0);
 			if(e.keyCode == 40){//下
 				//默认选中下拉的 第一个
@@ -668,7 +668,7 @@ if (!Object.keys) Object.keys = function(o) {
 					var now = _this.list.data("now")||(function(){
 						for(var i=0;i<arr.length;i++){
 							if($(arr[i]).hasClass("em")) return i;
-						};						
+						};
 					}());
 					var the = items.filter(".em").first();
 					var next = $(items[parseInt(now)+1]);
@@ -688,7 +688,7 @@ if (!Object.keys) Object.keys = function(o) {
 					now = _this.list.data("now")||(function(){
 						for(var i=0;i<arr.length;i++){
 							if($(arr[i]).hasClass("em")) return i;
-						};						
+						};
 					}());
 					var prev = $(items[parseInt(now)-1]);
 					if(prev.get(0)){
@@ -699,20 +699,20 @@ if (!Object.keys) Object.keys = function(o) {
 					the.removeClass("em");
 				}else{
 					items.last().addClass("em");
-				}				
-			}			
-		});		
-		
+				}
+			}
+		});
+
 		/***
 		** 如果是树桩菜单，加监听
 		**/
 		if(_this.config.type!=3) _this.list.find("li.drop-recursive").click(function(e){
 			e.stopImmediatePropagation();
-			$(this).children("ul.sub-drop-list").toggleClass("hidden");	
+			$(this).children("ul.sub-drop-list").toggleClass("hidden");
 			$(this).children("i.glyphicon").toggleClass("turndown");
 			setDirect(_this);
 		});
-		
+
 		/***
 		** 处理 有checkbox 的 列表
 		**/
@@ -725,7 +725,7 @@ if (!Object.keys) Object.keys = function(o) {
 			_this.list.find("li.all-banner>input[type=checkbox]").change(function(){
 				_this.list.find("li.checkbox-item>").prop("checked",this.checked);
 			});
-			
+
 			/**
 			** 点击单个 item 行
 			**/
@@ -733,10 +733,10 @@ if (!Object.keys) Object.keys = function(o) {
 				if(!this.checked){
 					_this.list.find("li.all-banner>input[type=checkbox]").prop("checked",this.checked);
 				}else{
-					
+
 				}
 			});
-			
+
 			/***
 			**点击应用按钮
 			**/
@@ -748,14 +748,15 @@ if (!Object.keys) Object.keys = function(o) {
 				var cksArr = [];
 				var vals = [];
 				chks.each(function(index,item){
-					var val = $(item).find("span").text();
-					cksArr.push({index:$(item).index(),value:val});
-					vals.push(val);
+					var val = $(item).attr('value');
+					var text = $(item).text();
+					cksArr.push({index:$(item).index(),value:val,text:text});
+					vals.push(text);
 				});
-				_this.peal.find("input").val(vals.join(","));
+				_this.peal.find("input").attr("checkedArr",JSON.stringify(cksArr)).val(vals.join(","));
 				fireEvent(_this.elem.get(0),"APPLY_CLICK",{checkedArr:cksArr});
 			});
-			
+
 			$(document).click(function(e){
 				if(!(e.target.tagName == "INPUT" && e.target.type == "checkbox")){
 					$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
@@ -764,7 +765,7 @@ if (!Object.keys) Object.keys = function(o) {
 			});
 		}
     };
-	
+
 	/**
 	** 构建下来菜单样子
 	**/
@@ -789,16 +790,16 @@ if (!Object.keys) Object.keys = function(o) {
         if(this.placeholder){
             _this.peal.find("input").attr("placeholder",_this.placeholder);
         }
-        
+
         if(_this.config.val){
             _this.peal.find("input").val(_this.config.val);
         }
-        
+
 		//ser 需要设置名字
         if(_this.config.name){
             _this.peal.find("input").attr("name",_this.config.name);
-        }	
-		
+        }
+
 		/**
 		**构建下拉列表
 		**/
@@ -809,6 +810,7 @@ if (!Object.keys) Object.keys = function(o) {
 				var sub = item[key2]||item.sub||item.son||item.next||item.group;
 				var text = item[key1]||item.text||item.label||item.title||item.name;
 				var val = item.val || text;
+				var other = item.other;
 				if(sub && sub instanceof Array){//存在下一层数组，说明这是一个
 					var li = $("<li class='drop-one-item drop-recursive' deep='0' />");
 					if(_this.config.type!=3){
@@ -829,7 +831,10 @@ if (!Object.keys) Object.keys = function(o) {
 						var check = $("<input type='checkbox' value='" + val + "' />");
 						li.addClass("checkbox-item").append(check);
 					}
-					_this.list.append(li);	
+					if (other) {
+                        li.attr('data-other', other);
+                    }
+					_this.list.append(li);
 				}
 			}else if(typeof(item)=="number"||typeof(item)=="string"){
 				li = $("<li class='drop-one-item' />");
@@ -846,7 +851,7 @@ if (!Object.keys) Object.keys = function(o) {
     /**
      * jquery 提供了一个objct 即 fn，which is a shotcut of jquery object prototype
      * or you can call it jquery plugin shell  == fn
-     *  类似于  Class.prototype.jqplugin = function(){};0  
+     *  类似于  Class.prototype.jqplugin = function(){};0
      *  the   $.fn  [same as] Class.prototype
      * plugin entrance
      */
@@ -856,7 +861,7 @@ if (!Object.keys) Object.keys = function(o) {
 		the = $.extend(true,{},the,new exchange(drop));
 		return the;
     };
-	
+
     /***
     **和其他插件的交互
 	** factory Class
@@ -882,7 +887,7 @@ if (!Object.keys) Object.keys = function(o) {
 		textKey:"",//默认猜测，text,label,title,name
 		subKey:"",//默认猜测，sub, son, next
         val:null,//默认值
-		caret:"glyphicon-triangle-right",//只是箭头的样式，仅支持bootstrap 里面列出的 glyphicon 
+		caret:"glyphicon-triangle-right",//只是箭头的样式，仅支持bootstrap 里面列出的 glyphicon
         data:[]//下拉菜单列表
 	};
 }(jQuery));
