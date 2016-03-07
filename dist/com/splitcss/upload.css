@@ -1,0 +1,134 @@
+.upload-wrapper {
+    margin: 0 auto;
+    font-family: 'Microsoft Yahei', '微软雅黑';
+}
+
+.upload-wrapper a {
+    font-size: 14px;
+    color: #fc7408;
+}
+
+.upload-wrapper a:hover {
+    color: #fd9611;
+}
+
+.upload-content {
+    border: 1px dashed #b9c3cd;
+    position: relative;
+    transition: all 0.3s ease-out;
+}
+
+.upload-desc {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;    
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    color: #666;
+}
+.upload-desc .small {
+	color: #999;
+}
+.upload-desc .upload-button {
+	width: 60px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	cursor: pointer;
+}
+.upload-desc p {
+    margin-bottom: 10px;
+}
+.upload-desc .upload-icon {
+	background: url(icon.png) no-repeat;
+}
+.upload-wrapper[data-state="selected"] .upload-desc,
+.upload-wrapper[data-state="uploaded"] .upload-desc,
+.upload-wrapper[data-state="uploading"] .upload-desc {
+    display: none;
+}
+
+.upload-wrapper[data-state="error"] .upload-content {
+    border: 1px solid #e56d43;
+}
+
+.upload-preview {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.upload-mask {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .65);
+    color: #fff;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.upload-mask .upload-mask-inner {
+
+}
+.upload-mask p {
+    font-size: 14px;
+}
+
+.upload-mask .upload-num {
+    font-size: 30px;
+}
+.upload-mask .upload-num:after {
+	content: '%';
+	font-size: 14px;
+}
+.upload-wrapper[data-state="uploading"] .upload-content {
+    border: 1px solid #fd9611;
+}
+.upload-wrapper[data-state="uploaded"] .upload-content {
+	border: 1px solid transparent;
+}
+.upload-wrapper[data-state='selecting'] .upload-content {
+	border: 1px dashed #fd9611;
+	background: #f7f0e8;
+}
+.upload-wrapper[data-state='error'] .upload-preview,
+.upload-wrapper[data-state='selecting'] .upload-preview {
+	display: none;
+}
+.upload-wrapper[data-state="uploading"] .upload-mask {
+    display: flex;
+}
+.upload-preview img {
+	width: 100%;
+	height: 100%;
+}
+.upload-footer {
+    width: 300px;
+    height: 50px;
+}
+
+.upload-footer .upload-msg {
+    font-size: 14px;
+    color: #e56d43;
+}
+.upload-footer .upload-button {
+	width: 60px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	cursor: pointer;
+}

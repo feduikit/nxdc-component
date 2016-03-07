@@ -3,7 +3,7 @@
 	padding: 0!important;
 	box-sizing: border-box;
 	width: 100%;
-	min-width: 1200px;
+	min-width: 1280px;
 	border:1px solid #e0e0e0;
 	overflow: hidden;
 }
@@ -17,7 +17,8 @@
 .sutable-header{
 	position: relative;
 	min-width: 100%;
-	width: 400%;
+	width: 100%;
+/*	width: 400%;*/
     white-space: nowrap;
 	margin: 0;
 	padding: 0;
@@ -33,7 +34,9 @@
 	margin: 0;
 	padding: 0;
 	line-height:normal;
-	border-bottom: 1px solid #e0e0e0;
+	color:black;
+	font-weight: bold;
+	font-size:11px;
 }
 
 
@@ -41,7 +44,27 @@
 	border-right: 1px solid #e0e0e0;
 }
 
+.sutable-header>.sutable-row>.sutable-col:nth-last-child(1){
+	border-right: 1px solid transparent;
+}
 
+/***
+** 标题行 尾号 按钮
+***/
+.sutable-col .font-icon-help{
+	color:#a2a2a2;
+	font-size: 10px;
+	margin-left: 3px;
+}
+.sutable-row>.sutable-col.attention{
+	color:#fd8a36;
+}
+
+.sutable-row>.sutable-col.attention>i{
+	display: inline;
+	margin-right: 5px;
+	color#f6c76d;
+}
 
 /****
 **列表尾
@@ -54,10 +77,25 @@
 	bottom: 0;
 	margin: 0;
 	width: 100%;
+	
 }
-.sutable-footer.repos{
-	bottom: 14px;
+.sutable-footer .sutable-footer.sutable-row{
+	
 }
+
+.sutable-footer>.sutable-row>.sutable-col{
+	position: relative;
+	display: inline-block;
+	width: 80px;
+	float: left;
+	line-height: 40px;
+	color:white;
+}
+.sutable-footer .sutable-col.sutable-col-sum{
+	width: 362px!important;
+	padding-left: 60px;
+}
+
 
 /***
 ** 横向滚动条
@@ -142,72 +180,71 @@
 }
 
 /***
-** 图表层 关闭按钮
+** li 列表 样式设置
 ***/
-.close.chart-close{
-	position: absolute;
-	z-index: 200;
-	top:0;
-	right: 0;
-	width: 30px;
-	height: 30px;
-	background-color: #eee;
-}
-.close.chart-close>*{
-	font-size: 24px;
-}
-
-/***
-** 设置 tabs宽度
-***/
-.sutable-row-wrapper>.chart-wrapper.open>.ndp-tab-wrapper{
-	height: 150px;
-	width: 150px;/*** tab 的 宽度***/
-	padding: 0;
-	overflow: hidden;
-}
-.sutable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>ul.nav>li{
-	width: 100%;
-	clear:both;
-	padding:1px 0;
-}
-.sutable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>ul.nav>li>a:hover{
-	border-color: transparent;
-}
-.sutable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>ul.nav>li.active>a{
-	border-width: 0;
-	border-left: 3px solid #f79d0c;
-	background-color: #f7f7f7;
-}
-/***
-** 图表界面 里面的部分
-**/
-.sutable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>*{
-	opacity: 0;
-	height: 100%;
-}
-.sutable-row-wrapper>.chart-wrapper.open>.ndp-tab-wrapper>*{
-	opacity: 1;
-}
-
 .sutable-body li.sutable-item{
 	position: relative;
 	height: auto;
-	transition: height 0.4s ease-in-out;
+	background-color:white;
 }
+
+.sutable-body li.sutable-item[deep='2']{
+	border:1px solid #e0e0e0;
+/*	border-bottom-width: 0;	*/
+	border-top-width: 0;
+	border-right-width: 0;
+	background-color:#f2f7f7;
+}
+.sutable-body li.sutable-item[deep='2']:nth-last-child(1){
+	border-bottom-width: 0;
+}
+
+.sutable-body li.sutable-item[deep='3']{
+	border-width: 0;
+	border-left: 1px solid #e0e0e0;
+	background-color:#e4ebed;
+}
+
+/***
+** 新增广告组
+***/
+.sutable-body li.sutable-item-spec{
+	height: 24px;
+	border:1px solid transparent;
+	font-size: 1em;
+	padding:4px 20px;
+	border-width: 0;
+	cursor: pointer;
+	color:#999999;
+}
+.sutable-body li.sutable-item-spec:hover{
+	background-color: #eee;
+}
+.sutable-body li.sutable-item-spec[deep='2']{
+	padding-left: 40px;
+}
+.sutable-body li.sutable-item-spec[deep='3']{
+	border-top:1px solid #e0e0e0!important;
+}
+
+
+
+li.sutable-item.open[deep='2']>.sutable-row-wrapper.asparent{
+	border-bottom:1px solid #e0e0e0;
+}
+
 
 .sutable-body .sutable-row{
 	position: relative;
 	height: 42px;
-	background-color: #f4f4f4;
 	border:1px solid transparent;
 }
-
-.sutable-body .sutable-row{
-	border-bottom: 1px solid #dbdbdb;
+.sutable-body li.sutable-item.open .sutable-row[deep='1']{
+	border-bottom: 1px solid #e0e0e0;
+	border-top: 1px solid #e0e0e0;
 }
-
-.sutable-body>li>.sutable-row:nth-last-child(1){
+.sutable-body li.sutable-item .sutable-row[deep='1']{
+	border-top: 1px solid #e0e0e0;
 	border-bottom: 1px solid transparent;
 }
 
@@ -220,11 +257,9 @@
 }
 
 .sub-layer .sutable-row{
-	border-bottom: 1px solid #dbdbdb;
-	border-left-color:#dbdbdb;
-	border-right-color:#dbdbdb;
-	background-color: #fff;
+/*	background-color: #fff;*/
 }
+
 
 /***
 ** col  列
@@ -235,7 +270,8 @@
 	height:100%;
 	margin: 0;
 	top:0;
-	text-align: center;
+	padding-left: 10px;
+/*	text-align: center;*/
 	white-space: nowrap;
 	float: left;
 	border-right: 1px solid transparent;
@@ -243,28 +279,43 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	cursor:default;
+	color:#666;
 /*	transition:all 0.1s linear;*/
 }
 .sutable-row>.sutable-col.active{
 	border-right-color:deepskyblue;
 }
 
-.sutable-row .sutable-col-status{
-	margin-left: 40px;
-	width: 100px!important;
+.sutable-row .sutable-col-name{
+	padding-left:20px;
+	margin-left: 41px;
+	width: 226px!important;
 }
-.sutable-header .sutable-row>.sutable-col-status{
+.sutable-body .sutable-row .sutable-col-name>span:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.sutable-header .sutable-row>.sutable-col-name{
 	margin-left: 41px;/*****修正问题****/
 }
-.sutable-row[deep='2']>.sutable-col-status{
+.sutable-row[deep='2']>.sutable-col-name{
 	margin-left: 20px;/***还有20px padding***/ 
 	width: 100px;
 }
-.sutable-row[deep='3']>.sutable-col-status{
-	margin: 0;/***还有40px padding***/ 
+.sutable-row[deep='3']>.sutable-col-name{
+	margin-left: -1px;/***还有40px padding***/ 
 	width: 100px;
 }
-.sutable-col-status>span.switcher{
+
+/***
+** 开关按钮列
+***/
+.sutable-row .sutable-col-oc{
+	position: relative;
+	width: 72px!important;
+}
+.sutable-col-oc>span.switcher{
 	position: absolute;
 	width: 30px;
 	margin: 0;
@@ -273,8 +324,23 @@
 	left:50%;
 	margin-left: -15px;
 }
-.sutable-col-status>span.switcher>label{
+.sutable-col-oc>span.switcher>label{
 	background-color: transparent;
+}
+
+.sutable-row .sutable-col-operation{
+	position: absolute;
+	padding-left: 10px;
+	width: 62px!important;
+	z-index: 900;
+}
+.sutable-row .sutable-col-operation>i{
+	cursor: pointer;
+	margin: 0;
+	margin-right: 10px;
+}
+.sutable-row .sutable-col-operation>i:hover{
+	color:black;
 }
 
 
@@ -290,12 +356,12 @@
 ** 排序
 ***/
 .sutable-header .sutable-col>.sort-wrapper{
-	position: absolute;
+	position: relative;
 	display: inline-block;
-	height: 100%;
-	width: 12px;
-	top:0;
-	margin-left: 4px;
+/*	height: 100%;*/
+/*	width: 12px;*/
+/*	top:0;*/
+	margin-left: 3px;
 	cursor: pointer;
 	overflow: hidden;
 	padding-top:2px;
@@ -325,8 +391,8 @@
 	line-height: 42px;
 }
 
-.sutable-row .sutable-col-name,.sutable-header .sutable-col-name{
-	min-width: 100px!important;
+.sutable-row .sutable-col-status,.sutable-header .sutable-col-status{
+	width: 96px!important;
 /*	width: 15%;*/
 }
 /*
@@ -373,11 +439,11 @@
 .btn-plus-minus{
 	position: absolute;
 	display: inline-block;
-	width: 20px;
-	height: 20px;
+	width: 17px;
+	height: 17px;
 	left: 10px;
-	top:10px;
-	z-index: 10;
+	top:11px;
+	z-index: 20;
 	border:1px solid #d4d4d4;
 }
 /****
@@ -414,18 +480,24 @@
 .btn-plus-minus>.line-hor{
 	position: absolute;
 	display: inline-block;
-	width: 80%;
-	top:44%;
-	left:10%;
+	width: 75%;
+	top:43.34%;
+	left:13.3%;
 	border-bottom:1px solid #b1b1b1;
 }
 .btn-plus-minus>.line-ver{
 	position: absolute;
 	display: inline-block;
-	height: 80%;
-	top:10%;
-	left:44%;
+	height: 75%;
+	top:11.2%;
+	left:45.5%;
 	border-left:1px solid #b1b1b1;
 }
+
+
+.ndp-sutable-wrapper .switcher>label.active:before{
+	background-color: #79a64a;
+}
+
 
 

@@ -1,4 +1,5 @@
 @import url(../global/reset.css);
+@import url(../global/fonts.css);
 @import url(../modules/animation.css);
 /**
 @import url(../modules/nxdc-header.css);
@@ -31,3 +32,4 @@
 @import url(../modules/loading.css);
 @import url(../modules/form.css);
 @import url(../modules/sidepanel.css);
+@import url(../modules/upload.css);
