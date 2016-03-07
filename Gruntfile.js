@@ -75,7 +75,7 @@ module.exports=function (grunt) {
         o.copy.main = {
             files:[
             {expand: true,
-             src: (ske.type==1)?['src/css/*font*/*.*','lib/**/*font*/*.*']:['css/fonts/*.*','lib/**/*font*/*.*'],
+             src: (ske.type==1)?['src/*font*/*.*','src/css/*font*/*.*','lib/**/*font*/*.*']:['css/fonts/*.*','lib/**/*font*/*.*'],
              dest: 'dist/com/fonts/',
              flatten: true,
              filter: 'isFile'

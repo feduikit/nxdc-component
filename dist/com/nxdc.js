@@ -4769,16 +4769,11 @@ if (!Object.keys) Object.keys = function(o) {
     FileUpload.prototype = {
         constructor: 'FileUpload',
         init: function(config) {
-            var defaultTpl = {
-                image: '<img src="{{src}}">',
-                video: '<video src="{{src}}" width ="' + self.width + '" height ="' + self.height + '"></video>'
-            }
             this.$wrapper = $(this.html);
             this.$num = this.$wrapper.find('.upload-num');
             this.$msg = this.$wrapper.find('.upload-msg');
             this.$wrapper.appendTo($(this.container));
             this.setSize();
-            this.previewTpl = this.previewTpl || (this.type && defaultTpl[this.type]);
             this.bindEvent();
         },
         createFileInput: function() {
@@ -4924,9 +4919,9 @@ if (!Object.keys) Object.keys = function(o) {
          * 设置div尺寸
          */
         setSize: function(w, h) {
-            var w0 = this.width,
-                h0 = this.height;
-            var ratio = Math.max(w / w0, h / h0);
+            var w0 = w,
+                h0 = h;
+            var ratio = Math.max(w / this.width, h / this.height);
             if (ratio > 1) {
                 w0 = w / ratio;
                 h0 = h / ratio;
@@ -4955,8 +4950,23 @@ if (!Object.keys) Object.keys = function(o) {
          * 生成预览
          */
         createPreview: function(file, src) {
+            var tpl = this.previewTpl;
+            var defaultTpl = {
+                image: '<img src="{{src}}">',
+                video: '<video src="{{src}}" width ="' + self.width + '" height ="' + self.height + '"></video>'
+            }
             if (src) {
-                this.$wrapper.find('.upload-preview').html(this.previewTpl.replace('{{src}}', src));
+                if (!!tpl) {
+                    if ($.isFunction(tpl)) {
+                        tpl = tpl(file, src);
+                    } else if ($.type(tpl) == 'string') {
+                        tpl = tpl.replace('{{src}}', src);
+                    }
+                } else if (this.type) {
+                    tpl = defaultTpl[this.type].replace('{{src}}', src);
+                }
+
+                this.$wrapper.find('.upload-preview').html(tpl);
             }
         },
         /**
