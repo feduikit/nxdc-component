@@ -2,6 +2,7 @@ require(['./config'],function(){
     require(['jquery','utils'],function($){
         require(['bootstrap','./components/sutable'],function(){
 			var bool = false;
+			var sum = [{text:2001},{text:2002},{text:2003},{text:2001},{text:2001},{text:2001},{text:2001},{text:2001},{text:2001},{text:2001}];
 var data1 = [{
 		id:1001,
 		label: [{
@@ -10,30 +11,28 @@ var data1 = [{
 				text: "运行中",
 				value:0//0 y运行中，1暂停，2审核未通过
 			}, {
-				text:"1000"
+				text:"9000"
 			}, {
-				text: "20-1"
+				text: "10-1"
 			}, {
 				text: "2000-1"
 			},
 			{
-				text: "3-1"
+				text: "1100"
 			}, {
-				text: "4-1"
+				text: "4000"
 			}, {
-				text: "5-1"
+				text: "987"
 			}, {
-				text: "6-1"
+				text: "601"
 			},{
-				text:"7-1",
+				text:"107",
 			},{
-				text:"8-1",
+				text:"222",
 			},{
 				text:1100,
 			},{
-				status: true
-			},{
-				
+				status: false
 			}],
 		sub: [{ id:1011,
 				label: [{
@@ -63,9 +62,7 @@ var data1 = [{
 			},{
 				text:1100,
 			},{
-				status: true
-			},{
-				
+				status: false
 			}],
 			sub: [{ id:1111,
 					label: [{
@@ -96,8 +93,6 @@ var data1 = [{
 						text:1100,
 					},{
 						status: true
-					},{
-
 					}]
 						}]
 			},
@@ -130,8 +125,6 @@ var data1 = [{
 				text:1100,
 			},{
 				status: true
-			},{
-				
 			}]
 			  },			  
 			{	id:1012,
@@ -162,8 +155,6 @@ var data1 = [{
 					text:1100,
 				},{
 					status: true
-				},{
-
 				}]
 			}]
 		  },
@@ -174,7 +165,8 @@ var data1 = [{
 			
 		}, {
 			text: "审核未通过",
-			value:2//0 y运行中，1暂停，2审核未通过
+			value:2,//0 y运行中，1暂停，2审核未通过
+			reason:"活动已经被对方暂停"
 		}, {
 			text: 2
 		}, {
@@ -197,8 +189,6 @@ var data1 = [{
 			text:1100,
 		},{
 			status: true
-		},{
-
 		}],
 		sub: [{	id:1021,
 				label: [{
@@ -229,8 +219,6 @@ var data1 = [{
 					text:1100,
 				},{
 					status: true
-				},{
-
 				}]
 			},
 			{	id:1022,
@@ -262,8 +250,6 @@ var data1 = [{
 					text:1100,
 				},{
 					status: true
-				},{
-
 				}]
 			},
 			{	id:1023,
@@ -295,8 +281,6 @@ var data1 = [{
 					text:1100,
 				},{
 					status: true
-				},{
-
 				}]
 			},
 			{	id:1024,
@@ -328,8 +312,6 @@ var data1 = [{
 					text:1100,
 				},{
 					status: true
-				},{
-
 				}]
 			}
 			   ]
@@ -364,8 +346,6 @@ var data1 = [{
 				text:1100,
 			},{
 				status: true
-			},{
-				
 			}],
 		sub: [{	id:1031,
 				label: [{
@@ -396,8 +376,6 @@ var data1 = [{
 					text:1100,
 				},{
 					status: true
-				},{
-
 				}]
 			},
 			{	id:1032,
@@ -429,8 +407,6 @@ var data1 = [{
 				text:1100,
 			},{
 				status: true
-			},{
-				
 			}]
 			},
 			{	id:1033,
@@ -462,8 +438,6 @@ var data1 = [{
 				text:1100,
 			},{
 				status: true
-			},{
-				
 			}]
 			},
 			{	id:1034,
@@ -495,8 +469,6 @@ var data1 = [{
 					text:1100,
 				},{
 					status: true
-				},{
-
 				}]
 			},
 			{	id:1036,
@@ -528,22 +500,529 @@ var data1 = [{
 					text:1100,
 				},{
 					status: true
-				},{
-
 				}]
 			}
 			 ]
 		  }
-];			
+];	
 			
+var data2 =  [{
+		id:1001,
+		label: [{
+				name: "美利坚和中国",
+			}, {
+				text: "运行中",
+				value:0//0 y运行中，1暂停，2审核未通过
+			}, {
+				text:"1000"
+			}, {
+				text: "0.991"
+			}, {
+				text: "2000-1"
+			},
+			{
+				text: "3-1"
+			}, {
+				text: "4-1"
+			}, {
+				text: "5-1"
+			}, {
+				text: "6-1"
+			},{
+				text:"7-1",
+			},{
+				text:"8-1",
+			},{
+				text:2100,
+			},{
+				status: true
+			}],
+		sub: [{ id:1011,
+				label: [{
+					name: "好123网站中国客户端",
+					
+				}, {
+					text: "运行中",
+					value:0//0 y运行中，1暂停，2审核未通过
+				}, {
+					text: 2
+				}, {
+					text: 20
+				}, {
+					text: 2000
+				}, {
+					text: 2
+				}, {
+					text: 20
+				}, {
+					text: 2
+				}, {
+					text: 20
+				},{
+				text:100,
+			},{
+				text:200,
+			},{
+				text:1100,
+			},{
+				status: true
+			}],
+			sub: [{ id:1111,
+					label: [{
+						name: "11-11-11",
+						
+					}, {
+						text: "广告活动已暂停",
+						value:1//0 y运行中，1暂停，2审核未通过
+					}, {
+						text: 2
+					}, {
+						text: 20
+					}, {
+						text: 2000
+					}, {
+						text: 2
+					}, {
+						text: 20
+					}, {
+						text: 2
+					}, {
+						text: 20
+					},{
+						text:100,
+					},{
+						text:200,
+					},{
+						text:1100,
+					},{
+						status: true
+					}]
+						}]
+			},
+			  { id:1012,
+				label: [{
+					name: "美国123z中华人名共和国香港特别行政区",
+					
+				}, {
+					text: "运行中",
+					value:0//0 y运行中，1暂停，2审核未通过
+				}, {
+					text: 2
+				}, {
+					text: 20
+				}, {
+					text: 2000
+				}, {
+					text: 2
+				}, {
+					text: 20
+				}, {
+					text: 2
+				}, {
+					text: 20
+				},{
+				text:100,
+			},{
+				text:200,
+			},{
+				text:1100,
+			},{
+				status: true
+			}]
+			  },			  
+			{	id:1012,
+				label: [{
+					name: "美国",
+				}, {
+					text: "广告活动已暂停",
+					value:1//0 y运行中，1暂停，2审核未通过
+				}, {
+					text: 2
+				}, {
+					text: 20
+				}, {
+					text: 2000
+				}, {
+					text: 2
+				}, {
+					text: 20
+				}, {
+					text: 2
+				}, {
+					text: 20
+				},{
+					text:100,
+				},{
+					text:200,
+				},{
+					text:1100,
+				},{
+					status: false
+				}]
+			}]
+		  },
+	{
+		id:1002,
+		label: [{
+			name: "美国",
 			
+		}, {
+			text: "审核未通过",
+			value:2,//0 y运行中，1暂停，2审核未通过
+			reason:"活动已经被对方暂停"
+		}, {
+			text: 2
+		}, {
+			text: 20
+		}, {
+			text: 2000
+		}, {
+			text: 2
+		}, {
+			text: 20
+		}, {
+			text: 2
+		}, {
+			text: 20
+		},{
+			text:100,
+		},{
+			text:200,
+		},{
+			text:1100,
+		},{
+			status: true
+		}],
+		sub: [{	id:1021,
+				label: [{
+					name: "美国1",
+					
+				}, {
+					text: "运行中",
+					value:0//0 y运行中，1暂停，2审核未通过
+				}, {
+					text: 2
+				}, {
+					text: 20
+				}, {
+					text: 2000
+				}, {
+					text: 2
+				}, {
+					text: 20
+				}, {
+					text: 2
+				}, {
+					text: 20
+				},{
+					text:100,
+				},{
+					text:200,
+				},{
+					text:1100,
+				},{
+					status: true
+				}]
+			},
+			{	id:1022,
+				label: [{
+					name: "app in app store ranking",
+					
+				}, {
+					text: "运行中",
+					value:0//0 y运行中，1暂停，2审核未通过
+				}, {
+					text: 4
+				}, {
+					text: 20
+				}, {
+					text: 2000
+				}, {
+					text: 2
+				}, {
+					text: 20
+				}, {
+					text: 2
+				}, {
+					text: 20
+				},{
+					text:100,
+				},{
+					text:200,
+				},{
+					text:1100,
+				},{
+					status: true
+				}]
+			},
+			{	id:1023,
+				label: [{
+					name: "美国3",
+					
+				}, {
+					text: "运行中",
+					value:0//0 y运行中，1暂停，2审核未通过
+				}, {
+					text: 5
+				}, {
+					text: 20
+				}, {
+					text: 2000
+				}, {
+					text: 2
+				}, {
+					text: 20
+				}, {
+					text: 2
+				}, {
+					text: 20
+				},{
+				text:100,
+				},{
+					text:200,
+				},{
+					text:1100,
+				},{
+					status: true
+				}]
+			},
+			{	id:1024,
+				label: [{
+					name: "美国4",
+					
+				}, {
+					text: "运行中",
+					value:0//0 y运行中，1暂停，2审核未通过
+				}, {
+					text: 2
+				}, {
+					text: 20
+				}, {
+					text: 2000
+				}, {
+					text: 2
+				}, {
+					text: 20
+				}, {
+					text: 2
+				}, {
+					text: 20
+				},{
+					text:100,
+				},{
+					text:200,
+				},{
+					text:1100,
+				},{
+					status: true
+				}]
+			}
+			   ]
+		  },
+	{
+		id:1003,
+		label: [{
+			name: "美国",
 			
-			$(".ndp-sutable-wrapper").sutable({
-				head:[{label:"广告活动"},{label:"状态"},{label:"展示数"},
-					  {label:"点击数"},{label:"点击率"},{label:"转化数"},
-					  {label:"转化率"},{label:"CPC"},{label:"CPM"},
-					  {label:"CPA"},{label:"花费"},{label:"赢价率"},
-					  {label:"开启/暂停"},{label:"操作"}
+		}, {
+			text: "运行中",
+			value:0//0 y运行中，1暂停，2审核未通过
+		}, {
+			text: 2
+		}, {
+			text: 20
+		}, {
+			text: 2000
+		}, {
+			text: 2
+		}, {
+			text: 20
+		}, {
+			text: 2
+		}, {
+			text: 20
+		},{
+				text:100,
+			},{
+				text:200,
+			},{
+				text:1100,
+			},{
+				status: true
+			}],
+		sub: [{	id:1031,
+				label: [{
+					name: "美国3-2",
+					
+				}, {
+					text: "运行中",
+					value:0//0 y运行中，1暂停，2审核未通过
+				}, {
+					text: 2
+				}, {
+					text: 10
+				}, {
+					text: 9000
+				}, {
+					text: 2
+				}, {
+					text: 20
+				}, {
+					text: 2
+				}, {
+					text: 20
+				},{
+					text:100,
+				},{
+					text:200,
+				},{
+					text:1100,
+				},{
+					status: true
+				}]
+			},
+			{	id:1032,
+				label: [{
+					name: "美国4",
+					
+				}, {
+					text: "运行中",
+					value:0//0 y运行中，1暂停，2审核未通过
+				}, {
+					text: 2
+				}, {
+					text: 30.5
+				}, {
+					text: 2300
+				}, {
+					text: 2
+				}, {
+					text: 20
+				}, {
+					text: 2
+				}, {
+					text: 20
+				},{
+				text:100,
+			},{
+				text:200,
+			},{
+				text:1100,
+			},{
+				status: true
+			}]
+			},
+			{	id:1033,
+				label: [{
+					name: "美国5-1",
+					
+				}, {
+					text: "运行中",
+					value:0//0 y运行中，1暂停，2审核未通过
+				}, {
+					text: 2
+				}, {
+					text: 11
+				}, {
+					text: 2000
+				}, {
+					text: 2
+				}, {
+					text: 20
+				}, {
+					text: 2
+				}, {
+					text: 20
+				},{
+				text:100,
+			},{
+				text:200,
+			},{
+				text:1100,
+			},{
+				status: true
+			}]
+			},
+			{	id:1034,
+				label: [{
+					name: "美国6",
+					
+				}, {
+					text: "运行中",
+					value:0//0 y运行中，1暂停，2审核未通过
+				}, {
+					text: 9
+				}, {
+					text: 22
+				}, {
+					text: 2000
+				}, {
+					text: 2
+				}, {
+					text: 20
+				}, {
+					text: 2
+				}, {
+					text: 30
+				},{
+					text:100,
+				},{
+					text:200,
+				},{
+					text:1100,
+				},{
+					status: true
+				}]
+			},
+			{	id:1036,
+				label: [{
+					name: "美国8",
+					
+				}, {
+					text: "运行中",
+					value:0//0 y运行中，1暂停，2审核未通过
+				}, {
+					text: 2
+				}, {
+					text: 20
+				}, {
+					text: 9000
+				}, {
+					text: 2
+				}, {
+					text: 20
+				}, {
+					text: 2
+				}, {
+					text: 22
+				},{
+					text:100,
+				},{
+					text:200,
+				},{
+					text:1100,
+				},{
+					status: true
+				}]
+			}
+			 ]
+		  }
+];				
+			
+			var hwd = $(".ndp-sutable-wrapper").sutable({
+				head:[{label:"广告活动"},{label:"状态",desc:"这一列用来说明处于什么状态"},
+					  {label:"展示数",desc:"这一列用来说明展示的数目"},
+					  {label:"点击数",desc:"这一列用来说明展示的数目"},
+					  {label:"点击率",desc:"这一列用来说明展示的数目"},
+					  {label:"转化数",desc:"这一列用来说明展示的数目"},
+					  {label:"转化率",desc:"这一列用来说明展示的数目"},
+					  {label:"CPC",desc:"这一列用来说明展示的数目"},
+					  {label:"CPM",desc:"这一列用来说明展示的数目"},
+					  {label:"CPA",desc:"这一列用来说明展示的数目"},
+					  {label:"花费",desc:"这一列用来说明展示的数目"}
+					  ,{label:"赢价率",desc:"这一列用来说明展示的赢价率"},
+					  {label:"开启/暂停",desc:"这一列用来说明展示的赢价率"},
+					  {label:"操作",desc:"这一列是用户用来操作的项目"}
 					 ],				
 				body:data1,
 				tail:[{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000}],
@@ -571,6 +1050,17 @@ var data1 = [{
 						break;
 				}
 			});
+			
+			
+			$("#update").click(function(){
+				bool = !bool;
+				hwd.update((bool?data2:data1),sum);
+			});
+			
+			$("#fold").click(function(){
+				hwd.fold();
+			});
+			
         });
     });
 });

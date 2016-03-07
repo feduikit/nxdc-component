@@ -6,6 +6,17 @@
         "demo.js",
         "/Users/ericever/Desktop/develop/nxdc_ui/dist/lib/bootstrap/js/transition.js",
         "/Users/ericever/Desktop/develop/nxdc_ui/lib/hilighter/scripts/shBrushJScript.js",
-        "demo-vList2.js"
+        "demo-vList2.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/lib/bootstrap/js/alert.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/lib/bootstrap/js/button.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/lib/bootstrap/js/carousel.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/lib/bootstrap/js/collapse.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/lib/bootstrap/js/dropdown.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/lib/bootstrap/js/modal.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/lib/bootstrap/js/popover.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/lib/bootstrap/js/scrollspy.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/lib/bootstrap/js/tab.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/lib/bootstrap/js/tooltip.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/src/js/components/sutable.js"
     ]
 }

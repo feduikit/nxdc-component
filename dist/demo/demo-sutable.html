@@ -18,15 +18,19 @@
     <title>NDP media web ui lib</title>
 </head>
 <body>
-  <div class="container-fluid ndp-ui-header"></div>
+  <div class="container-fluid ndp-ui-header">
+
+  </div>
   <div class="container-fluid ndp-ui-kitchen">
-      <div class="container">
+      <div class="container" style="margin-bottom:30px">
           <h1 class="com-title">COMPONENTS</h1>
           <p class="com-desc">NDP MEDIA UI Components Library</p>
+  		<button class="btn btn-info" id="update">数据更新</button>
+  		<button class="btn btn-danger" id="fold" >折叠/展开</button>          
       </div>
   </div>
   <div class="container ndp-ui-main" style="margin:0 20px">
-  	<div class="ndp-sutable-wrapper"></div>
+  	<div class="ndp-sutable-wrapper" id="sd"></div>
   </div>
   <script src='../lib/require.js' data-main='./js/demo-sutable'></script>
 </body>

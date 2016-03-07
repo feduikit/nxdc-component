@@ -4,7 +4,6 @@
 ***/
 ;(function ($) { 
     var self = this;
-	
 	var Help = {
 		recursive:function(fa,arr,cfg,deep){
 		var deep = arguments[3]||0;
@@ -20,17 +19,18 @@
 		}
 		for(var i=0;i<arr.length;i++){
 			var o = arr[i];
-			var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group;
-			var cols = o[cfg.textKey]||o.text||o.label||o.title||o.name;
+			var array = o.sub||o.son||o.next||o.group;
+			var cols = o.text||o.label||o.title||o.name;
 			var li = $("<li class='sutable-item'  deep="+deep+"  serial="+o.id+" />");
 			var wrapper = $('<div class="sutable-row-wrapper">');
 			var row = $('<div class="sutable-row" deep='+deep+' serial='+o.id+' ></div>');
 			var optors = $('<i class="font-icon font-icon-edit" serial='+o.id+'></i><i class="font-icon font-icon-copy" serial='+o.id+'></i>');
 			wrapper.append(row);
 			//列 赋值
-			cols.forEach(function(col,idx){
-				var switcher = '<span class="switcher">\
-				<label class = "active" ><input type = "checkbox" class = "scheckbox"> </label></span>';
+			var temparr = cols.concat({});
+			temparr.forEach(function(col,idx){
+				var switcher = $('<span class="switcher">\
+				<label class = "active" ><input type = "checkbox" class = "scheckbox"></label></span>');
 				var column = $('<span class="sutable-col" col='+idx+' />');
 				if(cfg.colDims&&cfg.colDims.length){
 					column.css("width",cfg.colDims[idx]+"px");
@@ -39,23 +39,25 @@
 					column.addClass("sutable-col-name");
 				}else if(idx==1){//状态
 					column.addClass("sutable-col-status");
-				}else if(idx == (cols.length-2)){//开启/暂停
+				}else if(idx == (temparr.length-2)){//开启/暂停
 					column.addClass("sutable-col-oc");
+					switcher.find("label").toggleClass("active",col.status?true:false);
 					column.html(switcher);
-				}else if(idx == (cols.length-1)){//操作
+				}else if(idx == (temparr.length-1)){//操作
 					column.addClass("sutable-col-operation");
 					column.html(optors);
 				}
-				if(idx<=cols.length-3){
-					if(typeof(col)=="object"){
-						var val = col.label||col.text||col.name;	
-					}
-					val = val||col;
-					column.html(val); if(idx!=1) column.attr("title",val);
+				if(idx<=(temparr.length-3)){
+					var val = col.label||col.text||col.name;	
+					column.html(val); if(idx!=1 && idx!=temparr.length-2) column.attr("title",val);
 					if(idx==0){
 						column.html("<span>"+val+"</span>");
-					}else if(idx==1 && col.value==2){
-						column.html("<i class='font-icon font-icon-attention'></i>"+val).addClass("attention");
+					}else if(idx==1 && col.value==2){// 处理 状态， 审核未通过
+						column.html("<span class='att-wrapper'><i class='font-icon font-icon-attention'></i>"+val+"</span>").addClass("attention");
+						column.find(".att-wrapper").attr({"data-toggle":"tooltip","data-title":col.reason});
+					}else if(idx == (temparr.length-2)){
+						console.log(11111);
+						switcher.find("label").toggleClass("active",col.status?true:false);
 					}
 				}
 				row.append(column);
@@ -90,32 +92,33 @@
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.sutable.defaults,element.data(),options);
 		this.config.wi = this.elem.width();
-		this.init();	
+		this.init();
+//		$('[data-toggle="tooltip"]').tooltip({viewport:"#sd",placement:"bottom"});
     };
 	/***
 	**	横向滚动条
 	***/
 	Sutable.prototype.scrollV = function(){
 		var _this = this;
-		var sdim = _this.scroll.get(0).getBoundingClientRect();//上下左右
-		var thumb = _this.scroll.find(".horiz-thumb");
-		var tdim = thumb.get(0).getBoundingClientRect();
-		var w = this.elem.width();
-		var colW = 40 + 12;//40 margin-left:40    12 border-right
-		this.head.find(".sutable-col[col]").each(function(idx,item){
-			colW += $(item).width();
-		});
-		if(tdim.left<sdim.left){
-			thumb.css("left",sdim.left+"px");
-		}else if(tdim.right>sdim.right){
-			thumb.css("left",(sdim.right-sdim.width)+"px");
-		}
-		_this.foot.toggleClass("repos",colW>w?true:false);
-		_this.scroll.toggleClass("show",colW>w?true:false).css("width",w+"px");
-		_this.elem.toggleClass("extend",colW>w?true:false)
-		if(colW>w){
-			thumb.css("width",(w/colW)*100+"%");	
-		}
+//		var sdim = _this.scroll.get(0).getBoundingClientRect();//上下左右
+//		var thumb = _this.scroll.find(".horiz-thumb");
+//		var tdim = thumb.get(0).getBoundingClientRect();
+//		var w = this.elem.width();
+//		var colW = 40 + 12;//40 margin-left:40    12 border-right
+//		this.head.find(".sutable-col[col]").each(function(idx,item){
+//			colW += $(item).width();
+//		});
+//		if(tdim.left<sdim.left){
+//			thumb.css("left",sdim.left+"px");
+//		}else if(tdim.right>sdim.right){
+//			thumb.css("left",(sdim.right-sdim.width)+"px");
+//		}
+//		_this.foot.toggleClass("repos",colW>w?true:false);
+//		_this.scroll.toggleClass("show",colW>w?true:false).css("width",w+"px");
+//		_this.elem.toggleClass("extend",colW>w?true:false)
+//		if(colW>w){
+//			thumb.css("width",(w/colW)*100+"%");	
+//		}
 		
 	};
 	
@@ -124,7 +127,7 @@
 	***/
 	Sutable.prototype.listenBody = function(){
 		var _this = this;
-		
+		var o = this.elem.get(0).getBoundingClientRect();
 		/***
 		**事件  收起/展开按钮  树桩菜单的 展开/收起
 		**/
@@ -178,6 +181,26 @@
 			var type = (deep=='2')?0:(deep='3')?1:2;
 			fireEvent($(this).get(0),"OPERATE_ACTION",{action:"addnew",preid:preid,type:type});
 		});
+		
+		//显示隐藏 tooltip
+		_this.elem.find('[data-toggle=tooltip]').unbind("mouseover").mouseover(function(e){
+			var bo = $(e.target).get(0).getBoundingClientRect();
+			var tooltip = _this.elem.find(".tooltip-cus");
+			tooltip.find(".tooltip-inner").html($(e.target).data('title'));
+			tooltip.css({"top":(parseFloat(bo.bottom) - parseFloat(o.top)),"left":(e.pageX-parseFloat(o.left)-30)});
+			
+			if(e.pageX - parseFloat(o.left)-30 + tooltip.width()>o.right){
+				tooltip.css("left",parseFloat(o.right)-tooltip.width()-100);
+				tooltip.find(".tooltip-arrow").css("left","90%");
+			}else{
+				tooltip.find(".tootip-arrow").removeAttr("style");
+			}
+			tooltip.addClass("in");
+		});
+		
+		_this.elem.find('[data-toggle=tooltip]').unbind("mouseout").mouseout(function(e){
+			_this.elem.find(".tooltip-cus").removeClass("in");
+		});		
 	
 	};
 	
@@ -251,84 +274,7 @@
 			_this.scrollV();// 是否显示横向滚动条
 			_this.elem.trigger("RESIZE_DONE");//鼠标拖动resize 列宽完成
 		});
-		
-//		
-//		/*****
-//		** 横向滚动条拖动  thumb 拖动
-//		****/ 		
-//		_this.scroll.find(".horiz-thumb").unbind("mousedown").mousedown(function(e){
-////			e.stopImmediatePropagation();
-//			var thumb = $(this);
-//			var sdim = _this.scroll.get(0).getBoundingClientRect();
-//			var start = e.clientX;
-//			_this.scroll.unbind("mousemove").mousemove(function(e){
-//				e.stopImmediatePropagation();
-//				var tdim = thumb.get(0).getBoundingClientRect();
-//				var end  = e.clientX;
-//				var m = end - start;
-//				start = end;
-//				thumb.css("left",(tdim.left - sdim.left +m)+"px");
-//				/***
-//				** 超出边界的控制
-//				***/
-//				if(tdim.left<sdim.left){
-//					thumb.css("left",0);
-//				}else if(tdim.right>sdim.right){
-//					thumb.css("left",(sdim.right-tdim.width - sdim.left)+"px");
-//				}				
-//				
-//				var w = tdim.left - sdim.left; if(w<0) w = 0;
-//				
-//				_this.elem.children("[role=table]").css("left",-w+"px");
-//			});
-//		});
-		
-//		_this.scroll.mouseleave(function(e){
-//			_this.scroll.unbind("mousemove");
-//			var lf = _this.scroll.find(".horiz-thumb").css("left");
-//			_this.scroll.find(".horiz-thumb").css("left",lf+"px");
-//		});
-//		
-//		_this.scroll.mouseup(function(e){
-//			_this.scroll.unbind("mousemove");
-//			var thumb = $(this).children(":first");
-//			var dim1 = $(this).get(0).getBoundingClientRect();
-//			var dim2 = thumb.get(0).getBoundingClientRect();
-//			if(dim2.right>=dim1.right){
-//				var l = (dim1.right - dim2.width) - dim1.left;
-//				thumb.css("left",l+"px");
-//			}else if(dim2.left<=dim1.left){
-//				thumb.css("left",0);
-//			}
-//		});
-//		
-//		/***
-//		** 点击滚动条空白处
-//		***/
-//		_this.scroll.unbind("click").click(function(e){
-//			e.stopImmediatePropagation();
-//			var thumb = $(this).find(".horiz-thumb");
-//			var tdim = thumb.get(0).getBoundingClientRect();
-//			var sdim = $(this).get(0).getBoundingClientRect();
-//
-//			if(e.clientX>=tdim.left){
-//				thumb.css("left",(tdim.left - sdim.left + 20)+"px");
-//			}else{
-//				thumb.css("left",(tdim.left - sdim.left - 20)+"px");
-//			}
-//			/***
-//			** 超出边界的控制
-//			***/
-//			if(tdim.left<sdim.left){
-//				thumb.css("left",0);
-//			}else if(tdim.right>sdim.right){
-//				thumb.css("left",(sdim.right-tdim.width - sdim.left)+"px");
-//			}				
-//
-//			var w = tdim.left - sdim.left; if(w<0) w = 0;
-//			_this.elem.children("[role=table]").css("left",-w+"px");
-//		});		
-		
+			
 		//body 里面的监听
 		_this.listenBody();
 		
@@ -354,6 +300,7 @@
 		var cfg = this.config;
 		//构建列表头部
 		if(cfg.head){
+			var st = "<span class='sort-wrapper'><i class='glyphicon glyphicon-triangle-top'></i><i class='glyphicon glyphicon-triangle-bottom hi'></i></span>";				
 			cfg.head.forEach(function(item,index){
 				var col = $("<span class='sutable-col' col="+index+" />");
 				if(index==0) {
@@ -370,7 +317,15 @@
 				}else{
 					col.text(item);
 				}
-				//分割线
+				
+				if(cfg.sort.indexOf(index)!=-1){
+					col.append(st);
+				}
+				
+				if(index!=0 && index!=12){
+					col.append("<i class='font-icon font-icon-help' data-toggle='tooltip' data-title="+item.desc+"></i>");
+				} 				
+ 				//分割线
 				//col.append("<span class='inspliter'></span>");
 				_this.head.find(".sutable-row").append(col);
 			});
@@ -384,39 +339,32 @@
 		}
 		//构建列表尾部
 		if(cfg.tail){
-			_this.foot = $("<ul class='sutable-footer '><li class='sutable-item sutable-row'></li></ul>");
-			_this.foot.find(".sutable-item").append("<span class='sutable-col sutable-col-sum'>总计</span>");
-			var arr = cfg.colDims.slice(2);
-			cfg.tail.forEach(function(item,index){
-				var col = $("<span class='sutable-col' />").text(item.text||item.label||item.value||item);
-				if(arr[index]) col.css("width",arr[index]+"px");
-				_this.foot.find(".sutable-item").append(col);
-			});
-			_this.elem.append(_this.foot);
-		}
+			_this.tail(cfg.head);
+			
+		}	
 		
-//		this.scroll = $("<div class='horiz-scroll' />").html("<div class='horiz-thumb' />");
-//		_this.elem.append(_this.scroll);	
-		
-		/***
-		** 显示 排序图标
-		***/
-		if(cfg.sort){
-			var st = "<span class='sort-wrapper'><i class='glyphicon glyphicon-triangle-top'></i><i class='glyphicon glyphicon-triangle-bottom hi'></i></span>";			
-			if(cfg.sort instanceof Array){
-				cfg.sort.forEach(function(num,idx){
-					_this.head.find(".sutable-col[col="+num+"]").append(st);
-				});
-			}else if(cfg.sort == ""){
-				_this.head.find(".sutable-col").append(st);
-			}
-		};
+		_this.elem.append('<div class="tooltip tooltip-cus bottom fade" role="tooltip"> <div class="tooltip-arrow"></div> <div class="tooltip-inner"> Tooltip on the bottom </div> </div>');
+		//_this.head.find(".sutable-col:gt(0):not(:eq(11))").append("<i class='font-icon font-icon-help'></i>");
 		
 		//this.scrollV();//是否显示滚动条
-		
-		_this.head.find(".sutable-col:gt(0):not(:eq(11))").append("<i class='font-icon font-icon-help'></i>");
-		
     }
+	
+	
+	//构建列表尾部数据，最下面一行 总计
+	Sutable.prototype.tail = function(dat){
+		var _this = this;
+		_this.foot = $("<ul class='sutable-footer'><li class='sutable-item sutable-row'></li></ul>");
+		_this.foot.find(".sutable-item").append("<span class='sutable-col sutable-col-sum'>总计</span>");	
+		this.foot.find(".sutable-item>.sutable-col:gt(0)").empty();
+		var arr = this.config.colDims.slice(2);
+		dat.forEach(function(item,index){
+			var col = $("<span class='sutable-col' />").text(item.text||item.label||item.value||item);
+			if(arr[index]) col.css("width",arr[index]+"px");
+			_this.foot.find(".sutable-item").append(col);
+		});
+		_this.elem.append(_this.foot);
+	}
+	
 	
 	/***
 	** 宽度发生变化
@@ -457,19 +405,7 @@
 	** factory Class
     **@param {Drop} drop :  instacne of the plugin builder
     **/
-    function exchange(sutable){
-        /**
-        **@param {Object} msg {type:"类型"}
-        **/
-        this.manipulate = function(msg){
-            
-        };
-		
-		//不能使用直接 == sutable.toolbar的方式，因为，传入的 this 变了
-		this.toolbar = function(bool){
-			sutable.toolbar.toggleClass("active",bool);
-		}
-		
+    function exchange(sutable){				
 		/***
 		** 外部调用这里 resize 宽度
 		***/
@@ -488,12 +424,14 @@
 		}
 		
 		/***
-		** 更新列表
+		** 更新列表  和 组下面的 总计
 		***/
-		this.update = function(data){
+		this.update = function(data,tail){
 			sutable.elem.find(".sutable-body").remove();
+			sutable.elem.find(".sutable-footer").remove();
 			Help.recursive(sutable.elem,data,sutable.config);
 			sutable.listenBody();
+			sutable.tail(tail);
 			return sutable.elem;
 		}
     }

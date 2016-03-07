@@ -1,3 +1,21 @@
+.tooltip-cus{
+	left:0;
+	top:0;
+	cursor: default;
+}
+.tooltip.bottom .tooltip-arrow{
+	left:30px;
+	border-bottom-color:white;
+}
+
+.tooltip-inner{
+	min-width: 100px;
+	border-radius: 2px;
+	border:1px solid #e0e0e;
+	box-shadow: 0 0 2px black;
+	color:black;
+	background-color:white;
+}
 .ndp-sutable-wrapper{
 	position: relative;
 	padding: 0!important;
@@ -64,6 +82,10 @@
 	display: inline;
 	margin-right: 5px;
 	color#f6c76d;
+}
+.att-wrapper{
+	display: inline;
+	width: 100%;
 }
 
 /****
