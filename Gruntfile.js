@@ -76,7 +76,7 @@ module.exports=function (grunt) {
             files:[
             {expand: true,
              src: (ske.type==1)?['src/*font*/*.*','src/css/*font*/*.*','lib/**/*font*/*.*']:['css/fonts/*.*','lib/**/*font*/*.*'],
-             dest: 'dist/com/fonts/',
+             dest: 'dist/fonts/',
              flatten: true,
              filter: 'isFile'
             },      
