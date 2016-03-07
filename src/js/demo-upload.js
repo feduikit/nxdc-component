@@ -1,10 +1,9 @@
 require(['./config'],function(){
     require(['jquery','utils'],function($){
         require(['bootstrap','./components/upload'],function(){
-			var fu = new FileUpload({
-				container: $('.upload-container'),
+			$('.upload-container').fileupload({
 				ajax: {
-					url: './upload.php'
+					url: '/php/upload.php'
 				},
 				allowSize: [],
 				type: 'image'
