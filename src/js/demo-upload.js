@@ -3,7 +3,7 @@ require(['./config'],function(){
         require(['bootstrap','./components/upload'],function(){
 			$('.upload-container').fileupload({
 				ajax: {
-					url: '/php/upload.php'
+					url: '/upload.php'
 				},
 				allowSize: [],
 				type: 'image'

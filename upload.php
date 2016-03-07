@@ -14,8 +14,8 @@ if ($picname != "") {
     $rand = rand(100, 999); 
     $pics = date("YmdHis") . $rand . $type; //命名图片名称 
     //上传路径 
-    $pic_path = "/php/upload/". $pics; 
-    move_uploaded_file($_FILES['file']['tmp_name'], $pic_path); 
+    //$pic_path = "/php/upload/". $pics; 
+    //move_uploaded_file($_FILES['file']['tmp_name'], $pic_path); 
 } 
 $size = round($picsize/1024,2); //转换成kb 
 $arr = array( 
