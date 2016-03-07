@@ -546,7 +546,7 @@ var data1 = [{
 					  {label:"开启/暂停"},{label:"操作"}
 					 ],				
 				body:data1,
-				tail:[{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000}],
+				tail:[{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000}],
 				sort:[3,5,7,9]// 第4列，6列，8页  10页显示 排序按钮  默认从0开始
 			}).on("SORT_CLICK",function(e){//用户点击排序按钮
 				//返回数据，包含，第几列，默认0； 列名

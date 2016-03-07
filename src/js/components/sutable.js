@@ -386,8 +386,10 @@
 		if(cfg.tail){
 			_this.foot = $("<ul class='sutable-footer '><li class='sutable-item sutable-row'></li></ul>");
 			_this.foot.find(".sutable-item").append("<span class='sutable-col sutable-col-sum'>总计</span>");
+			var arr = cfg.colDims.slice(2);
 			cfg.tail.forEach(function(item,index){
 				var col = $("<span class='sutable-col' />").text(item.text||item.label||item.value||item);
+				if(arr[index]) col.css("width",arr[index]+"px");
 				_this.foot.find(".sutable-item").append(col);
 			});
 			_this.elem.append(_this.foot);
@@ -395,8 +397,6 @@
 		
 //		this.scroll = $("<div class='horiz-scroll' />").html("<div class='horiz-thumb' />");
 //		_this.elem.append(_this.scroll);	
-		
-		
 		
 		/***
 		** 显示 排序图标
