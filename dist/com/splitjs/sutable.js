@@ -187,9 +187,9 @@
 			var bo = $(e.target).get(0).getBoundingClientRect();
 			var tooltip = _this.elem.find(".tooltip-cus");
 			tooltip.find(".tooltip-inner").html($(e.target).data('title'));
-			tooltip.css({"top":(parseFloat(bo.bottom) - parseFloat(o.top)),"left":(e.pageX-parseFloat(o.left)-30)});
+			tooltip.css({"top":(parseFloat(bo.bottom) - parseFloat(o.top)),"left":(e.clientX-parseFloat(o.left)-30)});
 			
-			if(e.pageX - parseFloat(o.left)-30 + tooltip.width()>o.right){
+			if((e.clientX - parseFloat(o.left)-30 + tooltip.width())>o.right){
 				tooltip.css("left",parseFloat(o.right)-tooltip.width()-100);
 				tooltip.find(".tooltip-arrow").css("left","90%");
 			}else{
@@ -339,7 +339,7 @@
 		}
 		//构建列表尾部
 		if(cfg.tail){
-			_this.tail(cfg.head);
+			_this.tail(cfg.tail);
 			
 		}	
 		
