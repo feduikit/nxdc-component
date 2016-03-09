@@ -5244,12 +5244,17 @@ if (!Object.keys) Object.keys = function(o) {
          * 设置div尺寸
          */
         setSize: function(w, h) {
-            var w0 = w,
-                h0 = h;
-            var ratio = Math.max(w / this.width, h / this.height);
-            if (ratio > 1) {
-                w0 = w / ratio;
-                h0 = h / ratio;
+            var w0 = this.width,
+                h0 = this.height;
+            var ratio = Math.max(w / w0, h / h0);
+            if (w && h) {
+                if (ratio > 1) {
+                    w0 = w / ratio;
+                    h0 = h / ratio;
+                } else {
+                    w0 = w;
+                    h0 = h;
+                }
             }
             this.$wrapper.find('.upload-content').css({ width: w0 + 'px', height: h0 + 'px' });
         },
