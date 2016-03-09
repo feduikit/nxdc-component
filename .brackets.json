@@ -48,6 +48,8 @@
         "/Users/ericever/Desktop/develop/nxdc_ui/lib/hilighter/scripts/shBrushBash.js",
         "/Users/ericever/Desktop/develop/nxdc_ui/lib/hilighter/scripts/shBrushColdFusion.js",
         "/Users/ericever/Desktop/develop/nxdc_ui/lib/hilighter/scripts/shBrushCpp.js",
-        "/Users/ericever/Desktop/develop/nxdc_ui/lib/hilighter/scripts/shBrushCSharp.js"
+        "/Users/ericever/Desktop/develop/nxdc_ui/lib/hilighter/scripts/shBrushCSharp.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/lib/bootstrap/Gruntfile.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/lib/hilighter/scripts/shBrushCss.js"
     ]
 }

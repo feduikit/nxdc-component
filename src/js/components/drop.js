@@ -93,9 +93,9 @@
 			//deep 表示树桩菜单第几层 base from 0。index:表示这一层的第几个， base from 1
 			if(_this.config.type==3){
 				var gp = $(this).parents(".drop-one-item[deep='0']:first");
-				fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,group:gp.index(),gpname:gp.attr("title")});
+				fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,text:txt,group:gp.index(),gpname:gp.attr("title")});
 			}else{
-            	fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value});
+            	fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,text:txt});
 			}
         });
 
