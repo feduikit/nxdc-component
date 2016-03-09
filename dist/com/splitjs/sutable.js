@@ -415,16 +415,6 @@
 		};
 		
 		/***
-		**外部调用，折叠展开树桩菜单
-		**@param {Boolean} bool  true:折叠，false展开
-		**/
-		this.fold = function(bool){
-			var rows = sutable.elem.find(".sutable-body>.sutable-item");
-			rows.toggleClass("open");
-			return sutable.elem;
-		}
-		
-		/***
 		** 更新列表  和 组下面的 总计
 		***/
 		this.update = function(data,tail){
