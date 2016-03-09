@@ -113,10 +113,10 @@
 			var deep = parseInt($(this).attr("deep"));
 			var serial = $(this).attr("serial");
 			var li = $(this).parent();
-			var the = $(this).parents("li.sutable-item:first");
 			var spinner = li.find("div.spinner2");
-			the.toggleClass("open");
-			//the.find("li.sutable-item").toggleClass("open",the.hasClass("open"));
+			li.toggleClass("open");
+			li.children("ul>li.sutable-item").toggleClass("open");
+			console.log(li.hasClass("open"));
 			if(li.hasClass("open")){
 				fireEvent($(this).get(0),"OPERATE_ACTION",{action:"nextlayer",deep:deep,id:serial,fa:li});//1 开，0关
 				spinner.addClass("active");

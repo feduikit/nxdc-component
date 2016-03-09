@@ -168,21 +168,6 @@
 }
 
 /***
-** 图表界面
-**/
-.sutable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper{
-	position: relative;
-	top:0;
-	height: 0;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	border-width: 0;
-	-webkit-transition: height 0.4s ease-in-out;
-	-moz-transition: height 0.4s ease-in-out;
-	transition:height 0.4s ease-in-out;
-}
-/***
 ** 显示图表界面
 ***/
 .sutable-body .sutable-row.focus{
@@ -198,8 +183,13 @@
 ***/
 .sutable-body li.sutable-item{
 	position: relative;
-	height: auto;
+	height: 40px;
 	background-color:white;
+	overflow: hidden;
+}
+.sutable-body li.sutable-item.open{
+	height: inherit;
+	overflow: visible;
 }
 .sutable-body li.sutable-item>div.spinner{
 	position: relative;
@@ -231,6 +221,7 @@
 	border-width: 0;
 	border-left: 1px solid #e0e0e0;
 	background-color:#e8eff1;
+	height: 42px!important;	
 }
 
 /***
