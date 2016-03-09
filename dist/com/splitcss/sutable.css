@@ -193,14 +193,6 @@
 	background-color: rgba(80, 80, 80, 0.8);
 }
 
-/****
-** 图表 所在层  chart 和 tabs 所在的层 
-***/
-.sutable-row-wrapper>.chart-wrapper{
-	position: relative;
-	overflow: hidden;
-}
-
 /***
 ** li 列表 样式设置
 ***/
@@ -208,6 +200,20 @@
 	position: relative;
 	height: auto;
 	background-color:white;
+}
+.sutable-body li.sutable-item>div.spinner{
+	position: relative;
+	padding-left: 20px;
+	height: 0;
+	width: 100%;
+	text-align: left;
+	-webkit-transition: all 0.5s;
+	transition: all 0.5s;
+}
+.sutable-body li.sutable-item>div.spinner.active{
+	height: 20px;
+	background-color:#ffffed;
+	display: block;
 }
 
 .sutable-body li.sutable-item[deep='2']{
@@ -224,7 +230,7 @@
 .sutable-body li.sutable-item[deep='3']{
 	border-width: 0;
 	border-left: 1px solid #e0e0e0;
-	background-color:#e4ebed;
+	background-color:#e8eff1;
 }
 
 /***
@@ -246,7 +252,7 @@
 	padding-left: 40px;
 }
 .sutable-body li.sutable-item-spec[deep='3']{
-	border-top:1px solid #e0e0e0!important;
+	border-top:1px solid transparent;
 }
 
 
@@ -273,15 +279,15 @@ li.sutable-item.open[deep='2']>.sutable-row-wrapper.asparent{
 .sutable-body .sutable-row:hover{
 	background-color: #f6f6f6;
 }
+.sutable-body li.sutable-item .sutable-row[deep='3']{
+	border-bottom: 1px solid #e0e0e0;
+}
+
+
 
 .sub-layer{
 	padding-left: 20px;
 }
-
-.sub-layer .sutable-row{
-/*	background-color: #fff;*/
-}
-
 
 /***
 ** col  列
