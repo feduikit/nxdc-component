@@ -13,16 +13,16 @@ require(['./config'],function(){
 			
 
             $("div.ndp-drop-wrapper[name=tree-drop2]").drop({
-                data:[{text:"新疆"},
-					  {text:"陕西",sub:[{text:"西安"},
-									  {text:"咸阳"}]},
-					  {text:"四川",sub:[{text:"成都"},
-									  {text:"宜宾"}]},
-					  {text:"浙江",sub:[{name:"杭州",
-									   sub:[{name:"西溪"},
-											{name:"武林"}]}]},
-					  {text:"湖北"},
-					  {text:"湖南"}],
+                data:[{text:"新疆",val:'xj'},
+					  {text:"陕西",val:'sx',sub:[{text:"西安",val:'xa'},
+									  {text:"咸阳",val:'xy'}]},
+					  {text:"四川",val:'sc',sub:[{text:"成都",val:'cd'},
+									  {text:"宜宾",val:'yb'}]},
+					  {text:"浙江",val:'zj',sub:[{name:"杭州",val:'hz',
+									   sub:[{name:"西溪",val:'xx'},
+											{name:"武林",val:'wl'}]}]},
+					  {text:"湖北",val:'hb'},
+					  {text:"湖南",val:'hn'}],
 				caret:"glyphicon-menu-right"
             }).on("ITEM_CLICK",function(e){
 				console.log(e.originalEvent.data);

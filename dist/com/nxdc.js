@@ -627,7 +627,8 @@ if (!Object.keys) Object.keys = function(o) {
 			var itemIndex = $(this).index();
 //			var deep = parseInt($(this).attr("deep"));
             var value = $(this).attr("value");
-            _this.peal.find("input").val(value);
+            var title = $(this).attr("title");
+            _this.peal.find("input").attr('data-val',value).val(title);
 			//deep 表示树桩菜单第几层 base from 0。index:表示这一层的第几个， base from 1
 			if(_this.config.type==3){
 				var gp = $(this).parents(".drop-one-item[deep='0']:first");

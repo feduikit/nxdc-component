@@ -79,7 +79,13 @@ module.exports=function (grunt) {
              dest: 'dist/fonts/',
              flatten: true,
              filter: 'isFile'
-            },      
+            },  
+            {expand: true,//css
+             src: (ske.type==1)?['src/css/global/*.css','src/css/modules/*.css']:['css/global/*.css','css/modules/*.css'],
+             dest: 'dist/com/splitcss/',
+             flatten: true,
+             filter: 'isFile'
+            },  				
             {//图片
                 expand: true,
                 cwd: (ske.type==1)?'src/imgs/':'imgs/',
@@ -150,10 +156,10 @@ module.exports=function (grunt) {
 			var src = 'src/js/Compatibility/' + (subdir ? subdir + "/" : "") + filename;
 			grunt.file.copy(src, 'dist/com/splitjs/' + (subdir ? subdir + "/" : "") + filename);
 		});	
-		grunt.file.recurse('src/css/modules/', function(abspath, rootdir, subdir, filename) {
-			var src = 'src/css/modules/' + (subdir ? subdir + "/" : "") + filename;
-			grunt.file.copy(src, 'dist/com/splitcss/' + (subdir ? subdir + "/" : "") + filename);
-		});			
+//		grunt.file.recurse('src/css/modules/', function(abspath, rootdir, subdir, filename) {
+//			var src = 'src/css/modules/' + (subdir ? subdir + "/" : "") + filename;
+//			grunt.file.copy(src, 'dist/com/splitcss/' + (subdir ? subdir + "/" : "") + filename);
+//		});			
 		
 		console.log("-------打包，压缩，合并，完成!------------");		
 	});		

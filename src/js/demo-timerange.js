@@ -1,0 +1,9 @@
+require(['./config'],function(){
+    require(['jquery','utils'],function($){
+        require(['bootstrap','timerange'],function(){
+			$(".ndp-timerange-wrapper").timerange({
+				lan:"en"
+			});
+        });
+    });
+});

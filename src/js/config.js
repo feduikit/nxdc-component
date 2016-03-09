@@ -15,6 +15,7 @@ require.config({
 		'drop2':'./components/drop2',
 		'treable':'./components/treable',
 		'sutable':'./components/sutable',
+		'timerange':'./components/timerange',
 		'bubble':'./components/bubble'
     },
     shim:{
@@ -47,6 +48,9 @@ require.config({
 		},
 		bubble:{
 			deps:['bootstrap']
-		}
+		},
+		timerange:{
+			deps:['drop']
+		}		
     }
 });

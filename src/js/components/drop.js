@@ -43,8 +43,8 @@
 			var o = arr[i];
 			var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group;
 			var text = o[cfg.textKey]||o.text||o.label||o.title||o.name;
-			var val =o.val||o.text;
-			var li = $("<li class='drop-one-item' value="+val+" deep="+deep+" title="+text+" />");
+			var val = o.val||o.value||text;
+			var li = $("<li class='drop-one-item' text="+text+" value="+val+" deep="+deep+" title='"+text+"' />");
 			var pad = (deep+2)*5 + 2;
 			li.css({"padding-left":pad+"px"});
 			if(array && array instanceof Array){
@@ -88,8 +88,8 @@
 			var itemIndex = $(this).index();
 //			var deep = parseInt($(this).attr("deep"));
             var value = $(this).attr("value");
-            var title = $(this).attr("title");
-            _this.peal.find("input").attr('data-val',value).val(title);
+            var txt = $(this).attr("title");
+            _this.peal.find("input").attr('data-val',value).val(txt);
 			//deep 表示树桩菜单第几层 base from 0。index:表示这一层的第几个， base from 1
 			if(_this.config.type==3){
 				var gp = $(this).parents(".drop-one-item[deep='0']:first");
@@ -107,14 +107,15 @@
 			if(e.keyCode == 13){//回车
 				if(!_this.list.hasClass("hidden") && _this.list.find("li.em").length){
 					var item = _this.list.find("li.em");
+					var txt = item.attr("title");
 					var val = item.attr("value");
 					var deep = item.attr("deep");
-					$(this).find("input").val(val);
+					$(this).find("input").val(txt).attr("data-val",val);
 					if(_this.config.type==3){
 						var gp = item.parents(".drop-one-item[deep='0']:first");
-						fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:val,group:gp.index(),gpname:gp.attr("title")});
+						fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:val,text:txt,group:gp.index(),gpname:gp.attr("title")});
 					}else{
-						fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:val});
+						fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:val,text:txt});
 					}
 					_this.list.addClass("hidden");
 				}
@@ -268,10 +269,10 @@
         _this.config.data.forEach(function(item,index){
 			if(item && typeof(item)=="object"){
 				var key2 = _this.config.subKey;
-				var key1 = _this.config.textkey;
+				var key1 = _this.config.textKey;
 				var sub = item[key2]||item.sub||item.son||item.next||item.group;
 				var text = item[key1]||item.text||item.label||item.title||item.name;
-				var val = item.val || text;
+				var val = item.val|| item.value || item.id ||  text;
 				var other = item.other;
 				if(sub && sub instanceof Array){//存在下一层数组，说明这是一个
 					var li = $("<li class='drop-one-item drop-recursive' deep='0' />");
@@ -282,11 +283,11 @@
 					}else{
 						li.addClass("group-hilight");
 					}
-					li.append(text).attr("title",text);
+					li.append(text).attr({"title":text,"value":text,"text":text});
 					recursive(li,sub,_this.config,0);
 					_this.list.append(li);
 				}else{
-					li = $("<li class='drop-one-item' value="+val+" deep='0' title="+text+" >"+text+"</li>");
+					li = $("<li class='drop-one-item' text="+text+" value="+val+" deep='0' title='"+text+"' >"+text+"</li>");
 					if(item.disable) li.addClass("disabled");
 					if(item.split) li.addClass("split-line");
 					if(_this.config.type==4){
@@ -300,7 +301,7 @@
 				}
 			}else if(typeof(item)=="number"||typeof(item)=="string"){
 				li = $("<li class='drop-one-item' />");
-				li.attr("value",item).append("<span title="+item+" >"+item+"</span>");
+				li.attr({"value":item,"text":item,"title":item}).append("<span title='"+item+"' >"+item+"</span>");
 				if(_this.config.type==4){
 					li.addClass("checkbox-item");
 					var check = $("<input type='checkbox' value='" + val + "' />");
@@ -334,10 +335,15 @@
 		** 设置显示的值
 		***/
 		this.val = function(o){
-			var txt = (typeof(o)=="string"||typeof(o)=="number")?o:(o.label||o.text||o.name||o.value);
-			drop.elem.find("input").val(txt);
+			if(typeof(o)=="object"){
+				var txt = o[drop.config.textKey]||o.label||o.text||o.value||o.name;
+				var val = o.value || o.val || o.id || txt;
+				drop.elem.find("input").val(txt).attr("data-val",val);
+			}else{
+				drop.elem.find("input").val(o).attr("data-val",o);
+			}
 			return drop.elem;
-		}
+		};
     }
 	/***
 	** outside accessible default setting
