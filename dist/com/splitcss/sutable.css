@@ -221,7 +221,7 @@
 	border-width: 0;
 	border-left: 1px solid #e0e0e0;
 	background-color:#e8eff1;
-	height: 42px!important;	
+	height: 42px;	
 }
 
 /***
@@ -244,6 +244,7 @@
 }
 .sutable-body li.sutable-item-spec[deep='3']{
 	border-top:1px solid transparent;
+	height: 24PX;
 }
 
 
