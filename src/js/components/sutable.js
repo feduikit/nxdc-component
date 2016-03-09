@@ -19,8 +19,8 @@
 		}
 		for(var i=0;i<arr.length;i++){
 			var o = arr[i];
-			var array = o.sub||o.son||o.next||o.group;
 			var cols = o.text||o.label||o.title||o.name;
+			var spin = '<div class="spinner spinner2" ><div class="bounce1"></div><div class="bounce2"></div>\					  <div class="bounce3"></div></div>';
 			var li = $("<li class='sutable-item'  deep="+deep+"  serial="+o.id+" />");
 			var wrapper = $('<div class="sutable-row-wrapper">');
 			var row = $('<div class="sutable-row" deep='+deep+' serial='+o.id+' ></div>');
@@ -56,27 +56,24 @@
 						column.html("<span class='att-wrapper'><i class='font-icon font-icon-attention'></i>"+val+"</span>").addClass("attention");
 						column.find(".att-wrapper").attr({"data-toggle":"tooltip","data-title":col.reason});
 					}else if(idx == (temparr.length-2)){
-						console.log(11111);
 						switcher.find("label").toggleClass("active",col.status?true:false);
 					}
 				}
 				row.append(column);
 			});
-			
-			if(array && array instanceof Array){// 如果下面还有数组 也就是子层
-				var html = $('<span class="btn-plus-minus" />');
+			if(o.hasChild && deep<3){
+				var html = $('<span class="btn-plus-minus" deep='+deep+' serial='+o.id+'  />');
 				if(cfg.caret){
 					html.html(cfg.caret).addClass("custom-caret");
 				}else{
 					html.html('<i class="line-hor"></i><i class="line-ver"></i>');
 				}
-				li.append(html).append(wrapper).addClass("open");//row
-				wrapper.addClass("asparent");
-				rec(li,array,cfg,deep);
+				li.append(html).append(wrapper.addClass("asparent"));
+				//rec(li,array,cfg,deep);
 			}else{
 				li.append(wrapper);//row
 			}
-			
+			li.append(spin);
 			ul.append(li);
 		}
 		if(deep>1){
@@ -93,32 +90,12 @@
 		this.config = $.extend(true,{},$.fn.sutable.defaults,element.data(),options);
 		this.config.wi = this.elem.width();
 		this.init();
-//		$('[data-toggle="tooltip"]').tooltip({viewport:"#sd",placement:"bottom"});
     };
 	/***
 	**	横向滚动条
 	***/
 	Sutable.prototype.scrollV = function(){
 		var _this = this;
-//		var sdim = _this.scroll.get(0).getBoundingClientRect();//上下左右
-//		var thumb = _this.scroll.find(".horiz-thumb");
-//		var tdim = thumb.get(0).getBoundingClientRect();
-//		var w = this.elem.width();
-//		var colW = 40 + 12;//40 margin-left:40    12 border-right
-//		this.head.find(".sutable-col[col]").each(function(idx,item){
-//			colW += $(item).width();
-//		});
-//		if(tdim.left<sdim.left){
-//			thumb.css("left",sdim.left+"px");
-//		}else if(tdim.right>sdim.right){
-//			thumb.css("left",(sdim.right-sdim.width)+"px");
-//		}
-//		_this.foot.toggleClass("repos",colW>w?true:false);
-//		_this.scroll.toggleClass("show",colW>w?true:false).css("width",w+"px");
-//		_this.elem.toggleClass("extend",colW>w?true:false)
-//		if(colW>w){
-//			thumb.css("width",(w/colW)*100+"%");	
-//		}
 		
 	};
 	
@@ -133,9 +110,33 @@
 		**/
 		_this.elem.find("span.btn-plus-minus").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
+			var deep = parseInt($(this).attr("deep"));
+			var serial = $(this).attr("serial");
+			var li = $(this).parent();
 			var the = $(this).parents("li.sutable-item:first");
+			var spinner = li.find("div.spinner2");
 			the.toggleClass("open");
-			the.find("li.sutable-item").toggleClass("open",the.hasClass("open"));
+			//the.find("li.sutable-item").toggleClass("open",the.hasClass("open"));
+			if(li.hasClass("open")){
+				fireEvent($(this).get(0),"OPERATE_ACTION",{action:"nextlayer",deep:deep,id:serial,fa:li});//1 开，0关
+				spinner.addClass("active");
+				$.ajax(_this.config.ajaxOptions).then(function(result){
+					if(typeof(result)=="string") result = JSON.parse(result);
+					li.children("ul.sub-layer").remove();
+					if(result.code==0){
+						Help.recursive(li,result.data,_this.config,deep); 
+						_this.listenBody();
+					}else{
+						the.toggleClass("open");
+					}
+					spinner.removeClass("active");
+				},function(err){
+					the.toggleClass("open");
+					spinner.removeClass("active");
+				});					
+			}else{
+				spinner.removeClass("active");
+			}
 		});
 		
 		/***
@@ -271,7 +272,7 @@
 			_this.elem.removeClass("resize-cursor");
 			_this.elem.find(".split-line").removeClass("active");
 			_this.elem.unbind("mousemove");
-			_this.scrollV();// 是否显示横向滚动条
+			//_this.scrollV();// 是否显示横向滚动条
 			_this.elem.trigger("RESIZE_DONE");//鼠标拖动resize 列宽完成
 		});
 			
@@ -454,6 +455,11 @@
 		tail:null,//列表尾部数据
 		caret:null,//展开，折叠的 图标是 默认是  +  - 号
 		sort:null,
+		ajaxOptions: {
+            type: "GET",
+            url: "../data/sutable.json",
+			xhrFields: { withCredentials: true}
+        },
 		namecall:function(){},//点击 广告活动名称的回调 传入参数 数据id
 		editcall:function(){},//点击编辑图标 回调函数  传入参数 数据id
 		copycall:function(){}//点击拷贝图标 回调函数   传入参数 数据id
