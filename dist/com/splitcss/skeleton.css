@@ -1,0 +1,40 @@
+.ndp-ui-header{
+    min-height: 60px;
+    background-color:#ffdd6b;
+}
+
+.ndp-ui-footer{
+    
+}
+
+.ndp-ui-kitchen{
+     min-height: 200px;
+     background-color:#6f5499;
+     color:white;
+}
+.ndp-ui-main{
+    
+}
+.com-title{
+    font-size: 4em;
+}
+.com-desc{
+    color:#cdbfe3;
+    font-size: 2em;
+}
+
+.ndp-ui-main{
+
+}
+
+.ndp-ui-demo-wrapper{
+    border:1px solid #ccc;
+}
+.ndp-example{
+    padding: 20px;
+}
+.ndp-ui-demo-wrapper>.highLight{
+    padding: 10px;
+    border-top:1px solid #ccc;
+    background-color: #f6f6f6;
+}

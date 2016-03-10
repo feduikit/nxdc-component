@@ -1,0 +1,478 @@
+.ndp-treable-wrapper{
+	position: relative;
+	padding: 0!important;
+	box-sizing: border-box;
+	width: 100%;
+	overflow: hidden;
+}
+.ndp-treable-wrapper.resize-cursor{
+	cursor: col-resize;
+}
+
+/***
+** toolbar 
+***/
+.sutable-toolbar{
+	position: absolute;
+	z-index: 300;
+	height: 0;
+	width: 100%;
+	top:0;
+	left: 0;tool
+	background-color: #878787;
+	overflow: hidden;
+/*
+	-moz-transition: height 0.3s ease-in-out;
+	-webkit-transition: height 0.3s ease-in-out;
+*/
+	transition: all 0.3s ease-in-out ;
+}
+.extend .sutable-toolbar{
+	width: 400%;
+}
+
+.sutable-toolbar>*{
+	opacity:0;
+}
+.sutable-toolbar.active{
+	height: 40px;
+	color:white;
+	line-height: 38px;
+	background-color: #878787;
+/*	transition: "opacity" 0.3s ease-in-out*/
+}
+.sutable-toolbar.active>*{
+	opacity:1;
+}
+.sutable-toolbar .btn{
+	border:1px solid #fff;
+	background-color: #878787;
+	color:white;
+	height: 30px;
+	margin-left: 10px;
+	padding-top:4px;
+}
+.sutable-toolbar .btn:hover{
+	border-color:#dfdfdf;
+}
+.sutable-toolbar .btn:active,.sutable-toolbar .btn.active{
+	background-color:transparent;
+	color:#ccc;
+}
+
+/***
+**列表头
+***/
+.treable-header{
+	position: relative;
+	min-width: 100%;
+	width: 400%;
+    white-space: nowrap;
+	margin: 0;
+	padding: 0;
+/*	transition:all 0.5s linear 0.2s;*/
+}
+
+
+
+/****
+**列表尾
+***/
+.sutable-footer{
+	position: fixed;
+/*	position: absolute;*/
+	height: 50px;
+	background-color: #e7e7e7;
+	z-index: 200;
+	bottom: 0;
+	margin: 0;
+	box-shadow: 0 -4px 0 rgba(204, 204, 204, 0.1);
+	width: calc(100% - 15px - 15px - 200px - 6px);
+/*	width: 100%;*/
+/*	left:0;*/
+/*	transition:all 0.5s linear 0.3s;*/
+}
+.sutable-footer.repos{
+	bottom: 14px;
+}
+
+/***
+** 横向滚动条
+***/
+.horiz-scroll{
+	position: fixed;
+	z-index: 200;
+	width: calc(100% - 15px - 15px - 200px - 6px);
+	bottom: 0;
+	background-color: white;
+}
+.horiz-scroll.show{
+	height: 14px;
+	padding-top:2.8px;
+}
+.horiz-scroll.show .horiz-thumb{
+	position: relative;
+	z-index: 100;
+	width: 99%;
+	height: 60%;
+	background-color: #ccc;
+	border-radius: 5px;
+	cursor: default;
+}
+
+.shrink-expand .sutable-footer{
+	width: calc(100% - 15px - 15px - 200px - 6px + 120px);
+}
+
+
+.treable-body{
+	position: relative;
+	min-height: calc(100% - 40px);
+	width: 100%;
+}
+.extend .treable-body{
+	width:400%;
+}
+/***
+**  列表 行
+***/
+.treable-row{
+	position: relative;
+	margin: 0;
+	height: 100%;
+	line-height:0;
+	overflow: hidden;
+}
+
+.treable-header>.treable-row{
+	position: relative;
+	height: 40px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	line-height:normal;
+	background-color: #e9e9e9;
+}
+
+/***
+** 图表界面
+**/
+.treable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper{
+	position: relative;
+	top:0;
+	height: 0;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	border-width: 0;
+	-webkit-transition: height 0.4s ease-in-out;
+	-moz-transition: height 0.4s ease-in-out;
+	transition:height 0.4s ease-in-out;
+}
+/***
+** 显示图表界面
+***/
+.treable-body .treable-row.focus{
+	background-color: rgba(80, 80, 80, 0.8);
+	color:white;
+}
+.treable-body .treable-row.focus:hover{
+	background-color: rgba(80, 80, 80, 0.8);
+}
+
+/****
+** 图表 所在层  chart 和 tabs 所在的层 
+***/
+.treable-row-wrapper>.chart-wrapper{
+	position: relative;
+	overflow: hidden;
+}
+
+/***
+** 图表层 关闭按钮
+***/
+.close.chart-close{
+	position: absolute;
+	z-index: 200;
+	top:0;
+	right: 0;
+	width: 30px;
+	height: 30px;
+	background-color: #eee;
+}
+.close.chart-close>*{
+	font-size: 24px;
+}
+
+/***
+** 设置 tabs宽度
+***/
+.treable-row-wrapper>.chart-wrapper.open>.ndp-tab-wrapper{
+	height: 150px;
+	width: 150px;/*** tab 的 宽度***/
+	padding: 0;
+	overflow: hidden;
+}
+.treable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>ul.nav>li{
+	width: 100%;
+	clear:both;
+	padding:1px 0;
+}
+.treable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>ul.nav>li>a:hover{
+	border-color: transparent;
+}
+.treable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>ul.nav>li.active>a{
+	border-width: 0;
+	border-left: 3px solid #f79d0c;
+	background-color: #f7f7f7;
+}
+/***
+** 图表界面 里面的部分
+**/
+.treable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper>*{
+	opacity: 0;
+	height: 100%;
+}
+.treable-row-wrapper>.chart-wrapper.open>.ndp-tab-wrapper>*{
+	opacity: 1;
+}
+
+.treable-body li.sutable-item{
+	position: relative;
+	height: auto;
+	transition: height 0.4s ease-in-out;
+}
+
+.treable-body .treable-row{
+	position: relative;
+	height: 42px;
+	background-color: #f4f4f4;
+	border:1px solid transparent;
+}
+
+.treable-body .treable-row{
+	border-bottom: 1px solid #dbdbdb;
+}
+
+.treable-body>li>.treable-row:nth-last-child(1){
+	border-bottom: 1px solid transparent;
+}
+
+.treable-body .treable-row:hover{
+	background-color: #f6f6f6;
+}
+
+.sub-layer{
+	padding-left: 20px;
+}
+
+.sub-layer .treable-row{
+	border-bottom: 1px solid #dbdbdb;
+	border-left-color:#dbdbdb;
+	border-right-color:#dbdbdb;
+	background-color: #fff;
+}
+
+/***
+** col  列
+***/
+.treable-row>.sutable-col{
+	position: relative;
+	display:inline-block;
+	height:100%;
+	margin: 0;
+	top:0;
+	text-align: center;
+	white-space: nowrap;
+	float: left;
+	border-right: 1px solid transparent;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	cursor:default;
+/*	transition:all 0.1s linear;*/
+}
+.treable-row>.sutable-col.active{
+	border-right-color:deepskyblue;
+}
+
+.treable-row .sutable-col-status{
+	margin-left: 40px;
+	width: 100px!important;
+}
+.treable-header .treable-row>.sutable-col-status{
+	margin-left: 41px;/*****修正问题****/
+}
+.treable-row[deep='2']>.sutable-col-status{
+	margin-left: 20px;/***还有20px padding***/ 
+	width: 100px;
+}
+.treable-row[deep='3']>.sutable-col-status{
+	margin: 0;/***还有40px padding***/ 
+	width: 100px;
+}
+.sutable-col-status>span.switcher{
+	position: absolute;
+	width: 30px;
+	margin: 0;
+	padding: 0;
+	padding-top:5px;
+	left:50%;
+	margin-left: -15px;
+}
+.sutable-col-status>span.switcher>label{
+	background-color: transparent;
+}
+
+
+.treable-header .sutable-col{
+	line-height: 40px;
+}
+.treable-row .sutable-col:nth-child(n+3){
+	line-height: 40px;
+	min-width: 60px;
+	width:inherit;
+}
+/***
+** 排序
+***/
+.treable-header .sutable-col>.sort-wrapper{
+	position: absolute;
+	display: inline-block;
+	height: 100%;
+	width: 12px;
+	top:0;
+	margin-left: 4px;
+	cursor: pointer;
+	overflow: hidden;
+	padding-top:2px;
+}
+
+.treable-header .sutable-col>.sort-wrapper>i{
+	display: block;
+	font-size: 7px;
+	left: 0;
+	color:#8c8c8c;
+}
+.treable-header .sutable-col>.sort-wrapper>i.hi{
+	color:black;
+}
+/*
+.sutable-col>.sort-wrapper>i:hover{
+	color:#dfdfdf;
+}
+*/
+
+.sutable-col>.sort-wrapper>i.glyphicon-triangle-top{
+	margin-top:85%;
+}
+
+
+.treable-body .sutable-col{
+	line-height: 42px;
+}
+
+.treable-row .sutable-col-name,.treable-header .sutable-col-name{
+	min-width: 100px!important;
+/*	width: 15%;*/
+}
+/*
+.treable-row[deep='2']>.sutable-col-name{
+	width: calc((100% + 20px) * 0.15)
+}
+.treable-row[deep='3']>.sutable-col-name{
+	width: calc((100% + 40px) * 0.15)
+}
+*/
+.treable-row>.sutable-col>.inspliter{
+	position: absolute;
+	display: inline-block;
+	width: 5px;
+	height: 70%;
+	z-index: 20;
+	top:15%;
+	right: 0px;
+	overflow: visible;
+	border-right: 1px solid #ccc;
+/*	background-color: red;*/
+}
+
+.treable-row>.sutable-col>.inspliter:hover{
+	cursor: col-resize;
+}
+
+.split-line{
+	position: absolute;
+	display: inline-block;
+	z-index: 100;
+	top:0;
+	bottom: 0;
+	border-left: 1px solid transparent;
+}
+.split-line.active{
+	border-left: 1px solid #0683ba;
+}
+
+
+/***
+**加减号
+***/
+.btn-plus-minus{
+	position: absolute;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	left: 10px;
+	top:10px;
+	z-index: 10;
+	border:1px solid #d4d4d4;
+}
+/****
+** 用户自定义 caret
+***/
+.btn-plus-minus.custom-caret{
+	text-align: center;
+	padding-top:3px;
+	border:0;
+}
+.btn-plus-minus.custom-caret>*{
+	font-size:10px;
+	transition:all 0.3s linear;
+}
+
+.open>.btn-plus-minus.custom-caret>*{
+	transform: rotate(180deg);
+}
+
+.open>.btn-plus-minus>.line-ver{
+	display: none;
+}
+
+.btn-plus-minus+div+ul{
+	height: 0;
+	overflow: hidden;
+}
+.open>.btn-plus-minus+div+ul{
+	overflow: visible;
+	height: inherit;
+}
+
+
+.btn-plus-minus>.line-hor{
+	position: absolute;
+	display: inline-block;
+	width: 80%;
+	top:44%;
+	left:10%;
+	border-bottom:1px solid #b1b1b1;
+}
+.btn-plus-minus>.line-ver{
+	position: absolute;
+	display: inline-block;
+	height: 80%;
+	top:10%;
+	left:44%;
+	border-left:1px solid #b1b1b1;
+}
+
+
