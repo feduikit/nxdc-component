@@ -1,0 +1,208 @@
+.ndp-vList2-wrapper{
+	position: relative;
+	width: 100%;
+	width: 250px;
+	-webkit-transition: all 0.4s ease-in-out;
+	-moz-transition: all 0.4s ease-in-out;
+	transition: all 0.4s ease-in-out;
+}
+
+.ndp-vList2-wrapper.mini-state{
+	width: 80px;
+}
+
+.ndp-vList2-wrapper .list-root{
+	position: relative;
+	width: 100%;
+	margin: 0;
+	height: auto;
+	border-width: 0;
+}
+
+
+.ndp-vList2-wrapper li.list-item{
+	position: relative;
+	width: 100%;
+	min-height: inherit;
+	margin: 0;
+	padding: 0;
+	background-color: #f7f7f7;
+}
+/****
+** content-part  是放置文字内容的部分
+****/
+.ndp-vList2-wrapper li.list-item .content-part{
+	position: relative;
+	top:0;
+	left:0;
+	box-sizing: border-box;
+	margin: 0;
+	height: 36px;
+	overflow: hidden;
+	border-width: 1px;
+	border-left: 2px solid transparent;
+	
+}
+.ndp-vList2-wrapper li.list-item .content-part.cur:hover{
+	cursor: pointer;
+}
+.ndp-vList2-wrapper li.list-item .content-part.active{
+	background-color: #ffffff;
+	border-left-color: #ffa805;
+	color:#ffa805;
+}
+
+.ndp-vList2-wrapper li[deep='2'].list-item .content-part:hover{
+	background-color: #f0f0f0;
+	cursor: default;
+}
+.ndp-vList2-wrapper li.list-item.active .content-part,.ndp-vList2-wrapper li.list-item.active .content-part:hover{
+	background-color: #ffffff;
+	border-left-color: #ffa805;
+	color:#ffa805;
+}
+
+.ndp-vList2-wrapper li.list-item .content-part .icon-part{
+	position: relative;
+	display: inline-block;
+	float: left;
+	width: 32px;
+	height: 100%;
+}
+.ndp-vList2-wrapper li.list-item .content-part .txt-part{
+	position: relative;
+	display: inline-block;
+	float: left;
+	height: 100%;
+	line-height: 36px;
+	width: calc(100% - 32px - 20px);
+	height: 100%;
+	font-size: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+/*	cursor: default;*/
+}
+.ndp-vList2-wrapper li[deep="1"].list-item>.content-part>.txt-part{
+	font-size: 14px;
+}
+.ndp-vList2-wrapper li[deep="1"].list-item>.content-part>.icon-part{
+	text-align: center;
+	line-height: 36px;
+	color:#ffa805;
+}
+
+.ndp-vList2-wrapper li[deep="1"].list-item>hr{
+	position: relative;
+	margin: 0;
+	padding: 0;
+	width: 90%;
+	margin: 0 auto;
+	color:#eeeeee;
+}
+
+.ndp-vList2-wrapper li[deep="1"].list-item>.content-part>.icon-part>i{
+	font-size: 14px;
+}
+
+.ndp-vList2-wrapper li[deep="1"].list-item>.content-part>i{
+	position: absolute;
+	top:0;
+	right: 8px;
+	z-index: 10;
+	top:50%;
+	margin-top:-6px;
+	color:#9a9a9a;
+  -webkit-transition: -webkit-transform 0.5s, opacity 1s, background 1s, width 1s, height 1s, font-size 1s;
+  -moz-transition-property: width, height, -o-transform, background, font-size, opacity;
+  -moz-transition-duration: 0.5s, 0.5s, 0.5s, 0.5s, 0.5s, 0.5s;
+  transition:transform 0.5s, opacity 0.5s, background 0.5s, width 0.5s, height 0.5s, font-size 0.5s;
+  transition-property: width, height, transform, background, font-size, opacity;
+  transition-duration: 0.5s, 0.5s, 0.5s, 0.5s, 0.5s, 0.5s;		
+}
+
+.content-part.open-hide>i{
+	-moz-transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg);
+	
+	
+  -webkit-transition: -webkit-transform 0.5s, opacity 1s, background 1s, width 1s, height 1s, font-size 1s;
+  -moz-transition-property: width, height, -o-transform, background, font-size, opacity;
+  -moz-transition-duration: 0.5s, 0.5s, 0.5s, 0.5s, 0.5s, 0.5s;
+  transition:transform 0.5s, opacity 0.5s, background 0.5s, width 0.5s, height 0.5s, font-size 0.5s;
+  transition-property: width, height, transform, background, font-size, opacity;
+  transition-duration: 0.5s, 0.5s, 0.5s, 0.5s, 0.5s, 0.5s;	
+}
+/***
+**  mini 状态
+***/
+.mini-state li[deep="1"].list-item>.content-part>i{
+	display: none;
+}
+.mini-state li[deep='1'].list-item .content-part{
+	height: 80px;
+}
+
+.mini-state li[deep="1"].list-item>.content-part>.icon-part{
+	width: 100%;
+	height: 50%;
+	line-height: normal;
+	clear: both;
+}
+.mini-state li[deep="1"].list-item>.content-part>.icon-part>i{
+	font-size: 24px;
+	top:calc(100% - 24px)
+}
+
+
+.mini-state li[deep="1"].list-item>.content-part>.txt-part{
+	width: 100%;
+	height: 50%;
+	font-size:13px;
+	line-height: inherit;
+	text-align: center;
+	clear: both;
+	padding-top:6px;
+}
+
+
+.mini-state li>ul.menu-mini-mode{
+	position: absolute;
+	z-index: 100;
+	top:0;
+	left:101%;
+	width: 160px;
+	box-shadow: 0 0 3px rgba(163, 163, 163, 0.6);
+}
+.mini-state li>ul.menu-mini-mode>li.list-item{
+	height:auto;
+	width: inherit;
+}
+.mini-state li>ul.menu-mini-mode>li.list-item>.content-part{
+	height: 36px;
+	margin: 0;
+	padding: 0;
+	border-color:transparent;
+}
+.mini-state li>ul.menu-mini-mode>li[deep='2'].list-item>.content-part>.txt-part{
+	color:#5d5d5d;
+}
+.mini-state li>ul.menu-mini-mode>li[deep='2'].list-item.active>.content-part>.txt-part{
+	color:white;
+}
+
+.mini-state li>ul.menu-mini-mode>li.list-item>.content-part:hover{
+	background-color: #f5f5f5;
+}
+
+.mini-state li>ul.menu-mini-mode>li.list-item.active>.content-part{
+	background-color: #ffa805;
+	color:white;
+}
+
+.mini-state li>ul.menu-mini-mode.align-bottom{
+	top:inherit;
+	bottom: 1px;
+}
+
