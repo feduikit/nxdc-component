@@ -3162,17 +3162,19 @@ if (!Object.keys) Object.keys = function(o) {
 		
 		//显示隐藏 tooltip
 		_this.elem.find('[data-toggle=tooltip]').unbind("mouseover").mouseover(function(e){
+			var to1 = $(this).offset();
+			var to = $(_this.elem).position();
 			var bo = $(e.target).get(0).getBoundingClientRect();
 			var tooltip = _this.elem.find(".tooltip-cus");
 			tooltip.find(".tooltip-inner").html($(e.target).data('title'));
-			tooltip.css({"top":(parseFloat(bo.bottom) - parseFloat(o.top)),"left":(e.clientX-parseFloat(o.left)-30)});
+			tooltip.css({"top":(to1.top-to.top + 10)+"px","left":(e.pageX - 70)+"px"});
 			
-			if((e.clientX - parseFloat(o.left)-30 + tooltip.width())>o.right){
-				tooltip.css("left",parseFloat(o.right)-tooltip.width()-100);
-				tooltip.find(".tooltip-arrow").css("left","90%");
-			}else{
-				tooltip.find(".tootip-arrow").removeAttr("style");
-			}
+//			if((e.clientX - parseFloat(o.left)-30 + tooltip.width())>o.right){
+//				tooltip.css("left",parseFloat(o.right)-tooltip.width()-100);
+//				tooltip.find(".tooltip-arrow").css("left","90%");
+//			}else{
+//				tooltip.find(".tootip-arrow").removeAttr("style");
+//			}
 			tooltip.addClass("in");
 		});
 		
