@@ -3057,7 +3057,20 @@ if (!Object.keys) Object.keys = function(o) {
 			ul.append("<li class='sutable-item sutable-item-spec' deep="+deep+">+"+((deep=='2')?'新增广告组':'新增广告')+"</li>");
 		}	
 		fa.append(ul);			
+		},
+		fixPageXY: function(the){
+			var html = document.documentElement;
+			var body = document.body;
+			var the = (the.get(0)||the).getBoundingClientRect();
+			var a = {};
+			a.pageX = parseFloat(the.left) + (html.scrollLeft || body && body.scrollLeft || 0);
+			a.pageX -= html.clientLeft || 0;
+
+			a.pageY = parseFloat(the.top) + (html.scrollTop || body && body.scrollTop || 0);
+			a.pageY -= html.clientTop || 0;
+			return a;
 		}
+
 	};
 	
     
@@ -3093,7 +3106,6 @@ if (!Object.keys) Object.keys = function(o) {
 			var spinner = li.find("div.spinner2");
 			li.toggleClass("open");
 			li.children("ul>li.sutable-item").toggleClass("open");
-			console.log(li.hasClass("open"));
 			if(li.hasClass("open")){
 				fireEvent($(this).get(0),"OPERATE_ACTION",{action:"nextlayer",deep:deep,id:serial,fa:li});//1 开，0关
 				spinner.addClass("active");
@@ -3104,11 +3116,11 @@ if (!Object.keys) Object.keys = function(o) {
 						Help.recursive(li,result.data,_this.config,deep); 
 						_this.listenBody();
 					}else{
-						the.toggleClass("open");
+						li.toggleClass("open");
 					}
 					spinner.removeClass("active");
 				},function(err){
-					the.toggleClass("open");
+					li.toggleClass("open");
 					spinner.removeClass("active");
 				});					
 			}else{
@@ -3162,20 +3174,24 @@ if (!Object.keys) Object.keys = function(o) {
 		
 		//显示隐藏 tooltip
 		_this.elem.find('[data-toggle=tooltip]').unbind("mouseover").mouseover(function(e){
-			var to1 = $(this).offset();
-			var to = $(_this.elem).position();
-			var bo = $(e.target).get(0).getBoundingClientRect();
 			var tooltip = _this.elem.find(".tooltip-cus");
 			tooltip.find(".tooltip-inner").html($(e.target).data('title'));
-			tooltip.css({"top":(to1.top-to.top + 10)+"px","left":(e.pageX - 70)+"px"});
 			
-//			if((e.clientX - parseFloat(o.left)-30 + tooltip.width())>o.right){
-//				tooltip.css("left",parseFloat(o.right)-tooltip.width()-100);
-//				tooltip.find(".tooltip-arrow").css("left","90%");
-//			}else{
-//				tooltip.find(".tootip-arrow").removeAttr("style");
-//			}
+			var o1 = Help.fixPageXY($(this));
+			var o2 = Help.fixPageXY(_this.elem);
+			tooltip.css({"top":(o1.pageY - o2.pageY + 10)+"px","left":(o1.pageX - o2.pageX - 10)+"px"});
 			tooltip.addClass("in");
+			tooltip.unbind("webkitTransitionEnd oTransitionEnd otransitionend transitionend").on("webkitTransitionEnd oTransitionEnd otransitionend transitionend",function(){
+				var to = $(this).get(0).getBoundingClientRect();
+				console.log(to.right + " : " + o.right);
+				if(to.right>=o.right){
+					$(this).css({"right":0,"left":"inherit"});
+					$(this).find(".tooltip-arrow").css("left","90%");
+				}else{
+					$(this).css({"right":"inherit"});
+					$(this).find(".tooltip-arrow").removeAttr("style");				
+				}
+			})
 		});
 		
 		_this.elem.find('[data-toggle=tooltip]').unbind("mouseout").mouseout(function(e){
