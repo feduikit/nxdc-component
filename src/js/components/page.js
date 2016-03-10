@@ -14,7 +14,7 @@
 			dp.removeAttr("style");
 			peal.find("i.glyphicon-triangle-bottom").removeClass("turnback");
 		}else if(p.top>ls.height){//向上展示
-			dp.css({"top":-(ls.height)+"px","border-top-color":"#ddd","border-bottom-color":"white"});
+			dp.css({"top":-(ls.height)+"px"});
 			peal.find("i.glyphicon-triangle-bottom").addClass("turnback");
 		}
     };	
