@@ -23,6 +23,8 @@
 	content:"\e013";/**** 对号 *****/
 	box-shadow: 0 0 0;
 	color:#fd9611;
+	border-width: 0;
+	cursor: pointer;
 }
 
 .form-input[type="checkbox"]+label{
@@ -45,7 +47,7 @@
 	content:"";
 	width: 14px;
     height: 14px;
-	border-radius: 50%;
+	border-radius: 100%;
 	line-height: 8px;
 	border:1px solid #ccc;
 	margin: 0 -18px;

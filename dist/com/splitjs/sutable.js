@@ -415,16 +415,25 @@
 		this.resize = function(w){
 			sutable.allocate(w);
 		};
-		
 		/***
-		** 更新列表  和 组下面的 总计
+		**更新 总计
+		***/
+		this.sum  = function(data){
+			sutable.elem.find(".sutable-footer").remove();
+			sutable.tail(data);
+			return sutable.elem;
+		}		
+		/***
+		** 更新列表  
 		***/
 		this.update = function(data,tail){
+			var _this = this;
 			sutable.elem.find(".sutable-body").remove();
-			sutable.elem.find(".sutable-footer").remove();
 			Help.recursive(sutable.elem,data,sutable.config);
+			if(tail){
+				_this.sum(tail);
+			}
 			sutable.listenBody();
-			sutable.tail(tail);
 			return sutable.elem;
 		}
     }

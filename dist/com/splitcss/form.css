@@ -12,13 +12,35 @@ textarea:focus{
 
 
 inpput[disabled],input[type=text][disabled],
-input[type=password][disabled]{
+input[type=password][disabled],textarea[disabled]{
 	background-color: #dee7e7;
 }
 
 .form-input{
 	width: 140px;
 	height: 30px;
+	transition:all 0.3s;
+}
+.form-input.form-input-warning,.form-textarea.form-textarea-warning{
+	border-color:#e56d43;
+}
+.form-input.form-input-warning:hover,.form-textarea.form-textarea-warning:hover{
+	border-color:#dc542f;
+	box-shadow: 0 0 1px #dc542f;
+}
+
+.form-input.form-input-alert,.form-textarea.form-textarea-alert{
+	border-color:#e1b00b;
+}
+.form-input.form-input-alert:hover,.form-textarea.form-textarea-alert:hover{
+	border-color:#d79a07;
+	box-shadow: 0 0 1px #d79a07;
+}
+
+.form-textarea{
+	height: 72px;
+	padding: 10px;
+	transition:all 0.3s;
 }
 
 

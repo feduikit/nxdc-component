@@ -255,6 +255,12 @@ var data2 = [{
 				hwd.update((bool?data2:data1),sum);
 			});
 			
+			
+			$("#updatesum").click(function(){
+				//[{text:2001},{text:2002},{text:2003}]
+				hwd.sum(sum);
+			});			
+			
         });
     });
 });
