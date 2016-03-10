@@ -38,7 +38,8 @@
 		if(cfg.type!=3){
 			ul.addClass("hidden");
 		}
-		ul.css({width:(cfg.width+gap+5)+"px",left:-(gap)+"px"});
+		//ul.css({width:(cfg.width+gap+5)+"px",left:-(gap)+"px"});
+		ul.css({left:-(gap)+"px"});
 		for(var i=0;i<arr.length;i++){
 			var o = arr[i];
 			var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group;

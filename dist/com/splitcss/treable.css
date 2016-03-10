@@ -18,7 +18,7 @@
 	height: 0;
 	width: 100%;
 	top:0;
-	left: 0;tool
+	left: 0;
 	background-color: #878787;
 	overflow: hidden;
 /*
@@ -38,22 +38,24 @@
 	height: 40px;
 	color:white;
 	line-height: 38px;
-	background-color: #878787;
+	background-color: #e0e0e0;
 /*	transition: "opacity" 0.3s ease-in-out*/
 }
 .sutable-toolbar.active>*{
 	opacity:1;
 }
 .sutable-toolbar .btn{
-	border:1px solid #fff;
-	background-color: #878787;
+	border:1px solid transparent;
+	border-radius: 0;
+	background-color: #fd9611;
 	color:white;
 	height: 30px;
 	margin-left: 10px;
 	padding-top:4px;
 }
 .sutable-toolbar .btn:hover{
-	border-color:#dfdfdf;
+/*	border-color:#dfdfdf;*/
+	background-color: #fc7408;
 }
 .sutable-toolbar .btn:active,.sutable-toolbar .btn.active{
 	background-color:transparent;
@@ -173,11 +175,7 @@
 ** 显示图表界面
 ***/
 .treable-body .treable-row.focus{
-	background-color: rgba(80, 80, 80, 0.8);
-	color:white;
-}
-.treable-body .treable-row.focus:hover{
-	background-color: rgba(80, 80, 80, 0.8);
+	background-color: #e0e0e0;
 }
 
 /****
@@ -259,7 +257,9 @@
 }
 
 .treable-body .treable-row:hover{
-	background-color: #f6f6f6;
+	background-color: white;
+	box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+	z-index: 200;
 }
 
 .sub-layer{

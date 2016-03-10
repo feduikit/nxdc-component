@@ -164,7 +164,7 @@
 	margin: 0;
 	height: 100%;
 	line-height:0;
-	overflow: hidden;
+/*	overflow: hidden;*/
 }
 
 /***
@@ -185,7 +185,7 @@
 	position: relative;
 	height: 40px;
 	background-color:white;
-	overflow: hidden;
+/*	overflow: hidden;*/
 }
 .sutable-body li.sutable-item.open{
 	height: inherit;
@@ -211,7 +211,7 @@
 /*	border-bottom-width: 0;	*/
 	border-top-width: 0;
 	border-right-width: 0;
-	background-color:#f2f7f7;
+	background-color:#f7f9fa;
 }
 .sutable-body li.sutable-item[deep='2']:nth-last-child(1){
 	border-bottom-width: 0;
@@ -220,7 +220,7 @@
 .sutable-body li.sutable-item[deep='3']{
 	border-width: 0;
 	border-left: 1px solid #e0e0e0;
-	background-color:#e8eff1;
+	background-color:#eff1f4;
 	height: 42px;	
 }
 
@@ -269,7 +269,14 @@ li.sutable-item.open[deep='2']>.sutable-row-wrapper.asparent{
 }
 
 .sutable-body .sutable-row:hover{
-	background-color: #f6f6f6;
+/*	background-color: #f6f6f6;*/
+	background-color: white;
+	box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+	z-index: 10;
+/*
+	box-shadow: 0 0 12 rgba(0, 0, 0, 0.2);
+	z-index: 200;
+*/
 }
 .sutable-body li.sutable-item .sutable-row[deep='3']{
 	border-bottom: 1px solid #e0e0e0;
@@ -463,7 +470,7 @@ li.sutable-item.open[deep='2']>.sutable-row-wrapper.asparent{
 	height: 17px;
 	left: 10px;
 	top:11px;
-	z-index: 20;
+	z-index: 200;
 	border:1px solid #d4d4d4;
 }
 /****
