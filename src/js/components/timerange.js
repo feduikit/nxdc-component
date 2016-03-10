@@ -160,6 +160,7 @@
 			var val = input.data("val")
 			arr.push({timeStart:r,timeEnd:(r+1),day:(c==0)?7:c,zone:{text:txt,value:val}});
 		});
+		return arr;
 	}	
 	
 	/**
@@ -214,9 +215,13 @@
 		});		
 		
 		_this.celllist.find(".timerange-cell").mouseover(function(e){
-			var to = $(this).get(0).getBoundingClientRect();
-			vLine.css("left",(parseFloat(to.left)-parseFloat(o.left)+44)+"px");
-			hLine.css("top",(parseFloat(to.top)-parseFloat(o.top)+8 - 50)+"px");
+			var lf = $(this).position().left;
+			var tp = $(this).position().top;
+			vLine.css("left",(lf+44+70)+"px");
+			hLine.css("top",(tp + 44)+"px");
+//			var to = $(this).get(0).getBoundingClientRect();
+//			vLine.css("left",(parseFloat(to.left)-parseFloat(o.left)+44)+"px");
+//			hLine.css("top",(parseFloat(to.top)-parseFloat(o.top)+8 - 50)+"px");
 		});
 		
 		_this.celllist.find(".timerange-cell").click(function(e){
