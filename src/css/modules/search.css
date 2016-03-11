@@ -25,7 +25,7 @@
 
 
 
-.search-decoration>input[type]{
+.ndp-search-wrapper .search-decoration>input[type]{
 	position: relative;
 	height: 100%;
 	width: 100%;
@@ -34,6 +34,7 @@
 	padding-left: 5px;
 	border-width:0;
 	font-size: 12px;
+	box-shadow: 0 0 0;
 }
 .search-decoration>input[type][disabled]{
 	color:#bcbcbc;
