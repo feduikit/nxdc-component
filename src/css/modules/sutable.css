@@ -93,18 +93,13 @@
 ***/
 .sutable-footer{
 	position: relative;
-/*	position: absolute;*/
 	height: 40px;
 	background-color: #969da4;
 	bottom: 0;
 	margin: 0;
 	width: 100%;
-	
+	overflow: hidden;
 }
-.sutable-footer .sutable-footer.sutable-row{
-	
-}
-
 .sutable-footer>.sutable-row>.sutable-col{
 	position: relative;
 	display: inline-block;

@@ -147,7 +147,7 @@ span.page-choosed-text {
 ** 下拉选择的
 **/
 
-span.page-drop-list {
+.ndp-page-wrapper span.page-drop-list {
     position: relative;
     display: block;
     box-sizing: border-box;
@@ -192,7 +192,7 @@ span.page-drop-list>i.glyphicon-triangle-bottom.turnback {
 
 .page-now + ul.page-dropdown {}
 
-ul.page-dropdown {
+.ndp-page-wrapper ul.page-dropdown {
     position: absolute;
     box-sizing: border-box;
     width: calc(100% + 2px);
@@ -200,6 +200,7 @@ ul.page-dropdown {
     top: 100%;
     border: 1px solid #b9c3cd;
     z-index: 900;
+	background-color: white;
 }
 
 ul.page-dropdown>li {
