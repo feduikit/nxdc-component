@@ -151,7 +151,7 @@ span.page-choosed-text {
     position: relative;
     display: block;
     box-sizing: border-box;
-    border: 1px solid transparent;
+/*    border: 1px solid transparent;*/
     float: left;
     width: 60px;
     color: #666;
