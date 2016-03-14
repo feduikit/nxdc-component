@@ -47,9 +47,9 @@
 	cursor: pointer;
 }
 .ndp-vList2-wrapper li.list-item .content-part.active{
-	background-color: #ffffff;
-	border-left-color: #ffa805;
-	color:#ffa805;
+	background-color: #fff;
+	border-left-color: #fd9611;
+	color:#fd9611;
 }
 
 .ndp-vList2-wrapper li[deep='2'].list-item .content-part:hover{
@@ -57,9 +57,9 @@
 	cursor: default;
 }
 .ndp-vList2-wrapper li.list-item.active .content-part,.ndp-vList2-wrapper li.list-item.active .content-part:hover{
-	background-color: #ffffff;
-	border-left-color: #ffa805;
-	color:#ffa805;
+	background-color: #fff;
+	border-left-color: #fd9611;
+	color:#fd9611;
 }
 
 .ndp-vList2-wrapper li.list-item .content-part .icon-part{
@@ -89,7 +89,7 @@
 .ndp-vList2-wrapper li[deep="1"].list-item>.content-part>.icon-part{
 	text-align: center;
 	line-height: 36px;
-	color:#ffa805;
+	color:#fd9611;
 }
 
 .ndp-vList2-wrapper li[deep="1"].list-item>hr{
@@ -197,7 +197,7 @@
 }
 
 .mini-state li>ul.menu-mini-mode>li.list-item.active>.content-part{
-	background-color: #ffa805;
+	background-color: #fd9611;
 	color:white;
 }
 
