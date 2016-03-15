@@ -52,6 +52,18 @@
         "/Users/ericever/Desktop/develop/nxdc_ui/dist/lib/bootstrap/Gruntfile.js",
         "/Users/ericever/Desktop/develop/nxdc_ui/lib/hilighter/scripts/shBrushCss.js",
         "/Users/ericever/Desktop/develop/nxdc_ui/dist/lib/bootstrap/grunt/bs-raw-files-generator.js",
-        "/Users/ericever/Desktop/develop/nxdc_ui/lib/hilighter/scripts/shBrushDelphi.js"
+        "/Users/ericever/Desktop/develop/nxdc_ui/lib/hilighter/scripts/shBrushDelphi.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/lib/bootstrap/grunt/bs-glyphicons-data-generator.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/lib/bootstrap/grunt/bs-lessdoc-parser.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/lib/hilighter/scripts/shBrushDiff.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/lib/hilighter/scripts/shBrushErlang.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/lib/hilighter/scripts/shBrushGroovy.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/lib/hilighter/scripts/shBrushJava.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/lib/hilighter/scripts/shBrushJavaFX.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/lib/hilighter/scripts/shBrushPerl.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/lib/hilighter/scripts/shBrushPhp.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/src/js/components/search.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/lib/hilighter/scripts/shBrushPlain.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/src/js/components/vList3.js"
     ]
 }

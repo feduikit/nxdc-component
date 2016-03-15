@@ -70,7 +70,8 @@ li[asparent].active>span.list-txt-wrapper>i{
 }
 
 li.list-leaf:hover{
-	background-color: #dbdbdb;
+	background-color: #f7f0e8;
+	color:#fc7408;
 }
 li[asparent].focus>.list-txt-wrapper,li.list-leaf.active{
 	color:#6f6f6f;

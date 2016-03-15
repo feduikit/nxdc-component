@@ -22,6 +22,7 @@
 @import url(../modules/tree.css);
 @import url(../modules/vList.css);
 @import url(../modules/vList2.css);
+@import url(../modules/vList3.css);
 @import url(../modules/search.css);
 @import url(../modules/navbar.css);
 @import url(../modules/gallery.css);
@@ -37,3 +38,4 @@
 @import url(../modules/timerange.css);
 @import url(../modules/tabs.css);
 @import url(../modules/breadcrumb.css);
+@import url(../modules/blend.css);
