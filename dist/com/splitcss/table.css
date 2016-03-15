@@ -50,8 +50,8 @@ i.col-spliter {
     line-height: 40px;
     padding: 0;
     margin: 0;
-    border-bottom: 1px solid #b9c3cd;
-    color: #707887;
+    border-bottom: 1px solid #e0e0e0;
+    color: #666;
 }
 
 .ndp-table-row:nth-child(n+2) {
@@ -60,7 +60,7 @@ i.col-spliter {
 
 .ndp-table-body .ndp-table-row:hover {
     background-color: #fff;
-    color: #707887;
+    color: #666;
     box-shadow: 0 0 12px rgba(0,0,0,.2);
     border-bottom: none;
     border-top: 1px solid transparent;
@@ -112,7 +112,7 @@ i.col-spliter {
 }
 
 .ndp-table-col-split {
-    border-right: 1px solid #b9c3cd;
+    border-right: 1px solid #e0e0e0;
 }
 
 
@@ -137,7 +137,7 @@ i.col-spliter {
     padding: 0;
     margin: 0;
     font-size: 10px;
-    color: #707887;
+    color: #666;
     cursor: pointer;
 }
 
@@ -154,7 +154,7 @@ span.head-txt {
 }
 
 .sort-direct>.glyphicon.active {
-    color: #707887;
+    color: #666;
 }
 
 .sort-direct>.glyphicon-triangle-top {

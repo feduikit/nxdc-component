@@ -13,7 +13,7 @@
 }
 
 .upload-content {
-    border: 1px dashed #b9c3cd;
+    border: 1px dashed #e0e0e0;
     position: relative;
     transition: all 0.3s ease-out;
 }

@@ -1,7 +1,7 @@
 input,input[type=text],input[type=password],input[type=number],input[type=email],textarea{
 	font-size: 14px;
 	padding: 0 10px;
-	border:1px solid #b9c3cd;
+	border:1px solid #e0e0e0;
 }
 
 input:focus,input[type=text]:focus,input[type=password]:focus,

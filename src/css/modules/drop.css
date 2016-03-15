@@ -7,7 +7,7 @@
 	box-sizing: border-box;
     min-width:120px;
     min-height: 30px;
-    border:1px solid #b9c3cd;
+    border:1px solid #e0e0e0;
     height: 30px;
     padding: 0;
 }
@@ -86,7 +86,7 @@ span.caret-wrapper>span.caret{
     width: calc(100% + 2px);
     left: -1px;
     top:101%;
-    border:1px solid #b9c3cd;
+    border:1px solid #e0e0e0;
     box-shadow: 0 3px 1px  1px rgba(227, 227, 227, 0.5);
     max-height: 300px;
     overflow-y: auto;

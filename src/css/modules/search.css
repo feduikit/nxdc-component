@@ -6,7 +6,7 @@
 	width: 200px;/** 默认值 可以修改 **/
 	height: 30px;
 	box-sizing: border-box;
-	border:1px solid #b9c3cd;
+	border:1px solid #e0e0e0;
    -webkit-transition: border-color ease-in-out .2s,-webkit-box-shadow ease-in-out .2s;
     -o-transition: border-color ease-in-out .2s,box-shadow ease-in-out .2s;
     transition: border-color ease-in-out .2s,box-shadow ease-in-out .2s;	
