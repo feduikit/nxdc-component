@@ -50,31 +50,36 @@ i.col-spliter {
     line-height: 40px;
     padding: 0;
     margin: 0;
-    border-bottom: 1px solid #e0e0e0;
     color: #666;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid #e0e0e0;
+    border-top: 1px solid #e0e0e0;
 }
 
 .ndp-table-row:nth-child(n+2) {
     border-top: none;
 }
 
-.ndp-table-body .ndp-table-row:hover {
-    background-color: #fff;
-    color: #666;
-    box-shadow: 0 0 12px rgba(0,0,0,.2);
-    border-bottom: none;
-    border-top: 1px solid transparent;
+.ndp-table-row:nth-child(n+2).active {
+    border-top: 1px solid #fd9611;
     position: relative;
     top: -1px;
 }
 
+.ndp-table-body .ndp-table-row-hover {
+    background-color: #fff4e7;
+    cursor: pointer;
+}
 
 /***
+
 **选中的一行
 **/
 
 .ndp-table-row.active {
-    background-color: #e0e0e0;
+    background-color: #fff4e7;
+    border: 1px solid #fd9611;
 }
 
 
@@ -90,19 +95,25 @@ i.col-spliter {
     height: 100%;
     padding: 0 10px;
     text-align: left;
-    border-right: 1px solid transparent;
+    border: 1px solid transparent;
     overflow: hidden;
 }
-
-.ndp-table-col:nth-last-child(1) {
-    border-width: 0;
-}
-
 .ndp-table-col.active {
-    background-color: #e0e0e0;
-    color: black;
+    background-color: #fff4e7;
+    color: #666;
+    border-right-color: #fd9611;
+    border-left-color: #fd9611;
 }
-
+.ndp-table-header .ndp-table-col.active,
+.ndp-table-body .ndp-table-row:first-child .ndp-table-col.active {
+    border-top-color: #fd9611;
+}
+.ndp-table-header ~ .ndp-table-body .ndp-table-row:first-child .ndp-table-col.active {
+    border-top-color: transparent;
+}
+.ndp-table-body .ndp-table-row:last-child .ndp-table-col.active {
+     border-bottom-color: #fd9611;
+}
 .ndp-table-col.highLight {
     border-right: 1px solid #6d6d6d;
 }
@@ -111,11 +122,19 @@ i.col-spliter {
     border-width: 0;
 }
 
-.ndp-table-col-split {
+.ndp-table-header .ndp-table-col-split {
     border-right: 1px solid #e0e0e0;
 }
-
-
+.ndp-table-body .ndp-table-col-split {
+    border-right: 1px solid transparent;
+}
+.ndp-table-col.highLight {
+    border-right: 1px dashed #fd9611;
+}
+.ndp-table-col-hover {
+    background-color: #fff4e7;
+    cursor: pointer;
+}
 /**
 **排序按钮的样式
 **/

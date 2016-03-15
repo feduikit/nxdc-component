@@ -5,6 +5,7 @@ require.config({
         'bootstrap':'../../lib/bootstrap/dist/js/bootstrap.min',
 		'utils':'./Compatibility/utils',
 		'tabs':'./components/tabs',
+		'bread':'./components/bread',
 		'alert':'./components/alert',
 		'confirm':'./components/confirm',
 		'prompt':'./components/prompt',
@@ -17,6 +18,7 @@ require.config({
 		'sutable':'./components/sutable',
 		'timerange':'./components/timerange',
 		'blend':'./components/blend',
+		'vList3':'./components/vList3',
 		'bubble':'./components/bubble'
     },
     shim:{
@@ -52,6 +54,12 @@ require.config({
 		},
 		timerange:{
 			deps:['drop']
-		}		
+		},
+		vList3:{
+			deps:['search']
+		},
+		blend:{
+			deps:['vList3','bread']
+		}
     }
 });

@@ -111,6 +111,7 @@ span.step-wrapper{
 	display: inline-block;
 	height: 100%;
 	width: 20px;
+	cursor: pointer;
 }
 span.step-wrapper>i{
 	position: absolute;

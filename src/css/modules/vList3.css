@@ -1,8 +1,47 @@
 .ndp-vList3-wrapper{
+	position: relative;
 	display: inline-block;
+	max-height: 300px;
+	overflow: auto;
+	border:1px solid #e0e0e0;
+}
+.ndp-vList3-wrapper.search-mode{
+	height: 300px;
+	overflow: hidden;
+}
+.ndp-vList3-wrapper .search-panel{
+	position: absolute;
+	top:0;
+	left: 0;
+	max-height: 300px;
+	height: 100%;
+	width: 100%;
+	z-index: 100;
+	background-color: white;
+	overflow: auto;
+}
+.ndp-vList3-wrapper .search-panel:before{
+	position: absolute;
+	font-family: 'Glyphicons Halflings';
+	content:"\e003";
+	font-size: 60px;
+	left:45%;
+	top:40%;
+	color:#b9c3cd;
+}
+.ndp-vList3-wrapper .search-panel:after{
+	position: absolute;
+	content:"按照个人主页中所列主页进行索索";
+	top: 70%;
+	left:35%;
+	color:#b9c3cd;
+}
+.ndp-vList3-wrapper ul.list-deepest{
+	border-width: 0;
 }
 
 .ndp-vList3-wrapper li[deep] span.list-txt-wrapper{
+	border-width: 0;
 	border-bottom: 1px solid #e0e0e0;
 	padding-left: 40px;
 	overflow: hidden;

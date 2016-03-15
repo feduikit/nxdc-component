@@ -11,7 +11,7 @@
 		if(deep>1) {
 			ul.addClass("hide");
 		}else{
-			ul.addClass("list-deepest");
+			ul.addClass("list-deepest"); 
 		}
 		for(var i=0;i<arr.length;i++){
 			var o = arr[i];
@@ -26,6 +26,7 @@
 				txtWrapper.html(text).attr({"title":text,"data-id":did});
 				li.attr({"value":text,"deep":deep});
 				if(o.audienceSize) txtWrapper.append("<span class='aud-size'>"+(o.audienceSize)+"</span>");
+				if(o.search) txtWrapper.addClass("do-search");
 				if(array && array instanceof Array){
 					li.attr("asparent",true);
 					txtWrapper.append(cfg.expicon);
@@ -78,6 +79,15 @@
 			$(this).addClass("active");
 			fireEvent($(this).get(0),"ITEM_CLICK",{val:$(this).attr("value")});
 		});
+		
+		/***
+		** 点击需要 "搜索" 的东西
+		***/
+		_this.elem.find("li.list-leaf>.do-search").click(function(e){
+			_this.sepanel.removeClass("hidden");
+			_this.elem.addClass("search-mode");
+		});
+	
     };
 	
 	/**
@@ -87,6 +97,8 @@
 		var _this = this;
 		var cfg = _this.config;
 		recursive(cfg.data,cfg,_this.elem,0);
+		_this.sepanel = $("<div class='search-panel hidden' />");
+		_this.elem.append(_this.sepanel);
 	};
 
     VList3.prototype.initConfig = function(){
@@ -119,7 +131,21 @@
     **@param {Drop} Bread :  instacne of the plugin builder
     **/
     function exchange(vList3){
-
+		
+		this.fold = function(){
+			vList3.elem.find("li.list-item.active").removeClass("active");
+			vList3.elem.find("li>ul.list-root").addClass("hide");
+			return vList3.elem;
+		};
+		
+		/***
+		** hide search panel
+		***/
+		this.hspanel = function(){
+			vList3.sepanel.addClass("hidden");
+			vList3.elem.removeClass("search-mode");
+			return vList3.elem;
+		}
     }
 	
 	  var old = $.fn.vList3;

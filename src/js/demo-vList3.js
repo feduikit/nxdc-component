@@ -1,7 +1,7 @@
 require(['./config'],function(){
     require(['jquery','utils'],function($){
-        require(['bootstrap','./components/vList3'],function(){
-			$(".ndp-vList3-wrapper[name=plain]").vList3({
+        require(['bootstrap','vList3'],function(){
+			$(".ndp-vList3-wrapper[name=plain1]").vList3({
 				data:[{label:"FATHER ONE",audienceSize:"67881111",id:1,
 					   sub:[
 					  	{label:"1-1",audienceSize:"876567111",id:2,
@@ -17,11 +17,11 @@ require(['./config'],function(){
 							{label:"1-2-2",audienceSize:"11111",id:9},
 							{label:"1-2-3",audienceSize:"11111",id:10}							
 						]},
-						{label:"1-3",audienceSize:"11111",id:11}
+						{label:"学校",audienceSize:"11111",id:11,search:true}
 					 ]},
 					  {label:"father two",audienceSize:"1611",id:12,
 					   sub:[
-							{label:"3-1-1",audienceSize:"11111",id:13},
+							{label:"搜索",audienceSize:"11111",id:13,search:true},
 							{label:"3-1-2",audienceSize:"11111",id:14},
 							{label:"3-1-3",audienceSize:"11111",id:15}							  
 					  ]},
