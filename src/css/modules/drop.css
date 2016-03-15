@@ -131,14 +131,14 @@ li.drop-one-item.disabled,li.drop-one-item.disabled:hover{
 高亮
 **/
 .ndp-drop-wrapper li.drop-one-item.em{
-	background-color: #f2f6f7;
-	color:#5da6ff;
+	background-color: #f7f0e8;
+	color:#fc7408;;
 }
 /**
 ** 分割线
 **/
 li.drop-one-item.split-line{
-	border-bottom: 1px solid #c1c1c1;
+	border-bottom: 1px solid #e0e0e0;
 }
 /**
 ** 子层菜单
