@@ -16,6 +16,7 @@ require.config({
 		'treable':'./components/treable',
 		'sutable':'./components/sutable',
 		'timerange':'./components/timerange',
+		'blend':'./components/blend',
 		'bubble':'./components/bubble'
     },
     shim:{
