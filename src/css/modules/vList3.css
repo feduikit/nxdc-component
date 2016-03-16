@@ -37,6 +37,7 @@
 	border-radius: 0;
 	width: 80px;
 	padding-top:4px;
+	vertical-align: top;
 }
 /****
 **  搜索的下拉菜单
@@ -127,4 +128,12 @@
 
 .ndp-vList3-wrapper li.list-leaf.active>span.list-txt-wrapper>.aud-size{
 	font-style:normal;
+}
+
+/*****
+**
+****/
+.ndp-vList3-wrapper li.list-leaf.active.selected>span.list-txt-wrapper{
+	color:#ccc;
+	cursor: not-allowed;
 }

@@ -63,6 +63,9 @@
 	position: relative;
 	border-bottom: 1px solid #e0e0e0;
 }
+.dropdown-menu.blend-search-drop>li>a:hover{
+	background-color: #f7f0e8;
+}
 .dropdown-menu.blend-search-drop>li>a>.aud-class{
 	position: absolute;
 	right: 15px;
@@ -198,4 +201,12 @@
 	width: 100%;
 	padding-top:4px;
 	font-size: 16px;
+}
+
+/****
+*** 选中之后 字体颜色
+****/
+.blend-search-drop .txt-mark.selected,.blend-search-drop .txt-mark.selected:hover{
+	color:#ccc;
+	cursor: not-allowed;
 }

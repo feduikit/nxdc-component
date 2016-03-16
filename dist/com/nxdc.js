@@ -315,7 +315,7 @@ if (!Object.keys) Object.keys = function(o) {
 						}
 					}
 				}else{
-					dat.path = dat.path.split(">");
+					dat.path = dat.path.split("#");
 					dat.tags = [{name:dat.name,id:dat.id,audience_size:dat.size}];
 					addClassify(dat,0,_this.dropup);//加到DOM 树，
 					//加到数据里面去

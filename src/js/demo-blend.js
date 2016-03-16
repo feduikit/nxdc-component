@@ -1,38 +1,6 @@
 require(['./config'],function(){
     require(['jquery','utils'],function($){
         require(['bootstrap','blend'],function(){	
-			var rec = [{name:"FATHER ONE",audienceSize:"67881111",id:1,type:"s1",value:"a",
-					   sub:[
-					  	{name:"1-1",audienceSize:"876567111",id:2,type:"s1",value:"a1",
-						 sub:[
-							{name:"1-1-1ewrewrewrewrwe",audienceSize:"111",id:3,type:"s1",value:"a2"},
-							{name:"1-1-2",audienceSize:"11111",id:4,type:"s1",value:"a3",},
-							{name:"1-1-3",audienceSize:"3111",id:5,type:"s1",value:"a4"}
-						]},
-						{name:"1-2",audienceSize:"11111",id:6,type:"s2",value:"b1",
-						 sub:[
-							{name:"1-2-1",audienceSize:"34111",id:7,type:"s2",value:"b2",
-							 sub:[{name:"1-2-1-1",audienceSize:"11111",id:8,type:"s2",value:"b3"}]},
-							{name:"1-2-2",audienceSize:"11111",id:9,type:"s2",value:"b1"},
-							{name:"1-2-3",audienceSize:"11111",id:10,type:"s2",value:"b1"}							
-						]},
-						{name:"学校",audienceSize:"11111",id:11,search:true,type:"s2",value:"b3"}
-					 ]},
-					  {name:"father two",audienceSize:"1611",id:12,type:"s2",value:"b1",
-					   sub:[
-							{name:"3-1-1",audienceSize:"11111",id:13,type:"s2",value:"b1"},
-							{name:"3-1-2",audienceSize:"11111",id:14,type:"s2",value:"b1"},
-							{name:"3-1-3",audienceSize:"11111",id:15,type:"s2",value:"b1"}							  
-					  ]},
-					  {name:"hello 1",audienceSize:"811111",id:16,type:"s2",value:"b1"},
-					  {name:"hello3",audienceSize:"11111",id:17,type:"s2",value:"b1",
-					   sub:[
-							{name:"5-2-1",audienceSize:"7811111",id:12,type:"s2",value:"b1"},
-							{name:"5-2-2",audienceSize:"3211111",id:12,type:"s2",value:"b1"},
-							{name:"5-2-3",audienceSize:"11111",id:12,type:"s2",value:"b1"}							  
-					  ]
-					  }
-				];
 		var  rec = 
    [
         {
