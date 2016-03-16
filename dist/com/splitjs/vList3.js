@@ -108,6 +108,15 @@
 		var cfg = _this.config;
 		recursive(cfg.data,cfg,_this.elem,0);
 		_this.sepanel = $("<div class='search-panel hidden' />");
+		_this.searchx = $("<div class='ndp-search-wrapper'  />").search({
+			type:3,
+			clickhide:false,
+			ajaxOptions: {
+				type: "GET",
+				url: "../data/search.json"
+			}
+		});
+		_this.sepanel.append(_this.searchx).append("<button class='btn btn-default btn-search'>返回列表</button>");
 		_this.elem.append(_this.sepanel);
 	};
 

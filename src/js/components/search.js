@@ -22,7 +22,7 @@
 		var self = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.search.defaults,element.data(),options);
-		this.config.wi = this.elem.width();
+		this.config.wi = this.elem.width()||30;
 		this.init();	
     };
 	/**
@@ -150,7 +150,7 @@
 						e.stopImmediatePropagation();
 						var val = $(this).attr('val'); 
 						_this.input.val(val);
-						_this.dropmenu.addClass("hidden");
+						if(_this.config.clickhide)_this.dropmenu.addClass("hidden");
 						_this.wrapper.find(".close-cus").removeClass("hide");
 						fireEvent(_this.elem.get(0),"ITEM_SELECT",{text:val});
 					});	
@@ -257,8 +257,8 @@
 						  <div class="bounce1"></div>\
 						  <div class="bounce2"></div>\
 						  <div class="bounce3"></div>\
-						</div>').css({"line-height":dim+"px","height":dim+"px"});
-			var wb = parseFloat(_this.input.css("height"));
+						</div>').css({"line-height":(dim||28)+"px","height":(dim||28)+"px"});
+			var wb = parseFloat(_this.input.css("height")||30);
 			var close = $('<span class="close close-cus hide">&times;</span>')
 						.css("right",wb+"px");
 			_this.wrapper.append(spin).append(close);
@@ -268,8 +268,8 @@
 			this.icon = $(cfg.magicon);
 			this.wrapper.append(this.icon);
 			var h = this.elem.height();
-			this.input.css({"width":(_this.wrapper.width()-h-2)+"px","height":h+"px","line-height":h+"px"});
-			this.icon.css({"width":h+"px","height":h+"px","line-height":h+"px"});
+			this.input.css({"width":((_this.wrapper.width()||_this.elem.wi)-(h||28)-2)+"px","height":(h||28)+"px","line-height":(h||28)+"px"});
+			this.icon.css({"width":(h||28)+"px","height":(h||28)+"px","line-height":(h||28)+"px"});
 		}
 		
 		if(cfg.placeholder){
@@ -342,6 +342,7 @@
 		magicon:"<i class='glyphicon glyphicon-search'></i>",
 		placeholder:"",// 提示文字
 		disabled:false,
+		clickhide:true,//点击或者选择 下拉菜单一项，是否消失下拉菜单,true 点击消失，false 点击不消失
 		dropList:[],
         ajaxOptions: {
             type: "GET",
