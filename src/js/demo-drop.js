@@ -1,15 +1,14 @@
 require(['./config'],function(){
     require(['jquery','utils'],function($){
         require(['bootstrap','./components/drop'],function(){
-            $("div.ndp-drop-wrapper[name=inline-drop]").drop({
-                data:["中国","日本",3,4,5,6],
-				val:"中国",
+            var the = $("div.ndp-drop-wrapper[name=inline-drop]").drop({
+                data:[{text:"中国",value:12},{text:"日本",value:100},{name:3,val:121},{text:4,id:777}],
 				name:"country"// 为了便于 serialize  最好定义一个名字
             }).on("ITEM_CLICK",function(e){
 				//下拉选择项点击事件
 				//返回的数据有  data = {val:选中项的值,deep:深度(如果是多级) }
 				console.log(e.originalEvent.data);
-			});
+			}).val({text:"日本",value:100});
 			
 
             $("div.ndp-drop-wrapper[name=tree-drop2]").drop({

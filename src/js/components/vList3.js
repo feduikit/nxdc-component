@@ -25,8 +25,9 @@
 				var value = o.val||o.value||text;
 				var did = o.id;
 				var ty = o.type;
+				if(o.parent) li.attr("data-path",o.parent.split(">").join("#"));
 				txtWrapper.html(text).attr({"title":text});
-				li.attr({"data-text":text,"deep":deep,"data-id":did,"data-val":value,"data-type":ty});
+				li.attr({"data-name":text,"data-text":text,"deep":deep,"data-id":did,"data-val":value,"data-type":ty,"data-size":o.audienceSize});
 				if(o.audienceSize) txtWrapper.append("<span class='aud-size'>"+(o.audienceSize)+"</span>");
 				if(o.search) txtWrapper.addClass("do-search");
 				if(array && array instanceof Array){
@@ -78,9 +79,11 @@
 		**/	
 		_this.elem.find("li.list-leaf").click(function(e){
 			e.stopImmediatePropagation();
+			if($(this).hasClass("selected")) return false;
 			$(this).addClass("active");
 			var the = $(this);
 			fireEvent($(this).get(0),"ITEM_CLICK",the.data());
+			$(this).addClass("selected");
 		});
 		
 		/***
@@ -98,6 +101,10 @@
 			e.stopImmediatePropagation();
 		});
 	
+		_this.sepanel.find(".btn-search").click(function(e){
+			fireEvent(_this.elem.get(0),"RETURN_BACK");
+		});
+		
     };
 	
 	/**
@@ -111,10 +118,7 @@
 		_this.searchx = $("<div class='ndp-search-wrapper'  />").search({
 			type:3,
 			clickhide:false,
-			ajaxOptions: {
-				type: "GET",
-				url: "../data/search.json"
-			}
+			ajaxOptions: _this.config.ajaxOption
 		});
 		_this.sepanel.append(_this.searchx).append("<button class='btn btn-default btn-search'>返回列表</button>");
 		_this.elem.append(_this.sepanel);
@@ -164,6 +168,15 @@
 			vList3.sepanel.addClass("hidden");
 			vList3.elem.removeClass("search-mode");
 			return vList3.elem;
+		};
+		
+		/***
+		** 更新 搜索用的ajax
+		***/
+		this.updateOption = function(o){
+			vList3.config.ajaxOption = o;
+			vList3.searchx.update(o);
+			return vList3.elem;
 		}
     }
 	
@@ -180,6 +193,10 @@
 	**/
 	$.fn.vList3.defaults = {
 		data:[],
-		expicon:"<i class='glyphicon glyphicon-menu-right'></i>"
+		expicon:"<i class='glyphicon glyphicon-menu-right'></i>",
+		ajaxOption: {
+				type: "GET",
+				url: "../data/search.json"
+		}
 	};
 }(jQuery));

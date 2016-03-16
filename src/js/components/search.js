@@ -322,6 +322,12 @@
 			var txt = (typeof(o)=="string"||typeof(o)=="number")?o:(o.label||o.text||o.name||o.value);
 			search.elem.find("input").val(txt);
 			return search.elem;
+		};
+		
+		//更新 ajax Option
+		this.updateOption = function(o){
+			search.config.ajaxOptions = o;
+			return search.elem;
 		}
     }
 	
