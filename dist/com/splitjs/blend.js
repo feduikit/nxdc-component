@@ -17,7 +17,15 @@
         this.concrate();//构建下来菜单的样子
 		this.initConfig();
  
-		
+		/***
+		**
+		***/
+		_this.input.click(function(e){
+			e.stopImmediatePropagation();
+			if($(this).val() && _this.drop1.children.length){
+				_this.drop1.removeClass("hidden");
+			}
+		});
 		
 		//注册事件：
 		_this.input.on("input",function(e){
@@ -30,26 +38,28 @@
 				if(typeof(result)=="string") result = JSON.parse(result);
 				_this.drop1.empty();
 				_this.drop2.addClass("hidden");
+				_this.insdata = result.data;//保留数据 
 				result.data.forEach(function(item,index){
-					var val = (typeof(item)=="string")?item:(item.text||item.label||item.name);
+					var txt = (typeof(item)=="string")?item:(item.text||item.label||item.name||item.value);
+					var val = item.value||item.val||txt;
 					var re2 = new RegExp("["+key+"]+","i");	
 					var re = new RegExp(key,"i");
 					if(String(val).match(re)){
-						var ma = String(val).match(re)[0];
-					}else if(String(val).match(re2)){
-						ma = String(val).match(re2)[0];
+						var ma = String(txt).match(re)[0];
+					}else if(String(txt).match(re2)){
+						ma = String(txt).match(re2)[0];
 					}else{
 						ma = "";				
 					}
 					var len = ma.length;
 					var ree = new RegExp(ma,"i");
-					var start = val.search(ree);
-					var arr = val.split("");
+					var start = txt.search(ree);
+					var arr = txt.split("");
 					arr.splice(start,0,"<em>");
 					arr.splice((start+len+1),0,"</em>");
 					var val1 = arr.join("");
 					var li = '<li val="'+val+'" index='+index+' tabIndex='+index+' >\
-					<a href="#" data-id='+(item.id)+' data-val='+val+' >'+(val1||val)+'<span class="aud-class">'+item.audienceSize+'</span></a></li>';
+					<a class="txt-mark" href="#" data-id='+(item.id)+' data-val='+val+' data-text='+txt+' data-index='+index+'  >'+(val1||txt)+'<span class="aud-class">'+item.audienceSize+'</span></a></li>';
 					_this.drop1.append(li);
 				});	
 				_this.drop1.removeClass("hidden");
@@ -63,6 +73,13 @@
 		***/
 		_this.drop1.click(function(e){
 			e.stopImmediatePropagation();
+			if(e.target.tagName=="A" && $(e.target).hasClass("txt-mark")){
+				var the = $(e.target);
+				var txt = the.data("text");
+				var index = the.data("index");
+				var val = the.data("val");
+				fireEvent(_this.elem.get(0),"ITEM_CLICK",_this.insdata[index]);
+			}
 		});
 		/***
 		** 点击input 后面的图标出现树桩下拉次菜单
@@ -91,11 +108,9 @@
 				ta.remove();//删除 这个tag  DOM 
 				//从数据中删除
 				var arr = _this.config.seldata[serial].tags;
-				arr.splice(idx,1);
-				
-				_this.resizeDropup();
+				var dat = arr.splice(idx,1);//删除的数据
 				//发出事件,用户点击了
-				fireEvent(_this.elem.get(0),"TAG_RESIGN",{val:val,id:id,text:text});
+				fireEvent(_this.elem.get(0),"TAG_RESIGN",dat);
 			}// 一行 x 被点击
 			else if((e.target.tagName=="BUTTON" && $(e.target).hasClass("close1"))||
 			    e.target.tagName=="SPAN" && $(e.target).hasClass("x1")){
@@ -103,7 +118,6 @@
 				var serial = parseInt(tali.data("serial"));
 				tali.remove();//删除一行
 				var data = _this.config.seldata.splice(serial,1);//删除这一行的数据
-				_this.resizeDropup();
 				fireEvent(_this.elem.get(0),"SERIAL_RESIGN",data);
 			}
 		});
@@ -123,8 +137,8 @@
 	** 重新设置，向上弹出部分的位置信息，top  
 	***/
 	Blend.prototype.resizeDropup = function(){
-		var h = this.dropup.height();
-		this.dropup.css("top",(-h-4)+"px");
+//		var h = this.dropup.height();
+//		this.dropup.css("top",(-h-4)+"px");
 	}
 	
 	/**
@@ -133,14 +147,15 @@
 	Blend.prototype.concrate = function(data){
 		var _this = this;
 		this.input = $("<input class='form-input blend-input' />");
+		this.downwrapper = $("<div class='down-wrapper' />");
 		this.icon = $("<span class='icon-wrapper'><i class='glyphicon glyphicon-thumbs-up'></i></span>");
 		this.drop1 = $('<ul class="dropdown-menu blend-search-drop hidden"  />');//搜索的下拉菜单
 		this.drop2 = $('<div class="ndp-vList3-wrapper blend-classify-drop hidden" name="blend-rec" />');//分类下拉菜单
 		this.dropup = $('<ul class="dropdown-menu blend-dropup" >');
 		this.vlist = this.drop2.vList3({data:_this.config.recdata});//实例化推荐下拉菜单
 		
-		this.elem.append(this.input).append(this.icon).append(this.drop1).append(this.drop2);
-		this.elem.prepend(this.dropup);
+		this.downwrapper.append(this.input).append(this.icon).append(this.drop1).append(this.drop2);
+		this.elem.append(this.dropup).append(this.downwrapper);
 	};
 
 	/****

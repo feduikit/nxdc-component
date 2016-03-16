@@ -22,9 +22,11 @@
 			if(typeof(o)=="object"){
 				var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group||o.children;
 				var text = o[cfg.textKey]||o.text||o.label||o.title||o.name;
+				var value = o.val||o.value||text;
 				var did = o.id;
-				txtWrapper.html(text).attr({"title":text,"data-id":did});
-				li.attr({"value":text,"deep":deep});
+				var ty = o.type;
+				txtWrapper.html(text).attr({"title":text});
+				li.attr({"data-text":text,"deep":deep,"data-id":did,"data-val":value,"data-type":ty});
 				if(o.audienceSize) txtWrapper.append("<span class='aud-size'>"+(o.audienceSize)+"</span>");
 				if(o.search) txtWrapper.addClass("do-search");
 				if(array && array instanceof Array){
@@ -36,7 +38,7 @@
 				}
 			}else{
 				txtWrapper.html(o);
-				li.attr({"value":o,"deep":deep}).addClass("list-leaf");
+				li.attr({"data-text":o,"data-val":o,"deep":deep}).addClass("list-leaf");
 			}
 			ul.append(li);
 		}
@@ -77,7 +79,8 @@
 		_this.elem.find("li.list-leaf").click(function(e){
 			e.stopImmediatePropagation();
 			$(this).addClass("active");
-			fireEvent($(this).get(0),"ITEM_CLICK",{val:$(this).attr("value")});
+			var the = $(this);
+			fireEvent($(this).get(0),"ITEM_CLICK",the.data());
 		});
 		
 		/***
@@ -86,6 +89,13 @@
 		_this.elem.find("li.list-leaf>.do-search").click(function(e){
 			_this.sepanel.removeClass("hidden");
 			_this.elem.addClass("search-mode");
+		});
+		
+		/***
+		** 点击search 部分
+		***/
+		_this.sepanel.click(function(e){
+			e.stopImmediatePropagation();
 		});
 	
     };

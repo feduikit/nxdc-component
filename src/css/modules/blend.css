@@ -2,8 +2,13 @@
 	position: relative;
 	display: inline-block;
 	width: 500px;
+	height: auto;
+}
+.ndp-blend-wrapper>.down-wrapper{
+	position: relative;
 	height: 30px;
-	box-shadow: 0;
+	width: 100%;
+	overflow: visible;
 }
 
 .ndp-blend-wrapper li>a[data-val]>em{
@@ -12,16 +17,17 @@
 }
 
 
-.blend-input{
+.ndp-blend-wrapper>.down-wrapper>.blend-input{
 	position: relative;
 	margin: 0;
+	line-height: 30px;
 	height: 100%;
 	width: -webkit-calc(100% - 30px);
 	width: calc(100% - 30px);
 	border:1px solid #e0e0e0;
 	vertical-align: top;
 }
-.ndp-blend-wrapper>.icon-wrapper{
+.ndp-blend-wrapper .icon-wrapper{
 	position: relative;
 	top:0;
 	left:0;
@@ -31,12 +37,12 @@
 	margin: 0;
 	text-align: center;
 }
-.ndp-blend-wrapper>.icon-wrapper>i{
+.ndp-blend-wrapper .icon-wrapper>i{
 	font-size: 20px;
 	margin: 4px auto;
 	color:#707070;
 }
-.ndp-blend-wrapper>.icon-wrapper>i:hover{
+.ndp-blend-wrapper .icon-wrapper>i:hover{
 	color:black;
 }
 
@@ -45,12 +51,13 @@
 *****/
 
 .dropdown-menu.blend-search-drop{
+	position: relative;
 	width: -webkit-calc(100% - 30px);
 	width: calc(100% - 30px);
 	margin: 0;
-	margin-top:-1px;
 	display: block;
 	box-shadow: 0 0 1px rgba(224, 224, 224, 0.5);
+	top:-1px;
 }
 .dropdown-menu.blend-search-drop>li>a{
 	position: relative;
@@ -87,14 +94,12 @@
 /****
 **向上的飘窗
 ***/
-.dropdown-menu.blend-dropup{
-	position: absolute;
+.ndp-blend-wrapper .dropdown-menu.blend-dropup{
+	position: relative;
 	max-height: 300px;
 	width: -webkit-calc(100% - 30px);
 	width: calc(100% - 30px);
 	display: block;
-	left: 0;
-	top:-3px;
 	border:1px solid #e0e0e0;
 	border-bottom-width: 0;
 	overflow: auto;
