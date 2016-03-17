@@ -1,6 +1,13 @@
 2016.3.17
 
 blend.js 修复bug
+1 search option bug
+
+版本："1.0.8"
+
+2016.3.17
+
+blend.js 修复bug
 1 起止时间选择
 2 粘帖事件处理
 3 abort 前一个ajax 请求。
