@@ -106,12 +106,13 @@
 	border:1px solid #e0e0e0;
 	border-bottom-width: 0;
 	overflow: auto;
+	z-index: 9999;
 }
 
 .dropdown-menu.blend-dropup>.blend-sel-item{
 	position: relative;
 	border-radius: 0;
-	clear: both;
+	padding: 10px;
 }
 .dropdown-menu.blend-dropup>.blend-sel-item:hover{
 	background-color: #f9f9f9;
@@ -140,6 +141,7 @@
 .dropdown-menu.blend-dropup>.blend-sel-item>.tag-box{
 	position: relative;
 	padding: 0 20px;
+	padding-top:5px;
 	min-height: 30px;
 }
 .dropdown-menu.blend-dropup>.blend-sel-item .tag-box>.tag-wrapper{
@@ -209,4 +211,28 @@
 .blend-search-drop .txt-mark.selected,.blend-search-drop .txt-mark.selected:hover{
 	color:#ccc;
 	cursor: not-allowed;
+}
+
+/****
+**  入学年份
+****/
+.ndp-blend-wrapper .ndp-drop-wrapper{
+	position: relative;
+	display: inline-block;
+	margin: 0;
+	min-width: 20px;
+	width: 80px;
+	min-height: 10px;
+	height: 30px;
+	z-index: 9999;
+}
+.ndp-blend-wrapper .tag-box>hr{
+	position: relative;
+	display: inline-block;
+	width: 40px;
+	margin: 8px;
+	border-color:black;
+}
+.ndp-blend-wrapper .drop-peal+ul.drop-list{
+	max-height: 150px;
 }

@@ -1,0 +1,22 @@
+{
+	"code":0,
+	"desc":"success",
+	"data":[
+		{   "audience_size": 10000,
+			"id": "69",
+			"key": "个人情况 > 学历 > 教育程度 > 副学士学位",
+			"name": "副学士学位",
+			"parent": "个人情况 > 学历 > 教育程度",
+			"path": ["个人情况", "学历", "教育程度"],
+			"type": "education_statuses"
+		 },
+		{   "audience_size": 11000,
+			"id": "79",
+			"key": "爱好 > 体育爱好 > 机械",
+			"name": "赛车",
+			"parent": "爱好 > 体育爱好 > 机械",
+			"path": ["爱好", "体育爱好", "机械"],
+			"type": "hobby"
+		 }
+	]
+}

@@ -1,6 +1,7 @@
 require(['./config'],function(){
     require(['jquery','utils'],function($){
-        require(['bootstrap','blend'],function(){	
+        require(['bootstrap','blend'],function(){
+		var val = Math.ceil(Math.random()*10 + 10);
 		var  rec = 
    [
         {
@@ -152,6 +153,40 @@ require(['./config'],function(){
 					xhrFields: { withCredentials: true}
 				},				
 				recdata:rec,//推荐下拉菜单数据，点击手型
+				reajaxOptions:{//点击手型，出现下拉菜单里面的搜索
+					type: "GET",
+					url: "../data/blend.json",
+					xhrFields: { withCredentials: true}				
+				},
+				//粘帖事件，配置的回调
+				pastecallback:function(key,dropup,dat,Tool){//dom 是 选中数据显示的列表，dat 是选中 显示的数据
+					$.ajax({        // key 输入的关键字信息
+						type: "GET",
+						url: (val%2==0)?"../data/paste.json":"../data/paste2.json", //模拟随机数据
+						xhrFields: { withCredentials: true},
+						data:{key:key}
+					}).then(function(result){
+						if(typeof(result)=="string") result = JSON.parse(result);
+						result.data.forEach(function(item,index){
+							//返回数据的处理  数据格式见 paste.json
+							var li = dropup.find("li[data-path="+item.path.join('#')+"]");
+							if(li.length){//返回的数据 分类条目 已经存在了，
+								//只需在这个 条目下加一个tag即可   一步
+								var box = li.find(".tag-box");//存放tag的 盒子
+								var serial = parseInt(li.data("serial"));// 第几个分类， 路径进行分类
+								//Tool.tag() 会创建一个函数，item是数据， serial 是第几个分类
+								box.append(Tool.tag(item,serial));// 显示在DOM 上
+								//下面加入数据中
+								dat[serial].tags.push({name:dat.name,id:dat.id,audience_size:dat.size});			
+							}else{//返回的数据 分类条目 还不存在
+								//需要先加一个条目，再在这个条目下加一个tag  两步
+								item.tags = [item.name];
+								Tool.addClassify(item,dat.length,dropup);// 出现在DOM上
+								dat.push(item);	//加入数据中									
+							}
+						});
+					});
+				},
 				seldata:[
 						{path:["个人情况","学历","教育程度"],
 						 type:"education_statuses",

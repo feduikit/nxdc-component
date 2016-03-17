@@ -223,7 +223,8 @@
 
 			$(document).click(function(e){
 				if(!(e.target.tagName == "INPUT" && e.target.type == "checkbox")){
-					$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
+					//$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
+					$(".ndp-drop-wrapper ul.drop-list").addClass("hidden");
 				}
 				$(".ndp-drop-wrapper").removeClass("focus");
 			});
@@ -263,7 +264,11 @@
         if(_this.config.name){
             _this.peal.find("input").attr("name",_this.config.name);
         }
-
+		
+		//输入框默认是 不允许输入的，设置true 允许输入
+		if(_this.config.allowInput){
+			_this.elem.find("input").removeAttr("readonly");
+		}
 		/**
 		**构建下拉列表
 		**/
@@ -353,6 +358,7 @@
         type:1,//1，inline; 2 split dropdown下拉,3 分组显示菜单，组名高亮，不能被点击,4 checkbox,多选
 		name:"drop",//为了便于serialize 设置name属性
         placeholder:null,//提示文字
+		allowInput:false,//是否允许输入
 		textKey:"",//默认猜测，text,label,title,name
 		subKey:"",//默认猜测，sub, son, next
         val:null,//默认值

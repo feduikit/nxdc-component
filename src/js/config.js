@@ -59,7 +59,7 @@ require.config({
 			deps:['search']
 		},
 		blend:{
-			deps:['vList3','bread']
+			deps:['vList3','bread','drop']
 		}
     }
 });

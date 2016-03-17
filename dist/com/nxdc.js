@@ -110,40 +110,59 @@ if (!Object.keys) Object.keys = function(o) {
 }(jQuery,window));
 
 ;(function ($) { //start with a [;] 
-    var self = this;    	
-	//邮件tag
-	function tag(item,index,idx){
-		var index = index||0;
-		var txt = item.label||item.name||item.text||item.value||item;
-		var val = item.val||item.value||txt;
-		var tag = $('<span class="tag-wrapper" data-text='+txt+' data-val='+val+' data-index='+index+' data-serial='+idx+' >\
-		<button type="button" class="close close2" aria-label="Close"><span class="x2" aria-hidden="true">&times;</span></button>\
-		<span class="tag-txt-wrapper" >'+txt+'</span>\
-		</span>');
-		if(item.id) tag.attr("data-id",item.id);//加入id
-		return tag;
-	}
-	/***
-	** 构建类目，并加入tag
-	***/
-	function addClassify(o,idx,dropup){
-		var idx = idx || 0;
-		var li = $("<li class='blend-sel-item' data-serial="+idx+" />");
-		var liclose = '<button type="button" class="close close1" aria-label="Close"><span class="x1"aria-hidden="true">&times;</span></button>';
-		var bread = $('<div class="ndp-bread-wrapper"></div>');
-		//生成面包屑
-		if(o.path) bread.bread({
-			list:o.path,
-			spliter:">"					
-		}).attr("data-path",o.path.join("#"));
-		li.attr("data-path",o.path.join("#"));
-		var tagbox = $('<div class="tag-box"  />');
-		if(o.tags && o.tags.length) o.tags.forEach(function(item,index){
-			tagbox.append(tag(item,index,idx));
-		});
-		li.append(bread).append(tagbox).append(liclose);
-		dropup.append(li);
-	}
+    var self = this;
+	var Tool = {
+		//创建一个tag
+		tag:function (item,idx){
+			var txt = item.label||item.name||item.text||item.value||item;
+			var val = item.val||item.value||txt;
+			var tag = $('<span class="tag-wrapper" data-text='+txt+' data-val='+val+' data-serial='+idx+' >\
+			<button type="button" class="close close2" aria-label="Close"><span class="x2" aria-hidden="true">&times;</span></button>\
+			<span class="tag-txt-wrapper" >'+txt+'</span>\
+			</span>');
+			if(item.id) tag.attr("data-id",item.id);//加入id
+			return tag;
+		},
+		/***
+		** 构建类目，并加入tag
+		***/
+		addClassify:function (o,idx,dropup){
+			var idx = idx || 0;
+			var li = $("<li class='blend-sel-item' data-serial="+idx+" />");
+			var liclose = '<button type="button" class="close close1" aria-label="Close"><span class="x1"aria-hidden="true">&times;</span></button>';
+			var bread = $('<div class="ndp-bread-wrapper"></div>');
+			//生成面包屑
+			if(o.path) bread.bread({
+				list:o.path,
+				spliter:">"					
+			}).attr("data-path",o.path.join("#"));
+			li.attr("data-path",o.path.join("#"));
+			var tagbox = $('<div class="tag-box"  />');
+			if(o.tags && o.tags.length) {
+				o.tags.forEach(function(item,index){
+					tagbox.append(Tool.tag(item,idx));
+				});
+			}else if(o.start && o.end){//如果是日期
+				var arr = [];
+				for(var i=0;i<40;i++){
+					arr.push((1980+i));
+				}
+				var start = $("<div class='ndp-drop-wrapper' name='year-start' />").drop({
+					data:arr,
+					allowInput:true,
+					caret:"glyphicon-menu-right"
+				}).val(o.start);
+				var end = $("<div class='ndp-drop-wrapper' name='year-end' />").drop({
+					data:arr,
+					allowInput:true,
+					caret:"glyphicon-menu-right"
+				}).val(o.end);
+				tagbox.append(start).append("<hr  />").append(end);
+			}
+			li.append(bread).append(tagbox).append(liclose);
+			dropup.append(li);
+		}
+	};
 
 	function Blend(element, options) {
 		var self = this;
@@ -170,19 +189,31 @@ if (!Object.keys) Object.keys = function(o) {
 				_this.drop1.removeClass("hidden");
 			}
 		});
-		
-		_this.input.keyup(function(e){
-			console.log(e.keyCode);
+
+		// mac 系统下，keyup 监听不到 metaKey 事件
+		//监听 粘帖事件，处理请求
+		_this.input.keydown(function(e){
+			if((e.metaKey ||e.ctrlKey) && e.keyCode==86){
+				e.stopImmediatePropagation();
+				_this.paste = true;
+			}
 		});
 		
 		//注册事件：
 		_this.input.on("input",function(e){
 			e.stopImmediatePropagation();
 			var key = $(this).val();
-		
+			if(_this.paste){//标记，表示当前处在 粘帖状态
+				if(_this.config.pastecallback){
+					_this.config.pastecallback(key,_this.dropup,_this.config.seldata,Tool);
+					return false;// 不进行下面的请求了
+				}
+				_this.paste = false;// 取消标注
+			}
 			var opt = _this.config.ajaxOptions;
 			opt.data = {key:key};
-			$.ajax(opt).then(function(result){
+			if(_this.xhr && _this.xhr.abort) _this.xhr.abort();//终止上一次的请求
+			_this.xhr = $.ajax(opt).then(function(result){
 				if(typeof(result)=="string") result = JSON.parse(result);
 				_this.drop1.empty();
 				_this.drop2.addClass("hidden");
@@ -231,21 +262,22 @@ if (!Object.keys) Object.keys = function(o) {
 				var box = li.find(".tag-box");
 				var dat = the.data();
 				if(li.length){//已经存在分类了，
-					var serial = parseInt(li.data("serial"));			
-					box.append(tag(dat,box.children().length,serial));
+					var serial = parseInt(li.data("serial"));// 选中数组中的第几个		
+					box.append(Tool.tag(dat,serial));
 					//加到数据里面去
 					var arr = _this.config.seldata;
-					for(var i=0;i<arr.length;i++){
-						var dt = arr[i];
-						if(dt.path.join("#")==dat.path){
-							dt.tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
-							break;//跳出循环
-						}
-					}					
+					arr[serial].tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
+//					for(var i=0;i<arr.length;i++){
+//						var dt = arr[i];
+//						if(dt.path.join("#")==dat.path){
+//							dt.tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
+//							break;//跳出循环
+//						}
+//					}					
 				}else {
 					dat.path = dat.path.split("#");
 					dat.tags = [dat.name];
-					addClassify(dat,0,_this.dropup);// 出现在DOM上
+					Tool.addClassify(dat,_this.config.seldata.length,_this.dropup);// 出现在DOM上
 					_this.config.seldata.push(dat);	//加入数据中			
 				}
 				the.addClass("selected");
@@ -325,6 +357,9 @@ if (!Object.keys) Object.keys = function(o) {
 			_this.drop2.addClass("hidden");
 			_this.vlist.fold();
 			_this.vlist.hspanel();
+			//取消 年份下拉菜单的focus 信息和 下拉菜单
+			_this.dropup.find(".ndp-drop-wrapper ul.drop-list").addClass("hidden");
+			_this.dropup.find(".ndp-drop-wrapper").removeClass("focus");
 		});
     };
 	
@@ -334,10 +369,10 @@ if (!Object.keys) Object.keys = function(o) {
 	Blend.prototype.selectDAT = function(dat){
 		var _this = this;
 		var li = _this.dropup.find("li[data-path="+dat.path+"]");
-		var box = li.find(".tag-box");
-		if(li.length){//已经存在分类了，
+		if(li.length){//已经存在分类了
+			var box = li.find(".tag-box");
 			var serial = parseInt(li.data("serial"));			
-			box.append(tag(dat,box.children().length,serial));// 放到 DOM树里面去
+			box.append(Tool.tag(dat,serial));// 放到 DOM树里面去
 			//加到数据里面去
 			var arr = _this.config.seldata;
 			for(var i=0;i<arr.length;i++){
@@ -350,7 +385,7 @@ if (!Object.keys) Object.keys = function(o) {
 		}else{
 			dat.path = dat.path.split("#");
 			dat.tags = [{name:dat.name,id:dat.id,audience_size:dat.size}];
-			addClassify(dat,0,_this.dropup);//加到DOM 树，
+			Tool.addClassify(dat,0,_this.dropup);//加到DOM 树，
 			//加到数据里面去
 			_this.config.seldata.push(dat);
 		}						
@@ -393,7 +428,7 @@ if (!Object.keys) Object.keys = function(o) {
 		var cfg = this.config;
 		if(cfg.seldata && cfg.seldata.length){
 			cfg.seldata.forEach(function(o,idx){
-				addClassify(o,idx,_this.dropup);
+				Tool.addClassify(o,idx,_this.dropup);
 			});	
 			this.resizeDropup();
 		}
@@ -442,16 +477,13 @@ if (!Object.keys) Object.keys = function(o) {
 	** outside accessible default setting
 	**/
 	$.fn.blend.defaults = {
-        ajaxOptions: {
+        ajaxOptions: {//输入文字，走的ajax
             type: "GET",
             url: "../data/blend.json",
 			xhrFields: { withCredentials: true}
         },
-		reajaxOption:{//点击手型，出现下拉菜单里面的搜索
-            type: "GET",
-            url: "../data/blend.json",
-			xhrFields: { withCredentials: true}				
-		},
+		pastecallback:null,//粘帖进行的回调
+		reajaxOptions:null,//点击手型，出现下拉菜单里面的搜索
 		recdata:null,//推荐下拉菜单数据
 		seldata:null// 选中上拉菜单数据
 	};
@@ -1110,7 +1142,8 @@ if (!Object.keys) Object.keys = function(o) {
 
 			$(document).click(function(e){
 				if(!(e.target.tagName == "INPUT" && e.target.type == "checkbox")){
-					$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
+					//$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
+					$(".ndp-drop-wrapper ul.drop-list").addClass("hidden");
 				}
 				$(".ndp-drop-wrapper").removeClass("focus");
 			});
@@ -1150,7 +1183,11 @@ if (!Object.keys) Object.keys = function(o) {
         if(_this.config.name){
             _this.peal.find("input").attr("name",_this.config.name);
         }
-
+		
+		//输入框默认是 不允许输入的，设置true 允许输入
+		if(_this.config.allowInput){
+			_this.elem.find("input").removeAttr("readonly");
+		}
 		/**
 		**构建下拉列表
 		**/
@@ -1240,6 +1277,7 @@ if (!Object.keys) Object.keys = function(o) {
         type:1,//1，inline; 2 split dropdown下拉,3 分组显示菜单，组名高亮，不能被点击,4 checkbox,多选
 		name:"drop",//为了便于serialize 设置name属性
         placeholder:null,//提示文字
+		allowInput:false,//是否允许输入
 		textKey:"",//默认猜测，text,label,title,name
 		subKey:"",//默认猜测，sub, son, next
         val:null,//默认值

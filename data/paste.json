@@ -1,0 +1,14 @@
+{
+	"code":0,
+	"desc":"success",
+	"data":[
+		{   "audience_size": 10000,
+			"id": "63",
+			"key": "个人情况 > 学历 > 教育程度 > 副学士学位",
+			"name": "副学士学位",
+			"parent": "个人情况 > 学历 > 教育程度",
+			"path": ["个人情况", "学历", "教育程度"],
+			"type": "education_statuses"
+		 }
+	]
+}
