@@ -338,6 +338,13 @@
 		this.updateOption = function(o){
 			search.config.ajaxOptions = o;
 			return search.elem;
+		};
+		//清空输入框，
+		//清空，下拉菜单
+		this.clear = function(){
+			search.elem.find("input").val("");
+			search.dropmenu.empty().addClass("hidden");
+			return search.elem;
 		}
     }
 	
