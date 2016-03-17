@@ -123,24 +123,31 @@
 					if(typeof(result)=="string") result = JSON.parse(result);
 					_this.dropmenu.empty();
 					result.data.forEach(function(item,index){
-						var val = (typeof(item)=="string")?item:(item.text||item.label||item.name);
+						var txt = (typeof(item)=="string")?item:(item.text||item.label||item.name);
+						var val = item.val || item.value || txt;
+						var id = item.id;
 						var re2 = new RegExp("["+key+"]+","i");	
 						var re = new RegExp(key,"i");
-						if(String(val).match(re)){
-							var ma = String(val).match(re)[0];
-						}else if(String(val).match(re2)){
-							ma = String(val).match(re2)[0];
+						if(String(txt).match(re)){
+							var ma = String(txt).match(re)[0];
+						}else if(String(txt).match(re2)){
+							ma = String(txt).match(re2)[0];
 						}else{
 							ma = "";				
 						}
 						var len = ma.length;
 						var ree = new RegExp(ma,"i");
-						var start = val.search(ree);
-						var arr = val.split("");
+						var start = txt.search(ree);
+						var arr = txt.split("");
 						arr.splice(start,0,"<em>");
 						arr.splice((start+len+1),0,"</em>");
 						var val1 = arr.join("");
-						var li = '<li val="'+val+'" index='+index+' tabIndex='+index+'><a href="#">'+(val1||val)+'</a></li>';
+						if(!_this.config.rowdec){
+							var li = $('<li data-val="'+val+'" data-text='+txt+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a></li>');
+							if(id) li.attr("data-id",id);
+						}else{
+							var li = _this.config.rowdec(item,index,val1);
+						}
 						_this.dropmenu.append(li);
 					});
 					_this.dropmenu.removeClass("hidden");
@@ -148,11 +155,14 @@
 					
 					_this.dropmenu.find("li").unbind("click").click(function(e){
 						e.stopImmediatePropagation();
-						var val = $(this).attr('val'); 
-						_this.input.val(val);
-						if(_this.config.clickhide)_this.dropmenu.addClass("hidden");
-						_this.wrapper.find(".close-cus").removeClass("hide");
-						fireEvent(_this.elem.get(0),"ITEM_SELECT",{text:val});
+						if($(this).hasClass("selected")) return false;
+						if(_this.config.clickhide) _this.input.val($(this).data('text'));//点击之后隐藏
+						if(_this.config.clickhide)_this.dropmenu.addClass("hidden");//点击之后隐藏
+						_this.wrapper.find(".close-cus").removeClass("hide");// 显示右侧的 x 删除号
+						fireEvent(_this.elem.get(0),"ITEM_SELECT",$(this).data());
+						if(!_this.config.clickhide){
+							$(this).addClass("selected");
+						}
 					});	
 		
 				},function(err){
@@ -350,6 +360,7 @@
 		disabled:false,
 		clickhide:true,//点击或者选择 下拉菜单一项，是否消失下拉菜单,true 点击消失，false 点击不消失
 		dropList:[],
+		rowdec:null,// 回调函数  装饰下拉菜单中的一行，数据的呈现
         ajaxOptions: {
             type: "GET",
             url: "../data/search.json",

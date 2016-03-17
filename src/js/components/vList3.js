@@ -77,7 +77,7 @@
 		/***
 		**点击叶子
 		**/	
-		_this.elem.find("li.list-leaf").click(function(e){
+		_this.elem.find("li.list-leaf:not(:has(.do-search))").click(function(e){
 			e.stopImmediatePropagation();
 			if($(this).hasClass("selected")) return false;
 			$(this).addClass("active");
@@ -118,7 +118,14 @@
 		_this.searchx = $("<div class='ndp-search-wrapper'  />").search({
 			type:3,
 			clickhide:false,
-			ajaxOptions: _this.config.ajaxOption
+			ajaxOptions: _this.config.ajaxOption,
+			rowdec:function(o,index,val1){
+				var txt = (typeof(o)=="string")?o:(o.text||o.label||o.name);
+				var val = o.val || o.value || txt;
+				var id = o.id;
+				var asize = o.audienceSize||o.audience_size;
+				return  '<li  class="search-row-cus" data-val="'+val+'" data-text='+txt+' data-path='+o.path.join("#")+' data-size='+asize+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a><span class="aud-class">'+asize+'</span></li>';
+			}
 		});
 		_this.sepanel.append(_this.searchx).append("<button class='btn btn-default btn-search'>返回列表</button>");
 		_this.elem.append(_this.sepanel);

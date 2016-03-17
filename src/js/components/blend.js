@@ -60,6 +60,10 @@
 			}
 		});
 		
+		_this.input.keyup(function(e){
+			console.log(e.keyCode);
+		});
+		
 		//注册事件：
 		_this.input.on("input",function(e){
 			e.stopImmediatePropagation();
@@ -183,33 +187,21 @@
 			_this.vlist.hspanel();
 		});
 		
+		/****
+		** vlist3 里面的 searchx 第三方抛出的事件
+		****/
+		this.vlist.on("ITEM_SELECT",function(e){
+			var dat = e.originalEvent.data;
+			_this.selectDAT(dat);
+		});
+		
 		/***
 		** 推荐里面的下拉菜单, 加入数据
 		**/
 		this.vlist.on("ITEM_CLICK",function(e){
 			var dat = e.originalEvent.data;
 			if(!dat.search){
-				var li = _this.dropup.find("li[data-path="+dat.path+"]");
-				var box = li.find(".tag-box");
-				if(li.length){//已经存在分类了，
-					var serial = parseInt(li.data("serial"));			
-					box.append(tag(dat,box.children().length,serial));// 放到 DOM树里面去
-					//加到数据里面去
-					var arr = _this.config.seldata;
-					for(var i=0;i<arr.length;i++){
-						var dt = arr[i];
-						if(dt.path.join("#")==dat.path){
-							dt.tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
-							break;//跳出循环
-						}
-					}
-				}else{
-					dat.path = dat.path.split("#");
-					dat.tags = [{name:dat.name,id:dat.id,audience_size:dat.size}];
-					addClassify(dat,0,_this.dropup);//加到DOM 树，
-					//加到数据里面去
-					_this.config.seldata.push(dat);
-				}				
+				_this.selectDAT(dat);				
 			}
 		});
 		
@@ -224,6 +216,35 @@
 			_this.vlist.hspanel();
 		});
     };
+	
+	/***
+	**
+	***/
+	Blend.prototype.selectDAT = function(dat){
+		var _this = this;
+		var li = _this.dropup.find("li[data-path="+dat.path+"]");
+		var box = li.find(".tag-box");
+		if(li.length){//已经存在分类了，
+			var serial = parseInt(li.data("serial"));			
+			box.append(tag(dat,box.children().length,serial));// 放到 DOM树里面去
+			//加到数据里面去
+			var arr = _this.config.seldata;
+			for(var i=0;i<arr.length;i++){
+				var dt = arr[i];
+				if(dt.path.join("#")==dat.path){
+					dt.tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
+					break;//跳出循环
+				}
+			}
+		}else{
+			dat.path = dat.path.split("#");
+			dat.tags = [{name:dat.name,id:dat.id,audience_size:dat.size}];
+			addClassify(dat,0,_this.dropup);//加到DOM 树，
+			//加到数据里面去
+			_this.config.seldata.push(dat);
+		}						
+	}
+	
 	
 	/****
 	** 重新设置，向上弹出部分的位置信息，top  

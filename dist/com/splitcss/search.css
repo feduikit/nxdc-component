@@ -216,3 +216,38 @@
     z-index: 101;
     padding-top: 2px;
 }
+/****
+** 用户自定义搜索结果样式
+****/
+.ndp-search-wrapper .search-row-cus{
+	position: relative;
+	height: 36px;
+	padding: 0;
+	margin: 0;
+}
+
+/****
+**选中之后的字体 颜色，鼠标
+****/
+.ndp-search-wrapper .dropdown-menu-cus>li.selected>a{
+	cursor: not-allowed;
+	color:#ccc;
+}
+
+.ndp-search-wrapper .dropdown-menu-cus>li>a{
+	position: relative;
+	height: 100%;
+	padding: 0;
+	padding-left: 20px;
+	line-height: 36px;
+}
+
+/****
+** 设置 人数字体we
+****/
+.search-row-cus .aud-class{
+	position: absolute;
+	right: 20px;
+	top:10px;
+}
+
