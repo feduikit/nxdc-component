@@ -302,7 +302,7 @@
 		this.dropup = $('<ul class="dropdown-menu blend-dropup" >');
 		this.vlist = this.drop2.vList3({
 			data:_this.config.recdata,
-			ajaxOption:_this.config.reajaxOption
+			ajaxOption:_this.config.reajaxOptions
 		});//实例化推荐下拉菜单
 		
 		this.downwrapper.append(this.input).append(this.icon).append(this.drop1).append(this.drop2);

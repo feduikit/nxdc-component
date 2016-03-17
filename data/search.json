@@ -2,10 +2,74 @@
 	"code":0,
 	"desc":"success",
 	"data":[
-		{"text":"hello"},
-		{"text":"hello 123"},
-		{"text":"as hello"},
-		{"text":"china hello"},
-		{"text":"he is llo"}
+		{   "audience_size": 10000,
+			"id": "3",
+			"key": "个人情况 > 学历 > 教育程度 > 副学士学位",
+			"name": "副学士学位",
+			"parent": "个人情况 > 学历 > 教育程度",
+			"path": ["个人情况", "学历", "教育程度"],
+			"type": "education_statuses"
+		 },
+		 {  "audience_size": 896655,
+			"id": "2",
+			"key": "个人情况 > 学历 > 教育程度 > 硕士",
+			"name": "硕士",
+			"parent": "个人情况 > 学历 > 教育程度",
+			"path": ["个人情况", "学历", "教育程度"],
+			"type": "education_statuses"
+		 },
+		 {  
+			"audience_size": 320000,
+			"id": "1",
+			"key": "个人情况 > 学历 > 教育程度 > 博士",
+			"name": "博士",
+			"parent": "个人情况 > 学历 > 教育程度",
+			"path": ["个人情况", "学历", "教育程度"],
+			"type": "education_statuses"
+		 },					
+		 {
+			"audience_size": 0,
+			"id": "130",
+			"key": "兴趣 > 健康与养生 > 跑步",
+			"name": "跑步",
+			"parent": "兴趣 > 健康与养生",
+			"path": ["兴趣", "健康与养生"],
+			"type": "healthy"							 
+		 },					
+		 {
+			"audience_size": 0,
+			"id": "131",
+			"key": "兴趣 > 健康与养生 > 马拉松",
+			"name": "马拉松",
+			"parent": "兴趣 > 健康与养生",
+			"path": ["兴趣", "健康与养生"],
+			"type": "healthy"							 
+		 },					
+		 {
+			"audience_size": 0,
+			"id": "132",
+			"key": "兴趣 > 健康与养生 > 马拉松",
+			"name": "游泳",
+			"parent": "兴趣>健康与养生",
+			"path": ["兴趣", "健康与养生"],
+			"type": "healthy"							 
+		 },					
+		 {
+			"audience_size": 90990,
+			"id": "136",
+			"key": "化妆 > 化妆品 > 欧莱雅",
+			"name": "欧莱雅",
+			"parent": "化妆 > 化妆品",
+			"path": ["化妆", "化妆品"],
+			"type": "makeup"							 
+		 },	{
+			"audience_size": 60990,
+			"id": "137",
+			"key": "化妆 > 化妆品 > 欧莱雅",
+			"name": "碧欧泉",
+			"parent": "化妆>化妆品",
+			"path": ["化妆", "化妆品"],
+			"type": "makeup"							 
+		 }
 	]
 }

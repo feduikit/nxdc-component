@@ -155,7 +155,7 @@ require(['./config'],function(){
 				recdata:rec,//推荐下拉菜单数据，点击手型
 				reajaxOptions:{//点击手型，出现下拉菜单里面的搜索
 					type: "GET",
-					url: "../data/blend.json",
+					url: "../data/search.json",
 					xhrFields: { withCredentials: true}				
 				},
 				//粘帖事件，配置的回调

@@ -413,7 +413,7 @@ if (!Object.keys) Object.keys = function(o) {
 		this.dropup = $('<ul class="dropdown-menu blend-dropup" >');
 		this.vlist = this.drop2.vList3({
 			data:_this.config.recdata,
-			ajaxOption:_this.config.reajaxOption
+			ajaxOption:_this.config.reajaxOptions
 		});//实例化推荐下拉菜单
 		
 		this.downwrapper.append(this.input).append(this.icon).append(this.drop1).append(this.drop2);
@@ -6341,6 +6341,7 @@ if (!Object.keys) Object.keys = function(o) {
 				var val = o.val || o.value || txt;
 				var id = o.id;
 				var asize = o.audienceSize||o.audience_size;
+				console.log(o);
 				return  '<li  class="search-row-cus" data-val="'+val+'" data-text='+txt+' data-path='+o.path.join("#")+' data-size='+asize+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a><span class="aud-class">'+asize+'</span></li>';
 			}
 		});

@@ -124,6 +124,7 @@
 				var val = o.val || o.value || txt;
 				var id = o.id;
 				var asize = o.audienceSize||o.audience_size;
+				console.log(o);
 				return  '<li  class="search-row-cus" data-val="'+val+'" data-text='+txt+' data-path='+o.path.join("#")+' data-size='+asize+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a><span class="aud-class">'+asize+'</span></li>';
 			}
 		});
