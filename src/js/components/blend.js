@@ -166,7 +166,9 @@
 				}else {
 					dat.path = dat.path.split("#");
 					dat.tags = [dat.name];
-					Tool.addClassify(dat,_this.config.seldata.length,_this.dropup);// 出现在DOM上
+					var serial = (_this.config.seldata &&_this.config.seldata.length)||0
+					Tool.addClassify(dat,serial,_this.dropup);// 出现在DOM上
+					if(!_this.config.seldata) _this.config.seldata = [];
 					_this.config.seldata.push(dat);	//加入数据中			
 				}
 				the.addClass("selected");
@@ -276,6 +278,7 @@
 			dat.tags = [{name:dat.name,id:dat.id,audience_size:dat.size}];
 			Tool.addClassify(dat,0,_this.dropup);//加到DOM 树，
 			//加到数据里面去
+			if(!_this.config.seldata) _this.config.seldata = [];
 			_this.config.seldata.push(dat);
 		}						
 	}
@@ -319,7 +322,6 @@
 			cfg.seldata.forEach(function(o,idx){
 				Tool.addClassify(o,idx,_this.dropup);
 			});	
-			this.resizeDropup();
 		}
 	}
     /**
@@ -374,6 +376,6 @@
 		pastecallback:null,//粘帖进行的回调
 		reajaxOptions:null,//点击手型，出现下拉菜单里面的搜索
 		recdata:null,//推荐下拉菜单数据
-		seldata:null// 选中上拉菜单数据
+		seldata:[]// 选中上拉菜单数据
 	};
 }(jQuery));

@@ -277,7 +277,9 @@ if (!Object.keys) Object.keys = function(o) {
 				}else {
 					dat.path = dat.path.split("#");
 					dat.tags = [dat.name];
-					Tool.addClassify(dat,_this.config.seldata.length,_this.dropup);// 出现在DOM上
+					var serial = (_this.config.seldata &&_this.config.seldata.length)||0
+					Tool.addClassify(dat,serial,_this.dropup);// 出现在DOM上
+					if(!_this.config.seldata) _this.config.seldata = [];
 					_this.config.seldata.push(dat);	//加入数据中			
 				}
 				the.addClass("selected");
@@ -387,6 +389,7 @@ if (!Object.keys) Object.keys = function(o) {
 			dat.tags = [{name:dat.name,id:dat.id,audience_size:dat.size}];
 			Tool.addClassify(dat,0,_this.dropup);//加到DOM 树，
 			//加到数据里面去
+			if(!_this.config.seldata) _this.config.seldata = [];
 			_this.config.seldata.push(dat);
 		}						
 	}
@@ -430,7 +433,6 @@ if (!Object.keys) Object.keys = function(o) {
 			cfg.seldata.forEach(function(o,idx){
 				Tool.addClassify(o,idx,_this.dropup);
 			});	
-			this.resizeDropup();
 		}
 	}
     /**
@@ -485,7 +487,7 @@ if (!Object.keys) Object.keys = function(o) {
 		pastecallback:null,//粘帖进行的回调
 		reajaxOptions:null,//点击手型，出现下拉菜单里面的搜索
 		recdata:null,//推荐下拉菜单数据
-		seldata:null// 选中上拉菜单数据
+		seldata:[]// 选中上拉菜单数据
 	};
 }(jQuery));
 
@@ -1105,9 +1107,10 @@ if (!Object.keys) Object.keys = function(o) {
 			/**
 			**点击 全选
 			**/
-			_this.list.find("li.all-banner>input[type=checkbox]").change(function(){
-				_this.list.find("li.checkbox-item>").prop("checked",this.checked);
-			});
+//2016-3-18 取消all			
+//			_this.list.find("li.all-banner>input[type=checkbox]").change(function(){
+//				_this.list.find("li.checkbox-item>").prop("checked",this.checked);
+//			});
 
 			/**
 			** 点击单个 item 行
@@ -1160,10 +1163,11 @@ if (!Object.keys) Object.keys = function(o) {
         this.list = $("<ul class='drop-list hidden' tabIndex='-1' tabIndex='-1' />");
         this.peal.html('<input type="text" readonly="true"><span class="caret-wrapper" tabIndex=-1><span class="caret glyphicon '+_this.config.caret+'"></span></span>');
         this.elem.append(_this.peal).append(_this.list);
-		if(_this.config.type == 4){
-			var all = $("<li class='drop-one-item checkbox-item all-banner'><span>All</span><input type='checkbox'/></li>");
-			this.list.append(all);
-		}
+// 2016-3-18 去掉 all 按钮		
+//		if(_this.config.type == 4){
+//			var all = $("<li class='drop-one-item checkbox-item all-banner'><span>All</span><input type='checkbox'/></li>");
+//			this.list.append(all);
+//		}
 	};
 
 	/***
@@ -1277,7 +1281,7 @@ if (!Object.keys) Object.keys = function(o) {
         type:1,//1，inline; 2 split dropdown下拉,3 分组显示菜单，组名高亮，不能被点击,4 checkbox,多选
 		name:"drop",//为了便于serialize 设置name属性
         placeholder:null,//提示文字
-		allowInput:false,//是否允许输入
+		allowInput:false,//是否允许输入 默认情况下不允许输入
 		textKey:"",//默认猜测，text,label,title,name
 		subKey:"",//默认猜测，sub, son, next
         val:null,//默认值
@@ -1432,6 +1436,7 @@ if (!Object.keys) Object.keys = function(o) {
 		data:[]
 	};
 }(jQuery));
+
 
 ;(function ($) { //start with a [;] because if our code is combine or minification  with other code,AND other code not terminated with [;] then it will not infect ours.
     var self = this; 

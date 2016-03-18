@@ -186,9 +186,10 @@
 			/**
 			**点击 全选
 			**/
-			_this.list.find("li.all-banner>input[type=checkbox]").change(function(){
-				_this.list.find("li.checkbox-item>").prop("checked",this.checked);
-			});
+//2016-3-18 取消all			
+//			_this.list.find("li.all-banner>input[type=checkbox]").change(function(){
+//				_this.list.find("li.checkbox-item>").prop("checked",this.checked);
+//			});
 
 			/**
 			** 点击单个 item 行
@@ -241,10 +242,11 @@
         this.list = $("<ul class='drop-list hidden' tabIndex='-1' tabIndex='-1' />");
         this.peal.html('<input type="text" readonly="true"><span class="caret-wrapper" tabIndex=-1><span class="caret glyphicon '+_this.config.caret+'"></span></span>');
         this.elem.append(_this.peal).append(_this.list);
-		if(_this.config.type == 4){
-			var all = $("<li class='drop-one-item checkbox-item all-banner'><span>All</span><input type='checkbox'/></li>");
-			this.list.append(all);
-		}
+// 2016-3-18 去掉 all 按钮		
+//		if(_this.config.type == 4){
+//			var all = $("<li class='drop-one-item checkbox-item all-banner'><span>All</span><input type='checkbox'/></li>");
+//			this.list.append(all);
+//		}
 	};
 
 	/***
@@ -358,7 +360,7 @@
         type:1,//1，inline; 2 split dropdown下拉,3 分组显示菜单，组名高亮，不能被点击,4 checkbox,多选
 		name:"drop",//为了便于serialize 设置name属性
         placeholder:null,//提示文字
-		allowInput:false,//是否允许输入
+		allowInput:false,//是否允许输入 默认情况下不允许输入
 		textKey:"",//默认猜测，text,label,title,name
 		subKey:"",//默认猜测，sub, son, next
         val:null,//默认值
