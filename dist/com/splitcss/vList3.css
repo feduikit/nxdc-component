@@ -69,6 +69,13 @@
 	background-color: white;
 	overflow: auto;
 }
+
+.ndp-vList3-wrapper .tree-area{
+	max-height: 295px;
+	overflow: auto;
+	background-color: #fff;
+}
+
 .ndp-vList3-wrapper .search-panel:before{
 	position: absolute;
 	font-family: 'Glyphicons Halflings';
