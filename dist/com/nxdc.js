@@ -6495,7 +6495,9 @@ if (!Object.keys) Object.keys = function(o) {
 	VList3.prototype.concrate = function(data){
 		var _this = this;
 		var cfg = _this.config;
-		recursive(cfg.data,cfg,_this.elem,0);
+		var _treeArae = $("<div class='tree-area'></div>");
+		_this.elem.append(_treeArae);
+		recursive(cfg.data,cfg,_treeArae,0);
 		_this.sepanel = $("<div class='search-panel hidden' data-content='这里填写你想提示的内容' />");
 		_this.searchx = $("<div class='ndp-search-wrapper'  />").search({
 			type:3,
