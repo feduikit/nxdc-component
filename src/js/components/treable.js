@@ -184,17 +184,17 @@
 			fireEvent(_this.elem.get(0),"STATUS_CHANGE",{status:the.hasClass("active")});
 		});
 		
-		// 图表层 展开/隐藏
-		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("click").click(function(e){
-			e.stopImmediatePropagation();
-			if(!$(this).hasClass("focus")){
-				_this.elem.find(".treable-row-wrapper>.treable-row.focus").removeClass("focus");
-				$(this).addClass("focus");
-			}else{
-				$(this).removeClass("focus");
-			}
-			_this.toolbar.toggleClass("active",$(this).hasClass("focus"));
-		});
+		// 点击 选中一行， 显示 toolbar   2016-3-18 取消
+//		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("click").click(function(e){
+//			e.stopImmediatePropagation();
+//			if(!$(this).hasClass("focus")){
+//				_this.elem.find(".treable-row-wrapper>.treable-row.focus").removeClass("focus");
+//				$(this).addClass("focus");
+//			}else{
+//				$(this).removeClass("focus");
+//			}
+//			_this.toolbar.toggleClass("active",$(this).hasClass("focus"));
+//		});
 		
 		/*** 
 		** 鼠标离开一行
@@ -227,7 +227,9 @@
 			_this.elem.find(".treable-row-wrapper>.treable-row:not(.focus)+.chart-wrapper.open").removeClass("open");//关闭其他的
 		});	
 		
-		_this.elem.find("i.font-icon-money").click(function(e){
+		
+		//点击 文字旁边的 钱 icon  
+		_this.elem.find("i.font-icon-money").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
 			var dp = $(this).parents(".treable-row:first").find(".dropdown-menu-money").toggleClass("hidden");
 			var icon = Help.fixPageXY($(this));
@@ -387,16 +389,16 @@
 		});		
 		
 		/***
-		** 点击工具栏按钮，发出事件。
+		** 点击工具栏按钮，发出事件。 2016-3-18号 不再显示toolbar
 		***/		
-		$(".sutable-toolbar").click(function(e){
-			var ta = e.target;
-			var id = ta.getAttribute("id");
-			var val = ta.getAttribute("val");
-			if(id && val){
-				fireEvent(ta,"TOOLBAR_CLICK",{id:id,val:val});
-			}
-		});
+//		$(".sutable-toolbar").click(function(e){
+//			var ta = e.target;
+//			var id = ta.getAttribute("id");
+//			var val = ta.getAttribute("val");
+//			if(id && val){
+//				fireEvent(ta,"TOOLBAR_CLICK",{id:id,val:val});
+//			}
+//		});
 		
 		//body 里面的监听
 		_this.listenBody();

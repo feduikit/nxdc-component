@@ -3,6 +3,7 @@
 	var Tool = {
 		//创建一个tag
 		tag:function (item,idx){
+			console.log(item);
 			var txt = item.label||item.name||item.text||item.value||item;
 			var val = item.val||item.value||txt;
 			var tag = $('<span class="tag-wrapper" data-text='+txt+' data-val='+val+' data-serial='+idx+' >\
@@ -20,6 +21,7 @@
 			var li = $("<li class='blend-sel-item' data-serial="+idx+" />");
 			var liclose = '<button type="button" class="close close1" aria-label="Close"><span class="x1"aria-hidden="true">&times;</span></button>';
 			var bread = $('<div class="ndp-bread-wrapper"></div>');
+			console.log(o);
 			//生成面包屑
 			if(o.path) bread.bread({
 				list:o.path,

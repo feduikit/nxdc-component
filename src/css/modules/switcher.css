@@ -35,7 +35,7 @@ input.scheckbox[type='checkbox']{
 }
 
 .switcher>label.active:before{
-	background-color: #5bd66a;
+	background-color: #5f8f35;
 	
 }
 .switcher>label.active:after{

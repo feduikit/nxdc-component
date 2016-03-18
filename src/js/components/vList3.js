@@ -125,7 +125,7 @@
 				var val = o.val || o.value || txt;
 				var id = o.id;
 				var asize = o.audienceSize||o.audience_size;
-				return  '<li  class="search-row-cus" data-val="'+val+'" data-text='+txt+' data-path='+(o.path.join("#").replace(/\s/g,""))+' data-size='+asize+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a><span class="aud-class">'+asize+'</span></li>';
+				return  '<li  class="search-row-cus" data-val="'+val+'" data-name='+txt+' data-text='+txt+' data-path='+(o.path.join("#").replace(/\s/g,""))+' data-size='+asize+' index='+index+' tabIndex='+index+' data-id='+id+' ><a href="#">'+(val1||txt)+'</a><span class="aud-class">'+asize+'</span></li>';
 			}
 		});
 		_this.sepanel.append(_this.searchx).append("<button class='btn btn-default btn-search'>返回列表</button>");
