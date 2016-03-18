@@ -58,9 +58,12 @@
 }
 
 
-.sidepanel-panel .close {
+.sidepanel-panel .panel-heading .close {
     margin-top: -2px;
 }
-.sidepanel-panel .close span {
+
+.sidepanel-panel .panel-heading .close span {
     font-size: 24px;
 }
+
+
