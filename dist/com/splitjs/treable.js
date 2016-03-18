@@ -23,7 +23,7 @@
 			var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group;
 			var cols = o[cfg.textKey]||o.text||o.label||o.title||o.name;
 			var id = o.id;
-			var li = $("<li class='sutable-item'  deep="+deep+" />");
+			var li = $("<li class='treable-item'  deep="+deep+" />");
 			if(id){
 				li.attr('data-id',id);
 			}
@@ -32,6 +32,16 @@
 			if(deep==1){//对第一级加租
 				row.addClass('treable-row-wrapper-parent');
 			}
+			//添加 弹出下拉菜单，点击money 符号的时候
+			var html = $('<ul class="dropdown-menu dropdown-menu-money hidden" />');		
+			cfg.todata.forEach(function(item,index){
+				var txt = item.name||item.label||item.text||item;
+				var val = item.val||item.value||txt;
+				var id = item.id;
+				var li = '<li data-id='+id+' data-txt='+txt+' data-val='+val+' ><a href="javascript:void(0)">'+txt+'</a></li>';
+				html.append(li);
+			});
+			row.append(html);
 			var chartWrapper = $("<div class='chart-wrapper' />");//图表层
 			var chartClose = '<button type="button" class="close chart-close"><span aria-hidden="true">&times;</span></button>';//图标层关闭按钮
 			var chart = $('<div class="ndp-tab-wrapper" deep='+deep+' index='+i+' role="table" ></div>');
@@ -59,6 +69,9 @@
 					if(typeof(col)=="object"){
 						var val = col.label||col.text||col.name;
 						column.attr({"data-val":val,title:val}).html(val);
+						if(idx == 1){
+							column.append("<i class='font-icon font-icon-money'></i>");
+						}
 					}else{
 						column.attr({"data-val":val,"title":val}).html(col);
 					}
@@ -81,6 +94,18 @@
 			ul.append(li);
 		}
 		fa.append(ul);			
+		},
+		fixPageXY: function(the){
+			var html = document.documentElement;
+			var body = document.body;
+			var the = (the.get(0)||the).getBoundingClientRect();
+			var a = {};
+			a.pageX = parseFloat(the.left) + (html.scrollLeft || body && body.scrollLeft || 0);
+			a.pageX -= html.clientLeft || 0;
+
+			a.pageY = parseFloat(the.top) + (html.scrollTop || body && body.scrollTop || 0);
+			a.pageY -= html.clientTop || 0;
+			return a;
 		}
 	};
 	
@@ -137,9 +162,9 @@
 		**/
 		_this.elem.find("span.btn-plus-minus").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
-			var the = $(this).parents("li.sutable-item:first");
+			var the = $(this).parents("li.treable-item:first");
 			the.toggleClass("open");
-			the.find("li.sutable-item").toggleClass("open",the.hasClass("open"));
+			the.find("li.treable-item").toggleClass("open",the.hasClass("open"));
 		});
 		
 		_this.elem.find(".sutable-col-status>.switcher").click(function(e){
@@ -153,22 +178,45 @@
 			var the = $(this).parent();
 			the.toggleClass("active");
 			if(!the.hasClass("active")){
-				var fa = $(this).parents(".sutable-item:first");
+				var fa = $(this).parents(".treable-item:first");
 				fa.find("ul .switcher>label").removeClass("active");
 			}
 			fireEvent(_this.elem.get(0),"STATUS_CHANGE",{status:the.hasClass("active")});
 		});
 		
-		// 图表层 展开/隐藏
-		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("click").click(function(e){
+		// 点击 选中一行， 显示 toolbar   2016-3-18 取消
+//		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("click").click(function(e){
+//			e.stopImmediatePropagation();
+//			if(!$(this).hasClass("focus")){
+//				_this.elem.find(".treable-row-wrapper>.treable-row.focus").removeClass("focus");
+//				$(this).addClass("focus");
+//			}else{
+//				$(this).removeClass("focus");
+//			}
+//			_this.toolbar.toggleClass("active",$(this).hasClass("focus"));
+//		});
+		
+		/*** 
+		** 鼠标离开一行
+		****/
+		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("mouseleave").mouseleave(function(e){
+			$(this).find(".dropdown-menu-money").addClass("hidden");	
+		});
+		
+		/***
+		** 点击了，下拉菜单中的选项
+		***/
+		_this.elem.find(".treable-row>.dropdown-menu-money>li").click(function(e){
 			e.stopImmediatePropagation();
-			if(!$(this).hasClass("focus")){
-				_this.elem.find(".treable-row-wrapper>.treable-row.focus").removeClass("focus");
-				$(this).addClass("focus");
-			}else{
-				$(this).removeClass("focus");
+			$(this).parent().addClass("hidden");
+			var the = $(this);
+			var id = the.data("id");
+			var val = the.data("val");
+			if(id=="chart"){
+				_this.elem.find(".chart-wrapper.open").removeClass("open");
+				$(this).parents(".treable-row:first").siblings(".chart-wrapper").addClass("open");
 			}
-			_this.toolbar.toggleClass("active",$(this).hasClass("focus"));
+			fireEvent(_this.elem.get(0),"TOOLBAR_CLICK",{id:id,val:val});
 		});
 		
 		/***
@@ -177,7 +225,19 @@
 		_this.elem.find("#chart").unbind("click").click(function(e){
 			_this.elem.find(".treable-row-wrapper>.treable-row.focus+.chart-wrapper").addClass("open");
 			_this.elem.find(".treable-row-wrapper>.treable-row:not(.focus)+.chart-wrapper.open").removeClass("open");//关闭其他的
-		});		
+		});	
+		
+		
+		//点击 文字旁边的 钱 icon  
+		_this.elem.find("i.font-icon-money").unbind("click").click(function(e){
+			e.stopImmediatePropagation();
+			var dp = $(this).parents(".treable-row:first").find(".dropdown-menu-money").toggleClass("hidden");
+			var icon = Help.fixPageXY($(this));
+			var offParent = Help.fixPageXY($(this).parents(".treable-row:first"));
+			var x = icon.pageX - offParent.pageX;
+			//var y = icon.pageY - offParent.pageY;
+			dp.css({"top":(30)+"px","left":(x+5)+"px"});
+		});
 	};
 	
 	/**
@@ -329,16 +389,16 @@
 		});		
 		
 		/***
-		** 点击工具栏按钮，发出事件。
+		** 点击工具栏按钮，发出事件。 2016-3-18号 不再显示toolbar
 		***/		
-		$(".sutable-toolbar").click(function(e){
-			var ta = e.target;
-			var id = ta.getAttribute("id");
-			var val = ta.getAttribute("val");
-			if(id && val){
-				fireEvent(ta,"TOOLBAR_CLICK",{id:id,val:val});
-			}
-		});
+//		$(".sutable-toolbar").click(function(e){
+//			var ta = e.target;
+//			var id = ta.getAttribute("id");
+//			var val = ta.getAttribute("val");
+//			if(id && val){
+//				fireEvent(ta,"TOOLBAR_CLICK",{id:id,val:val});
+//			}
+//		});
 		
 		//body 里面的监听
 		_this.listenBody();
@@ -439,9 +499,9 @@
 		var w = w||this.elem.width();
 		var dom = this.elem
 		var cfg = this.config;
-		var rw  = w - 100 - 100 - 40;//100 第一列的宽度， 100 名称咧的宽度,40 : margin-left
+		var rw  = w - 70 - 130 - 40;//80 第一列的宽度， 120 名称咧的宽度,40 : margin-left
 		var ew = rw/(cfg.head.length - 2);
-		cfg.colDims = [100,100];//列宽度 存储 
+		cfg.colDims = [70,130];//列宽度 存储 
 		if(ew>50){
 			dom.find(".sutable-col:gt(1)").css("width",ew+"px").each(function(){
 				cfg.colDims.push(ew);
@@ -474,14 +534,7 @@
 	** factory Class
     **@param {Drop} drop :  instacne of the plugin builder
     **/
-    function exchange(treable){
-        /**
-        **@param {Object} msg {type:"类型"}
-        **/
-        this.manipulate = function(msg){
-            
-        };
-		
+    function exchange(treable){		
 		//不能使用直接 == treable.toolbar的方式，因为，传入的 this 变了
 		this.toolbar = function(bool){
 			treable.toolbar.toggleClass("active",bool);
@@ -499,8 +552,8 @@
 		**@param {Boolean} bool  true:折叠，false展开
 		**/
 		this.fold = function(bool){
-			var rows = treable.elem.find(".treable-body>.sutable-item");
-			rows.toggleClass("open");
+			var rows = treable.elem.find(".treable-body>.treable-item");
+			rows.toggleClass("open",bool);
 			return treable.elem;
 		}
 		

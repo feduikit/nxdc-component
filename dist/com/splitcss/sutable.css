@@ -1,14 +1,14 @@
-.tooltip-cus{
+.ndp-sutable-wrapper .tooltip-cus{
 	left:0;
 	top:0;
 	cursor: default;
 }
-.tooltip.bottom .tooltip-arrow{
+.ndp-sutable-wrapper .tooltip.bottom .tooltip-arrow{
 	left:18px;
 	border-bottom-color:white;
 }
 
-.tooltip-inner{
+.ndp-sutable-wrapper .tooltip-inner{
 	min-width: 100px;
 	border-radius: 2px;
 	border:1px solid #e0e0e;

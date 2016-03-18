@@ -93,7 +93,7 @@
         var _this = this;
 		var cfg = this.config;
 		_this.button.attr("id",cfg.id);
-		_this.button.append(cfg.caret);
+		if(cfg.showcaret)_this.button.append(cfg.caret);
 		_this.hold.html(typeof(cfg.label)=="string"?cfg.label:cfg.label.text||cfg.label.label||cfg.label.name);
 		this.elem.append(_this.button);
 		recursive(cfg.data,cfg,_this.elem,0);
@@ -139,6 +139,7 @@
 	$.fn.drop2.defaults = {
 		type:1,//1 普通，2 选择之后更新的 文字下拉菜单，3 图标提示类popover  气泡
 		id:"drop"+(new Date().valueOf()),
+		showcaret:true,//默认显示caret
 		caret:"<i class='glyphicon glyphicon-menu-down'></i>",
 		label:"undefined",
 		data:[]

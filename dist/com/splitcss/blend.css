@@ -97,6 +97,7 @@
 }
 .blend-classify-drop.search-mode{
 	height: 300px;
+	overflow: hidden;/*** 修复 search-mod 出现滚动条 ***/
 }
 
 /****

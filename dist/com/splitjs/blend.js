@@ -3,6 +3,7 @@
 	var Tool = {
 		//创建一个tag
 		tag:function (item,idx){
+			console.log(item);
 			var txt = item.label||item.name||item.text||item.value||item;
 			var val = item.val||item.value||txt;
 			var tag = $('<span class="tag-wrapper" data-text='+txt+' data-val='+val+' data-serial='+idx+' >\
@@ -20,12 +21,13 @@
 			var li = $("<li class='blend-sel-item' data-serial="+idx+" />");
 			var liclose = '<button type="button" class="close close1" aria-label="Close"><span class="x1"aria-hidden="true">&times;</span></button>';
 			var bread = $('<div class="ndp-bread-wrapper"></div>');
+			console.log(o);
 			//生成面包屑
 			if(o.path) bread.bread({
 				list:o.path,
 				spliter:">"					
-			}).attr("data-path",o.path.join("#"));
-			li.attr("data-path",o.path.join("#"));
+			}).attr("data-path",o.path.join("#").replace(/\s/g,""));
+			li.attr("data-path",o.path.join("#").replace(/\s/g,""));
 			var tagbox = $('<div class="tag-box"  />');
 			if(o.tags && o.tags.length) {
 				o.tags.forEach(function(item,index){
@@ -269,7 +271,7 @@
 	***/
 	Blend.prototype.selectDAT = function(dat){
 		var _this = this;
-		var li = _this.dropup.find("li[data-path="+dat.path+"]");
+		var li = _this.dropup.find("li[data-path='"+dat.path+"']");
 		if(li.length){//已经存在分类了
 			var box = li.find(".tag-box");
 			var serial = parseInt(li.data("serial"));			
@@ -318,6 +320,7 @@
 			ajaxOption:_this.config.reajaxOptions
 		});//实例化推荐下拉菜单
 		
+		this.vlist.updateTip(_this.config.tip);//更新搜索提示文字
 		this.downwrapper.append(this.input).append(this.icon).append(this.drop1).append(this.drop2);
 		this.elem.append(this.dropup).append(this.downwrapper);
 	};
@@ -362,7 +365,13 @@
 			blend.config.reajaxOption = o;
 			blend.vlist.updateOption(o);
 			return blend.elem;
-		}	
+		};
+		
+		// 更新 内部搜索，底部显示的提示内容
+		this.updateTip = function(txt){
+			blend.vlist.updateTip(txt);
+			return blend.elem;
+		}
     }
 	
 	
@@ -378,6 +387,7 @@
 	** outside accessible default setting
 	**/
 	$.fn.blend.defaults = {
+		tip:"搜索国家地理信息，请输入关键字",
         ajaxOptions: {//输入文字，走的ajax
             type: "GET",
             url: "../data/blend.json",

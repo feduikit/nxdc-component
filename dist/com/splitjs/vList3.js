@@ -115,7 +115,7 @@
 		var _this = this;
 		var cfg = _this.config;
 		recursive(cfg.data,cfg,_this.elem,0);
-		_this.sepanel = $("<div class='search-panel hidden' />");
+		_this.sepanel = $("<div class='search-panel hidden' data-content='这里填写你想提示的内容' />");
 		_this.searchx = $("<div class='ndp-search-wrapper'  />").search({
 			type:3,
 			clickhide:false,
@@ -125,7 +125,7 @@
 				var val = o.val || o.value || txt;
 				var id = o.id;
 				var asize = o.audienceSize||o.audience_size;
-				return  '<li  class="search-row-cus" data-val="'+val+'" data-text='+txt+' data-path='+o.path.join("#")+' data-size='+asize+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a><span class="aud-class">'+asize+'</span></li>';
+				return  '<li  class="search-row-cus" data-val="'+val+'" data-name='+txt+' data-text='+txt+' data-path='+(o.path.join("#").replace(/\s/g,""))+' data-size='+asize+' index='+index+' tabIndex='+index+' data-id='+id+' ><a href="#">'+(val1||txt)+'</a><span class="aud-class">'+asize+'</span></li>';
 			}
 		});
 		_this.sepanel.append(_this.searchx).append("<button class='btn btn-default btn-search'>返回列表</button>");
@@ -185,6 +185,12 @@
 		this.updateOption = function(o){
 			vList3.config.ajaxOption = o;
 			vList3.searchx.update(o);
+			return vList3.elem;
+		};
+		
+		//更新 搜索时，放大镜下面的文字
+		this.updateTip = function(txt){
+			vList3.sepanel.attr("data-content",txt);
 			return vList3.elem;
 		}
     }

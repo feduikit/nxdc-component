@@ -114,6 +114,7 @@ if (!Object.keys) Object.keys = function(o) {
 	var Tool = {
 		//创建一个tag
 		tag:function (item,idx){
+			console.log(item);
 			var txt = item.label||item.name||item.text||item.value||item;
 			var val = item.val||item.value||txt;
 			var tag = $('<span class="tag-wrapper" data-text='+txt+' data-val='+val+' data-serial='+idx+' >\
@@ -131,12 +132,13 @@ if (!Object.keys) Object.keys = function(o) {
 			var li = $("<li class='blend-sel-item' data-serial="+idx+" />");
 			var liclose = '<button type="button" class="close close1" aria-label="Close"><span class="x1"aria-hidden="true">&times;</span></button>';
 			var bread = $('<div class="ndp-bread-wrapper"></div>');
+			console.log(o);
 			//生成面包屑
 			if(o.path) bread.bread({
 				list:o.path,
 				spliter:">"					
-			}).attr("data-path",o.path.join("#"));
-			li.attr("data-path",o.path.join("#"));
+			}).attr("data-path",o.path.join("#").replace(/\s/g,""));
+			li.attr("data-path",o.path.join("#").replace(/\s/g,""));
 			var tagbox = $('<div class="tag-box"  />');
 			if(o.tags && o.tags.length) {
 				o.tags.forEach(function(item,index){
@@ -380,7 +382,7 @@ if (!Object.keys) Object.keys = function(o) {
 	***/
 	Blend.prototype.selectDAT = function(dat){
 		var _this = this;
-		var li = _this.dropup.find("li[data-path="+dat.path+"]");
+		var li = _this.dropup.find("li[data-path='"+dat.path+"']");
 		if(li.length){//已经存在分类了
 			var box = li.find(".tag-box");
 			var serial = parseInt(li.data("serial"));			
@@ -429,6 +431,7 @@ if (!Object.keys) Object.keys = function(o) {
 			ajaxOption:_this.config.reajaxOptions
 		});//实例化推荐下拉菜单
 		
+		this.vlist.updateTip(_this.config.tip);//更新搜索提示文字
 		this.downwrapper.append(this.input).append(this.icon).append(this.drop1).append(this.drop2);
 		this.elem.append(this.dropup).append(this.downwrapper);
 	};
@@ -473,7 +476,13 @@ if (!Object.keys) Object.keys = function(o) {
 			blend.config.reajaxOption = o;
 			blend.vlist.updateOption(o);
 			return blend.elem;
-		}	
+		};
+		
+		// 更新 内部搜索，底部显示的提示内容
+		this.updateTip = function(txt){
+			blend.vlist.updateTip(txt);
+			return blend.elem;
+		}
     }
 	
 	
@@ -489,6 +498,7 @@ if (!Object.keys) Object.keys = function(o) {
 	** outside accessible default setting
 	**/
 	$.fn.blend.defaults = {
+		tip:"搜索国家地理信息，请输入关键字",
         ajaxOptions: {//输入文字，走的ajax
             type: "GET",
             url: "../data/blend.json",
@@ -1117,7 +1127,7 @@ if (!Object.keys) Object.keys = function(o) {
 			/**
 			**点击 全选
 			**/
-//2016-3-18 取消all			
+//2016-3-18 取消all
 //			_this.list.find("li.all-banner>input[type=checkbox]").change(function(){
 //				_this.list.find("li.checkbox-item>").prop("checked",this.checked);
 //			});
@@ -1173,7 +1183,7 @@ if (!Object.keys) Object.keys = function(o) {
         this.list = $("<ul class='drop-list hidden' tabIndex='-1' tabIndex='-1' />");
         this.peal.html('<input type="text" readonly="true"><span class="caret-wrapper" tabIndex=-1><span class="caret glyphicon '+_this.config.caret+'"></span></span>');
         this.elem.append(_this.peal).append(_this.list);
-// 2016-3-18 去掉 all 按钮		
+// 2016-3-18 去掉 all 按钮
 //		if(_this.config.type == 4){
 //			var all = $("<li class='drop-one-item checkbox-item all-banner'><span>All</span><input type='checkbox'/></li>");
 //			this.list.append(all);
@@ -1197,7 +1207,7 @@ if (!Object.keys) Object.keys = function(o) {
         if(_this.config.name){
             _this.peal.find("input").attr("name",_this.config.name);
         }
-		
+
 		//输入框默认是 不允许输入的，设置true 允许输入
 		if(_this.config.allowInput){
 			_this.elem.find("input").removeAttr("readonly");
@@ -1226,7 +1236,7 @@ if (!Object.keys) Object.keys = function(o) {
 					recursive(li,sub,_this.config,0);
 					_this.list.append(li);
 				}else{
-					li = $("<li class='drop-one-item' text="+text+" value="+val+" deep='0' title='"+text+"' >"+text+"</li>");
+					li = $("<li class='drop-one-item' text="+text+" value="+val+" deep='0' title='"+text+"' >"+"<span title='"+text+"' >"+text+"</span>"+"</li>");
 					if(item.disable) li.addClass("disabled");
 					if(item.split) li.addClass("split-line");
 					if(_this.config.type==4){
@@ -1395,7 +1405,7 @@ if (!Object.keys) Object.keys = function(o) {
         var _this = this;
 		var cfg = this.config;
 		_this.button.attr("id",cfg.id);
-		_this.button.append(cfg.caret);
+		if(cfg.showcaret)_this.button.append(cfg.caret);
 		_this.hold.html(typeof(cfg.label)=="string"?cfg.label:cfg.label.text||cfg.label.label||cfg.label.name);
 		this.elem.append(_this.button);
 		recursive(cfg.data,cfg,_this.elem,0);
@@ -1441,6 +1451,7 @@ if (!Object.keys) Object.keys = function(o) {
 	$.fn.drop2.defaults = {
 		type:1,//1 普通，2 选择之后更新的 文字下拉菜单，3 图标提示类popover  气泡
 		id:"drop"+(new Date().valueOf()),
+		showcaret:true,//默认显示caret
 		caret:"<i class='glyphicon glyphicon-menu-down'></i>",
 		label:"undefined",
 		data:[]
@@ -2813,7 +2824,7 @@ if (!Object.keys) Object.keys = function(o) {
 						arr.splice((start+len+1),0,"</em>");
 						var val1 = arr.join("");
 						if(!_this.config.rowdec){
-							var li = $('<li data-val="'+val+'" data-text='+txt+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a></li>');
+							var li = $('<li data-val="'+val+'" data-name='+txt+' data-text='+txt+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a></li>');
 							if(id) li.attr("data-id",id);
 						}else{
 							var li = _this.config.rowdec(item,index,val1);
@@ -4842,7 +4853,7 @@ if (!Object.keys) Object.keys = function(o) {
 			var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group;
 			var cols = o[cfg.textKey]||o.text||o.label||o.title||o.name;
 			var id = o.id;
-			var li = $("<li class='sutable-item'  deep="+deep+" />");
+			var li = $("<li class='treable-item'  deep="+deep+" />");
 			if(id){
 				li.attr('data-id',id);
 			}
@@ -4851,6 +4862,16 @@ if (!Object.keys) Object.keys = function(o) {
 			if(deep==1){//对第一级加租
 				row.addClass('treable-row-wrapper-parent');
 			}
+			//添加 弹出下拉菜单，点击money 符号的时候
+			var html = $('<ul class="dropdown-menu dropdown-menu-money hidden" />');		
+			cfg.todata.forEach(function(item,index){
+				var txt = item.name||item.label||item.text||item;
+				var val = item.val||item.value||txt;
+				var id = item.id;
+				var li = '<li data-id='+id+' data-txt='+txt+' data-val='+val+' ><a href="javascript:void(0)">'+txt+'</a></li>';
+				html.append(li);
+			});
+			row.append(html);
 			var chartWrapper = $("<div class='chart-wrapper' />");//图表层
 			var chartClose = '<button type="button" class="close chart-close"><span aria-hidden="true">&times;</span></button>';//图标层关闭按钮
 			var chart = $('<div class="ndp-tab-wrapper" deep='+deep+' index='+i+' role="table" ></div>');
@@ -4878,6 +4899,9 @@ if (!Object.keys) Object.keys = function(o) {
 					if(typeof(col)=="object"){
 						var val = col.label||col.text||col.name;
 						column.attr({"data-val":val,title:val}).html(val);
+						if(idx == 1){
+							column.append("<i class='font-icon font-icon-money'></i>");
+						}
 					}else{
 						column.attr({"data-val":val,"title":val}).html(col);
 					}
@@ -4900,6 +4924,18 @@ if (!Object.keys) Object.keys = function(o) {
 			ul.append(li);
 		}
 		fa.append(ul);			
+		},
+		fixPageXY: function(the){
+			var html = document.documentElement;
+			var body = document.body;
+			var the = (the.get(0)||the).getBoundingClientRect();
+			var a = {};
+			a.pageX = parseFloat(the.left) + (html.scrollLeft || body && body.scrollLeft || 0);
+			a.pageX -= html.clientLeft || 0;
+
+			a.pageY = parseFloat(the.top) + (html.scrollTop || body && body.scrollTop || 0);
+			a.pageY -= html.clientTop || 0;
+			return a;
 		}
 	};
 	
@@ -4956,9 +4992,9 @@ if (!Object.keys) Object.keys = function(o) {
 		**/
 		_this.elem.find("span.btn-plus-minus").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
-			var the = $(this).parents("li.sutable-item:first");
+			var the = $(this).parents("li.treable-item:first");
 			the.toggleClass("open");
-			the.find("li.sutable-item").toggleClass("open",the.hasClass("open"));
+			the.find("li.treable-item").toggleClass("open",the.hasClass("open"));
 		});
 		
 		_this.elem.find(".sutable-col-status>.switcher").click(function(e){
@@ -4972,22 +5008,45 @@ if (!Object.keys) Object.keys = function(o) {
 			var the = $(this).parent();
 			the.toggleClass("active");
 			if(!the.hasClass("active")){
-				var fa = $(this).parents(".sutable-item:first");
+				var fa = $(this).parents(".treable-item:first");
 				fa.find("ul .switcher>label").removeClass("active");
 			}
 			fireEvent(_this.elem.get(0),"STATUS_CHANGE",{status:the.hasClass("active")});
 		});
 		
-		// 图表层 展开/隐藏
-		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("click").click(function(e){
+		// 点击 选中一行， 显示 toolbar   2016-3-18 取消
+//		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("click").click(function(e){
+//			e.stopImmediatePropagation();
+//			if(!$(this).hasClass("focus")){
+//				_this.elem.find(".treable-row-wrapper>.treable-row.focus").removeClass("focus");
+//				$(this).addClass("focus");
+//			}else{
+//				$(this).removeClass("focus");
+//			}
+//			_this.toolbar.toggleClass("active",$(this).hasClass("focus"));
+//		});
+		
+		/*** 
+		** 鼠标离开一行
+		****/
+		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("mouseleave").mouseleave(function(e){
+			$(this).find(".dropdown-menu-money").addClass("hidden");	
+		});
+		
+		/***
+		** 点击了，下拉菜单中的选项
+		***/
+		_this.elem.find(".treable-row>.dropdown-menu-money>li").click(function(e){
 			e.stopImmediatePropagation();
-			if(!$(this).hasClass("focus")){
-				_this.elem.find(".treable-row-wrapper>.treable-row.focus").removeClass("focus");
-				$(this).addClass("focus");
-			}else{
-				$(this).removeClass("focus");
+			$(this).parent().addClass("hidden");
+			var the = $(this);
+			var id = the.data("id");
+			var val = the.data("val");
+			if(id=="chart"){
+				_this.elem.find(".chart-wrapper.open").removeClass("open");
+				$(this).parents(".treable-row:first").siblings(".chart-wrapper").addClass("open");
 			}
-			_this.toolbar.toggleClass("active",$(this).hasClass("focus"));
+			fireEvent(_this.elem.get(0),"TOOLBAR_CLICK",{id:id,val:val});
 		});
 		
 		/***
@@ -4996,7 +5055,19 @@ if (!Object.keys) Object.keys = function(o) {
 		_this.elem.find("#chart").unbind("click").click(function(e){
 			_this.elem.find(".treable-row-wrapper>.treable-row.focus+.chart-wrapper").addClass("open");
 			_this.elem.find(".treable-row-wrapper>.treable-row:not(.focus)+.chart-wrapper.open").removeClass("open");//关闭其他的
-		});		
+		});	
+		
+		
+		//点击 文字旁边的 钱 icon  
+		_this.elem.find("i.font-icon-money").unbind("click").click(function(e){
+			e.stopImmediatePropagation();
+			var dp = $(this).parents(".treable-row:first").find(".dropdown-menu-money").toggleClass("hidden");
+			var icon = Help.fixPageXY($(this));
+			var offParent = Help.fixPageXY($(this).parents(".treable-row:first"));
+			var x = icon.pageX - offParent.pageX;
+			//var y = icon.pageY - offParent.pageY;
+			dp.css({"top":(30)+"px","left":(x+5)+"px"});
+		});
 	};
 	
 	/**
@@ -5148,16 +5219,16 @@ if (!Object.keys) Object.keys = function(o) {
 		});		
 		
 		/***
-		** 点击工具栏按钮，发出事件。
+		** 点击工具栏按钮，发出事件。 2016-3-18号 不再显示toolbar
 		***/		
-		$(".sutable-toolbar").click(function(e){
-			var ta = e.target;
-			var id = ta.getAttribute("id");
-			var val = ta.getAttribute("val");
-			if(id && val){
-				fireEvent(ta,"TOOLBAR_CLICK",{id:id,val:val});
-			}
-		});
+//		$(".sutable-toolbar").click(function(e){
+//			var ta = e.target;
+//			var id = ta.getAttribute("id");
+//			var val = ta.getAttribute("val");
+//			if(id && val){
+//				fireEvent(ta,"TOOLBAR_CLICK",{id:id,val:val});
+//			}
+//		});
 		
 		//body 里面的监听
 		_this.listenBody();
@@ -5258,9 +5329,9 @@ if (!Object.keys) Object.keys = function(o) {
 		var w = w||this.elem.width();
 		var dom = this.elem
 		var cfg = this.config;
-		var rw  = w - 100 - 100 - 40;//100 第一列的宽度， 100 名称咧的宽度,40 : margin-left
+		var rw  = w - 70 - 130 - 40;//80 第一列的宽度， 120 名称咧的宽度,40 : margin-left
 		var ew = rw/(cfg.head.length - 2);
-		cfg.colDims = [100,100];//列宽度 存储 
+		cfg.colDims = [70,130];//列宽度 存储 
 		if(ew>50){
 			dom.find(".sutable-col:gt(1)").css("width",ew+"px").each(function(){
 				cfg.colDims.push(ew);
@@ -5293,14 +5364,7 @@ if (!Object.keys) Object.keys = function(o) {
 	** factory Class
     **@param {Drop} drop :  instacne of the plugin builder
     **/
-    function exchange(treable){
-        /**
-        **@param {Object} msg {type:"类型"}
-        **/
-        this.manipulate = function(msg){
-            
-        };
-		
+    function exchange(treable){		
 		//不能使用直接 == treable.toolbar的方式，因为，传入的 this 变了
 		this.toolbar = function(bool){
 			treable.toolbar.toggleClass("active",bool);
@@ -5318,8 +5382,8 @@ if (!Object.keys) Object.keys = function(o) {
 		**@param {Boolean} bool  true:折叠，false展开
 		**/
 		this.fold = function(bool){
-			var rows = treable.elem.find(".treable-body>.sutable-item");
-			rows.toggleClass("open");
+			var rows = treable.elem.find(".treable-body>.treable-item");
+			rows.toggleClass("open",bool);
 			return treable.elem;
 		}
 		
@@ -5536,37 +5600,7 @@ if (!Object.keys) Object.keys = function(o) {
 (function($, window, undefined) {
     function FileUpload(config) {
         var self = this;
-        $.extend(this, {
-            name: 'file',
-            type: 'image',
-            width: 560,
-            height: 250,
-            size: 10485760, //默认上传大小不超过10M
-            allowSize: [], //这是里默认什么尺寸的，只针对图片起效
-            html: '<div class="upload-wrapper" data-state="prepare">\
-                    <div class="upload-content">\
-                        <div class="upload-desc">\
-                            <div class="upload-desc-inner">\
-                                <p class="upload-icon"></p>\
-                                <p>图片拖放到这里</p>\
-                                <p class="small">或</p>\
-                                <button class="upload-button" type="button">上传</button>\
-                            </div>\
-                        </div>\
-                        <div class="upload-preview"></div>\
-                        <div class="upload-mask">\
-                            <div class="upload-mask-inner">\
-                                <p class="upload-num">0</p>\
-                                <p>上传中</p>\
-                            </div>\
-                        </div>\
-                    </div>\
-                    <div class="upload-footer">\
-                        <span class="upload-msg"></span>\
-                        <a herf="javascript:void(0);" class="upload-button btn-link" type="button">重新上传</a>\
-                    </div>\
-                </div>'
-        }, config);
+        $.extend(this, config);
         return this.init(config);
     }
 
@@ -5621,13 +5655,13 @@ if (!Object.keys) Object.keys = function(o) {
             var dtd = $.Deferred();;
             var self = this;
             if (files.length < 1) {
-                msg = '没有要上传的文件';
+                msg = self.text.error.none;
             } else if (files.length > 1) {
-                msg = '文件数超过一个';
+                msg = self.text.error.number;
             } else if (this.size < file.size) {
-                msg = '文件大小超过限制';
+                msg = self.text.error.size;
             } else if (this.type && !new RegExp(this.type, 'igm').test(file.type)) {
-                msg = '文件类型错误';
+                msg = self.text.error.type;
             }
 
             if (msg) {
@@ -5637,15 +5671,20 @@ if (!Object.keys) Object.keys = function(o) {
             //这里判断是图片，而且可允许的尺寸中有，那么就要判断了
             else {
                 self.getURLDeferred(file).done(function(src) {
-                    self.getImgSize(src, function(w, h) {
-                        if (self.type == 'image' && self.allowSize.length && self.allowSize.indexOf(w + '*' + h) == -1) {
-                            self.error({ msg: '文件尺寸不正确', type: 'file' });
-                            dtd.reject(false);
-                        } else {
-                            self.setSize.call(self, w, h);
-                            dtd.resolve(src);
-                        }
-                    })
+                    if (self.type == 'image') {
+                        self.getImgSize(src, function(w, h) {
+                            if (self.allowSize.length && self.allowSize.indexOf(w + '*' + h) == -1) {
+                                self.error({ msg: self.text.error.type, type: 'file' });
+                                dtd.reject(false);
+                            } else {
+                                self.setSize.call(self, w, h);
+                                dtd.resolve(src);
+                            }
+                        });
+                    } else {
+                        self.setSize.call(self);
+                        dtd.resolve(src);
+                    }
                 });
             }
             return dtd;
@@ -5760,23 +5799,21 @@ if (!Object.keys) Object.keys = function(o) {
          */
         createPreview: function(file, src) {
             var tpl = this.previewTpl;
+            var self = this;
             var defaultTpl = {
                 image: '<img src="{{src}}">',
-                video: '<video src="{{src}}" width ="' + self.width + '" height ="' + self.height + '"></video>'
+                video: '<video src="{{src}}" width ="' + self.width + '" height ="' + self.height + '" controls></video>'
             }
-            if (src) {
-                if (!!tpl) {
-                    if ($.isFunction(tpl)) {
-                        tpl = tpl(file, src);
-                    } else if ($.type(tpl) == 'string') {
-                        tpl = tpl.replace('{{src}}', src);
-                    }
-                } else if (this.type) {
-                    tpl = defaultTpl[this.type].replace('{{src}}', src);
+            if (!!tpl) {
+                if ($.isFunction(tpl)) {
+                    tpl = tpl(file, src);
+                } else if ($.type(tpl) == 'string') {
+                    tpl = tpl.replace('{{src}}', src);
                 }
-
-                this.$wrapper.find('.upload-preview').html(tpl);
+            } else if (this.type) {
+                tpl = defaultTpl[this.type].replace('{{src}}', src);
             }
+            this.$wrapper.find('.upload-preview').html(tpl);
         },
         /**
          * 获取图片的宽高
@@ -5804,7 +5841,7 @@ if (!Object.keys) Object.keys = function(o) {
                 xhr: function() {
                     var xhr = new XMLHttpRequest();
                     self.$wrapper.attr('data-state', 'uploading');
-                    self.showMsg('正在上传');
+                    self.showMsg(self.text.upload.uploading);
                     xhr.upload.onprogress = self.progress.bind(self);
                     return xhr;
                 }
@@ -5821,7 +5858,7 @@ if (!Object.keys) Object.keys = function(o) {
             $.ajax(ajaxOption)
                 .done(function(data) {
                     self.$wrapper.attr('data-state', 'uploaded');
-                    self.showMsg('上传成功');
+                    self.showMsg(self.text.upload.success);
                     self.showNum('0');
                     self.onload && self.onload.call(self, data);
                 })
@@ -5834,12 +5871,76 @@ if (!Object.keys) Object.keys = function(o) {
 
     $.fn.fileupload = function(options) {
         var returnVal = this;
+        //这里链接字符串
+        //生成html属性
+        $.fn.fileupload.defaults.html || tplLink();
         this.each(function(key, the) {
-            new FileUpload($.extend({ container: the }, options));
+            new FileUpload($.extend({ container: the }, $.fn.fileupload.defaults, options));
         })
         return returnVal;
     };
 
+
+    $.fn.fileupload.defaults = {
+        text: {
+            upload: {
+                uploading: '正在上传',
+                success: '上传成功',
+                tips: '图片拖放到这里',
+                linkword: '或者',
+                descUploading: '上传中',
+                descButton: '上传',
+                agButton: '重新上传'
+            },
+            error: {
+                type: '文件类型不正确',
+                size: '文件大小超过限制',
+                number: '文件数超过一个',
+                none: '没有要上传的文件'
+            }
+        },
+        name: 'file',
+        type: 'image',
+        width: 560,
+        height: 250,
+        size: 10485760, //默认上传大小不超过10M
+        allowSize: [], //这是里默认什么尺寸的，只针对图片起效
+        tpl: '<div class="upload-wrapper" data-state="prepare">\
+                    <div class="upload-content">\
+                        <div class="upload-desc">\
+                            <div class="upload-desc-inner">\
+                                <p class="upload-icon"></p>\
+                                <p>{{text.upload.tips}}</p>\
+                                <p class="small">{{text.upload.linkword}}</p>\
+                                <button class="upload-button" type="button">{{text.upload.descButton}}</button>\
+                            </div>\
+                        </div>\
+                        <div class="upload-preview">\
+                        </div>\
+                        <div class="upload-mask">\
+                            <div class="upload-mask-inner">\
+                                <p class="upload-num">0</p>\
+                                <p>{{text.upload.descUploading}}</p>\
+                            </div>\
+                        </div>\
+                    </div>\
+                    <div class="upload-footer">\
+                        <span class="upload-msg"></span>\
+                        <a herf="javascript:void(0);" class="upload-button btn-link" type="button">{{text.upload.agButton}}</a>\
+                    </div>\
+                </div>'
+    }
+
+    //模板生成函数
+    function tplLink() {
+        var defaults = $.fn.fileupload.defaults;
+        var textUpload = defaults.text.upload;
+        defaults.html = defaults.tpl.replace(/{{text\.upload\.tips}}/ig, textUpload.tips)
+            .replace(/{{text\.upload\.linkword}}/ig, textUpload.linkword)
+            .replace(/{{text\.upload\.descButton}}/ig, textUpload.descButton)
+            .replace(/{{text\.upload\.descUploading}}/ig, textUpload.descUploading)
+            .replace(/{{text\.upload\.agButton}}/ig, textUpload.agButton);
+    }
 })(jQuery, window, undefined)
 
 ;(function ($) {
@@ -6354,7 +6455,7 @@ if (!Object.keys) Object.keys = function(o) {
 		var _this = this;
 		var cfg = _this.config;
 		recursive(cfg.data,cfg,_this.elem,0);
-		_this.sepanel = $("<div class='search-panel hidden' />");
+		_this.sepanel = $("<div class='search-panel hidden' data-content='这里填写你想提示的内容' />");
 		_this.searchx = $("<div class='ndp-search-wrapper'  />").search({
 			type:3,
 			clickhide:false,
@@ -6364,7 +6465,7 @@ if (!Object.keys) Object.keys = function(o) {
 				var val = o.val || o.value || txt;
 				var id = o.id;
 				var asize = o.audienceSize||o.audience_size;
-				return  '<li  class="search-row-cus" data-val="'+val+'" data-text='+txt+' data-path='+o.path.join("#")+' data-size='+asize+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a><span class="aud-class">'+asize+'</span></li>';
+				return  '<li  class="search-row-cus" data-val="'+val+'" data-name='+txt+' data-text='+txt+' data-path='+(o.path.join("#").replace(/\s/g,""))+' data-size='+asize+' index='+index+' tabIndex='+index+' data-id='+id+' ><a href="#">'+(val1||txt)+'</a><span class="aud-class">'+asize+'</span></li>';
 			}
 		});
 		_this.sepanel.append(_this.searchx).append("<button class='btn btn-default btn-search'>返回列表</button>");
@@ -6424,6 +6525,12 @@ if (!Object.keys) Object.keys = function(o) {
 		this.updateOption = function(o){
 			vList3.config.ajaxOption = o;
 			vList3.searchx.update(o);
+			return vList3.elem;
+		};
+		
+		//更新 搜索时，放大镜下面的文字
+		this.updateTip = function(txt){
+			vList3.sepanel.attr("data-content",txt);
 			return vList3.elem;
 		}
     }

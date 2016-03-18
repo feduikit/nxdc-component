@@ -143,7 +143,7 @@
 						arr.splice((start+len+1),0,"</em>");
 						var val1 = arr.join("");
 						if(!_this.config.rowdec){
-							var li = $('<li data-val="'+val+'" data-text='+txt+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a></li>');
+							var li = $('<li data-val="'+val+'" data-name='+txt+' data-text='+txt+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a></li>');
 							if(id) li.attr("data-id",id);
 						}else{
 							var li = _this.config.rowdec(item,index,val1);

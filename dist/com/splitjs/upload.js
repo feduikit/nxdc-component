@@ -2,37 +2,7 @@
 (function($, window, undefined) {
     function FileUpload(config) {
         var self = this;
-        $.extend(this, {
-            name: 'file',
-            type: 'image',
-            width: 560,
-            height: 250,
-            size: 10485760, //默认上传大小不超过10M
-            allowSize: [], //这是里默认什么尺寸的，只针对图片起效
-            html: '<div class="upload-wrapper" data-state="prepare">\
-                    <div class="upload-content">\
-                        <div class="upload-desc">\
-                            <div class="upload-desc-inner">\
-                                <p class="upload-icon"></p>\
-                                <p>图片拖放到这里</p>\
-                                <p class="small">或</p>\
-                                <button class="upload-button" type="button">上传</button>\
-                            </div>\
-                        </div>\
-                        <div class="upload-preview"></div>\
-                        <div class="upload-mask">\
-                            <div class="upload-mask-inner">\
-                                <p class="upload-num">0</p>\
-                                <p>上传中</p>\
-                            </div>\
-                        </div>\
-                    </div>\
-                    <div class="upload-footer">\
-                        <span class="upload-msg"></span>\
-                        <a herf="javascript:void(0);" class="upload-button btn-link" type="button">重新上传</a>\
-                    </div>\
-                </div>'
-        }, config);
+        $.extend(this, config);
         return this.init(config);
     }
 
@@ -87,13 +57,13 @@
             var dtd = $.Deferred();;
             var self = this;
             if (files.length < 1) {
-                msg = '没有要上传的文件';
+                msg = self.text.error.none;
             } else if (files.length > 1) {
-                msg = '文件数超过一个';
+                msg = self.text.error.number;
             } else if (this.size < file.size) {
-                msg = '文件大小超过限制';
+                msg = self.text.error.size;
             } else if (this.type && !new RegExp(this.type, 'igm').test(file.type)) {
-                msg = '文件类型错误';
+                msg = self.text.error.type;
             }
 
             if (msg) {
@@ -103,15 +73,20 @@
             //这里判断是图片，而且可允许的尺寸中有，那么就要判断了
             else {
                 self.getURLDeferred(file).done(function(src) {
-                    self.getImgSize(src, function(w, h) {
-                        if (self.type == 'image' && self.allowSize.length && self.allowSize.indexOf(w + '*' + h) == -1) {
-                            self.error({ msg: '文件尺寸不正确', type: 'file' });
-                            dtd.reject(false);
-                        } else {
-                            self.setSize.call(self, w, h);
-                            dtd.resolve(src);
-                        }
-                    })
+                    if (self.type == 'image') {
+                        self.getImgSize(src, function(w, h) {
+                            if (self.allowSize.length && self.allowSize.indexOf(w + '*' + h) == -1) {
+                                self.error({ msg: self.text.error.type, type: 'file' });
+                                dtd.reject(false);
+                            } else {
+                                self.setSize.call(self, w, h);
+                                dtd.resolve(src);
+                            }
+                        });
+                    } else {
+                        self.setSize.call(self);
+                        dtd.resolve(src);
+                    }
                 });
             }
             return dtd;
@@ -226,23 +201,21 @@
          */
         createPreview: function(file, src) {
             var tpl = this.previewTpl;
+            var self = this;
             var defaultTpl = {
                 image: '<img src="{{src}}">',
-                video: '<video src="{{src}}" width ="' + self.width + '" height ="' + self.height + '"></video>'
+                video: '<video src="{{src}}" width ="' + self.width + '" height ="' + self.height + '" controls></video>'
             }
-            if (src) {
-                if (!!tpl) {
-                    if ($.isFunction(tpl)) {
-                        tpl = tpl(file, src);
-                    } else if ($.type(tpl) == 'string') {
-                        tpl = tpl.replace('{{src}}', src);
-                    }
-                } else if (this.type) {
-                    tpl = defaultTpl[this.type].replace('{{src}}', src);
+            if (!!tpl) {
+                if ($.isFunction(tpl)) {
+                    tpl = tpl(file, src);
+                } else if ($.type(tpl) == 'string') {
+                    tpl = tpl.replace('{{src}}', src);
                 }
-
-                this.$wrapper.find('.upload-preview').html(tpl);
+            } else if (this.type) {
+                tpl = defaultTpl[this.type].replace('{{src}}', src);
             }
+            this.$wrapper.find('.upload-preview').html(tpl);
         },
         /**
          * 获取图片的宽高
@@ -270,7 +243,7 @@
                 xhr: function() {
                     var xhr = new XMLHttpRequest();
                     self.$wrapper.attr('data-state', 'uploading');
-                    self.showMsg('正在上传');
+                    self.showMsg(self.text.upload.uploading);
                     xhr.upload.onprogress = self.progress.bind(self);
                     return xhr;
                 }
@@ -287,7 +260,7 @@
             $.ajax(ajaxOption)
                 .done(function(data) {
                     self.$wrapper.attr('data-state', 'uploaded');
-                    self.showMsg('上传成功');
+                    self.showMsg(self.text.upload.success);
                     self.showNum('0');
                     self.onload && self.onload.call(self, data);
                 })
@@ -300,10 +273,74 @@
 
     $.fn.fileupload = function(options) {
         var returnVal = this;
+        //这里链接字符串
+        //生成html属性
+        $.fn.fileupload.defaults.html || tplLink();
         this.each(function(key, the) {
-            new FileUpload($.extend({ container: the }, options));
+            new FileUpload($.extend({ container: the }, $.fn.fileupload.defaults, options));
         })
         return returnVal;
     };
 
+
+    $.fn.fileupload.defaults = {
+        text: {
+            upload: {
+                uploading: '正在上传',
+                success: '上传成功',
+                tips: '图片拖放到这里',
+                linkword: '或者',
+                descUploading: '上传中',
+                descButton: '上传',
+                agButton: '重新上传'
+            },
+            error: {
+                type: '文件类型不正确',
+                size: '文件大小超过限制',
+                number: '文件数超过一个',
+                none: '没有要上传的文件'
+            }
+        },
+        name: 'file',
+        type: 'image',
+        width: 560,
+        height: 250,
+        size: 10485760, //默认上传大小不超过10M
+        allowSize: [], //这是里默认什么尺寸的，只针对图片起效
+        tpl: '<div class="upload-wrapper" data-state="prepare">\
+                    <div class="upload-content">\
+                        <div class="upload-desc">\
+                            <div class="upload-desc-inner">\
+                                <p class="upload-icon"></p>\
+                                <p>{{text.upload.tips}}</p>\
+                                <p class="small">{{text.upload.linkword}}</p>\
+                                <button class="upload-button" type="button">{{text.upload.descButton}}</button>\
+                            </div>\
+                        </div>\
+                        <div class="upload-preview">\
+                        </div>\
+                        <div class="upload-mask">\
+                            <div class="upload-mask-inner">\
+                                <p class="upload-num">0</p>\
+                                <p>{{text.upload.descUploading}}</p>\
+                            </div>\
+                        </div>\
+                    </div>\
+                    <div class="upload-footer">\
+                        <span class="upload-msg"></span>\
+                        <a herf="javascript:void(0);" class="upload-button btn-link" type="button">{{text.upload.agButton}}</a>\
+                    </div>\
+                </div>'
+    }
+
+    //模板生成函数
+    function tplLink() {
+        var defaults = $.fn.fileupload.defaults;
+        var textUpload = defaults.text.upload;
+        defaults.html = defaults.tpl.replace(/{{text\.upload\.tips}}/ig, textUpload.tips)
+            .replace(/{{text\.upload\.linkword}}/ig, textUpload.linkword)
+            .replace(/{{text\.upload\.descButton}}/ig, textUpload.descButton)
+            .replace(/{{text\.upload\.descUploading}}/ig, textUpload.descUploading)
+            .replace(/{{text\.upload\.agButton}}/ig, textUpload.agButton);
+    }
 })(jQuery, window, undefined)
