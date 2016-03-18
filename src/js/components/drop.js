@@ -186,7 +186,7 @@
 			/**
 			**点击 全选
 			**/
-//2016-3-18 取消all			
+//2016-3-18 取消all
 //			_this.list.find("li.all-banner>input[type=checkbox]").change(function(){
 //				_this.list.find("li.checkbox-item>").prop("checked",this.checked);
 //			});
@@ -242,7 +242,7 @@
         this.list = $("<ul class='drop-list hidden' tabIndex='-1' tabIndex='-1' />");
         this.peal.html('<input type="text" readonly="true"><span class="caret-wrapper" tabIndex=-1><span class="caret glyphicon '+_this.config.caret+'"></span></span>');
         this.elem.append(_this.peal).append(_this.list);
-// 2016-3-18 去掉 all 按钮		
+// 2016-3-18 去掉 all 按钮
 //		if(_this.config.type == 4){
 //			var all = $("<li class='drop-one-item checkbox-item all-banner'><span>All</span><input type='checkbox'/></li>");
 //			this.list.append(all);
@@ -266,7 +266,7 @@
         if(_this.config.name){
             _this.peal.find("input").attr("name",_this.config.name);
         }
-		
+
 		//输入框默认是 不允许输入的，设置true 允许输入
 		if(_this.config.allowInput){
 			_this.elem.find("input").removeAttr("readonly");
@@ -295,7 +295,7 @@
 					recursive(li,sub,_this.config,0);
 					_this.list.append(li);
 				}else{
-					li = $("<li class='drop-one-item' text="+text+" value="+val+" deep='0' title='"+text+"' >"+text+"</li>");
+					li = $("<li class='drop-one-item' text="+text+" value="+val+" deep='0' title='"+text+"' >"+"<span title='"+text+"' >"+text+"</span>"+"</li>");
 					if(item.disable) li.addClass("disabled");
 					if(item.split) li.addClass("split-line");
 					if(_this.config.type==4){
