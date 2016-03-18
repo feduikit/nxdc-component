@@ -28,8 +28,8 @@ i.font-icon{
 	display: inline;
 }
 
-.font-icon-edit:before    { content: "\e900"; }
-.font-icon-copy:before    { content: "\e90c"; }
+.font-icon-edit:before    { content: "\e674"; }
+.font-icon-copy:before    { content: "\e676"; }
 .font-icon-attention:before { content: "\e924"; }
-.font-icon-help:before { content: "\e92c"; }
+.font-icon-help:before { content: "\e655"; }
 .font-icon-money:before { content: "\e683"; }
