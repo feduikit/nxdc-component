@@ -210,10 +210,19 @@ if (!Object.keys) Object.keys = function(o) {
 				}
 				_this.paste = false;// 取消标注
 			}
-			var opt = _this.config.ajaxOptions;
-			opt.data = {key:key};
+			var opt = $.extend({}, _this.config.ajaxOptions);
+			if (!opt.data){
+				opt.data = {key:key};
+			} else if (typeof opt.data === 'function') {
+				opt.data = opt.data(key);
+			}
+			//opt.processResults = null;
+
 			if(_this.xhr && _this.xhr.abort) _this.xhr.abort();//终止上一次的请求
 			_this.xhr = $.ajax(opt).then(function(result){
+				if (_this.config.ajaxOptions.processResults){
+					result = _this.config.ajaxOptions.processResults(result)
+				}
 				if(typeof(result)=="string") result = JSON.parse(result);
 				_this.drop1.empty();
 				_this.drop2.addClass("hidden");
@@ -252,17 +261,18 @@ if (!Object.keys) Object.keys = function(o) {
 		** 点击其中一项后，不消失
 		***/
 		_this.drop1.click(function(e){
+			e.preventDefault();
 			e.stopImmediatePropagation();
 			var the = $(e.target);
 			if(e.target.tagName=="A" && the.hasClass("txt-mark")){
 				if(the.hasClass("selected")) return false;//如果是已经selected  就不要加了
 				var index = the.attr("index");
 				var path = the.data("path");
-				var li = _this.dropup.find("li[data-path="+path+"]");
+				var li = _this.dropup.find("li[data-path='"+path+"']");
 				var box = li.find(".tag-box");
 				var dat = the.data();
 				if(li.length){//已经存在分类了，
-					var serial = parseInt(li.data("serial"));// 选中数组中的第几个		
+					var serial = parseInt(li.data("serial"));// 选中数组中的第几个
 					box.append(Tool.tag(dat,serial));
 					//加到数据里面去
 					var arr = _this.config.seldata;
@@ -273,14 +283,14 @@ if (!Object.keys) Object.keys = function(o) {
 //							dt.tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
 //							break;//跳出循环
 //						}
-//					}					
+//					}
 				}else {
 					dat.path = dat.path.split("#");
 					dat.tags = [dat.name];
 					var serial = (_this.config.seldata &&_this.config.seldata.length)||0
 					Tool.addClassify(dat,serial,_this.dropup);// 出现在DOM上
 					if(!_this.config.seldata) _this.config.seldata = [];
-					_this.config.seldata.push(dat);	//加入数据中			
+					_this.config.seldata.push(dat);	//加入数据中
 				}
 				the.addClass("selected");
 				fireEvent(_this.elem.get(0),"ITEM_CLICK",_this.insdata[index]);
