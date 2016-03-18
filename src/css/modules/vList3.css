@@ -53,7 +53,8 @@
 }
 
 
-.ndp-vList3-wrapper.search-mode{
+.ndp-vList3-wrapper.blend-search-drop.search-mode{
+	position: relative;
 	height: 300px;
 	overflow: hidden;
 }

@@ -6,7 +6,9 @@
 }
 .ndp-blend-wrapper>.down-wrapper{
 	position: relative;
-	height: 30px;
+	display: block;
+	top:0;
+	min-height: 30px;
 	width: 100%;
 	overflow: visible;
 }
@@ -93,16 +95,21 @@
 	box-shadow: 0 0 1px rgba(224, 224, 224, 0.5);	
 	overflow: auto;
 }
+.blend-classify-drop.search-mode{
+	height: 300px;
+}
 
 /****
 **向上的飘窗
 ***/
 .ndp-blend-wrapper .dropdown-menu.blend-dropup{
 	position: relative;
+	display: block;
+	clear: both!important;
 	max-height: 300px;
 	width: -webkit-calc(100% - 30px);
 	width: calc(100% - 30px);
-	display: block;
+	float: none;
 	border:1px solid #e0e0e0;
 	border-bottom-width: 0;
 	overflow: auto;
