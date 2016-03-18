@@ -2,7 +2,7 @@
  * @Author: mikey.zhaopeng
  * @Date:   2016-02-25 18:11:32
  * @Last Modified by:   mikey.zhaopeng
- * @Last Modified time: 2016-03-04 12:47:54
+ * @Last Modified time: 2016-03-18 20:26:09
  */
 
 'use strict';;
@@ -40,10 +40,14 @@
 
     SidePanel.prototype.hide = function() {
         this.$elem.removeClass('with-full-sidepanel-panel');
+        $('body .modal-backdrop.fade.in.sidepanel-backdrop').remove();
     };
 
     SidePanel.prototype.show = function() {
         this.$elem.addClass('with-full-sidepanel-panel');
+        if($('body .modal-backdrop.fade.in.sidepanel-backdrop').length==0){
+            $('body').append('<div class="modal-backdrop fade in sidepanel-backdrop"></div>');
+        }
     };
     SidePanel.prototype.toggle = function() {
         if(this.$elem.hasClass('with-full-sidepanel-panel')){
