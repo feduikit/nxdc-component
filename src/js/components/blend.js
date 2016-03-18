@@ -24,8 +24,8 @@
 			if(o.path) bread.bread({
 				list:o.path,
 				spliter:">"					
-			}).attr("data-path",o.path.join("#"));
-			li.attr("data-path",o.path.join("#"));
+			}).attr("data-path",o.path.join("#").replace(/\s/g,""));
+			li.attr("data-path",o.path.join("#").replace(/\s/g,""));
 			var tagbox = $('<div class="tag-box"  />');
 			if(o.tags && o.tags.length) {
 				o.tags.forEach(function(item,index){
@@ -147,7 +147,7 @@
 				if(the.hasClass("selected")) return false;//如果是已经selected  就不要加了
 				var index = the.attr("index");
 				var path = the.data("path");
-				var li = _this.dropup.find("li[data-path="+path+"]");
+				var li = _this.dropup.find("li[data-path='"+path+"']");
 				var box = li.find(".tag-box");
 				var dat = the.data();
 				if(li.length){//已经存在分类了，
@@ -259,7 +259,7 @@
 	***/
 	Blend.prototype.selectDAT = function(dat){
 		var _this = this;
-		var li = _this.dropup.find("li[data-path="+dat.path+"]");
+		var li = _this.dropup.find("li[data-path='"+dat.path+"']");
 		if(li.length){//已经存在分类了
 			var box = li.find(".tag-box");
 			var serial = parseInt(li.data("serial"));			
@@ -308,6 +308,7 @@
 			ajaxOption:_this.config.reajaxOptions
 		});//实例化推荐下拉菜单
 		
+		this.vlist.updateTip(_this.config.tip);//更新搜索提示文字
 		this.downwrapper.append(this.input).append(this.icon).append(this.drop1).append(this.drop2);
 		this.elem.append(this.dropup).append(this.downwrapper);
 	};
@@ -352,7 +353,13 @@
 			blend.config.reajaxOption = o;
 			blend.vlist.updateOption(o);
 			return blend.elem;
-		}	
+		};
+		
+		// 更新 内部搜索，底部显示的提示内容
+		this.updateTip = function(txt){
+			blend.vlist.updateTip(txt);
+			return blend.elem;
+		}
     }
 	
 	
@@ -368,6 +375,7 @@
 	** outside accessible default setting
 	**/
 	$.fn.blend.defaults = {
+		tip:"搜索国家地理信息，请输入关键字",
         ajaxOptions: {//输入文字，走的ajax
             type: "GET",
             url: "../data/blend.json",

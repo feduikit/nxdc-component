@@ -80,7 +80,7 @@
 }
 .ndp-vList3-wrapper .search-panel:after{
 	position: absolute;
-	content:"按照个人主页中所列主页进行索索";
+	content:attr(data-content);
 	top: 70%;
 	left:33%;
 	color:#b9c3cd;

@@ -2,7 +2,7 @@ require(['./config'],function(){
     require(['jquery','utils'],function($){
         require(['bootstrap','treable'],function(){
 			var bool = false;
-			var data1 = [{label: [{status:true},{name:"中华人民共和国"},{text:2000},{text:2},{text:20},{text:2000},
+			var data1 = [{id:"1111",label: [{status:true},{name:"中华人民共和国"},{text:2000},{text:2},{text:20},{text:2000},
 							   {text:2},{text:20},{text:2},{text:20}],
 						     sub:[{label:[{status:true},{name:"美国"},{text:1100},{text:2},{text:20},{text:2000},{text:2},{text:20},{text:2},{text:20}],
 								 sub:[{label:[{status:true},{name:"11-11-11"},{text:910},{text:2},{text:20},{text:2000},{text:2},{text:20},{text:2},{text:20}]}]  	
@@ -82,7 +82,7 @@ require(['./config'],function(){
 			//展开收起 树状菜单 
 			$("#info").click(function(){
 //				bool = !bool;
-				tre.fold();
+				tre.fold(false);
 			});	
 			
 			//更新列表数据

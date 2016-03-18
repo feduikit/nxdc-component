@@ -4,6 +4,7 @@
 	box-sizing: border-box;
 	width: 100%;
 	border: 1px solid #e0e0e0;
+	width: 1200px;
 	overflow: hidden;
 }
 .ndp-treable-wrapper.resize-cursor{
@@ -143,7 +144,7 @@
 	margin: 0;
 	height: 100%;
 	line-height:0;
-	overflow: hidden;
+/*	overflow: hidden;*/
 }
 
 .treable-header>.treable-row{
@@ -171,37 +172,37 @@
 	border-right-width: 0;	
 }
 
-.sutable-item{
+.treable-item{
 	border-left:1px solid #e0e0e0;
 }
-.sutable-item[deep='1']{
+.treable-item[deep='1']{
 	border-width: 0;
 }
-.sutable-item[deep='2']{
+.treable-item[deep='2']{
 	background-color: #f7f9fa;
 }
-.sutable-item[deep='3']{
+.treable-item[deep='3']{
 	background-color: #eff1f4;
 }
-.sutable-item[deep='2']>ul{
+.treable-item[deep='2']>ul{
 	border-top:1px solid #e0e0e0;
 }
 /***
 ** 第二层 第一个
 ***/
-.sutable-item[deep='1']>ul>li:nth-child(1) .treable-row{
+.treable-item[deep='1']>ul>li:nth-child(1) .treable-row{
 	border-top-width: 0;
 }
-.sutable-item[deep='1']>ul>li:nth-last-child(1) .treable-row{
+.treable-item[deep='1']>ul>li:nth-last-child(1) .treable-row{
 	border-bottom-width: 0;
 }
 
-.sutable-item[deep='2']>ul>li:nth-child(1) .treable-row{
+.treable-item[deep='2']>ul>li:nth-child(1) .treable-row{
 	border-top-width: 0;
 	border-bottom-width: 0;
 }
 
-.sutable-item[deep='1']>ul>li .treable-row{
+.treable-item[deep='1']>ul>li .treable-row{
 	border-bottom-width: 0;
 }
 
@@ -288,7 +289,7 @@
 	opacity: 1;
 }
 
-.treable-body li.sutable-item{
+.treable-body li.treable-item{
 	position: relative;
 	height: auto;
 	transition: height 0.4s ease-in-out;
@@ -325,7 +326,7 @@
 	height:100%;
 	margin: 0;
 	top:0;
-	text-align: center;
+/*	text-align: center;*/
 	white-space: nowrap;
 	float: left;
 	border-right: 1px solid transparent;
@@ -333,6 +334,7 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	cursor:default;
+	padding-left: 10px;
 /*	transition:all 0.1s linear;*/
 }
 .treable-row>.sutable-col.active{
@@ -341,18 +343,20 @@
 
 .treable-row .sutable-col-status{
 	margin-left: 40px;
-	width: 100px!important;
+	width: 70px!important;
+	overflow: hidden;
 }
 .treable-header .treable-row>.sutable-col-status{
 	margin-left: 41px;/*****修正问题****/
 }
+.treable-row[deep='1']>.sutable-col-status{
+	margin-left: 41px;/***还有20px padding***/ 
+}
 .treable-row[deep='2']>.sutable-col-status{
 	margin-left: 20px;/***还有20px padding***/ 
-	width: 100px;
 }
 .treable-row[deep='3']>.sutable-col-status{
-	margin: 0;/***还有40px padding***/ 
-	width: 100px;
+	margin: -1px;/***还有40px padding***/ 
 }
 .sutable-col-status>span.switcher{
 	position: absolute;
@@ -416,24 +420,42 @@
 }
 
 .treable-row .sutable-col-name,.treable-header .sutable-col-name{
-	min-width: 100px!important;
+	min-width: 130px!important;
 /*	width: 15%;*/
 }
-/*
-.treable-row[deep='2']>.sutable-col-name{
-	width: calc((100% + 20px) * 0.15)
+/****
+** 图标
+****/
+.treable-row i.font-icon-money{
+	position:absolute;
+	right: 5px;
+	display: none;
+	top:12px;
+	width: 15px;
+	height: 15px;
+	font-size: 16px;
+	color:#fc7408;
+	cursor:pointer;
 }
-.treable-row[deep='3']>.sutable-col-name{
-	width: calc((100% + 40px) * 0.15)
+.treable-row:hover i.font-icon-money{
+	display: block;
 }
-*/
+
+.dropdown-menu.dropdown-menu-money{
+	position: absolute;
+	z-index: 100;
+	display: block;
+	top:65px;
+	left:222px;
+	box-shadow: 0 0 12px #eee;
+}
 .treable-row>.sutable-col>.inspliter{
 	position: absolute;
 	display: inline-block;
 	width: 5px;
-	height: 70%;
+	height: 99%;
 	z-index: 20;
-	top:15%;
+/*	top:15%;*/
 	right: 0px;
 	overflow: visible;
 	border-right: 1px solid #ccc;

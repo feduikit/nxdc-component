@@ -55,7 +55,7 @@ require(['./config'],function(){
 			
             $("div.ndp-drop-wrapper[name=checkbox-drop2]").drop({
 				type:4,
-                data:["中国","加拿大","澳大利亚","法国"]
+                data:["中国sdfdfdsf","加拿大sdfdsfsdfds哇哇哇全文","澳大利亚人玩儿完任务二","法去尾王企鹅我去额外全额国"]
             }).on("APPLY_CLICK",function(e){
 				//多选 点击y应用按钮
 				//data = {checkedArr:cksArr}

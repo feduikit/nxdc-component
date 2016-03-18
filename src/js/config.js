@@ -44,7 +44,7 @@ require.config({
 			deps:['bootstrap']
 		},
 		treable:{
-			deps:['bootstrap','tabs']
+			deps:['bootstrap','tabs','drop2']
 		},
 		sutable:{
 			deps:['bootstrap']
