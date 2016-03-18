@@ -8,7 +8,7 @@
 		icon:"",
 		callback:null
 	};
-	
+
 	$(document).ready(function(){
 		var pa = $(document.body);
 		if(pa.find("[id*='alert'][class*='modal fade']").length==0){
@@ -30,7 +30,10 @@
 			pa.append(wrapper);
 		}
 
-		win.showAlert = function(options){	
+		win.showAlert = function(options){
+			var body =$("[id*='alert'][class*='modal fade'] .modal-body");
+			var wrapper =$("[id*='alert'][class*='modal fade']");
+			var footer =$("[id*='alert'][class*='modal fade'] .modal-footer");
 			body.empty();
 			var icon = $('<div id="icon-holder"></div>');
 			var content = $('<div id="content-holder"><div class="content-title"></div>\
@@ -63,7 +66,7 @@
 			wrapper.unbind("hide.bs.modal").on("hide.bs.modal",function(e){
 				if(cfg.callback && typeof(cfg.callback)=="function") cfg.callback(wrapper);
 			})
-			
+
 			if(cfg.type==2){
 				header.remove();
 				footer.remove();
@@ -77,10 +80,10 @@
 			}else{
 				wrapper.unbind("click");
 			}
-			
-			
+
+
 			var the = $.extend(true,{},wrapper,wrapper.modal());
-			
+
 			return the;//显示alert
 		}
 	});
