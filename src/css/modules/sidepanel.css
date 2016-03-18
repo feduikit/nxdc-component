@@ -2,21 +2,23 @@
 * @Author: mikey.zhaopeng
 * @Date:   2016-02-25 18:30:11
 * @Last Modified by:   mikey.zhaopeng
-* @Last Modified time: 2016-02-29 19:58:47
+* @Last Modified time: 2016-03-11 14:42:50
 */
 
 .with-full-sidepanel-panel .sidepanel-panel {
-    -webkit-transform: translate(0,0);
-    -ms-transform: translate(0,0);
-    -o-transform: translate(0,0);
-    transform: translate(0,0);
+    -webkit-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    -o-transform: translate(0, 0);
+    transform: translate(0, 0);
 }
+
 .with-full-sidepanel-panel .sidepanel-panel {
-    -webkit-transform: translate(0,0);
-    -ms-transform: translate(0,0);
-    -o-transform: translate(0,0);
-    transform: translate(0,0);
+    -webkit-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    -o-transform: translate(0, 0);
+    transform: translate(0, 0);
 }
+
 .sidepanel-panel {
     position: fixed;
     width: 800px;
@@ -28,21 +30,30 @@
     -webkit-transition: transform 218ms ease;
     -o-transition: transform 218ms ease;
     transition: transform 218ms ease;
-    -webkit-transform: translate(800px,0);
-    -ms-transform: translate(800px,0);
-    -o-transform: translate(800px,0);
-    transform: translate(800px,0);
-    -webkit-box-shadow: -3px 0 3px rgba(0,0,0,.1);
-    box-shadow: -3px 0 3px rgba(0,0,0,.1);
+    -webkit-transform: translate(800px, 0);
+    -ms-transform: translate(800px, 0);
+    -o-transform: translate(800px, 0);
+    transform: translate(800px, 0);
+    -webkit-box-shadow: -3px 0 3px rgba(0, 0, 0, .1);
+    box-shadow: -3px 0 3px rgba(0, 0, 0, .1);
 }
+
 .sidepanel-panel .panel {
     border: 0;
 }
+
 .sidepanel-panel .panel-heading {
     background-color: #fff;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+
+.sidepanel-panel .panel-body {
+    overflow: auto;
+    height: 100%;
+    padding-bottom: 100px;
+}
+
 .sidepanel-panel .panel-footer {
     background-color: #fff;
     border-top: 1px solid #ddd;
@@ -57,7 +68,6 @@
     height: 100%;
 }
 
-
 .sidepanel-panel .panel-heading .close {
     margin-top: -2px;
 }
@@ -65,5 +75,3 @@
 .sidepanel-panel .panel-heading .close span {
     font-size: 24px;
 }
-
-
