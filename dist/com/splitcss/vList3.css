@@ -102,7 +102,7 @@
 
 .ndp-vList3-wrapper li[deep]>span.list-txt-wrapper>.aud-size{
 	position: absolute;
-	right: 20px;
+	right: 50px;
 }
 
 
@@ -131,6 +131,11 @@
 	font-style:normal;
 }
 
+.ndp-vList3-wrapper li[deep]>span.list-txt-wrapper>.v-search{
+	position: absolute;
+	right: 10px;
+	line-height: 40px;
+}
 /*****
 **
 ****/

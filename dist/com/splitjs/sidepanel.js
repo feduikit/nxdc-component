@@ -84,8 +84,8 @@
             '        </div>' +
             '        <div class="panel-footer">' +
             '            <div class="btn-toolbar pull-right" role="toolbar" aria-label="Toolbar with button groups">' +
-            '                <button type="button" class="btn btn-primary">确定</button>' +
-            '                <button type="button" class="btn btn-default">取消</button>' +
+            '                <button type="button" class="btn btn-primary">'+(self.config.saveBtn ? self.config.saveBtn : '确定')+'</button>' +
+            '                <button type="button" class="btn btn-default">'+(self.config.cancelBtn ? self.config.cancelBtn : '取消')+'</button>' +
             '            </div>' +
             '        </div>' +
             '    </div>' +

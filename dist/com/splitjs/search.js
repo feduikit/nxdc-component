@@ -67,6 +67,7 @@
 		** 回车键
 		***/
 		this.input.keyup(function(e){
+			e.preventDefault();
 			if(e.keyCode == 13){
 				if(_this.config.type==3 || _this.config.type==4){
 					_this.dropmenu.addClass("hidden");
@@ -116,10 +117,18 @@
 			e.stopImmediatePropagation();
 			if(_this.config.type==3||_this.config.type==4){
 				_this.wrapper.addClass("loading");
-				var opt = _this.config.ajaxOptions;
 				var key = $(this).val();
-				opt.data = {key:key};
+				var opt = _this.config.ajaxOptions;
+				var opt = $.extend({}, _this.config.ajaxOptions);
+				if (!opt.data){
+					opt.data = {key:key};
+				} else if (typeof opt.data === 'function') {
+					opt.data = opt.data(key);
+				}
 				$.ajax(opt).then(function(result){
+					if (_this.config.ajaxOptions.processResults){
+						result = _this.config.ajaxOptions.processResults(result)
+					}
 					if(typeof(result)=="string") result = JSON.parse(result);
 					_this.dropmenu.empty();
 					result.data.forEach(function(item,index){
@@ -143,7 +152,7 @@
 						arr.splice((start+len+1),0,"</em>");
 						var val1 = arr.join("");
 						if(!_this.config.rowdec){
-							var li = $('<li data-val="'+val+'" data-name='+txt+' data-text='+txt+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a></li>');
+							var li = $('<li data-val="'+val+'" data-name="'+txt+'" data-text='+txt+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a></li>');
 							if(id) li.attr("data-id",id);
 						}else{
 							var li = _this.config.rowdec(item,index,val1);
@@ -154,6 +163,7 @@
 					_this.wrapper.removeClass("loading");
 					
 					_this.dropmenu.find("li").unbind("click").click(function(e){
+						e.preventDefault();
 						e.stopImmediatePropagation();
 						if($(this).hasClass("selected")) return false;
 						if(_this.config.clickhide) _this.input.val($(this).data('text'));//点击之后隐藏

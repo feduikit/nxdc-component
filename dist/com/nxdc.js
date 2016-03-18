@@ -31,7 +31,7 @@ if (!Object.keys) Object.keys = function(o) {
 		icon:"",
 		callback:null
 	};
-	
+
 	$(document).ready(function(){
 		var pa = $(document.body);
 		if(pa.find("[id*='alert'][class*='modal fade']").length==0){
@@ -53,7 +53,10 @@ if (!Object.keys) Object.keys = function(o) {
 			pa.append(wrapper);
 		}
 
-		win.showAlert = function(options){	
+		win.showAlert = function(options){
+			var body =$("[id*='alert'][class*='modal fade'] .modal-body");
+			var wrapper =$("[id*='alert'][class*='modal fade']");
+			var footer =$("[id*='alert'][class*='modal fade'] .modal-footer");
 			body.empty();
 			var icon = $('<div id="icon-holder"></div>');
 			var content = $('<div id="content-holder"><div class="content-title"></div>\
@@ -86,7 +89,7 @@ if (!Object.keys) Object.keys = function(o) {
 			wrapper.unbind("hide.bs.modal").on("hide.bs.modal",function(e){
 				if(cfg.callback && typeof(cfg.callback)=="function") cfg.callback(wrapper);
 			})
-			
+
 			if(cfg.type==2){
 				header.remove();
 				footer.remove();
@@ -100,10 +103,10 @@ if (!Object.keys) Object.keys = function(o) {
 			}else{
 				wrapper.unbind("click");
 			}
-			
-			
+
+
 			var the = $.extend(true,{},wrapper,wrapper.modal());
-			
+
 			return the;//显示alert
 		}
 	});
@@ -114,10 +117,9 @@ if (!Object.keys) Object.keys = function(o) {
 	var Tool = {
 		//创建一个tag
 		tag:function (item,idx){
-			console.log(item);
 			var txt = item.label||item.name||item.text||item.value||item;
 			var val = item.val||item.value||txt;
-			var tag = $('<span class="tag-wrapper" data-text='+txt+' data-val='+val+' data-serial='+idx+' >\
+			var tag = $('<span class="tag-wrapper" data-text="'+txt+'" data-val="'+val+'" data-serial="'+idx+'" >\
 			<button type="button" class="close close2" aria-label="Close"><span class="x2" aria-hidden="true">&times;</span></button>\
 			<span class="tag-txt-wrapper" >'+txt+'</span>\
 			</span>');
@@ -132,7 +134,6 @@ if (!Object.keys) Object.keys = function(o) {
 			var li = $("<li class='blend-sel-item' data-serial="+idx+" />");
 			var liclose = '<button type="button" class="close close1" aria-label="Close"><span class="x1"aria-hidden="true">&times;</span></button>';
 			var bread = $('<div class="ndp-bread-wrapper"></div>');
-			console.log(o);
 			//生成面包屑
 			if(o.path) bread.bread({
 				list:o.path,
@@ -250,7 +251,7 @@ if (!Object.keys) Object.keys = function(o) {
 					var val1 = arr.join("");
 					var asize = item.audienceSize||item.audience_size;
 					var li = '<li val="'+val+'"  tabIndex='+index+' >\
-					<a class="txt-mark" href="#" data-id='+(item.id)+' data-val='+val+' index='+index+' data-name='+txt+' data-path='+item.path.join("#")+' data-size='+asize+' >'+(val1||txt)+'<span class="aud-class">'+asize+'</span></a></li>';
+					<a class="txt-mark" href="#" data-type="'+(item.type)+'" data-id="'+(item.id)+'" data-val="'+val+'" index="'+index+'" data-name="'+txt+'" data-path="'+item.path.join("#")+'" data-size="'+asize+'" >'+(val1||txt)+'<span class="aud-class">'+asize+'</span></a></li>';
 					_this.drop1.append(li);
 				});	
 				_this.drop1.removeClass("hidden");
@@ -279,6 +280,7 @@ if (!Object.keys) Object.keys = function(o) {
 					//加到数据里面去
 					var arr = _this.config.seldata;
 					arr[serial].tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
+					$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 //					for(var i=0;i<arr.length;i++){
 //						var dt = arr[i];
 //						if(dt.path.join("#")==dat.path){
@@ -293,6 +295,7 @@ if (!Object.keys) Object.keys = function(o) {
 					Tool.addClassify(dat,serial,_this.dropup);// 出现在DOM上
 					if(!_this.config.seldata) _this.config.seldata = [];
 					_this.config.seldata.push(dat);	//加入数据中
+					$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 				}
 				the.addClass("selected");
 				fireEvent(_this.elem.get(0),"ITEM_CLICK",_this.insdata[index]);
@@ -326,6 +329,7 @@ if (!Object.keys) Object.keys = function(o) {
 				var arr = _this.config.seldata[serial].tags;
 				var dat = arr.splice(idx,1);//删除的数据
 				if(!box.children().length) row.remove();
+				$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 				//发出事件,用户点击了
 				fireEvent(_this.elem.get(0),"TAG_RESIGN",dat);
 			}// 一行 x 被点击
@@ -335,6 +339,7 @@ if (!Object.keys) Object.keys = function(o) {
 				var serial = parseInt(tali.data("serial"));
 				tali.remove();//删除一行
 				var data = _this.config.seldata.splice(serial,1);//删除这一行的数据
+				$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 				fireEvent(_this.elem.get(0),"SERIAL_RESIGN",data);
 			}
 		});
@@ -356,6 +361,7 @@ if (!Object.keys) Object.keys = function(o) {
 		** 推荐里面的下拉菜单, 加入数据
 		**/
 		this.vlist.on("ITEM_CLICK",function(e){
+			e.preventDefault();
 			var dat = e.originalEvent.data;
 			if(!dat.search){
 				_this.selectDAT(dat);				
@@ -393,6 +399,7 @@ if (!Object.keys) Object.keys = function(o) {
 				var dt = arr[i];
 				if(dt.path.join("#")==dat.path){
 					dt.tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
+					$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 					break;//跳出循环
 				}
 			}
@@ -403,6 +410,7 @@ if (!Object.keys) Object.keys = function(o) {
 			//加到数据里面去
 			if(!_this.config.seldata) _this.config.seldata = [];
 			_this.config.seldata.push(dat);
+			$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 		}						
 	}
 	
@@ -445,7 +453,8 @@ if (!Object.keys) Object.keys = function(o) {
 		if(cfg.seldata && cfg.seldata.length){
 			cfg.seldata.forEach(function(o,idx){
 				Tool.addClassify(o,idx,_this.dropup);
-			});	
+			});
+			$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 		}
 	}
     /**
@@ -1030,14 +1039,26 @@ if (!Object.keys) Object.keys = function(o) {
 			var itemIndex = $(this).index();
 //			var deep = parseInt($(this).attr("deep"));
             var value = $(this).attr("value");
-            var txt = $(this).attr("title");
-            _this.peal.find("input").attr('data-val',value).val(txt);
 			//deep 表示树桩菜单第几层 base from 0。index:表示这一层的第几个， base from 1
+			$(_this.elem.get(0)).data('val', value);
 			if(_this.config.type==3){
+				var oldV = _this.peal.find("input").val();
+				var newV = $(this).attr("title");
+				if (oldV !== newV){
+					fireEvent(_this.elem.get(0),"ITEM_CHANGE",{val:value,text:newV,group:gp.index(),gpname:gp.attr("title")});
+				}
+				_this.peal.find("input").attr('data-val',value).val(newV);
 				var gp = $(this).parents(".drop-one-item[deep='0']:first");
-				fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,text:txt,group:gp.index(),gpname:gp.attr("title")});
-			}else{
-            	fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,text:txt});
+				fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,text:newV,group:gp.index(),gpname:gp.attr("title")});
+			}else {
+				var oldV = _this.peal.find("input").val();
+				var newV = $(this).attr("title");
+				if (oldV !== newV){
+					fireEvent(_this.elem.get(0),"ITEM_CHANGE",{val:value,text:newV});
+				}
+
+				_this.peal.find("input").val(newV);
+				fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,text:newV});
 			}
         });
 
@@ -1288,8 +1309,10 @@ if (!Object.keys) Object.keys = function(o) {
 				var txt = o[drop.config.textKey]||o.label||o.text||o.value||o.name;
 				var val = o.value || o.val || o.id || txt;
 				drop.elem.find("input").val(txt).attr("data-val",val);
+				$(drop.elem.get(0)).data('val', val);
 			}else{
 				drop.elem.find("input").val(o).attr("data-val",o);
+				$(drop.elem.get(0)).data('val', o);
 			}
 			return drop.elem;
 		};
@@ -2748,6 +2771,7 @@ if (!Object.keys) Object.keys = function(o) {
 		** 回车键
 		***/
 		this.input.keyup(function(e){
+			e.preventDefault();
 			if(e.keyCode == 13){
 				if(_this.config.type==3 || _this.config.type==4){
 					_this.dropmenu.addClass("hidden");
@@ -2797,10 +2821,18 @@ if (!Object.keys) Object.keys = function(o) {
 			e.stopImmediatePropagation();
 			if(_this.config.type==3||_this.config.type==4){
 				_this.wrapper.addClass("loading");
-				var opt = _this.config.ajaxOptions;
 				var key = $(this).val();
-				opt.data = {key:key};
+				var opt = _this.config.ajaxOptions;
+				var opt = $.extend({}, _this.config.ajaxOptions);
+				if (!opt.data){
+					opt.data = {key:key};
+				} else if (typeof opt.data === 'function') {
+					opt.data = opt.data(key);
+				}
 				$.ajax(opt).then(function(result){
+					if (_this.config.ajaxOptions.processResults){
+						result = _this.config.ajaxOptions.processResults(result)
+					}
 					if(typeof(result)=="string") result = JSON.parse(result);
 					_this.dropmenu.empty();
 					result.data.forEach(function(item,index){
@@ -2824,7 +2856,7 @@ if (!Object.keys) Object.keys = function(o) {
 						arr.splice((start+len+1),0,"</em>");
 						var val1 = arr.join("");
 						if(!_this.config.rowdec){
-							var li = $('<li data-val="'+val+'" data-name='+txt+' data-text='+txt+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a></li>');
+							var li = $('<li data-val="'+val+'" data-name="'+txt+'" data-text='+txt+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a></li>');
 							if(id) li.attr("data-id",id);
 						}else{
 							var li = _this.config.rowdec(item,index,val1);
@@ -2835,6 +2867,7 @@ if (!Object.keys) Object.keys = function(o) {
 					_this.wrapper.removeClass("loading");
 					
 					_this.dropmenu.find("li").unbind("click").click(function(e){
+						e.preventDefault();
 						e.stopImmediatePropagation();
 						if($(this).hasClass("selected")) return false;
 						if(_this.config.clickhide) _this.input.val($(this).data('text'));//点击之后隐藏
@@ -3143,8 +3176,8 @@ if (!Object.keys) Object.keys = function(o) {
             '        </div>' +
             '        <div class="panel-footer">' +
             '            <div class="btn-toolbar pull-right" role="toolbar" aria-label="Toolbar with button groups">' +
-            '                <button type="button" class="btn btn-primary">确定</button>' +
-            '                <button type="button" class="btn btn-default">取消</button>' +
+            '                <button type="button" class="btn btn-primary">'+(self.config.saveBtn ? self.config.saveBtn : '确定')+'</button>' +
+            '                <button type="button" class="btn btn-default">'+(self.config.cancelBtn ? self.config.cancelBtn : '取消')+'</button>' +
             '            </div>' +
             '        </div>' +
             '    </div>' +
@@ -6369,7 +6402,10 @@ if (!Object.keys) Object.keys = function(o) {
 				txtWrapper.html(text).attr({"title":text});
 				li.attr({"data-name":text,"data-text":text,"deep":deep,"data-id":did,"data-val":value,"data-type":ty,"data-size":o.audienceSize});
 				if(o.audienceSize) txtWrapper.append("<span class='aud-size'>"+(o.audienceSize)+"</span>");
-				if(o.search) txtWrapper.addClass("do-search");
+				if(o.search) {
+					txtWrapper.addClass("do-search");
+					txtWrapper.append('<span class="glyphicon glyphicon-search v-search"></span>');
+				}
 				if(array && array instanceof Array){
 					li.attr("asparent",true);
 					txtWrapper.append(cfg.expicon);
@@ -6418,6 +6454,7 @@ if (!Object.keys) Object.keys = function(o) {
 		**点击叶子
 		**/	
 		_this.elem.find("li.list-leaf:not(:has(.do-search))").click(function(e){
+			e.preventDefault();
 			e.stopImmediatePropagation();
 			if($(this).hasClass("selected")) return false;
 			$(this).addClass("active");
@@ -6429,9 +6466,13 @@ if (!Object.keys) Object.keys = function(o) {
 		/***
 		** 点击需要 "搜索" 的东西
 		***/
-		_this.elem.find("li.list-leaf>.do-search").click(function(e){
+		_this.elem.find("li.list-leaf:has(.do-search)").click(function(e){
 			_this.sepanel.removeClass("hidden");
 			_this.elem.addClass("search-mode");
+			var the = $(this);
+			var _data = the.data();
+			_data.search = true;
+			fireEvent($(this).get(0),"ITEM_CLICK",_data);
 		});
 		
 		/***
@@ -6465,7 +6506,7 @@ if (!Object.keys) Object.keys = function(o) {
 				var val = o.val || o.value || txt;
 				var id = o.id;
 				var asize = o.audienceSize||o.audience_size;
-				return  '<li  class="search-row-cus" data-val="'+val+'" data-name='+txt+' data-text='+txt+' data-path='+(o.path.join("#").replace(/\s/g,""))+' data-size='+asize+' index='+index+' tabIndex='+index+' data-id='+id+' ><a href="#">'+(val1||txt)+'</a><span class="aud-class">'+asize+'</span></li>';
+				return  '<li  class="search-row-cus" data-val="'+val+'" data-type="'+ o.type +'" data-id="'+id+'" data-text="'+txt+'" data-name="'+txt+'" data-path="'+(o.path.join("#").replace(/\s/g,""))+'" data-size="'+asize+'" index="'+index+'" tabIndex="'+index+'"><a href="#">'+(val1||txt)+'</a><span class="aud-class">'+asize+'</span></li>';
 			}
 		});
 		_this.sepanel.append(_this.searchx).append("<button class='btn btn-default btn-search'>返回列表</button>");
@@ -6524,7 +6565,7 @@ if (!Object.keys) Object.keys = function(o) {
 		***/
 		this.updateOption = function(o){
 			vList3.config.ajaxOption = o;
-			vList3.searchx.update(o);
+			vList3.searchx.updateOption(o);
 			return vList3.elem;
 		};
 		

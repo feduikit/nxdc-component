@@ -29,7 +29,10 @@
 				txtWrapper.html(text).attr({"title":text});
 				li.attr({"data-name":text,"data-text":text,"deep":deep,"data-id":did,"data-val":value,"data-type":ty,"data-size":o.audienceSize});
 				if(o.audienceSize) txtWrapper.append("<span class='aud-size'>"+(o.audienceSize)+"</span>");
-				if(o.search) txtWrapper.addClass("do-search");
+				if(o.search) {
+					txtWrapper.addClass("do-search");
+					txtWrapper.append('<span class="glyphicon glyphicon-search v-search"></span>');
+				}
 				if(array && array instanceof Array){
 					li.attr("asparent",true);
 					txtWrapper.append(cfg.expicon);
@@ -78,6 +81,7 @@
 		**点击叶子
 		**/	
 		_this.elem.find("li.list-leaf:not(:has(.do-search))").click(function(e){
+			e.preventDefault();
 			e.stopImmediatePropagation();
 			if($(this).hasClass("selected")) return false;
 			$(this).addClass("active");
@@ -89,9 +93,13 @@
 		/***
 		** 点击需要 "搜索" 的东西
 		***/
-		_this.elem.find("li.list-leaf>.do-search").click(function(e){
+		_this.elem.find("li.list-leaf:has(.do-search)").click(function(e){
 			_this.sepanel.removeClass("hidden");
 			_this.elem.addClass("search-mode");
+			var the = $(this);
+			var _data = the.data();
+			_data.search = true;
+			fireEvent($(this).get(0),"ITEM_CLICK",_data);
 		});
 		
 		/***
@@ -125,7 +133,7 @@
 				var val = o.val || o.value || txt;
 				var id = o.id;
 				var asize = o.audienceSize||o.audience_size;
-				return  '<li  class="search-row-cus" data-val="'+val+'" data-name='+txt+' data-text='+txt+' data-path='+(o.path.join("#").replace(/\s/g,""))+' data-size='+asize+' index='+index+' tabIndex='+index+' data-id='+id+' ><a href="#">'+(val1||txt)+'</a><span class="aud-class">'+asize+'</span></li>';
+				return  '<li  class="search-row-cus" data-val="'+val+'" data-type="'+ o.type +'" data-id="'+id+'" data-text="'+txt+'" data-name="'+txt+'" data-path="'+(o.path.join("#").replace(/\s/g,""))+'" data-size="'+asize+'" index="'+index+'" tabIndex="'+index+'"><a href="#">'+(val1||txt)+'</a><span class="aud-class">'+asize+'</span></li>';
 			}
 		});
 		_this.sepanel.append(_this.searchx).append("<button class='btn btn-default btn-search'>返回列表</button>");
@@ -184,7 +192,7 @@
 		***/
 		this.updateOption = function(o){
 			vList3.config.ajaxOption = o;
-			vList3.searchx.update(o);
+			vList3.searchx.updateOption(o);
 			return vList3.elem;
 		};
 		

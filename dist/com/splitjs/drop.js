@@ -89,14 +89,26 @@
 			var itemIndex = $(this).index();
 //			var deep = parseInt($(this).attr("deep"));
             var value = $(this).attr("value");
-            var txt = $(this).attr("title");
-            _this.peal.find("input").attr('data-val',value).val(txt);
 			//deep 表示树桩菜单第几层 base from 0。index:表示这一层的第几个， base from 1
+			$(_this.elem.get(0)).data('val', value);
 			if(_this.config.type==3){
+				var oldV = _this.peal.find("input").val();
+				var newV = $(this).attr("title");
+				if (oldV !== newV){
+					fireEvent(_this.elem.get(0),"ITEM_CHANGE",{val:value,text:newV,group:gp.index(),gpname:gp.attr("title")});
+				}
+				_this.peal.find("input").attr('data-val',value).val(newV);
 				var gp = $(this).parents(".drop-one-item[deep='0']:first");
-				fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,text:txt,group:gp.index(),gpname:gp.attr("title")});
-			}else{
-            	fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,text:txt});
+				fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,text:newV,group:gp.index(),gpname:gp.attr("title")});
+			}else {
+				var oldV = _this.peal.find("input").val();
+				var newV = $(this).attr("title");
+				if (oldV !== newV){
+					fireEvent(_this.elem.get(0),"ITEM_CHANGE",{val:value,text:newV});
+				}
+
+				_this.peal.find("input").val(newV);
+				fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,text:newV});
 			}
         });
 
@@ -347,8 +359,10 @@
 				var txt = o[drop.config.textKey]||o.label||o.text||o.value||o.name;
 				var val = o.value || o.val || o.id || txt;
 				drop.elem.find("input").val(txt).attr("data-val",val);
+				$(drop.elem.get(0)).data('val', val);
 			}else{
 				drop.elem.find("input").val(o).attr("data-val",o);
+				$(drop.elem.get(0)).data('val', o);
 			}
 			return drop.elem;
 		};
