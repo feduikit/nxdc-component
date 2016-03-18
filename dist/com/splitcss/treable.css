@@ -4,7 +4,7 @@
 	box-sizing: border-box;
 	width: 100%;
 	border: 1px solid #e0e0e0;
-	width: 1200px;
+	/*width: 1200px;*/
 	overflow: hidden;
 }
 .ndp-treable-wrapper.resize-cursor{
@@ -12,7 +12,7 @@
 }
 
 /***
-** toolbar 
+** toolbar
 ***/
 .sutable-toolbar{
 	position: absolute;
@@ -169,7 +169,7 @@
 .treable-row-wrapper-parent[deep='1']{
 	border-bottom-width:0;
 	border-left-width: 0;
-	border-right-width: 0;	
+	border-right-width: 0;
 }
 
 .treable-item{
@@ -233,7 +233,7 @@
 }
 
 /****
-** 图表 所在层  chart 和 tabs 所在的层 
+** 图表 所在层  chart 和 tabs 所在的层
 ***/
 .treable-row-wrapper>.chart-wrapper{
 	position: relative;
@@ -350,13 +350,13 @@
 	margin-left: 41px;/*****修正问题****/
 }
 .treable-row[deep='1']>.sutable-col-status{
-	margin-left: 41px;/***还有20px padding***/ 
+	margin-left: 41px;/***还有20px padding***/
 }
 .treable-row[deep='2']>.sutable-col-status{
-	margin-left: 20px;/***还有20px padding***/ 
+	margin-left: 20px;/***还有20px padding***/
 }
 .treable-row[deep='3']>.sutable-col-status{
-	margin: -1px;/***还有40px padding***/ 
+	margin: -1px;/***还有40px padding***/
 }
 .sutable-col-status>span.switcher{
 	position: absolute;
