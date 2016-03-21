@@ -46,7 +46,15 @@
     background-color: #fff;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+    padding: 0 !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
 }
+
+.sidepanel-panel .panel-title{
+    margin-left: 15px;
+}
+
 
 .sidepanel-panel .panel-body {
     overflow: auto;
@@ -71,8 +79,14 @@
 
 .sidepanel-panel .panel-heading .close {
     margin-top: -2px;
+    margin-right: 15px;
 }
 
 .sidepanel-panel .panel-heading .close span {
     font-size: 24px;
+}
+
+.sidepanel-panel .panel-heading .edit-tip{
+    position: relative;
+    top: 10px;
 }
