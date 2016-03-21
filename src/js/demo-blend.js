@@ -187,7 +187,31 @@ require(['./config'],function(){
 						});
 					});
 				},
-				seldata:null
+				seldata:[
+					{path:["个人情况","学历","教育程度"],
+					 type:"education_statuses",
+					 tags:[{name:"硕士学位",id:"11",audience_size: 10000},
+						   {name:"本科学历",id:22,audience_size: 10032},
+						   {name:"教育学硕士",id:33,audience_size: 21000}]
+					 },
+					 {path:["兴趣", "健身养生"],
+					  type:"interests",
+					  tags:[{name:"健身房",id:1,audience_size: 10000},
+							{name:"跑步",id:2,audience_size: 10000},
+							{name:"登山",id:3,audience_size: 10000},
+							{name:"马拉松",id:4,audience_size: 10000},
+							{name:"铅球",id:5,audience_size: 10000},
+							{name:"羽毛球",id:6,audience_size: 10000},
+							{name:"素食主义者",id:7,audience_size: 10000},
+							{name:"环保主义者",id:8,audience_size: 10000}
+						   ]
+					 },
+					 {path:["个人情况", "学历","大学就读年份"],
+					  type:"education_statuses",// 时间范围选择
+					  start:2016,
+					  end:2020
+					 }
+				],
 			}).on("TAG_RESIGN",function(e){// 点击tag前面的x 删除一个tag
 				console.log(e.originalEvent.data); //删除的数据
 			}).on("SERIAL_RESIGN",function(e){//删除一行

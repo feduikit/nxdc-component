@@ -34,19 +34,23 @@
 			}else if(o.start && o.end){//如果是日期
 				var arr = [];
 				for(var i=0;i<40;i++){
-					arr.push((1980+i));
+					arr.push({text:(1980+i),val:(1980+i)});
 				}
-				var start = $("<div class='ndp-drop-wrapper' name='year-start' />").drop({
+				var start = $("<div class='ndp-drop3-wrapper' name='year-start' />").drop3({
 					data:arr,
 					allowInput:true,
 					caret:"glyphicon-menu-right"
-				}).val(o.start);
-				var end = $("<div class='ndp-drop-wrapper' name='year-end' />").drop({
+				}).val(o.start).on("ITEM_CLICK",function(e){
+					o.start = e.originalEvent.data.val;
+				});
+				var end = $("<div class='ndp-drop3-wrapper' name='year-end' />").drop3({
 					data:arr,
 					allowInput:true,
 					caret:"glyphicon-menu-right"
-				}).val(o.end);
-				tagbox.append(start).append("<hr  />").append(end);
+				}).val(o.end).on("ITEM_CLICK",function(e){
+					o.end = e.originalEvent.data.val;
+				}); 
+				tagbox.append(start).append("<hr />").append(end);
 			}
 			li.append(bread).append(tagbox).append(liclose);
 			dropup.append(li);

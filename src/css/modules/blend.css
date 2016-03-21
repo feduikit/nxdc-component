@@ -224,7 +224,7 @@
 /****
 **  入学年份
 ****/
-.ndp-blend-wrapper .ndp-drop-wrapper{
+.ndp-blend-wrapper .ndp-drop3-wrapper{
 	position: relative;
 	display: inline-block;
 	margin: 0;
@@ -238,8 +238,9 @@
 	position: relative;
 	display: inline-block;
 	width: 40px;
-	margin: 8px;
+	margin: 12px;
 	border-color:black;
+	vertical-align: top;
 }
 .ndp-blend-wrapper .drop-peal+ul.drop-list{
 	max-height: 150px;

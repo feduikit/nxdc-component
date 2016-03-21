@@ -14,6 +14,7 @@ require.config({
 		'gallery':'./components/gallery',
 		'progressbar':'./components/progressbar',
 		'drop2':'./components/drop2',
+		'drop3':'./components/drop3',
 		'treable':'./components/treable',
 		'sutable':'./components/sutable',
 		'timerange':'./components/timerange',
@@ -59,7 +60,7 @@ require.config({
 			deps:['search']
 		},
 		blend:{
-			deps:['vList3','bread','drop']
+			deps:['vList3','bread','drop3']
 		}
     }
 });

@@ -55,9 +55,9 @@ require(['./config'],function(){
 				});	
 			
 				$("#inl").click(function(){
-					showTip({type:"warning",
-							 close:true,
-							 bind:$(".hello")
+					showTip({type:"warning", //显示何种类型的tip  warning, danger, success,primary
+							 close:true,//是否显示 x 关闭按钮
+							 bind:$(".hello") //依附的对象是，默认是document.body , 传入一个jquery DOM对象
 							});					
 				});
         });
