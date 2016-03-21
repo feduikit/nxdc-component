@@ -83,6 +83,7 @@
             '                <span aria-hidden="true">×</span>' +
             '            </button>' +
             '            <h3 class="panel-title">Panel title</h3>' +
+            '            <div class="edit-tip"></div>' +
             '        </div>' +
             '        <div class="panel-body">' +
             '            Panel content' +
