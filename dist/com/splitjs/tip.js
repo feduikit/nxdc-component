@@ -5,20 +5,30 @@
 		type:"info",//success,warning,danger
 		through:true,// true 通栏
 		close:false,
+		bind:null, //jquery对象 DOM 句柄，   默认DOM弹出的tip 吸附在body上，如果没设置就是全局的为body，有设置根据设置走
 		content:"这里填写你想要展示的提示内容！~~"// 可以使文字，也可以是html
 	};
 	
 	$(document).ready(function(){
-		var pa = $(document.body);
+//		var pa = $(document.body);
+		var elem = null;
 		var tim = null;
-		if(pa.find("div[class*='tip']").length==0){
-			var elem = $("<div class='tip'><span class='icon-hold'></span><span class='content-hold'></span><span class='close-hold' aria-hidden='true'></span></div>");
-			pa.prepend(elem);
-		}
+//		if(pa.find("div[class*='tip']").length==0){
+//			var elem = $("<div class='tip'><span class='icon-hold'></span><span class='content-hold'></span><span class='close-hold' aria-hidden='true'></span></div>");
+//			pa.prepend(elem);
+//		}
 		
 		win.showTip = function(options){
 			var cfg = $.extend(true,{},defaults,options);
 			if(tim) clearTimeout(tim);
+			
+			var pa = (cfg.bind)?cfg.bind:$(document.body);
+			if(pa.children("div[class*='"+(cfg.bind?'tip-bind':'tip')+"']").length==0){
+				elem = $("<div class='tip' ><span class='icon-hold'></span><span class='content-hold'></span><span class='close-hold' aria-hidden='true'></span></div>");
+				pa.prepend(elem);
+			}			
+			
+			
 			elem.removeAttr("style").removeAttr("class").addClass("tip");
 			elem.find("span.close-hold").empty();
 			elem.find("span.icon-hold").empty();
@@ -40,6 +50,10 @@
 					}
 				}				
 			}
+			if(cfg.bind){
+				elem.addClass("tip-bind");
+			}
+			
 			elem.addClass("alert alert-"+cfg.type);
 			if(cfg.holdon && /^[\-\.]?(\d+)?\.?(\d+)?$/.test(cfg.holdon)){
 				tim = setTimeout(function(){
@@ -48,16 +62,16 @@
 				},cfg.holdon*1000);				
 			}
 			
+			elem.find("span.close-hold").unbind("click").click(function(e){
+				e.stopImmediatePropagation();
+				elem.css("opacity",0).removeClass("alert");
+				if(tim) clearTimeout(tim);
+				fireEvent(elem.get(0),"TIP_CLOSE");//tip 被手动关闭
+			});			
+			
+			
 			return elem;
 		}
 		
-		elem.find("span.close-hold").unbind("click").click(function(e){
-			e.stopImmediatePropagation();
-			elem.css("opacity",0).removeClass("alert");
-			if(tim) clearTimeout(tim);
-			fireEvent(elem.get(0),"TIP_CLOSE");//tip 被手动关闭
-		});
-		
-
 	});
 }(jQuery,window));

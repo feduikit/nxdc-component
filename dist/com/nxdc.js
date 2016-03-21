@@ -1545,7 +1545,7 @@ if (!Object.keys) Object.keys = function(o) {
 			data.forEach(function(item,index){
 				var itemBox = $('<div class="item" index='+index+' w='+item.w+' h='+item.h+'>');
 				if(index == 0) itemBox.addClass("active");
-				var img = $('<img data-img='+item.big+' class="img-responsive">');
+				var img = $('<img data-img='+item.big+' >');//class="img-responsive"
 				if(index==0) img.attr("src",item.big);
 				var caption = $('<div class="carousel-caption">');
 				itemBox.append(img).append(caption);
@@ -1637,17 +1637,18 @@ if (!Object.keys) Object.keys = function(o) {
 		this.elem.click(function(e){
 			var len = _this.config.data.length;
 			_this.body.empty().append(build(_this.config.data));
-			var ul = _this.list.find("ul");
-			ul.empty().attr("data-len",len);
+			var ul = _this.list.find("ul").empty().attr("data-len",len); //列表里面显示小图
+			
 			_this.config.data.forEach(function(item,index){
 				var li = $("<li class='gallery-list-cell' index="+index+"></li>");
 				if(index==len-1) li.attr("lastone","true");
 				if(index==0) li.addClass("active");
-				var img = $("<img width='100%' height='100%' class='img-responsive' /> ");
+				var img = $("<img width='100%' height='100%'  /> ");//class='img-responsive'
 				if(item.small) img.attr("src",item.small);
 				li.append(img);
 				ul.append(li);
 			});	
+			
 			var gData = _this.config.data[_this.config.current];
 			scale(gData.w,gData.h);
 			_this.wrapper.modal();//显示图片查看器
@@ -1790,7 +1791,7 @@ if (!Object.keys) Object.keys = function(o) {
     };
 	
 	/**
-	** 构建下来菜单样子
+	** 构建下拉菜单样子
 	**/
 	Gallery.prototype.concrate = function(data){
 		var _this = this;
@@ -1859,15 +1860,10 @@ if (!Object.keys) Object.keys = function(o) {
     /***
     **和其他插件的交互
 	** factory Class
-    **@param {Drop} Bread :  instacne of the plugin builder
+    **@param {Drop} drop :  instacne of the plugin 
     **/
     function exchange(drop){
-        /**
-        **@param {Object} msg {type:"类型"}
-        **/
-        this.manipulate = function(msg){
-            
-        }
+		
     }
 	
 	  var old = $.fn.gallery;
@@ -4861,20 +4857,30 @@ if (!Object.keys) Object.keys = function(o) {
 		type:"info",//success,warning,danger
 		through:true,// true 通栏
 		close:false,
+		bind:null, //jquery对象 DOM 句柄，   默认DOM弹出的tip 吸附在body上，如果没设置就是全局的为body，有设置根据设置走
 		content:"这里填写你想要展示的提示内容！~~"// 可以使文字，也可以是html
 	};
 	
 	$(document).ready(function(){
-		var pa = $(document.body);
+//		var pa = $(document.body);
+		var elem = null;
 		var tim = null;
-		if(pa.find("div[class*='tip']").length==0){
-			var elem = $("<div class='tip'><span class='icon-hold'></span><span class='content-hold'></span><span class='close-hold' aria-hidden='true'></span></div>");
-			pa.prepend(elem);
-		}
+//		if(pa.find("div[class*='tip']").length==0){
+//			var elem = $("<div class='tip'><span class='icon-hold'></span><span class='content-hold'></span><span class='close-hold' aria-hidden='true'></span></div>");
+//			pa.prepend(elem);
+//		}
 		
 		win.showTip = function(options){
 			var cfg = $.extend(true,{},defaults,options);
 			if(tim) clearTimeout(tim);
+			
+			var pa = (cfg.bind)?cfg.bind:$(document.body);
+			if(pa.children("div[class*='"+(cfg.bind?'tip-bind':'tip')+"']").length==0){
+				elem = $("<div class='tip' ><span class='icon-hold'></span><span class='content-hold'></span><span class='close-hold' aria-hidden='true'></span></div>");
+				pa.prepend(elem);
+			}			
+			
+			
 			elem.removeAttr("style").removeAttr("class").addClass("tip");
 			elem.find("span.close-hold").empty();
 			elem.find("span.icon-hold").empty();
@@ -4896,6 +4902,10 @@ if (!Object.keys) Object.keys = function(o) {
 					}
 				}				
 			}
+			if(cfg.bind){
+				elem.addClass("tip-bind");
+			}
+			
 			elem.addClass("alert alert-"+cfg.type);
 			if(cfg.holdon && /^[\-\.]?(\d+)?\.?(\d+)?$/.test(cfg.holdon)){
 				tim = setTimeout(function(){
@@ -4904,17 +4914,17 @@ if (!Object.keys) Object.keys = function(o) {
 				},cfg.holdon*1000);				
 			}
 			
+			elem.find("span.close-hold").unbind("click").click(function(e){
+				e.stopImmediatePropagation();
+				elem.css("opacity",0).removeClass("alert");
+				if(tim) clearTimeout(tim);
+				fireEvent(elem.get(0),"TIP_CLOSE");//tip 被手动关闭
+			});			
+			
+			
 			return elem;
 		}
 		
-		elem.find("span.close-hold").unbind("click").click(function(e){
-			e.stopImmediatePropagation();
-			elem.css("opacity",0).removeClass("alert");
-			if(tim) clearTimeout(tim);
-			fireEvent(elem.get(0),"TIP_CLOSE");//tip 被手动关闭
-		});
-		
-
 	});
 }(jQuery,window));
 

@@ -17,9 +17,10 @@ html,body{
 	height: 100%;
 }
 
-*:focus{
+*:focus,a,a:focus{
 	outline: none;
 }
+
 button.btn:focus{
 	outline: 0;
 }

@@ -52,7 +52,14 @@ require(['./config'],function(){
 					showTip({type:"warning",
 							 through:false,
 							 close:true});
-				});			
+				});	
+			
+				$("#inl").click(function(){
+					showTip({type:"warning",
+							 close:true,
+							 bind:$(".hello")
+							});					
+				});
         });
     });
 });
