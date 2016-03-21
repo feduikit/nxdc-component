@@ -9,7 +9,7 @@
 			data.forEach(function(item,index){
 				var itemBox = $('<div class="item" index='+index+' w='+item.w+' h='+item.h+'>');
 				if(index == 0) itemBox.addClass("active");
-				var img = $('<img data-img='+item.big+' class="img-responsive">');
+				var img = $('<img data-img='+item.big+' >');//class="img-responsive"
 				if(index==0) img.attr("src",item.big);
 				var caption = $('<div class="carousel-caption">');
 				itemBox.append(img).append(caption);
@@ -101,17 +101,18 @@
 		this.elem.click(function(e){
 			var len = _this.config.data.length;
 			_this.body.empty().append(build(_this.config.data));
-			var ul = _this.list.find("ul");
-			ul.empty().attr("data-len",len);
+			var ul = _this.list.find("ul").empty().attr("data-len",len); //列表里面显示小图
+			
 			_this.config.data.forEach(function(item,index){
 				var li = $("<li class='gallery-list-cell' index="+index+"></li>");
 				if(index==len-1) li.attr("lastone","true");
 				if(index==0) li.addClass("active");
-				var img = $("<img width='100%' height='100%' class='img-responsive' /> ");
+				var img = $("<img width='100%' height='100%'  /> ");//class='img-responsive'
 				if(item.small) img.attr("src",item.small);
 				li.append(img);
 				ul.append(li);
 			});	
+			
 			var gData = _this.config.data[_this.config.current];
 			scale(gData.w,gData.h);
 			_this.wrapper.modal();//显示图片查看器
@@ -254,7 +255,7 @@
     };
 	
 	/**
-	** 构建下来菜单样子
+	** 构建下拉菜单样子
 	**/
 	Gallery.prototype.concrate = function(data){
 		var _this = this;
@@ -323,15 +324,10 @@
     /***
     **和其他插件的交互
 	** factory Class
-    **@param {Drop} Bread :  instacne of the plugin builder
+    **@param {Drop} drop :  instacne of the plugin 
     **/
     function exchange(drop){
-        /**
-        **@param {Object} msg {type:"类型"}
-        **/
-        this.manipulate = function(msg){
-            
-        }
+		
     }
 	
 	  var old = $.fn.gallery;

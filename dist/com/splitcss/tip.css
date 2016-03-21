@@ -18,6 +18,15 @@
 	right:inherit;
 	margin-left: 10%;
 }
+
+.tip.tip-bind{
+	position: absolute;
+	z-index: 1000;
+	top:0;
+	left: 0;
+}
+
+
 .tip.alert{
 	display:block;
 	opacity: 1;

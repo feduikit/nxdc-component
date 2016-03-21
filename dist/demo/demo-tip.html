@@ -14,22 +14,34 @@
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-	<![endif]-->       
+	<![endif]-->
+   <style type="text/css">
+	   .hello{
+		   position: relative;
+		   margin-top:30px;
+		   width: 800px;   
+		   height: 500px;
+		   border:1px solid red;
+	   } 
+	</style>       
     <title>NDP media web ui lib</title>
 </head>
 <body>
   <div class="container-fluid ndp-ui-header"></div> 
-	<div class="container ndp-ui-main" style="margin-top:200px;">
+	<div class="container ndp-ui-main" style="margin-top:50px;">
 		<button type="button" class="btn btn-primary">显示提示信息</button>
 		<button type="button" class="btn btn-warning">显示警告信息</button>
 		<button type="button" class="btn btn-success">显示成功信息</button>
 		<button type="button" class="btn btn-danger">显示失败/报错信息</button>
 	</div>
-	<div class="container ndp-ui-main" style="margin-top:100px;">
+	<div class="container ndp-ui-main" style="margin-top:50px;">
 		<button type="button" class="btn btn-primary btn2primary">显示提示信息(sm)</button>
 		<button type="button" class="btn btn-warning btn2warning">显示警告信息(sm)</button>
 		<button type="button" class="btn btn-success btn2success">显示成功信息(sm)</button>
 		<button type="button" class="btn btn-danger btn2danger">显示失败/报错信息(sm)</button>
+	</div>
+	<div class="hello" style ="left:100px;" >
+		<button type="button" class="btn" id="inl" style="position:relative;margin-top:200px;">显示bind提示信息(sm)</button>
 	</div>  	   	 	   	  
   <script src='../lib/require.js' data-main='./js/demo-tip'></script>
 </body>
