@@ -128,7 +128,7 @@
 			}else{
 				str = item;
 			}
-			var li = $("<li role='presentation' value="+str+"  index="+index+" title="+str+" ><a href='#'>"+str+"</a></li>");
+			var li = $("<li role='presentation' value="+str+"  index="+index+" title="+str+" ><a href='javascript:void(0);'>"+str+"</a></li>");
 			if(index==_this.config.default) {li.addClass("active")};
 			if(_this.config.badge && ba){//是否显示 badge 
 				li.find("a").append("<span class='badge'>"+ba+"</span>");

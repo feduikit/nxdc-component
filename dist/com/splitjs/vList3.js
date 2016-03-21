@@ -25,7 +25,7 @@
 				var value = o.val||o.value||text;
 				var did = o.id;
 				var ty = o.type;
-				if(o.parent) li.attr("data-path",o.parent.split(">").join("#"));
+				if(o.parent) li.attr("data-path",o.parent.split(">").join("#").replace(/\s/g,""));
 				txtWrapper.html(text).attr({"title":text});
 				li.attr({"data-name":text,"data-text":text,"deep":deep,"data-id":did,"data-val":value,"data-type":ty,"data-size":o.audienceSize});
 				if(o.audienceSize) txtWrapper.append("<span class='aud-size'>"+(o.audienceSize)+"</span>");
@@ -135,7 +135,11 @@
 				var val = o.val || o.value || txt;
 				var id = o.id;
 				var asize = o.audienceSize||o.audience_size;
-				return  '<li  class="search-row-cus" data-val="'+val+'" data-type="'+ o.type +'" data-id="'+id+'" data-text="'+txt+'" data-name="'+txt+'" data-path="'+(o.path.join("#").replace(/\s/g,""))+'" data-size="'+asize+'" index="'+index+'" tabIndex="'+index+'"><a href="#">'+(val1||txt)+'</a><span class="aud-class">'+asize+'</span></li>';
+				var _li =  $('<li  class="search-row-cus" data-val="'+val+'" data-type="'+ o.type +'" data-id="'+id+'" data-text="'+txt+'" data-name="'+txt+'" data-path="'+(o.path.join("#").replace(/\s/g,""))+'" data-size="'+asize+'" index="'+index+'" tabIndex="'+index+'"><a href="#">'+(val1||txt)+'</a></li>');
+                if (asize){
+					_li.append('<span class="aud-class">'+asize+'</span>');
+				}
+				return _li;
 			}
 		});
 		_this.sepanel.append(_this.searchx).append("<button class='btn btn-default btn-search'>返回列表</button>");

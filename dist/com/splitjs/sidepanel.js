@@ -2,7 +2,7 @@
  * @Author: mikey.zhaopeng
  * @Date:   2016-02-25 18:11:32
  * @Last Modified by:   mikey.zhaopeng
- * @Last Modified time: 2016-03-18 20:26:09
+ * @Last Modified time: 2016-03-19 16:28:21
  */
 
 'use strict';;
@@ -47,6 +47,7 @@
         this.$elem.addClass('with-full-sidepanel-panel');
         if($('body .modal-backdrop.fade.in.sidepanel-backdrop').length==0){
             $('body').append('<div class="modal-backdrop fade in sidepanel-backdrop"></div>');
+            $('.sidepanel-backdrop').css('z-index','1000')
         }
     };
     SidePanel.prototype.toggle = function() {
@@ -59,10 +60,10 @@
 
     SidePanel.prototype.events = function(data) {
         var self = this;
-        self.$elem.off('click', '.sidepanel-panel .close,.sidepanel-panel .btn-default').on('click', '.sidepanel-panel .close,.sidepanel-panel .btn-default', function(e) {
+        self.$elem.off('click', '.sidepanel-panel .close,.sidepanel-panel .cancel').on('click', '.sidepanel-panel .close,.sidepanel-panel .cancel', function(e) {
             self.hide();
         });
-        self.$elem.off('click', '.sidepanel-panel .btn-primary').on('click', '.sidepanel-panel .btn-primary', function(e) {
+        self.$elem.off('click', '.sidepanel-panel .panel-footer .ok').on('click', '.sidepanel-panel .panel-footer .ok', function(e) {
             if (self.config.callback) {
                 self.config.callback(self.$elem)
             }
@@ -88,8 +89,8 @@
             '        </div>' +
             '        <div class="panel-footer">' +
             '            <div class="btn-toolbar pull-right" role="toolbar" aria-label="Toolbar with button groups">' +
-            '                <button type="button" class="btn btn-primary">'+(self.config.saveBtn ? self.config.saveBtn : '确定')+'</button>' +
-            '                <button type="button" class="btn btn-default">'+(self.config.cancelBtn ? self.config.cancelBtn : '取消')+'</button>' +
+            '                <button type="button" class="btn btn-primary ok">'+(self.config.saveBtn ? self.config.saveBtn : '确定')+'</button>' +
+            '                <button type="button" class="btn btn-default cancel">'+(self.config.cancelBtn ? self.config.cancelBtn : '取消')+'</button>' +
             '            </div>' +
             '        </div>' +
             '    </div>' +

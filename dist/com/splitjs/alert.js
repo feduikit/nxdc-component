@@ -82,7 +82,10 @@
 			}
 
 
-			var the = $.extend(true,{},wrapper,wrapper.modal());
+			var the = $.extend(true,{},wrapper,wrapper.modal({
+				backdrop:false,
+				keyboard:false
+			}));
 
 			return the;//显示alert
 		}

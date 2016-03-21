@@ -58,7 +58,7 @@
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.blend.defaults,element.data(),options);
 		this.init();
-		
+		element.data('blend', this);
     };
 	/**
 	**列表组件的初始化
@@ -137,7 +137,7 @@
 					var val1 = arr.join("");
 					var asize = item.audienceSize||item.audience_size;
 					var li = '<li val="'+val+'"  tabIndex='+index+' >\
-					<a class="txt-mark" href="#" data-type="'+(item.type)+'" data-id="'+(item.id)+'" data-val="'+val+'" index="'+index+'" data-name="'+txt+'" data-path="'+item.path.join("#")+'" data-size="'+asize+'" >'+(val1||txt)+'<span class="aud-class">'+asize+'</span></a></li>';
+					<a class="txt-mark" href="#" data-type="'+(item.type)+'" data-id="'+(item.id)+'" data-val="'+val+'" index="'+index+'" data-name="'+txt+'" data-path="'+item.path.join("#").replace(/\s/g,"") +'" data-size="'+asize+'" >'+(val1||txt)+'<span class="aud-class">'+asize+'</span></a></li>';
 					_this.drop1.append(li);
 				});	
 				_this.drop1.removeClass("hidden");
@@ -155,34 +155,38 @@
 			var the = $(e.target);
 			if(e.target.tagName=="A" && the.hasClass("txt-mark")){
 				if(the.hasClass("selected")) return false;//如果是已经selected  就不要加了
+				_this.selectDAT([the.data()]);
 				var index = the.attr("index");
-				var path = the.data("path");
-				var li = _this.dropup.find("li[data-path='"+path+"']");
-				var box = li.find(".tag-box");
-				var dat = the.data();
-				if(li.length){//已经存在分类了，
-					var serial = parseInt(li.data("serial"));// 选中数组中的第几个
-					box.append(Tool.tag(dat,serial));
-					//加到数据里面去
-					var arr = _this.config.seldata;
-					arr[serial].tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
-					$(_this.elem.get(0)).data("seldata", _this.config.seldata);
-//					for(var i=0;i<arr.length;i++){
-//						var dt = arr[i];
-//						if(dt.path.join("#")==dat.path){
-//							dt.tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
-//							break;//跳出循环
-//						}
-//					}
-				}else {
-					dat.path = dat.path.split("#");
-					dat.tags = [dat.name];
-					var serial = (_this.config.seldata &&_this.config.seldata.length)||0
-					Tool.addClassify(dat,serial,_this.dropup);// 出现在DOM上
-					if(!_this.config.seldata) _this.config.seldata = [];
-					_this.config.seldata.push(dat);	//加入数据中
-					$(_this.elem.get(0)).data("seldata", _this.config.seldata);
-				}
+//				var index = the.attr("index");
+//				var path = the.data("path");
+//				var li = _this.dropup.find("li[data-path='"+path+"']");
+//				var box = li.find(".tag-box");
+//				var dat = the.data();
+//				if(li.length){//已经存在分类了，
+//					var serial = parseInt(li.data("serial"));// 选中数组中的第几个
+//					//
+//
+//					box.append(Tool.tag(dat,serial));
+//					//加到数据里面去
+//					var arr = _this.config.seldata;
+//					arr[serial].tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
+//					$(_this.elem.get(0)).data("seldata", _this.config.seldata);
+////					for(var i=0;i<arr.length;i++){
+////						var dt = arr[i];
+////						if(dt.path.join("#")==dat.path){
+////							dt.tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
+////							break;//跳出循环
+////						}
+////					}
+//				}else {
+//					dat.path = dat.path.split("#");
+//					dat.tags = [dat.name];
+//					var serial = (_this.config.seldata &&_this.config.seldata.length)||0
+//					Tool.addClassify(dat,serial,_this.dropup);// 出现在DOM上
+//					if(!_this.config.seldata) _this.config.seldata = [];
+//					_this.config.seldata.push(dat);	//加入数据中
+//					$(_this.elem.get(0)).data("seldata", _this.config.seldata);
+//				}
 				the.addClass("selected");
 				fireEvent(_this.elem.get(0),"ITEM_CLICK",_this.insdata[index]);
 			}
@@ -208,13 +212,23 @@
 				var ta = $(e.target).parents("span.tag-wrapper:first");
 				var box = ta.parent();
 				var row = ta.parents("li.blend-sel-item:first");
-				var serial = ta.data("serial");
-				var idx = parseInt(ta.data("index"));
-				ta.remove();//删除 这个tag  DOM 
+				//var serial = ta.data("serial");
+				var serial = row.index();
+				//var idx = parseInt(ta.data("index"));
+				var idx = ta.index();
+				ta.remove();//删除 这个tag  DOM
 				//从数据中删除
-				var arr = _this.config.seldata[serial].tags;
+				var parent = _this.config.seldata[serial];
+				var arr = parent.tags;
 				var dat = arr.splice(idx,1);//删除的数据
-				if(!box.children().length) row.remove();
+			    if (dat && dat[0]){
+					//下拉列表中selected恢复让其可选
+					_this.unSelect(parent.path, parent.type, dat[0].id);
+				}
+				if(!box.children().length){
+					row.remove();
+					_this.config.seldata.splice(serial,1);
+				}
 				$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 				//发出事件,用户点击了
 				fireEvent(_this.elem.get(0),"TAG_RESIGN",dat);
@@ -222,14 +236,33 @@
 			else if((e.target.tagName=="BUTTON" && $(e.target).hasClass("close1"))||
 			    e.target.tagName=="SPAN" && $(e.target).hasClass("x1")){
 				var tali = $(e.target).parents(".blend-sel-item:first");
-				var serial = parseInt(tali.data("serial"));
+				//var serial = parseInt(tali.data("serial"));
+				var serial = tali.index();
 				tali.remove();//删除一行
 				var data = _this.config.seldata.splice(serial,1);//删除这一行的数据
+				if (data && data[0] && data[0].tags && data[0].tags.length > 0){
+					//下拉列表中selected恢复让其可选
+					var parent = data[0];
+					var tags = parent.tags;
+					$.each(tags, function(_i, _tag){
+						_this.unSelect(parent.path, parent.type, _tag.id);
+					})
+				}
 				$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 				fireEvent(_this.elem.get(0),"SERIAL_RESIGN",data);
 			}
 		});
-		
+
+		Blend.prototype.unSelect = function(_path, _type, _id){
+			var _this = this;
+			//外部搜索框
+			_this.drop1.find('a[data-path="' + (_path.join("#").replace(/\s/g,"")) +'"][data-type="' + _type +'"][data-id="' + _id + '"]')
+				.removeClass("selected");
+			//树状
+			_this.drop2.find('li[data-path="' + (_path.join("#").replace(/\s/g,"")) +'"][data-type="' + _type +'"][data-id="' + _id + '"]')
+					.removeClass("selected");
+		}
+
 		//点击返回按钮
 		this.vlist.on("RETURN_BACK",function(){
 			_this.vlist.hspanel();
@@ -240,7 +273,8 @@
 		****/
 		this.vlist.on("ITEM_SELECT",function(e){
 			var dat = e.originalEvent.data;
-			_this.selectDAT(dat);
+			_this.selectDAT([dat]);
+			fireEvent(_this.elem.get(0),"ITEM_CLICK",dat);
 		});
 		
 		/***
@@ -250,7 +284,7 @@
 			e.preventDefault();
 			var dat = e.originalEvent.data;
 			if(!dat.search){
-				_this.selectDAT(dat);				
+				_this.selectDAT([dat]);
 			}
 		});
 		
@@ -272,32 +306,39 @@
 	/***
 	**
 	***/
-	Blend.prototype.selectDAT = function(dat){
+	Blend.prototype.selectDAT = function(dats){
 		var _this = this;
-		var li = _this.dropup.find("li[data-path='"+dat.path+"']");
-		if(li.length){//已经存在分类了
-			var box = li.find(".tag-box");
-			var serial = parseInt(li.data("serial"));			
-			box.append(Tool.tag(dat,serial));// 放到 DOM树里面去
-			//加到数据里面去
-			var arr = _this.config.seldata;
-			for(var i=0;i<arr.length;i++){
-				var dt = arr[i];
-				if(dt.path.join("#")==dat.path){
-					dt.tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
-					$(_this.elem.get(0)).data("seldata", _this.config.seldata);
-					break;//跳出循环
+		$.each(dats, function(i, dat){
+			var li = _this.dropup.find("li[data-path='"+dat.path+"']");
+			if(li.length){//已经存在分类了
+				var box = li.find(".tag-box");
+				//tag以id作为唯一标识
+				if (box.find('span[data-id="' + dat.id + '"]').length == 0){
+					var serial = parseInt(li.data("serial"));
+					box.append(Tool.tag(dat,serial));// 放到 DOM树里面去
+					//加到数据里面去
+					var arr = _this.config.seldata;
+					for(var i=0;i<arr.length;i++){
+						var dt = arr[i];
+						if(dt.path.join("#")==dat.path){
+							dt.tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
+							$(_this.elem.get(0)).data("seldata", _this.config.seldata);
+							break;//跳出循环
+						}
+					}
 				}
+			}else{
+				var _newData = {};
+				_newData = $.extend(_newData, dat);
+				_newData.path = dat.path.split("#");
+				_newData.tags = [{name:dat.name,id:dat.id,audience_size:dat.size}];
+				Tool.addClassify(_newData,0,_this.dropup);//加到DOM 树，
+				//加到数据里面去
+				if(!_this.config.seldata) _this.config.seldata = [];
+				_this.config.seldata.push(_newData);
+				$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 			}
-		}else{
-			dat.path = dat.path.split("#");
-			dat.tags = [{name:dat.name,id:dat.id,audience_size:dat.size}];
-			Tool.addClassify(dat,0,_this.dropup);//加到DOM 树，
-			//加到数据里面去
-			if(!_this.config.seldata) _this.config.seldata = [];
-			_this.config.seldata.push(dat);
-			$(_this.elem.get(0)).data("seldata", _this.config.seldata);
-		}						
+		})
 	}
 	
 	
@@ -348,9 +389,17 @@
      */
     $.fn.blend = function (options) {
 		var the = this.first();
-        var blend = new Blend(the, options);
-        the = $.extend(true,{},the,new exchange(blend));
-		return the;
+		if (typeof options === 'object'){
+			var blend = new Blend(the, options);
+			the = $.extend(true,{},the,new exchange(blend));
+			return the;
+		} else if (typeof options === 'string'){
+			var instance = the.data('blend');
+			var args = Array.prototype.slice.call(arguments, 1);
+			var ret = instance[options](args);
+			return ret;
+		}
+
     };
     /***
     **和其他插件的交互
