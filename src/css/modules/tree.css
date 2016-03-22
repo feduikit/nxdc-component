@@ -33,6 +33,24 @@ span.tree-joint-wrapper{
 	margin-right: 5px;
 }
 
+span.tree-joint-wrapper:before{
+	position: absolute;
+	content:"+";
+	top:-6.5px;
+	left:0.8px;
+}
+
+span.tree-joint-wrapper.active:before{
+	display: none;
+}
+
+span.tree-joint-wrapper.active:after{
+	position: absolute;
+	content:"-";
+	top:-6px;
+	left:2px;
+}
+
 span.line-inspect{
 	position: absolute;
 	display: inline-block;
@@ -61,26 +79,36 @@ span.tree-joint-wrapper>span{
 	font-size:12px;
 	user-select:none;
 	-webkit-user-select:none;
+	color:black;
 }
 
 /***
 ** + 号
 ***/
 .tree-deepest span.tree-joint-wrapper>span:nth-child(1){
-	height: 0;
-	width:80%;
-	border-top:1px solid black;
+/*
+	height: 100%;
+	width:100%;
+*/
+						/*	border-top:1px solid black;*/
+/*
 	margin-top:4px;
 	margin-left:10%;
+*/
 }
 /***
 ** - 号
 ***/
 .tree-deepest span.tree-joint-wrapper>span:nth-child(2){
-	height: 80%;
-	border-left:1px solid black;
+/*
+	height: 100%;
+	width:100%;
+*/
+		/*	border-left:1px solid black;*/
+/*
 	margin-left: 4px;
 	margin-top:10%;
+*/
 }
 
 /***

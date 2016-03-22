@@ -19,6 +19,7 @@ require.config({
 		'sutable':'./components/sutable',
 		'timerange':'./components/timerange',
 		'blend':'./components/blend',
+		'vList':'./components/vList',
 		'vList3':'./components/vList3',
 		'bubble':'./components/bubble'
     },

@@ -155,6 +155,6 @@
 	$.fn.vList.defaults = {
 		data:[],
 		expicon:"<i class='glyphicon glyphicon-menu-right'></i>",
-		leaficon:"<i class='glyphicon glyphicon-list-alt'></i>"
+		leaficon:null
 	};
 }(jQuery));
