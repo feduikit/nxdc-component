@@ -147,6 +147,7 @@
         "/Users/ericever/Desktop/develop/nxdc_ui/lib/respond/dest/respond.src.js",
         "/Users/ericever/Desktop/develop/nxdc_ui/lib/respond/Gruntfile.js",
         "/Users/ericever/Desktop/develop/nxdc_ui/lib/respond/src/matchmedia.addListener.js",
-        "/Users/ericever/Desktop/develop/nxdc_ui/lib/respond/src/matchmedia.polyfill.js"
+        "/Users/ericever/Desktop/develop/nxdc_ui/lib/respond/src/matchmedia.polyfill.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/lib/listManager/js/ajaxPage.js"
     ]
 }

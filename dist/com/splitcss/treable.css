@@ -175,9 +175,15 @@
 .treable-item{
 	border-left:1px solid #e0e0e0;
 }
-.treable-item[deep='1']{
+.treable-item.open[deep='1']{
 	border-width: 0;
 }
+.treable-item[deep='1']{
+	border-top:1px solid #e0e0e0;
+	border-left-color: transparent;
+}
+
+
 .treable-item[deep='2']{
 	background-color: #f7f9fa;
 }

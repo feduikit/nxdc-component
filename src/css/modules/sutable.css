@@ -12,7 +12,8 @@
 	min-width: 100px;
 	border-radius: 2px;
 	border:1px solid #e0e0e;
-	box-shadow: 0 0 2px black;
+	-webkit-box-shadow: 0 0 1px black!important;
+	box-shadow: 0 0 1px black!important;
 	color:black;
 	background-color:white;
 }
@@ -180,7 +181,7 @@
 	position: relative;
 	height: 40px;
 	background-color:white;
-/*	overflow: hidden;*/
+	overflow: hidden;
 }
 .sutable-body li.sutable-item.open{
 	height: inherit;
@@ -465,7 +466,7 @@ li.sutable-item.open[deep='2']>.sutable-row-wrapper.asparent{
 	height: 17px;
 	left: 10px;
 	top:11px;
-	z-index: 200;
+	z-index: 60;
 	border:1px solid #d4d4d4;
 }
 /****
