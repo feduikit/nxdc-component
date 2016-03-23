@@ -4,29 +4,46 @@ require(['./config'],function(){
 				$("button.btn-primary").click(function(){
 					showTip({
 						holdon:10,//默认 10秒消失
-						content:"This is tip for showing people some thing!<button class='btn btn-primary btn2'>button</button>"
+						content:"This is tip for showing people some thing!<button class='btn btn-primary btn2'>button</button>",
+						closeCallback:function(){//tip被人为关闭
+							console.log("关闭了 tip");	
+						},
+						clickCallback:function(ta,tip){
+							if(ta.tagName && $(ta).hasClass("btn2")){
+								console.log("hello world");
+							}
+						}
 					});
-				}).on("TIP_CLOSE",function(e){
-					console.log("tip 关闭");
 				});
+			
+			
 				$("button.btn-success").click(function(){
 					showTip({type:"success",
 							 close:true,
-							 icon:"<i class='glyphicon glyphicon-home'></i>"});
-				}).on("TIP_CLOSE",function(e){
-					console.log("tip 关闭");
+							 icon:"<i class='glyphicon glyphicon-home'></i>",
+							 closeCallback:function(){
+								console.log("关闭了 tip");	
+							}
+					});
 				});
 			
 			
 				$("button.btn-danger").click(function(){
-					showTip({type:"danger",close:true});
-				}).on("TIP_CLOSE",function(e){
-					console.log("tip 关闭");
+					showTip({
+						type:"danger",
+						close:true,
+						closeCallback:function(){
+							console.log("关闭了 tip");	
+						}						
+					});
 				});	
 			
 			
 				$("button.btn-warning").click(function(){
-					showTip({type:"warning",close:true});
+					showTip({type:"warning",close:true})
+							.on("TIP_CLOSE",function(e){
+							console.log("tip 关闭 WARNING");
+						 });
 				});	
 			
 			
