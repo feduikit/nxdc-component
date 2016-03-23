@@ -32,7 +32,7 @@
 		***/
 		function scale(w,h){
 			var wi = window.innerWidth;//展示图片的区域宽度
-			var he = window.innerHeight-235;//展示图片的区域高度
+			var he = window.innerHeight-240;//展示图片的区域高度
 			var aspect = w/h;//((w||4)/(h||3)).toFixed(2);//宽高比
 			var container = $('.modal-gallery .modal-content');
 			

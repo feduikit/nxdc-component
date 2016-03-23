@@ -13,7 +13,7 @@
 	
 	$(document).ready(function(){
 //		var pa = $(document.body);
-		var elem = null;
+//		var elem = null;
 		var tim = null;
 //		if(pa.find("div[class*='tip']").length==0){
 //			var elem = $("<div class='tip'><span class='icon-hold'></span><span class='content-hold'></span><span class='close-hold' aria-hidden='true'></span></div>");
@@ -25,15 +25,20 @@
 			if(tim) clearTimeout(tim);
 			
 			var pa = (cfg.bind)?cfg.bind:$(document.body);
-			var the = pa.children("div[class*='"+(cfg.bind?'tip-bind':'tip')+"']");
-			if(the.length==0){
-				elem = $("<div class='tip' ><span class='icon-hold'></span><span class='content-hold'></span><span class='close-hold' aria-hidden='true'></span></div>");
+			var the = pa.children("#"+(cfg.bind?"bind2dom":"bind2body"));
+			if(!the.get(0)){
+				var elem = $("<div class='tip' ><span class='icon-hold'></span><span class='content-hold'></span><span class='close-hold' aria-hidden='true'></span></div>");			
 				pa.prepend(elem);
 			}else{
 				elem = the.first();
 			}	
 		
 			elem.removeAttr("style").removeAttr("class").addClass("tip");
+			if(cfg.bind){
+				elem.addClass("tip-bind").attr("id","bind2dom");
+			}else{
+				elem.attr("id","bind2body");
+			}				
 			elem.find("span.close-hold").empty();
 			elem.find("span.icon-hold").empty();
 			elem.find("span.content-hold").html(cfg.content);
@@ -55,21 +60,19 @@
 					}
 				}				
 			}
-			if(cfg.bind){
-				elem.addClass("tip-bind");
-			}
-			
 			elem.addClass("alert alert-"+cfg.type);
 			if(cfg.holdon && /^[\-\.]?(\d+)?\.?(\d+)?$/.test(cfg.holdon)){
 				tim = setTimeout(function(){
-					elem.css("opacity",0).removeClass("alert");
+					//elem.css("opacity",0).removeClass("alert");
+					elem.remove();
 					cfg.closeCallback(elem);
 				},cfg.holdon*1000);				
 			}
 			
-			elem.find("span.close-hold").unbind("click").click(function(e){
+			elem.find("span.close-hold").click(function(e){
 				e.stopImmediatePropagation();
-				elem.css("opacity",0).removeClass("alert");
+				//elem.css("opacity",0).removeClass("alert");
+				elem.remove();
 				if(tim) clearTimeout(tim);
 				cfg.closeCallback();
 			});			
