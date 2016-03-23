@@ -5068,11 +5068,11 @@ if (!Object.keys) Object.keys = function(o) {
 ;(function ($,win) { //start with a [;] because if our code is combine or minification  with other code,AND other code not terminated with [;] then it will not infect ours.
     var self = this;
 	var defaults = {
-		holdon:30,//默认30秒后消失
+		time:30,//默认30秒后消失
 		type:"info",//success,warning,danger
 		through:true,// true 通栏
 		close:false,
-		bind:null, //jquery对象 DOM 句柄，   默认DOM弹出的tip 吸附在body上，如果没设置就是全局的为body，有设置根据设置走
+		bind:null, //jquery对象 DOM 句柄默认DOM弹出的tip 吸附在body上，如果没设置就是全局的为body，有设置根据设置走
 		closeCallback:function(){},//关闭tip回调函数
 		clickCallback:function(){},//点击除关闭按钮之外的其他部分，触发回调
 		content:"这里填写你想要展示的提示内容！~~"// 可以使文字，也可以是html
@@ -5128,12 +5128,12 @@ if (!Object.keys) Object.keys = function(o) {
 				}				
 			}
 			elem.addClass("alert alert-"+cfg.type);
-			if(cfg.holdon && /^[\-\.]?(\d+)?\.?(\d+)?$/.test(cfg.holdon)){
+			if(cfg.time){
 				tim = setTimeout(function(){
 					//elem.css("opacity",0).removeClass("alert");
 					elem.remove();
-					cfg.closeCallback(elem);
-				},cfg.holdon*1000);				
+					cfg.closeCallback();
+				},cfg.time*1000);				
 			}
 			
 			elem.find("span.close-hold").click(function(e){

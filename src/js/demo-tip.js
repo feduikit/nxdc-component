@@ -3,7 +3,7 @@ require(['./config'],function(){
         require(['bootstrap','./components/tip'],function(){
 				$("button.btn-primary").click(function(){
 					showTip({
-						holdon:10,//默认 10秒消失
+						time:10,//默认 10秒消失
 						content:"This is tip for showing people some thing!<button class='btn btn-primary btn2'>button</button>",
 						closeCallback:function(){//tip被人为关闭
 							console.log("关闭了 tip");	
