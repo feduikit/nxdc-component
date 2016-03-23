@@ -163,7 +163,7 @@
 	** outside accessible default setting
 	**/
 	$.fn.tree.defaults = {
-		joint:" ",//tree 关联处的 icon //<span>+</span><span>-</span>
+		joint:"<div class='hor'></div><div class='ver'></div>",//tree 关联处的 icon //<span>+</span><span>-</span>
 		icon:"",// 前置的图标
 		data:[],//生成树桩菜单，需要的数据
 		subKey:null,//下一层数组的key

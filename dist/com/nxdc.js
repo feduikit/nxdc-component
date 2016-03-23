@@ -5092,9 +5092,12 @@ if (!Object.keys) Object.keys = function(o) {
 			if(tim) clearTimeout(tim);
 			
 			var pa = (cfg.bind)?cfg.bind:$(document.body);
-			if(pa.children("div[class*='"+(cfg.bind?'tip-bind':'tip')+"']").length==0){
+			var the = pa.children("div[class*='"+(cfg.bind?'tip-bind':'tip')+"']");
+			if(the.length==0){
 				elem = $("<div class='tip' ><span class='icon-hold'></span><span class='content-hold'></span><span class='close-hold' aria-hidden='true'></span></div>");
 				pa.prepend(elem);
+			}else{
+				elem = the.first();
 			}	
 		
 			elem.removeAttr("style").removeAttr("class").addClass("tip");
@@ -5908,7 +5911,7 @@ if (!Object.keys) Object.keys = function(o) {
 	** outside accessible default setting
 	**/
 	$.fn.tree.defaults = {
-		joint:" ",//tree 关联处的 icon //<span>+</span><span>-</span>
+		joint:"<div class='hor'></div><div class='ver'></div>",//tree 关联处的 icon //<span>+</span><span>-</span>
 		icon:"",// 前置的图标
 		data:[],//生成树桩菜单，需要的数据
 		subKey:null,//下一层数组的key

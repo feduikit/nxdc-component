@@ -25,9 +25,12 @@
 			if(tim) clearTimeout(tim);
 			
 			var pa = (cfg.bind)?cfg.bind:$(document.body);
-			if(pa.children("div[class*='"+(cfg.bind?'tip-bind':'tip')+"']").length==0){
+			var the = pa.children("div[class*='"+(cfg.bind?'tip-bind':'tip')+"']");
+			if(the.length==0){
 				elem = $("<div class='tip' ><span class='icon-hold'></span><span class='content-hold'></span><span class='close-hold' aria-hidden='true'></span></div>");
 				pa.prepend(elem);
+			}else{
+				elem = the.first();
 			}	
 		
 			elem.removeAttr("style").removeAttr("class").addClass("tip");
