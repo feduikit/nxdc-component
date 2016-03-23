@@ -32,23 +32,27 @@ span.tree-joint-wrapper{
 	overflow: hidden;
 	margin-right: 5px;
 }
-
-span.tree-joint-wrapper:before{
+span.tree-joint-wrapper>.hor{
 	position: absolute;
-	content:"+";
-	top:-6.5px;
-	left:0.8px;
+	width: 80%;
+	height: 100%;
+	border-top:1px solid black;
+	top:-moz-calc(50% - 1px);
+	top:-webkit-calc(50% - 1px);
+	top:calc(50% - 1px);
+	left:10%;
+	background-color: transparent;
 }
-
-span.tree-joint-wrapper.active:before{
-	display: none;
-}
-
-span.tree-joint-wrapper.active:after{
+span.tree-joint-wrapper>.ver{
 	position: absolute;
-	content:"-";
-	top:-6px;
-	left:2px;
+	z-index: 10;
+	width: 100%;
+	height: 80%;
+	border-left:1px solid black;
+	top:10%;
+	left:-moz-calc(50% - 1px);
+	left:-webkit-calc(50% - 1px);
+	left:calc(50% - 1px);
 }
 
 span.line-inspect{

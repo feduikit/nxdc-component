@@ -7,7 +7,7 @@ require(['./config'],function(){
 					  {small:"../assets/list2.jpg",big:"../assets/show10.jpg",w:1920,h:1283},
 					  {small:"../assets/list3.jpg",big:"../assets/show3.jpg",w:1920,h:1280},
 					  {small:"../assets/list4.jpg",big:"../assets/show4.jpg",w:1920,h:1280},
-					  {small:"../assets/list5.jpg",big:"../assets/show5.jpg",w:1024,h:567},
+					  {small:"../assets/list5.jpg",big:"../assets/show5.jpg",w:1024,h:576},
 					  {small:"../assets/list2.jpg",big:"../assets/show6.jpg",w:355,h:501},
 					  {small:"../assets/list1.jpg",big:"../assets/show7.jpg",w:400,h:600},
 					  {small:"../assets/list3.jpg",big:"../assets/show8.jpg",w:533,h:798},

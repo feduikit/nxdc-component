@@ -148,6 +148,15 @@
         "/Users/ericever/Desktop/develop/nxdc_ui/lib/respond/Gruntfile.js",
         "/Users/ericever/Desktop/develop/nxdc_ui/lib/respond/src/matchmedia.addListener.js",
         "/Users/ericever/Desktop/develop/nxdc_ui/lib/respond/src/matchmedia.polyfill.js",
-        "/Users/ericever/Desktop/develop/nxdc_ui/lib/listManager/js/ajaxPage.js"
+        "/Users/ericever/Desktop/develop/nxdc_ui/lib/listManager/js/ajaxPage.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/lib/respond/src/respond.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/src/js/Compatibility/keys.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/src/js/Compatibility/utils.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/lib/jquery-metadata/test/testrunner.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-vList2.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-vList.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-upload.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-tree.js",
+        "demo-treable.js"
     ]
 }

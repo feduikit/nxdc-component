@@ -1781,12 +1781,12 @@ if (!Object.keys) Object.keys = function(o) {
 		**等比例缩放
 		***/
 		function scale(w,h){
-			var wi = Math.round(window.innerWidth*0.85).toFixed(2);//展示图片的区域宽度
-			var he = Math.round(window.innerHeight-210).toFixed(2);//展示图片的区域高度
-			var aspect = ((w||4)/(h||3)).toFixed(2);//宽高比
+			var wi = window.innerWidth;//展示图片的区域宽度
+			var he = window.innerHeight-235;//展示图片的区域高度
+			var aspect = w/h;//((w||4)/(h||3)).toFixed(2);//宽高比
 			var container = $('.modal-gallery .modal-content');
 			
-			if (wi / he > aspect){//如果 container的宽高比 高于 content的宽高比  "height":he,
+			if ((wi / he) > aspect){//如果 container的宽高比 高于 content的宽高比  "height":he,
 				container.css({"width":Math.round(he * aspect), "margin-left":-Math.round(he * aspect)/2+"px"});
 			} else {
 				//,"height":Math.round(wi / aspect),
@@ -5073,6 +5073,8 @@ if (!Object.keys) Object.keys = function(o) {
 		through:true,// true 通栏
 		close:false,
 		bind:null, //jquery对象 DOM 句柄，   默认DOM弹出的tip 吸附在body上，如果没设置就是全局的为body，有设置根据设置走
+		closeCallback:function(){},//关闭tip回调函数
+		clickCallback:function(){},//点击除关闭按钮之外的其他部分，触发回调
 		content:"这里填写你想要展示的提示内容！~~"// 可以使文字，也可以是html
 	};
 	
@@ -5090,12 +5092,14 @@ if (!Object.keys) Object.keys = function(o) {
 			if(tim) clearTimeout(tim);
 			
 			var pa = (cfg.bind)?cfg.bind:$(document.body);
-			if(pa.children("div[class*='"+(cfg.bind?'tip-bind':'tip')+"']").length==0){
+			var the = pa.children("div[class*='"+(cfg.bind?'tip-bind':'tip')+"']");
+			if(the.length==0){
 				elem = $("<div class='tip' ><span class='icon-hold'></span><span class='content-hold'></span><span class='close-hold' aria-hidden='true'></span></div>");
 				pa.prepend(elem);
-			}			
-			
-			
+			}else{
+				elem = the.first();
+			}	
+		
 			elem.removeAttr("style").removeAttr("class").addClass("tip");
 			elem.find("span.close-hold").empty();
 			elem.find("span.icon-hold").empty();
@@ -5106,6 +5110,7 @@ if (!Object.keys) Object.keys = function(o) {
 			if(cfg.icon){
 				elem.find("span.icon-hold").html(cfg.icon).css("margin-right","5px");
 			}
+			
 			if(!cfg.through){
 				elem.addClass("tip-spec");
 				var rw = window.innerWidth;
@@ -5125,7 +5130,7 @@ if (!Object.keys) Object.keys = function(o) {
 			if(cfg.holdon && /^[\-\.]?(\d+)?\.?(\d+)?$/.test(cfg.holdon)){
 				tim = setTimeout(function(){
 					elem.css("opacity",0).removeClass("alert");
-					fireEvent(elem.get(0),"TIP_CLOSE");//tip 消失
+					cfg.closeCallback(elem);
 				},cfg.holdon*1000);				
 			}
 			
@@ -5133,9 +5138,15 @@ if (!Object.keys) Object.keys = function(o) {
 				e.stopImmediatePropagation();
 				elem.css("opacity",0).removeClass("alert");
 				if(tim) clearTimeout(tim);
-				fireEvent(elem.get(0),"TIP_CLOSE");//tip 被手动关闭
+				cfg.closeCallback();
 			});			
 			
+			/***
+			** 点击 tip 除close按钮之外的其他地方，抛出事件
+			***/
+			elem.unbind("click").click(function(e){
+				cfg.clickCallback(e.target,elem);
+			});
 			
 			return elem;
 		}
@@ -5900,7 +5911,7 @@ if (!Object.keys) Object.keys = function(o) {
 	** outside accessible default setting
 	**/
 	$.fn.tree.defaults = {
-		joint:" ",//tree 关联处的 icon //<span>+</span><span>-</span>
+		joint:"<div class='hor'></div><div class='ver'></div>",//tree 关联处的 icon //<span>+</span><span>-</span>
 		icon:"",// 前置的图标
 		data:[],//生成树桩菜单，需要的数据
 		subKey:null,//下一层数组的key

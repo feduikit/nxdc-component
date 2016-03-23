@@ -31,12 +31,12 @@
 		**等比例缩放
 		***/
 		function scale(w,h){
-			var wi = Math.round(window.innerWidth*0.85).toFixed(2);//展示图片的区域宽度
-			var he = Math.round(window.innerHeight-210).toFixed(2);//展示图片的区域高度
-			var aspect = ((w||4)/(h||3)).toFixed(2);//宽高比
+			var wi = window.innerWidth;//展示图片的区域宽度
+			var he = window.innerHeight-235;//展示图片的区域高度
+			var aspect = w/h;//((w||4)/(h||3)).toFixed(2);//宽高比
 			var container = $('.modal-gallery .modal-content');
 			
-			if (wi / he > aspect){//如果 container的宽高比 高于 content的宽高比  "height":he,
+			if ((wi / he) > aspect){//如果 container的宽高比 高于 content的宽高比  "height":he,
 				container.css({"width":Math.round(he * aspect), "margin-left":-Math.round(he * aspect)/2+"px"});
 			} else {
 				//,"height":Math.round(wi / aspect),
