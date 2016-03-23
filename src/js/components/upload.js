@@ -46,28 +46,32 @@
         },
         popFileSelect: function() {
             this.$wrapper.attr('data-state', 'selecting');
+            this.showMsg('');
             this.createFileInput();
         },
         /**
          * 判断上传的文件是否符合规范
          */
         dragDetectDeferred: function(files) {
-            var msg = null;
+            var msg = [];
             var file = files[0];
             var dtd = $.Deferred();;
             var self = this;
             if (files.length < 1) {
-                msg = self.text.error.none;
-            } else if (files.length > 1) {
-                msg = self.text.error.number;
-            } else if (this.size < file.size) {
-                msg = self.text.error.size;
-            } else if (this.type && !new RegExp(this.type, 'igm').test(file.type)) {
-                msg = self.text.error.type;
+                msg.push(self.text.error.none);
+            } 
+             if (files.length > 1) {
+                msg.push(self.text.error.number);
+            } 
+             if (this.size < file.size) {
+                msg.push(self.text.error.size);
+            } 
+             if (this.type && !new RegExp(this.type, 'igm').test(file.type)) {
+                msg.push(self.text.error.type);
             }
 
-            if (msg) {
-                this.error({ msg: msg, type: 'file' });
+            if (msg.length) {
+                this.error({ msg: msg.join(self.text.upload.linkword), type: 'file' });
                 dtd.reject(false);
             }
             //这里判断是图片，而且可允许的尺寸中有，那么就要判断了
@@ -76,7 +80,8 @@
                     if (self.type == 'image') {
                         self.getImgSize(src, function(w, h) {
                             if (self.allowSize.length && self.allowSize.indexOf(w + '*' + h) == -1) {
-                                self.error({ msg: self.text.error.type, type: 'file' });
+                                msg.push(self.text.error.allowSize);
+                                self.error({ msg: msg.join(self.text.upload.linkword), type: 'file' });
                                 dtd.reject(false);
                             } else {
                                 self.setSize.call(self, w, h);
@@ -287,8 +292,8 @@
         text: {
             upload: {
                 uploading: '正在上传',
-                success: '上传成功',
-                tips: '图片拖放到这里',
+                success: '添加成功',
+                tips: '文件拖放到这里',
                 linkword: '或者',
                 descUploading: '上传中',
                 descButton: '上传',
@@ -298,7 +303,8 @@
                 type: '文件类型不正确',
                 size: '文件大小超过限制',
                 number: '文件数超过一个',
-                none: '没有要上传的文件'
+                none: '没有要上传的文件',
+                allowSize: '宽高尺寸有问题'
             }
         },
         name: 'file',
@@ -328,7 +334,8 @@
                     </div>\
                     <div class="upload-footer">\
                         <span class="upload-msg"></span>\
-                        <a herf="javascript:void(0);" class="upload-button btn-link" type="button">{{text.upload.agButton}}</a>\
+                        <button class="upload-button upload-button-go" type="button">{{text.upload.descButton}}</button>\
+                        <button class="upload-button upload-button-other" type="button">{{text.upload.agButton}}</button>\
                     </div>\
                 </div>'
     }

@@ -6,7 +6,7 @@ require(['./config'],function(){
 					url: '/upload.php'
 				},
 				allowSize: [],
-				type: 'video'
+				type: 'image'
 			});			
         });
     });
