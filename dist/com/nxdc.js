@@ -5092,7 +5092,7 @@ if (!Object.keys) Object.keys = function(o) {
 			if(tim) clearTimeout(tim);
 			
 			var pa = (cfg.bind)?cfg.bind:$(document.body);
-			var the = pa.children("#"+(cfg.bind?"bind2dom":"bind2body"));
+			var the = pa.find("#"+(cfg.bind?"bind2dom":"bind2body"));
 			if(!the.get(0)){
 				var elem = $("<div class='tip' ><span class='icon-hold'></span><span class='content-hold'></span><span class='close-hold' aria-hidden='true'></span></div>");			
 				pa.prepend(elem);
