@@ -60,7 +60,11 @@
 	margin-top:-1px;
 	display: block;
 	box-shadow: 0 0 1px rgba(224, 224, 224, 0.5);
+	overflow-y: auto;
+	overflow-x: hidden;
+	max-height: 300px;
 }
+
 .dropdown-menu.blend-search-drop>li>a{
 	position: relative;
 	border-bottom: 1px solid #e0e0e0;

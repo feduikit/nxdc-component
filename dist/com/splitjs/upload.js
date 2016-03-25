@@ -13,6 +13,7 @@
             this.$num = this.$wrapper.find('.upload-num');
             this.$msg = this.$wrapper.find('.upload-msg');
             this.$wrapper.appendTo($(this.container));
+            this.$button = $(this.button);
             this.setSize();
             this.bindEvent();
         },
@@ -23,6 +24,8 @@
             input.onchange = function(e) {
                 e.files = this.files;
                 self.drop(e);
+                input.onchange = null;
+                input = null;
             };
             input.click();
         },
@@ -35,8 +38,11 @@
                 .on('dragleave', this.dragLeave.bind(this))
                 .on('dragover', this.dragOver.bind(this))
                 .on('drop', this.drop.bind(this))
-                .on('click', '.upload-button', this.popFileSelect.bind(this))
-                //阻止浏览器默认行。
+                .on('click', '.upload-button', this.popFileinput.bind(this));
+
+            this.$button.on('click', this.uploadByButton.bind(this));
+
+            //阻止浏览器默认行。
             $(document).on({
                 'dragenter': false,
                 'dragover': false,
@@ -44,29 +50,43 @@
                 'drop': false
             });
         },
-        popFileSelect: function() {
-            this.$wrapper.attr('data-state', 'selecting');
-            this.showMsg('');
+        /**
+         * 弹出文件选择框
+         */
+        popFileinput: function() {
+            this.beforeSelecting();
             this.createFileInput();
+        },
+        /**
+         * 通过按钮上传文件
+         */
+        uploadByButton: function() {
+            var self = this;
+            if (self.file) {
+                self.upload.call(self, self.file);
+            } else {
+                self.error({ msg: self.text.error.none, type: 'file' });
+            }
         },
         /**
          * 判断上传的文件是否符合规范
          */
-        dragDetectDeferred: function(files) {
+        fileErrorDetect: function(files) {
             var msg = [];
             var file = files[0];
             var dtd = $.Deferred();;
             var self = this;
+            var url = null;
             if (files.length < 1) {
                 msg.push(self.text.error.none);
-            } 
-             if (files.length > 1) {
+            }
+            if (files.length > 1) {
                 msg.push(self.text.error.number);
-            } 
-             if (this.size < file.size) {
+            }
+            if (this.size < file.size) {
                 msg.push(self.text.error.size);
-            } 
-             if (this.type && !new RegExp(this.type, 'igm').test(file.type)) {
+            }
+            if (this.type && !new RegExp(this.type, 'igm').test(file.type)) {
                 msg.push(self.text.error.type);
             }
 
@@ -76,28 +96,27 @@
             }
             //这里判断是图片，而且可允许的尺寸中有，那么就要判断了
             else {
-                self.getURLDeferred(file).done(function(src) {
-                    if (self.type == 'image') {
-                        self.getImgSize(src, function(w, h) {
-                            if (self.allowSize.length && self.allowSize.indexOf(w + '*' + h) == -1) {
-                                msg.push(self.text.error.allowSize);
-                                self.error({ msg: msg.join(self.text.upload.linkword), type: 'file' });
-                                dtd.reject(false);
-                            } else {
-                                self.setSize.call(self, w, h);
-                                dtd.resolve(src);
-                            }
-                        });
-                    } else {
-                        self.setSize.call(self);
-                        dtd.resolve(src);
-                    }
-                });
+                url = self.createObjectURL(file);
+                if (self.type == 'image') {
+                    self.getImgSize(url, function(w, h) {
+                        if (self.allowSize.length && self.allowSize.indexOf(w + '*' + h) == -1) {
+                            msg.push(self.text.error.allowSize);
+                            self.error({ msg: msg.join(self.text.upload.linkword), type: 'file' });
+                            dtd.reject(url);
+                        } else {
+                            self.setSize.call(self, w, h);
+                            dtd.resolve(url);
+                        }
+                    });
+                } else {
+                    self.setSize.call(self);
+                    dtd.resolve(url);
+                }
             }
             return dtd;
         },
         /**
-         * 上传处理
+         * 上传错误处理
          */
         error: function(e) {
             this.onerror && this.onerror(e);
@@ -129,7 +148,8 @@
          * 拖拽进入
          */
         dragEnter: function(e) {
-            this.$wrapper.attr('data-state', 'selecting')
+            this.file = null;
+            this.beforeSelecting();
             this.ondragenter && this.ondragenter(e);
             e.preventDefault();
         },
@@ -148,22 +168,35 @@
             e.preventDefault();
         },
         /**
+         * 准备上传
+         */
+        beforeSelecting: function() {
+            this.$wrapper.attr('data-state', 'selecting');
+            this.showMsg('');
+
+        },
+        /**
          * 放下文件时
          */
         drop: function(e) {
             //jquery对event做了封装，但是保留了原来的event,这个event就是e.originalEvent
             var files = Array.prototype.slice.call(e.files || e.originalEvent.dataTransfer.files, 0);
             var self = this;
-            this.$wrapper.attr('data-state', 'selected')
-            this.ondrop && this.ondrop(e);
+            self.$wrapper.attr('data-state', 'selected');
+
+            self.ondrop && self.ondrop(e);
             e.preventDefault();
 
-            this.dragDetectDeferred(files).then(function(src) {
-                self.createPreview.call(self, files[0], src);
-                self.upload.call(self, files[0], src);
-            }, function() {
-                self.createPreview.call(self, false)
-            });
+            self.fileErrorDetect(files)
+                .done(function(src) {
+                    self.file = files[0];
+                    self.createPreview.call(self, files[0], src);
+                    self.$button.length || self.upload.call(self, files[0]);
+                })
+                .always(function(src) {
+                    //赶紧revoke生成的url
+                    src && self.revokeObjectURL(src);
+                });
         },
         /**
          * 设置div尺寸
@@ -183,23 +216,24 @@
             }
             this.$wrapper.find('.upload-content').css({ width: w0 + 'px', height: h0 + 'px' });
         },
+        revokeObjectURL: function(url) {
+            if (window.webkitURL) {
+                window.webkitURL.revokeObjectURL(url)
+            } else if (window.URL) {
+                window.URL.revokeObjectURL(url)
+            }
+        },
         /**
          * 生成url
          */
-        getURLDeferred: function(file) {　
-            var dtd = $.Deferred();
-            var fr = new FileReader();
+        createObjectURL: function(file) {　
+            var url = null;
             if (window.webkitURL) {
-                dtd.resolve(window.webkitURL.createObjectURL(file));
+                url = window.webkitURL.createObjectURL(file)
             } else if (window.URL) {
-                dtd.resolve(window.URL.createObjectURL(file));
-            } else {
-                fr.onload = function(e) {
-                    dtd.resolve(fr.result);
-                }
-                fr.readAsDataURL(file);
+                url = window.URL.createObjectURL(file);
             }
-            return dtd;
+            return url;
         },
         /**
          * 生成预览
@@ -221,6 +255,7 @@
                 tpl = defaultTpl[this.type].replace('{{src}}', src);
             }
             this.$wrapper.find('.upload-preview').html(tpl);
+
         },
         /**
          * 获取图片的宽高
@@ -271,7 +306,10 @@
                 })
                 .fail(function(xhr, status, err) {
                     self.error.call(self, { msg: xhr.responseText, type: 'ajax', textStatus: status, xhr: xhr, error: err });
-                });
+                })
+                .always(function() {
+                    self.file = null;
+                })
         }
 
     }
@@ -307,6 +345,10 @@
                 allowSize: '宽高尺寸有问题'
             }
         },
+        //这里是上传按钮
+        //如果有,则给按钮绑定上传事件，当按钮点击时则上传
+        //如果没有，则拖放后立即上传
+        button: false,
         name: 'file',
         type: 'image',
         width: 560,

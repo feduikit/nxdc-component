@@ -155,7 +155,9 @@
 .upload-footer .upload-msg:empty ~ .upload-button {
     display: none;    
 }
-
+.upload-wrapper[data-state="selected"] .upload-footer .upload-msg:empty ~ .upload-button-other {
+    display: inline-block;    
+}
 .upload-wrapper[data-state="selecting"] .upload-button-other {
     display: none;
 }
