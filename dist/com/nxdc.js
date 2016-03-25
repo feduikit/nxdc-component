@@ -156,6 +156,7 @@ if (!Object.keys) Object.keys = function(o) {
 				var start = $("<div class='ndp-drop3-wrapper' name='year-start' />").drop3({
 					data:arr,
 					allowInput:true,
+					bind:dropup.parent(),
 					caret:"glyphicon-menu-right"
 				}).val(o.start).on("ITEM_CLICK",function(e){
 					o.start = e.originalEvent.data.val;
@@ -163,6 +164,7 @@ if (!Object.keys) Object.keys = function(o) {
 				var end = $("<div class='ndp-drop3-wrapper' name='year-end' />").drop3({
 					data:arr,
 					allowInput:true,
+					bind:dropup.parent(),
 					caret:"glyphicon-menu-right"
 				}).val(o.end).on("ITEM_CLICK",function(e){
 					o.end = e.originalEvent.data.val;
@@ -368,7 +370,7 @@ if (!Object.keys) Object.keys = function(o) {
 					var tags = parent.tags;
 					$.each(tags, function(_i, _tag){
 						_this.unSelect(parent.path, parent.type, _tag.id);
-					})
+					});
 				}
 				$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 				fireEvent(_this.elem.get(0),"SERIAL_RESIGN",data);
@@ -424,9 +426,10 @@ if (!Object.keys) Object.keys = function(o) {
 			_this.dropup.find(".ndp-drop-wrapper").removeClass("focus");
 		});
 		
-		_this.elem.find(".blend-dropup").scroll(function(){
-			$(this).find(".ndp-drop3-wrapper").trigger("WRAPPER_SCROLL");
-		});
+//		_this.elem.find(".ndp-drop3-wrapper").parents().scroll(function(e){
+//			_this.elem.find(".ndp-drop3-wrapper").trigger("WRAPPER_SCROLL",$(e.target));
+//		});
+		_this.listenScroll();
     };
 	
 	/***
@@ -459,6 +462,7 @@ if (!Object.keys) Object.keys = function(o) {
 				_newData.path = dat.path.split("#");
 				_newData.tags = [{name:dat.name,id:dat.id,audience_size:dat.size}];
 				Tool.addClassify(_newData,0,_this.dropup);//加到DOM 树，
+				_this.listenScroll();
 				//加到数据里面去
 				if(!_this.config.seldata) _this.config.seldata = [];
 				_this.config.seldata.push(_newData);
@@ -476,6 +480,13 @@ if (!Object.keys) Object.keys = function(o) {
 //		this.dropup.css("top",(-h-4)+"px");
 	}
 	
+	Blend.prototype.listenScroll = function(){
+		var _this = this;
+		var drop3 = _this.elem.find(".ndp-drop3-wrapper");
+		drop3.parents().unbind("scroll").scroll(function(e){
+			drop3.trigger("WRAPPER_SCROLL",e.target);
+		});		
+	}
 	/**
 	** 构建基础结构
 	**/
@@ -506,6 +517,7 @@ if (!Object.keys) Object.keys = function(o) {
 		if(cfg.seldata && cfg.seldata.length){
 			cfg.seldata.forEach(function(o,idx){
 				Tool.addClassify(o,idx,_this.dropup);
+				_this.listenScroll();
 			});
 			$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 		}
@@ -1549,7 +1561,9 @@ if (!Object.keys) Object.keys = function(o) {
 		fixPageXY: function(the){
 			var html = document.documentElement;
 			var body = document.body;
-			var the = (the.get(0)||the).getBoundingClientRect();
+		
+			var the = ((the.get&&the.get(0))||the).getBoundingClientRect();
+				console.log(the);
 			var a = {};
 			a.pageX = parseFloat(the.left) + (html.scrollLeft || body && body.scrollLeft || 0);
 			a.pageX -= html.clientLeft || 0;
@@ -1566,7 +1580,7 @@ if (!Object.keys) Object.keys = function(o) {
 			var gap = arguments[4]||5;
 			deep++;
 			var rec = arguments.callee;
-			var ul = $("<ul class='drop-list'/>");
+			var ul = $("<ul class='drop-list' />");
 			if(cfg.type!=3 && deep>1){
 				ul.addClass("hidden");
 			}
@@ -1620,10 +1634,7 @@ if (!Object.keys) Object.keys = function(o) {
             e.stopImmediatePropagation();
 			_this.elem.toggleClass("focus");
 			_this.list.toggleClass("hidden").css("width",(_this.elem.width()+2)+"px");
-			if(!_this.list.hasClass("hidden")){
-				var page = Help.fixPageXY(_this.elem);
-				_this.list.css({"top":(page.pageY+30)+"px","left":page.pageX+"px"});
-			}
+			_this.pos();
         });
 		
 		/***
@@ -1664,27 +1675,18 @@ if (!Object.keys) Object.keys = function(o) {
 		});	
 		
 		$(window).resize(function(){
-			if(!_this.list.hasClass("hidden")){
-				var page = Help.fixPageXY(_this.elem);
-				_this.list.css({"top":(page.pageY+30)+"px","left":page.pageX+"px"});
-			}		
+			_this.pos();	
 		});
 		
 		$(document).scroll(function(){
-			if(!_this.list.hasClass("hidden")){
-				var page = Help.fixPageXY(_this.elem);
-				_this.list.css({"top":(page.pageY+30)+"px","left":page.pageX+"px"});
-			}		
+			_this.pos();		
 		});
 		
 		/****
 		** 外部容器 发生了 scroll事件
 		****/
-		_this.elem.on("WRAPPER_SCROLL",function(){
-			if(!_this.list.hasClass("hidden")){
-				var page = Help.fixPageXY(_this.elem);
-				_this.list.css({"top":(page.pageY+30)+"px","left":page.pageX+"px"});
-			}			
+		_this.elem.on("WRAPPER_SCROLL",function(e,$ta){
+			_this.pos($ta);
 		});
 		
 		/****
@@ -1695,6 +1697,15 @@ if (!Object.keys) Object.keys = function(o) {
 		});
     };
 
+	//
+	Drop3.prototype.pos = function($ta){
+		var _this = this;
+		if(!_this.list.hasClass("hidden")){
+			var page = Help.fixPageXY(_this.elem);
+			var page2 = Help.fixPageXY(_this.config.bind);
+			_this.list.css({"top":(page.pageY-page2.pageY+30)+"px","left":(page.pageX-page2.pageX)+"px"});	
+		}
+	}
 	/**
 	** 构建下来菜单样子
 	**/
@@ -1705,7 +1716,11 @@ if (!Object.keys) Object.keys = function(o) {
 		this.list = $("<div class='drop3-list-wrapper hidden'  tabindex='-1' id="+_this.config.id+" />").css("width",(_this.config.wi+2)+"px");
 		
 		this.elem.append(html);	
-		$(document.body).append(this.list);
+		if(_this.config.bind){
+			_this.config.bind.append(this.list);
+		}else{
+			$(document.body).append(this.list);
+		}
 	};
 	/***
 	** 设置用户配置选项
@@ -1764,9 +1779,9 @@ if (!Object.keys) Object.keys = function(o) {
 		/***
 		**设置下拉菜单位置
 		***/
-		this.resetPos = function(){
-			var page = Help.fixPageXY(drop.elem);
-			drop.list.css({"top":(page.pageY+30)+"px","left":page.pageX+"px"});			
+		this.resetPos = function($ta){
+			drop.pos($ta);
+			return drop.elem;
 		}
     }
 	/***
@@ -1778,6 +1793,7 @@ if (!Object.keys) Object.keys = function(o) {
 		allowInput:false,//是否允许输入 默认情况下不允许输入
 		allowInputType:"number",
         val:null,//默认值
+		bind:null,//下拉菜单绑定到那个dom上
 		caret:"glyphicon-triangle-right",//只是箭头的样式，仅支持bootstrap 里面列出的 glyphicon
         data:[]//下拉菜单列表
 	};

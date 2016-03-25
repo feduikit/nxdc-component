@@ -39,6 +39,7 @@
 				var start = $("<div class='ndp-drop3-wrapper' name='year-start' />").drop3({
 					data:arr,
 					allowInput:true,
+					bind:dropup.parent(),
 					caret:"glyphicon-menu-right"
 				}).val(o.start).on("ITEM_CLICK",function(e){
 					o.start = e.originalEvent.data.val;
@@ -46,6 +47,7 @@
 				var end = $("<div class='ndp-drop3-wrapper' name='year-end' />").drop3({
 					data:arr,
 					allowInput:true,
+					bind:dropup.parent(),
 					caret:"glyphicon-menu-right"
 				}).val(o.end).on("ITEM_CLICK",function(e){
 					o.end = e.originalEvent.data.val;
@@ -251,7 +253,7 @@
 					var tags = parent.tags;
 					$.each(tags, function(_i, _tag){
 						_this.unSelect(parent.path, parent.type, _tag.id);
-					})
+					});
 				}
 				$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 				fireEvent(_this.elem.get(0),"SERIAL_RESIGN",data);
@@ -307,9 +309,10 @@
 			_this.dropup.find(".ndp-drop-wrapper").removeClass("focus");
 		});
 		
-		_this.elem.find(".blend-dropup").scroll(function(){
-			$(this).find(".ndp-drop3-wrapper").trigger("WRAPPER_SCROLL");
-		});
+//		_this.elem.find(".ndp-drop3-wrapper").parents().scroll(function(e){
+//			_this.elem.find(".ndp-drop3-wrapper").trigger("WRAPPER_SCROLL",$(e.target));
+//		});
+		_this.listenScroll();
     };
 	
 	/***
@@ -342,6 +345,7 @@
 				_newData.path = dat.path.split("#");
 				_newData.tags = [{name:dat.name,id:dat.id,audience_size:dat.size}];
 				Tool.addClassify(_newData,0,_this.dropup);//加到DOM 树，
+				_this.listenScroll();
 				//加到数据里面去
 				if(!_this.config.seldata) _this.config.seldata = [];
 				_this.config.seldata.push(_newData);
@@ -359,6 +363,13 @@
 //		this.dropup.css("top",(-h-4)+"px");
 	}
 	
+	Blend.prototype.listenScroll = function(){
+		var _this = this;
+		var drop3 = _this.elem.find(".ndp-drop3-wrapper");
+		drop3.parents().unbind("scroll").scroll(function(e){
+			drop3.trigger("WRAPPER_SCROLL",e.target);
+		});		
+	}
 	/**
 	** 构建基础结构
 	**/
@@ -389,6 +400,7 @@
 		if(cfg.seldata && cfg.seldata.length){
 			cfg.seldata.forEach(function(o,idx){
 				Tool.addClassify(o,idx,_this.dropup);
+				_this.listenScroll();
 			});
 			$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 		}
