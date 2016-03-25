@@ -5,6 +5,7 @@ require(['./config'],function(){
 				ajax: {
 					url: '/upload.php'
 				},
+			//	button: '#upload-button',
 				allowSize: [],
 				type: 'image'
 			});			
