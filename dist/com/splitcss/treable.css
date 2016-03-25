@@ -278,6 +278,9 @@
 	float: left;
 	width: calc(100% - 150px);
 	height: 100%;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
 }
 .treable-row-wrapper>.chart-wrapper.open>.tab-content-cus .tab-pane{
 	position: relative;
