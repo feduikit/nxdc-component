@@ -126,7 +126,29 @@
 			}		
 		});
 		
-
+		$(document).scroll(function(){
+			if(!_this.list.hasClass("hidden")){
+				var page = Help.fixPageXY(_this.elem);
+				_this.list.css({"top":(page.pageY+30)+"px","left":page.pageX+"px"});
+			}		
+		});
+		
+		/****
+		** 外部容器 发生了 scroll事件
+		****/
+		_this.elem.on("WRAPPER_SCROLL",function(){
+			if(!_this.list.hasClass("hidden")){
+				var page = Help.fixPageXY(_this.elem);
+				_this.list.css({"top":(page.pageY+30)+"px","left":page.pageX+"px"});
+			}			
+		});
+		
+		/****
+		** 包裹他的容器被删除了
+		***/
+		_this.elem.on("BEEN_REMOVED",function(e){
+			_this.list.remove();
+		});
     };
 
 	/**
@@ -194,6 +216,14 @@
 			}
 			return drop.elem;
 		};
+		
+		/***
+		**设置下拉菜单位置
+		***/
+		this.resetPos = function(){
+			var page = Help.fixPageXY(drop.elem);
+			drop.list.css({"top":(page.pageY+30)+"px","left":page.pageX+"px"});			
+		}
     }
 	/***
 	** outside accessible default setting

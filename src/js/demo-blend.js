@@ -194,6 +194,11 @@ require(['./config'],function(){
 						   {name:"本科学历",id:22,audience_size: 10032},
 						   {name:"教育学硕士",id:33,audience_size: 21000}]
 					 },
+					 {path:["个人情况", "学历","大学就读年份"],
+					  type:"education_statuses",// 时间范围选择
+					  start:2016,
+					  end:2020
+					 },					
 					 {path:["兴趣", "健身养生"],
 					  type:"interests",
 					  tags:[{name:"健身房",id:1,audience_size: 10000},
@@ -206,10 +211,17 @@ require(['./config'],function(){
 							{name:"环保主义者",id:8,audience_size: 10000}
 						   ]
 					 },
-					 {path:["个人情况", "学历","大学就读年份"],
-					  type:"education_statuses",// 时间范围选择
-					  start:2016,
-					  end:2020
+					 {path:["兴趣1", "健身养生1"],
+					  type:"interests",
+					  tags:[{name:"健身房1",id:11,audience_size: 10000},
+							{name:"跑步2",id:21,audience_size: 10000},
+							{name:"登山3",id:31,audience_size: 10000},
+							{name:"马拉松4",id:41,audience_size: 10000},
+							{name:"铅球5",id:51,audience_size: 10000},
+							{name:"羽毛球6",id:61,audience_size: 10000},
+							{name:"素食主义者7",id:71,audience_size: 10000},
+							{name:"环保主义者8",id:81,audience_size: 10000}
+						   ]
 					 }
 				],
 			}).on("TAG_RESIGN",function(e){// 点击tag前面的x 删除一个tag

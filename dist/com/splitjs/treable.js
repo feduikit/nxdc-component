@@ -38,15 +38,21 @@
 				var txt = item.name||item.label||item.text||item;
 				var val = item.val||item.value||txt;
 				var id = item.id;
-				var li = '<li data-id='+id+' data-txt='+txt+' data-val='+val+' ><a href="javascript:void(0)">'+txt+'</a></li>';
+				var li = '<li data-id='+id+' data-name='+txt+' data-val='+val+' ><a href="javascript:void(0)">'+txt+'</a></li>';
 				html.append(li);
 			});
 			row.append(html);
-			var chartWrapper = $("<div class='chart-wrapper' />");//图表层
+			var chartWrapper = $("<div class='chart-wrapper' data-id="+id+" />");//图表层
 			var chartClose = '<button type="button" class="close chart-close"><span aria-hidden="true">&times;</span></button>';//图标层关闭按钮
-			var chart = $('<div class="ndp-tab-wrapper" deep='+deep+' index='+i+' role="table" ></div>');
-			chart.tabs({list:["堆积图","趋势图","线状图"]});//图表层上面的 tabs 初始化
-			chartWrapper.append(chart).append(chartClose);//显示到层上
+			var chart = $('<div class="ndp-tab-wrapper" deep='+deep+' index='+i+' role="table" />');
+			chart.tabs({list:cfg.tabs});//图表层上面的 tabs 初始化
+			var panels = $("<div class='tab-content tab-content-cus' />");
+			cfg.tabs.forEach(function(item,index){
+				var panel = $('<div role="tabpanel" class="tab-pane "  data-name='+item.name+' data-type='+item.type+' />');
+				if(index==0) panel.addClass("active");
+				panels.append(panel);
+			});
+			chartWrapper.append(chart).append(panels).append(chartClose);//显示到层上
 			wrapper.append(row).append(chartWrapper);
 			cols.forEach(function(col,idx){
 				var switcher = '<span class="switcher">\
@@ -185,16 +191,16 @@
 		});
 		
 		// 点击 选中一行， 显示 toolbar   2016-3-18 取消
-//		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("click").click(function(e){
-//			e.stopImmediatePropagation();
-//			if(!$(this).hasClass("focus")){
-//				_this.elem.find(".treable-row-wrapper>.treable-row.focus").removeClass("focus");
-//				$(this).addClass("focus");
-//			}else{
-//				$(this).removeClass("focus");
-//			}
-//			_this.toolbar.toggleClass("active",$(this).hasClass("focus"));
-//		});
+		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("click").click(function(e){
+			e.stopImmediatePropagation();
+			if(!$(this).hasClass("focus")){
+				_this.elem.find(".treable-row-wrapper>.treable-row.focus").removeClass("focus");
+				$(this).addClass("focus");
+			}else{
+				$(this).removeClass("focus");
+			}
+			_this.toolbar.toggleClass("active",$(this).hasClass("focus"));
+		});
 		
 		/*** 
 		** 鼠标离开一行
@@ -216,13 +222,36 @@
 				_this.elem.find(".chart-wrapper.open").removeClass("open");
 				$(this).parents(".treable-row:first").siblings(".chart-wrapper").addClass("open");
 			}
-			fireEvent(_this.elem.get(0),"TOOLBAR_CLICK",{id:id,val:val});
+			var dataid = $(this).parents("li.treable-item[deep]").data("id");
+			var o = $(this).data();
+			o.dataID = dataid;
+			fireEvent(_this.elem.get(0),"TOOLBAR_CLICK",o);
+			var dat = _this.config.todata[1];
+			dat.dataID = dataid;
+			dat.GD = _this.elem.find(".treable-item.open .chart-wrapper.open .tab-pane.active");
+			setTimeout(function(){
+				fireEvent(_this.elem.get(0),"CHART_LAYER_INIT",dat);//展现完成，抛出数据
+			},400);	
 		});
 		
 		/***
-		** 看图表 button 被点击 触发
+		**
+		****/
+		_this.elem.on("TAB_CHANGE",function(e){
+			e.stopImmediatePropagation();
+			var dat = e.originalEvent.data;
+			var panels = _this.elem.find(".treable-item.open .chart-wrapper.open .tab-pane");
+			panels.removeClass("active");
+			$(panels[dat.index]).addClass("active");
+			dat.GD = $(panels[dat.index]);
+			fireEvent(_this.elem.get(0),"TAB_SHOW",dat);
+		});
+		
+		
+		/***
+		** 点击  toolbar  看图表 button 被点击 触发
 		***/
-		_this.elem.find("#chart").unbind("click").click(function(e){
+		_this.elem.find("button[data-id=chart]").unbind("click").click(function(e){
 			_this.elem.find(".treable-row-wrapper>.treable-row.focus+.chart-wrapper").addClass("open");
 			_this.elem.find(".treable-row-wrapper>.treable-row:not(.focus)+.chart-wrapper.open").removeClass("open");//关闭其他的
 		});	
@@ -391,14 +420,15 @@
 		/***
 		** 点击工具栏按钮，发出事件。 2016-3-18号 不再显示toolbar
 		***/		
-//		$(".sutable-toolbar").click(function(e){
-//			var ta = e.target;
-//			var id = ta.getAttribute("id");
-//			var val = ta.getAttribute("val");
-//			if(id && val){
-//				fireEvent(ta,"TOOLBAR_CLICK",{id:id,val:val});
-//			}
-//		});
+		$(".sutable-toolbar").click(function(e){
+			var ta = $(e.target);
+			var id = ta.data("id");
+			var val = ta.data("name");
+			var dataID = _this.elem.find("li.treable-item:has(.treable-row.focus)").data("id");
+			if(id && val){
+				fireEvent(e.target,"TOOLBAR_CLICK",{id:id,name:id,dataID:dataID});
+			}
+		});
 		
 		//body 里面的监听
 		_this.listenBody();
@@ -434,7 +464,7 @@
 				cfg.todata.forEach(function(item,index){
 					var val = item.text||item.name||item.label;
 					var className = item.class?item.class:'';
-					html+="<button class='btn btn-default "+className+"' id="+item.id+" val="+val+" >"+val+"</button>";
+					html+="<button class='btn btn-default "+className+"' data-id="+item.id+" data-name="+val+" >"+val+"</button>";
 				});
 				this.toolbar.html(html);
 			}else if(typeof(cfg.todata) == "function"){
@@ -586,6 +616,7 @@
 		tail:null,//列表尾部数据
 		caret:null,//展开，折叠的 图标是 默认是  +  - 号
 		sort:null,
+		tabs:[{id:"1101",name:'线状图',type:"line"},{id:"1102",name:"饼状图",type:"pie"},{id:"1103",name:"堆积图",type:'dui'}],
 		todata:null// toolbar 显示的数据 [{name:'',id:''},{name:'',id:''},{}], function 或者数据
 	};
 }(jQuery));
