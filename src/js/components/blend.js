@@ -242,6 +242,7 @@
 				var tali = $(e.target).parents(".blend-sel-item:first");
 				//var serial = parseInt(tali.data("serial"));
 				var serial = tali.index();
+				tali.find(".ndp-drop3-wrapper").trigger("BEEN_REMOVED");
 				tali.remove();//删除一行
 				var data = _this.config.seldata.splice(serial,1);//删除这一行的数据
 				if (data && data[0] && data[0].tags && data[0].tags.length > 0){
@@ -304,6 +305,10 @@
 			//取消 年份下拉菜单的focus 信息和 下拉菜单
 			_this.dropup.find(".ndp-drop-wrapper ul.drop-list").addClass("hidden");
 			_this.dropup.find(".ndp-drop-wrapper").removeClass("focus");
+		});
+		
+		_this.elem.find(".blend-dropup").scroll(function(){
+			$(this).find(".ndp-drop3-wrapper").trigger("WRAPPER_SCROLL");
 		});
     };
 	

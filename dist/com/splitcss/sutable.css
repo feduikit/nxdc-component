@@ -114,7 +114,6 @@
 	padding-left: 60px;
 }
 
-
 /***
 ** 横向滚动条
 ***/
@@ -264,7 +263,7 @@ li.sutable-item.open[deep='2']>.sutable-row-wrapper.asparent{
 	border-bottom: 1px solid transparent;
 }
 
-.sutable-body .sutable-row:hover{
+.ndp-sutable-wrapper .sutable-body li.sutable-item .sutable-row[deep]:hover{
 /*	background-color: #f6f6f6;*/
 	background-color: white;
 	box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);

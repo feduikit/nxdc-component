@@ -37,8 +37,7 @@
 		this.tabwrapper.find("li").click(function(e){
 			if(!$(this).hasClass("active")){
 				$(this).addClass("active").siblings().removeClass("active");
-				var idx = parseInt($(this).attr("index"));
-				fireEvent(_this.elem.get(0),"TAB_CHANGE",{index:idx,name:_this.config.list[idx]});
+				fireEvent(_this.elem.get(0),"TAB_CHANGE",$(this).data());
 			}
 		});
 		
@@ -63,7 +62,7 @@
 			});
 			this.tabwrapper.find("li").mouseleave(function(){
 				$(this).find("i").addClass("transparent");
-			});			
+			});	
 		}
 		
 //		if(_this.config.type==2){
@@ -125,10 +124,14 @@
 			if(typeof(item)=="object"){
 				var str = item.name||item.text||item.label||item.tab;
 				var ba = item.badge;
+				var id = item.id;
+				var type = item.type
 			}else{
 				str = item;
 			}
-			var li = $("<li role='presentation' value="+str+"  index="+index+" title="+str+" ><a href='javascript:void(0);'>"+str+"</a></li>");
+			var li = $("<li role='presentation' data-name="+str+"  data-index="+index+" title="+str+" ><a href='javascript:void(0);'>"+str+"</a></li>");
+			if(id) li.attr("data-id",id);
+			if(type) li.attr("data-type",type);
 			if(index==_this.config.default) {li.addClass("active")};
 			if(_this.config.badge && ba){//是否显示 badge 
 				li.find("a").append("<span class='badge'>"+ba+"</span>");

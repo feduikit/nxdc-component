@@ -3,7 +3,10 @@ require.config({
     paths:{
         'jquery':'../../lib/jquery/jquery.min',
         'bootstrap':'../../lib/bootstrap/dist/js/bootstrap.min',
+		'NVis':'../../lib/hicharts/NVis.min',
 		'utils':'./Compatibility/utils',
+		
+		
 		'tabs':'./components/tabs',
 		'bread':'./components/bread',
 		'alert':'./components/alert',
@@ -62,6 +65,15 @@ require.config({
 		},
 		blend:{
 			deps:['vList3','bread','drop3']
+		},
+		NVis:{
+			deps:['jquery']
+		},
+		'com/ndpmedia/vis/ChartWidget':{
+			deps:['NVis']
+		},
+		'com/ndpmedia/vis/ChartEventListener':{
+			deps:['NVis']
 		}
     }
 });
