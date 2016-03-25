@@ -61,6 +61,7 @@
 		this.config.id = "drop" + (new Date()).valueOf();
 		this.config.wi = this.elem.width();
 		this.init();
+		element.data('drop3', this);
     };
 
 	/**
@@ -86,9 +87,14 @@
 		***/		
 		_this.list.find("li.list-leaf").click(function(e){
 			var field = _this.elem.find("input");
+			var oldData = field.data();
 			var dat = $(this).data();
-			field.val(dat.txt).attr({"dara-val":dat.val,"data-txt":dat.txt,"data-id":dat.id});
+			field.val(dat.txt).attr({"data-val":dat.val,"data-txt":dat.txt,"data-id":dat.id});
+			$(_this.elem.get(0)).data("val", dat)
 			fireEvent(_this.elem.get(0),"ITEM_CLICK",dat);
+			if (oldData.val != dat.val){
+				fireEvent(_this.elem.get(0),"ITEM_CHANGE",dat)
+			}
 		});
 		
 		_this.list.find("li.drop-recursive").click(function(e){
@@ -193,10 +199,41 @@
      */
     $.fn.drop3 = function (options) {
 		var the = this.first();
-        var drop = new Drop3(the, options);
-		the = $.extend(true,{},the,new exchange(drop));
-		return the;
+		if (typeof options === 'object'){
+			var drop = new Drop3(the, options);
+			the = $.extend(true,{},the,new exchange(drop));
+			return the;
+		} else if (typeof options === 'string'){
+			var instance = the.data('drop3');
+			if (!instance){
+				console.log("还未初始化")
+				return;
+			}
+			var args = Array.prototype.slice.call(arguments, 1);
+			var ret = instance[options](args);
+			return ret;
+		}
     };
+
+	Drop3.prototype.close = function(){
+		this.list.addClass("hidden");
+		this.elem.removeClass("focus");
+	}
+
+
+	Drop3.prototype.val = function(o){
+		var _this = this;
+		var o = o[0];
+		if(typeof(o)=="object"){
+			var txt = o[_this.config.textKey]||o.label||o.text||o.value||o.name;
+			var val = o.value || o.val || txt;
+			var id = o.id;
+			_this.elem.find("input").val(txt).attr({"data-val":val,"data-text":txt,"data-id":id});
+		}else{
+			_this.elem.find("input").val(o).attr({"data-val":o,"data-txt":o});
+		}
+		$(_this.elem.get(0)).data("val", {val: val, txt : txt});
+	}
 
     /***
     **和其他插件的交互
@@ -217,6 +254,7 @@
 			}else{
 				drop.elem.find("input").val(o).attr({"data-val":o,"data-txt":o});
 			}
+			$(drop.elem.get(0)).data("val", drop.elem.find("input").data());
 			return drop.elem;
 		};
 		

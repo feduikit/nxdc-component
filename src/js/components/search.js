@@ -112,64 +112,86 @@
 		/***
 		** 里面输入内容发生改变
 		**/
-		this.input.on("input",function(e){
+		_this.input.on("input",function(e){
 			var input = $(this);
 			e.stopImmediatePropagation();
 			if(_this.config.type==3||_this.config.type==4){
 				_this.wrapper.addClass("loading");
 				var key = $(this).val();
-				var opt = _this.config.ajaxOptions;
 				var opt = $.extend({}, _this.config.ajaxOptions);
 				if (!opt.data){
 					opt.data = {key:key};
 				} else if (typeof opt.data === 'function') {
 					opt.data = opt.data(key);
 				}
-				$.ajax(opt).then(function(result){
+				//opt.processResults = null;
+				if (_this.xhr != null) {
+					//终止上一次的请求
+					_this.xhr.abort();
+
+					_this.xhr = null;
+				}
+				_this.xhr = $.ajax(opt);
+
+				_this.xhr.then(function(result){
 					if (_this.config.ajaxOptions.processResults){
 						result = _this.config.ajaxOptions.processResults(result)
 					}
 					if(typeof(result)=="string") result = JSON.parse(result);
 					_this.dropmenu.empty();
-					result.data.forEach(function(item,index){
-						var txt = (typeof(item)=="string")?item:(item.text||item.label||item.name);
-						var val = item.val || item.value || txt;
-						var id = item.id;
-						var re2 = new RegExp("["+key+"]+","i");	
-						var re = new RegExp(key,"i");
-						if(String(txt).match(re)){
-							var ma = String(txt).match(re)[0];
-						}else if(String(txt).match(re2)){
-							ma = String(txt).match(re2)[0];
-						}else{
-							ma = "";				
-						}
-						var len = ma.length;
-						var ree = new RegExp(ma,"i");
-						var start = txt.search(ree);
-						var arr = txt.split("");
-						arr.splice(start,0,"<em>");
-						arr.splice((start+len+1),0,"</em>");
-						var val1 = arr.join("");
-						if(!_this.config.rowdec){
-							var li = $('<li data-val="'+val+'" data-name="'+txt+'" data-text='+txt+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a></li>');
-							if(id) li.attr("data-id",id);
-						}else{
-							var li = _this.config.rowdec(item,index,val1);
-						}
-						_this.dropmenu.append(li);
-					});
+					var _datas = result.data;
+					if (_datas && _datas.length){
+						_datas.forEach(function(item,index){
+							var txt = (typeof(item)=="string")?item:(item.text||item.label||item.name);
+							var val = item.val || item.value || txt;
+							var id = item.id;
+							var re2 = new RegExp("["+key+"]+","i");
+							var re = new RegExp(key,"i");
+							if(String(txt).match(re)){
+								var ma = String(txt).match(re)[0];
+							}else if(String(txt).match(re2)){
+								ma = String(txt).match(re2)[0];
+							}else{
+								ma = "";
+							}
+							var len = ma.length;
+							var ree = new RegExp(ma,"i");
+							var start = txt.search(ree);
+							var arr = txt.split("");
+							arr.splice(start,0,"<em>");
+							arr.splice((start+len+1),0,"</em>");
+							var val1 = arr.join("");
+							if(!_this.config.rowdec){
+								var li = $('<li class="result-option" data-val="'+val+'" data-name="'+txt+'" data-text='+txt+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a></li>');
+								if(id) li.attr("data-id",id);
+							}else{
+								var li = _this.config.rowdec(item,index,val1);
+							}
+							if (item.path){
+								item.path = item.path.join("#").replace(/\s/g,"");
+							}
+							li.data("info", item);
+							_this.dropmenu.append(li);
+						});
+					} else {
+						_this.dropmenu.append('<li class="no-result">' +  _this.config.formatNoMatches + '</li>');
+					}
+
 					_this.dropmenu.removeClass("hidden");
 					_this.wrapper.removeClass("loading");
 					
 					_this.dropmenu.find("li").unbind("click").click(function(e){
 						e.preventDefault();
 						e.stopImmediatePropagation();
+						if ($(this).hasClass("no-result")){
+							return false;
+						}
 						if($(this).hasClass("selected")) return false;
 						if(_this.config.clickhide) _this.input.val($(this).data('text'));//点击之后隐藏
 						if(_this.config.clickhide)_this.dropmenu.addClass("hidden");//点击之后隐藏
 						_this.wrapper.find(".close-cus").removeClass("hide");// 显示右侧的 x 删除号
-						fireEvent(_this.elem.get(0),"ITEM_SELECT",$(this).data());
+						//modify by sisi 为了保证数据尽可能完整的返回 故修改成 $(this).data("info")
+						fireEvent(_this.elem.get(0),"ITEM_SELECT",$(this).data("info"));
 						if(!_this.config.clickhide){
 							$(this).addClass("selected");
 						}
