@@ -370,18 +370,6 @@
 			}
 		})
 
-
-		//滚动已选区域 则关闭对应的drop3区域,因为滚动到最上方drop3的下拉列表会超出已选区域
-		//this.elem.find(".blend-dropup").scroll(function(){
-		//	$.each($(this).find(".ndp-drop3-wrapper"), function(i, _drop3){
-		//		console.log("关闭drop3")
-		//		$(_drop3).drop3("close");
-		//	});
-		//});
-		
-//		_this.elem.find(".ndp-drop3-wrapper").parents().scroll(function(e){
-//			_this.elem.find(".ndp-drop3-wrapper").trigger("WRAPPER_SCROLL",$(e.target));
-//		});
 		_this.listenScroll();
     };
 
@@ -434,10 +422,13 @@
 	
 	Blend.prototype.listenScroll = function(){
 		var _this = this;
-		var drop3 = _this.elem.find(".ndp-drop3-wrapper");
-		drop3.parents().unbind("scroll").scroll(function(e){
-			drop3.trigger("WRAPPER_SCROLL",e.target);
-		});		
+		_this.elem.find(".blend-dropup").scroll(function(e){
+			$.each(_this.elem.find(".ndp-drop3-wrapper"), function(i, _drop3){
+				$(_drop3).trigger("WRAPPER_SCROLL",e.target);
+			});
+
+			fireEvent(_this.elem.get(0),"BLEND_DROPUP_SCROLL");
+		});
 	}
 	/**
 	** 构建基础结构

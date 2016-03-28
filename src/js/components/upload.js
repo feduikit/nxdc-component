@@ -14,6 +14,7 @@
             this.$msg = this.$wrapper.find('.upload-msg');
             this.$wrapper.appendTo($(this.container));
             this.$button = $(this.button);
+            this.$form = $(this.form);
             this.setSize();
             this.bindEvent();
         },
@@ -282,6 +283,7 @@
                 processData: false,
                 xhr: function() {
                     var xhr = new XMLHttpRequest();
+                    xhr.withCredentials = true;
                     self.$wrapper.attr('data-state', 'uploading');
                     self.showMsg(self.text.upload.uploading);
                     xhr.upload.onprogress = self.progress.bind(self);
@@ -290,7 +292,7 @@
             }, self.ajax);
 
             //这里生成一次data
-            var fd = new FormData();
+            var fd = this.$form.length ? new FormData(this.$form[0]) : new FormData();
             fd.append(self.name, file);
             $.each(ajaxOption.data || {}, function(k, v) {
                 fd.append(k, v);
@@ -349,6 +351,8 @@
         //如果有,则给按钮绑定上传事件，当按钮点击时则上传
         //如果没有，则拖放后立即上传
         button: false,
+        //这里看是否需要通过form来创建上传数据
+        form: false,
         name: 'file',
         type: 'image',
         width: 560,

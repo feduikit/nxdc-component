@@ -487,18 +487,6 @@ if (!Object.keys) Object.keys = function(o) {
 			}
 		})
 
-
-		//滚动已选区域 则关闭对应的drop3区域,因为滚动到最上方drop3的下拉列表会超出已选区域
-		//this.elem.find(".blend-dropup").scroll(function(){
-		//	$.each($(this).find(".ndp-drop3-wrapper"), function(i, _drop3){
-		//		console.log("关闭drop3")
-		//		$(_drop3).drop3("close");
-		//	});
-		//});
-		
-//		_this.elem.find(".ndp-drop3-wrapper").parents().scroll(function(e){
-//			_this.elem.find(".ndp-drop3-wrapper").trigger("WRAPPER_SCROLL",$(e.target));
-//		});
 		_this.listenScroll();
     };
 
@@ -551,10 +539,13 @@ if (!Object.keys) Object.keys = function(o) {
 	
 	Blend.prototype.listenScroll = function(){
 		var _this = this;
-		var drop3 = _this.elem.find(".ndp-drop3-wrapper");
-		drop3.parents().unbind("scroll").scroll(function(e){
-			drop3.trigger("WRAPPER_SCROLL",e.target);
-		});		
+		_this.elem.find(".blend-dropup").scroll(function(e){
+			$.each(_this.elem.find(".ndp-drop3-wrapper"), function(i, _drop3){
+				$(_drop3).trigger("WRAPPER_SCROLL",e.target);
+			});
+
+			fireEvent(_this.elem.get(0),"BLEND_DROPUP_SCROLL");
+		});
 	}
 	/**
 	** 构建基础结构
@@ -1635,7 +1626,6 @@ if (!Object.keys) Object.keys = function(o) {
 			var body = document.body;
 		
 			var the = ((the.get&&the.get(0))||the).getBoundingClientRect();
-				console.log(the);
 			var a = {};
 			a.pageX = parseFloat(the.left) + (html.scrollLeft || body && body.scrollLeft || 0);
 			a.pageX -= html.clientLeft || 0;
@@ -1766,7 +1756,7 @@ if (!Object.keys) Object.keys = function(o) {
 		_this.elem.on("WRAPPER_SCROLL",function(e,$ta){
 			_this.pos($ta);
 		});
-		
+
 		/****
 		** 包裹他的容器被删除了
 		***/
@@ -6158,6 +6148,7 @@ if (!Object.keys) Object.keys = function(o) {
             this.$msg = this.$wrapper.find('.upload-msg');
             this.$wrapper.appendTo($(this.container));
             this.$button = $(this.button);
+            this.$form = $(this.form);
             this.setSize();
             this.bindEvent();
         },
@@ -6426,6 +6417,7 @@ if (!Object.keys) Object.keys = function(o) {
                 processData: false,
                 xhr: function() {
                     var xhr = new XMLHttpRequest();
+                    xhr.withCredentials = true;
                     self.$wrapper.attr('data-state', 'uploading');
                     self.showMsg(self.text.upload.uploading);
                     xhr.upload.onprogress = self.progress.bind(self);
@@ -6434,7 +6426,7 @@ if (!Object.keys) Object.keys = function(o) {
             }, self.ajax);
 
             //这里生成一次data
-            var fd = new FormData();
+            var fd = this.$form.length ? new FormData(this.$form[0]) : new FormData();
             fd.append(self.name, file);
             $.each(ajaxOption.data || {}, function(k, v) {
                 fd.append(k, v);
@@ -6493,6 +6485,8 @@ if (!Object.keys) Object.keys = function(o) {
         //如果有,则给按钮绑定上传事件，当按钮点击时则上传
         //如果没有，则拖放后立即上传
         button: false,
+        //这里看是否需要通过form来创建上传数据
+        form: false,
         name: 'file',
         type: 'image',
         width: 560,

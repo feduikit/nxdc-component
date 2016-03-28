@@ -7,7 +7,6 @@
 			var body = document.body;
 		
 			var the = ((the.get&&the.get(0))||the).getBoundingClientRect();
-				console.log(the);
 			var a = {};
 			a.pageX = parseFloat(the.left) + (html.scrollLeft || body && body.scrollLeft || 0);
 			a.pageX -= html.clientLeft || 0;
@@ -138,7 +137,7 @@
 		_this.elem.on("WRAPPER_SCROLL",function(e,$ta){
 			_this.pos($ta);
 		});
-		
+
 		/****
 		** 包裹他的容器被删除了
 		***/
