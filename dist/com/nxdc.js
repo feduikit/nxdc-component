@@ -132,7 +132,7 @@ if (!Object.keys) Object.keys = function(o) {
 		/***
 		** 构建类目，并加入tag
 		***/
-		addClassify:function (o,idx,dropup){
+		addClassify:function (o,idx,dropup, _drop1, _drop2){
 			var idx = idx || 0;
 			var li = $("<li class='blend-sel-item' data-serial="+idx+" />");
 			var liclose = '<button type="button" class="close close1" aria-label="Close"><span class="x1"aria-hidden="true">&times;</span></button>';
@@ -144,42 +144,53 @@ if (!Object.keys) Object.keys = function(o) {
 			}).attr("data-path",o.path.join("#").replace(/\s/g,""));
 			li.attr("data-path",o.path.join("#").replace(/\s/g,""));
 			var tagbox = $('<div class="tag-box"  />');
-			if(o.tags && o.tags.length) {
-				o.tags.forEach(function(item,index){
-					tagbox.append(Tool.tag(item,idx));
-				});
-			}else if(o.start && o.end){//如果是日期
+			if(o.start && o.end){//如果是日期
 				var arr = [];
-				for(var i=0;i<40;i++){
+				for(var i=0;i<=40;i++){
 					arr.push({text:(1980+i),val:(1980+i)});
 				}
-				var start = $("<div class='ndp-drop3-wrapper' name='year-start' />").drop3({
+				var start = $("<div class='ndp-drop3-wrapper year' name='year-start' />").drop3({
 					data:arr,
-					allowInput:true,
+					allowInput:false,
 					bind:dropup.parent(),
 					caret:"glyphicon-menu-right"
 				}).val(o.start).on("ITEM_CLICK",function(e){
 					o.start = e.originalEvent.data.val;
 				});
-				var end = $("<div class='ndp-drop3-wrapper' name='year-end' />").drop3({
+				var end = $("<div class='ndp-drop3-wrapper year' name='year-end' />").drop3({
 					data:arr,
-					allowInput:true,
+					allowInput:false,
 					bind:dropup.parent(),
 					caret:"glyphicon-menu-right"
 				}).val(o.end).on("ITEM_CLICK",function(e){
 					o.end = e.originalEvent.data.val;
 				}); 
 				tagbox.append(start).append("<hr />").append(end);
+				Tool.select(_drop1, _drop2, o.type)
+			}else if(o.tags && o.tags.length) {
+				o.tags.forEach(function(item,index){
+					tagbox.append(Tool.tag(item,idx));
+					Tool.select(_drop1, _drop2, item.type, item.id);
+				});
 			}
 			li.append(bread).append(tagbox).append(liclose);
 			dropup.append(li);
-		}
+		},
+		select : function(_drop1, _drop2, _type, _id){
+			//外部搜索框
+			_drop1.find('a[data-type="' + _type +'"]' + (_id ? '[data-id="' + _id + '"]' : ''))
+				.addClass("selected");
+			//树状
+			_drop2.find('li[data-type="' + _type +'"]' + (_id ? '[data-id="' + _id + '"]' : ''))
+				.addClass("selected");
+	    }
 	};
 
 	function Blend(element, options) {
 		var self = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.blend.defaults,element.data(),options);
+		self.config = this.config;
 		this.init();
 		element.data('blend', this);
     };
@@ -188,7 +199,16 @@ if (!Object.keys) Object.keys = function(o) {
 	**/
     Blend.prototype.init = function () {
         var _this = this;
-		this.elem.addClass(this.config.containerClass);//设置 包裹容器的 dim,外观
+		if (this.config.containerClass){
+			var _container = $('<div></div>')
+			this.elem.parent().append(_container);
+			_container.addClass(this.config.containerClass);
+			_container.append(this.elem);
+			self.pClass = this.config.containerClass;
+		} else {
+			self.pClass = "ndp-blend-wrapper";
+		}
+		//this.elem.addClass(this.config.containerClass);//设置 包裹容器的 dim,外观
         this.concrate();//构建下来菜单的样子
 		this.initConfig();
  
@@ -229,40 +249,51 @@ if (!Object.keys) Object.keys = function(o) {
 				opt.data = opt.data(key);
 			}
 			//opt.processResults = null;
+			if (_this.xhr != null) {
+				//终止上一次的请求
+				_this.xhr.abort();
 
-			if(_this.xhr && _this.xhr.abort) _this.xhr.abort();//终止上一次的请求
-			_this.xhr = $.ajax(opt).then(function(result){
+				_this.xhr = null;
+			}
+			_this.xhr = $.ajax(opt);
+			_this.xhr.then(function(result){
 				if (_this.config.ajaxOptions.processResults){
 					result = _this.config.ajaxOptions.processResults(result)
 				}
 				if(typeof(result)=="string") result = JSON.parse(result);
 				_this.drop1.empty();
 				_this.drop2.addClass("hidden");
-				_this.insdata = result.data;//保留数据 
-				result.data.forEach(function(item,index){
-					var txt = (typeof(item)=="string")?item:(item.text||item.label||item.name||item.value);
-					var val = item.value||item.val||txt;
-					var re2 = new RegExp("["+key+"]+","i");	
-					var re = new RegExp(key,"i");
-					if(String(val).match(re)){
-						var ma = String(txt).match(re)[0];
-					}else if(String(txt).match(re2)){
-						ma = String(txt).match(re2)[0];
-					}else{
-						ma = "";				
-					}
-					var len = ma.length;
-					var ree = new RegExp(ma,"i");
-					var start = txt.search(ree);
-					var arr = txt.split("");
-					arr.splice(start,0,"<em>");
-					arr.splice((start+len+1),0,"</em>");
-					var val1 = arr.join("");
-					var asize = item.audienceSize||item.audience_size;
-					var li = '<li val="'+val+'"  tabIndex='+index+' >\
-					<a class="txt-mark" href="#" data-type="'+(item.type)+'" data-id="'+(item.id)+'" data-val="'+val+'" index="'+index+'" data-name="'+txt+'" data-path="'+item.path.join("#").replace(/\s/g,"") +'" data-size="'+asize+'" >'+(val1||txt)+'<span class="aud-class">'+asize+'</span></a></li>';
-					_this.drop1.append(li);
-				});	
+				_this.insdata = result.data;//保留数据
+				if (_this.insdata && _this.insdata.length){
+					result.data.forEach(function(item,index){
+						var txt = (typeof(item)=="string")?item:(item.text||item.label||item.name||item.value);
+						var val = item.value||item.val||txt;
+						var re2 = new RegExp("["+key+"]+","i");
+						var re = new RegExp(key,"i");
+						if(String(val).match(re)){
+							var ma = String(txt).match(re)[0];
+						}else if(String(txt).match(re2)){
+							ma = String(txt).match(re2)[0];
+						}else{
+							ma = "";
+						}
+						var len = ma.length;
+						var ree = new RegExp(ma,"i");
+						var start = txt.search(ree);
+						var arr = txt.split("");
+						arr.splice(start,0,"<em>");
+						arr.splice((start+len+1),0,"</em>");
+						var val1 = arr.join("");
+						var asize = item.audienceSize||item.audience_size;
+						var li = $('<li val="'+val+'"  tabIndex='+index+' >\
+					<a class="txt-mark" href="#" data-type="'+(item.type)+'" data-id="'+(item.id)+'" data-val="'+val+'" index="'+index+'" data-name="'+txt+'" data-path="'+item.path.join("#").replace(/\s/g,"") +'" data-size="'+asize+'" >'+(val1||txt)+'<span class="aud-class">'+asize+'</span></a></li>');
+						item.path = item.path.join("#").replace(/\s/g,"");
+						li.find(".txt-mark").data("info", item);
+						_this.drop1.append(li);
+					});
+				} else {
+					_this.drop1.append('<li class="no-result">' + _this.config.formatNoMatches+ '</li>');
+				}
 				_this.drop1.removeClass("hidden");
 			},function(err){
 					console.log(err);
@@ -278,40 +309,11 @@ if (!Object.keys) Object.keys = function(o) {
 			var the = $(e.target);
 			if(e.target.tagName=="A" && the.hasClass("txt-mark")){
 				if(the.hasClass("selected")) return false;//如果是已经selected  就不要加了
-				_this.selectDAT([the.data()]);
+				//modify by sisi 为了保证数据尽可能完整的返回 故修改成 .data("info")
+				_this.selectDAT([the.data("info")]);
 				var index = the.attr("index");
-//				var index = the.attr("index");
-//				var path = the.data("path");
-//				var li = _this.dropup.find("li[data-path='"+path+"']");
-//				var box = li.find(".tag-box");
-//				var dat = the.data();
-//				if(li.length){//已经存在分类了，
-//					var serial = parseInt(li.data("serial"));// 选中数组中的第几个
-//					//
-//
-//					box.append(Tool.tag(dat,serial));
-//					//加到数据里面去
-//					var arr = _this.config.seldata;
-//					arr[serial].tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
-//					$(_this.elem.get(0)).data("seldata", _this.config.seldata);
-////					for(var i=0;i<arr.length;i++){
-////						var dt = arr[i];
-////						if(dt.path.join("#")==dat.path){
-////							dt.tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
-////							break;//跳出循环
-////						}
-////					}
-//				}else {
-//					dat.path = dat.path.split("#");
-//					dat.tags = [dat.name];
-//					var serial = (_this.config.seldata &&_this.config.seldata.length)||0
-//					Tool.addClassify(dat,serial,_this.dropup);// 出现在DOM上
-//					if(!_this.config.seldata) _this.config.seldata = [];
-//					_this.config.seldata.push(dat);	//加入数据中
-//					$(_this.elem.get(0)).data("seldata", _this.config.seldata);
-//				}
 				the.addClass("selected");
-				fireEvent(_this.elem.get(0),"ITEM_CLICK",_this.insdata[index]);
+				fireEvent(_this.elem.get(0),"ITEM_CLICK",the.data("info"));
 			}
 		});
 		/***
@@ -346,7 +348,7 @@ if (!Object.keys) Object.keys = function(o) {
 				var dat = arr.splice(idx,1);//删除的数据
 			    if (dat && dat[0]){
 					//下拉列表中selected恢复让其可选
-					_this.unSelect(parent.path, parent.type, dat[0].id);
+					_this.unSelect(parent.type, dat[0].id);
 				}
 				if(!box.children().length){
 					row.remove();
@@ -364,27 +366,43 @@ if (!Object.keys) Object.keys = function(o) {
 				tali.find(".ndp-drop3-wrapper").trigger("BEEN_REMOVED");
 				tali.remove();//删除一行
 				var data = _this.config.seldata.splice(serial,1);//删除这一行的数据
-				if (data && data[0] && data[0].tags && data[0].tags.length > 0){
-					//下拉列表中selected恢复让其可选
-					var parent = data[0];
-					var tags = parent.tags;
-					$.each(tags, function(_i, _tag){
-						_this.unSelect(parent.path, parent.type, _tag.id);
-					});
+				if (data && data[0]){
+					if (data[0].tags && data[0].tags.length > 0){
+						//有子项，无子项
+						//下拉列表中selected恢复让其可选
+						var parent = data[0];
+						var tags = parent.tags;
+						$.each(tags, function(_i, _tag){
+							_this.unSelect(parent.type, _tag.id);
+						})
+					} else {
+						_this.unSelect(data[0].type);
+					}
+
 				}
 				$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 				fireEvent(_this.elem.get(0),"SERIAL_RESIGN",data);
 			}
 		});
 
-		Blend.prototype.unSelect = function(_path, _type, _id){
+		Blend.prototype.unSelect = function(_type, _id){
 			var _this = this;
 			//外部搜索框
-			_this.drop1.find('a[data-path="' + (_path.join("#").replace(/\s/g,"")) +'"][data-type="' + _type +'"][data-id="' + _id + '"]')
+			_this.drop1.find('a[data-type="' + _type +'"]' + (_id ? '[data-id="' + _id + '"]' : ''))
 				.removeClass("selected");
 			//树状
-			_this.drop2.find('li[data-path="' + (_path.join("#").replace(/\s/g,"")) +'"][data-type="' + _type +'"][data-id="' + _id + '"]')
+			_this.drop2.find('li[data-type="' + _type +'"]' + (_id ? '[data-id="' + _id + '"]' : ''))
 					.removeClass("selected");
+		}
+
+		Blend.prototype.select = function(_type, _id){
+			var _this = this;
+			//外部搜索框
+			_this.drop1.find('a[data-type="' + _type +'"]' + (_id ? '[data-id="' + _id + '"]' : ''))
+				.addClass("selected");
+			//树状
+			_this.drop2.find('li[data-type="' + _type +'"]' + (_id ? '[data-id="' + _id + '"]' : ''))
+				.addClass("selected");
 		}
 
 		//点击返回按钮
@@ -411,27 +429,79 @@ if (!Object.keys) Object.keys = function(o) {
 				_this.selectDAT([dat]);
 			}
 		});
-		
-		
+
+
 		/****
 		** 点击域外区域，收起下拉菜单
 		***/
-		$(document).click(function(){
-			_this.drop1.addClass("hidden");
-			_this.drop2.addClass("hidden");
-			_this.vlist.fold();
-			_this.vlist.hspanel();
-			//取消 年份下拉菜单的focus 信息和 下拉菜单
-			_this.dropup.find(".ndp-drop-wrapper ul.drop-list").addClass("hidden");
-			_this.dropup.find(".ndp-drop-wrapper").removeClass("focus");
-		});
+		var _s = 'mouseup.' + self.pClass;
+		$(document.body).off(_s)
+			.on(_s, function (e) {
+			var $target = $(e.target);
+			var $blend = $target.closest('.' + self.pClass);
+			if ($target.parents(".drop3-list-wrapper").length){
+				$($blend[0]).addClass("ndp-blend-wrapper-open");
+				return;
+			}
+			$($blend[0]).addClass("ndp-blend-wrapper-open");
+			var $all = $('.'+ self.pClass + '.ndp-blend-wrapper-open');
+
+			$all.each(function () {
+				var $this = $(this);
+				if (this == $blend[0]) {
+					if (!$target.parents(".drop3-list-wrapper").length){
+						var $element = getCurrentElement($this);
+						//取消 年份下拉菜单的focus 信息和 下拉菜单
+						$.each($element.dropup.find(".ndp-drop3-wrapper"), function(i, _drop3){
+							$(_drop3).drop3("close");
+						});
+					}
+					return;
+				}
+				//如果点击区域不在当前blend区域内，则恢复其他blend为初始状态
+				$this.removeClass("ndp-blend-wrapper-open");
+				var $element = getCurrentElement($this);
+				$element.input.val("");
+				$element.drop1.addClass("hidden").empty();
+				$element.drop2.addClass("hidden");
+				$element.vlist.fold();
+				$element.vlist.hspanel();
+				//取消 年份下拉菜单的focus 信息和 下拉菜单
+				$.each($element.dropup.find(".ndp-drop3-wrapper"), function(i, _drop3){
+					console.log("关闭drop3")
+					$(_drop3).drop3("close");
+				});
+                console.log("关闭")
+				fireEvent($element.elem.get(0),"close");
+			});
+
+			//获取当前元素
+			function getCurrentElement($this){
+				var $element;
+				if (self.pClass == 'ndp-blend-wrapper'){
+					$element = $this.data('blend');
+				} else {
+					$element = $this.find(".ndp-blend-wrapper").data('blend');
+				}
+				return $element;
+			}
+		})
+
+
+		//滚动已选区域 则关闭对应的drop3区域,因为滚动到最上方drop3的下拉列表会超出已选区域
+		//this.elem.find(".blend-dropup").scroll(function(){
+		//	$.each($(this).find(".ndp-drop3-wrapper"), function(i, _drop3){
+		//		console.log("关闭drop3")
+		//		$(_drop3).drop3("close");
+		//	});
+		//});
 		
 //		_this.elem.find(".ndp-drop3-wrapper").parents().scroll(function(e){
 //			_this.elem.find(".ndp-drop3-wrapper").trigger("WRAPPER_SCROLL",$(e.target));
 //		});
 		_this.listenScroll();
     };
-	
+
 	/***
 	**
 	***/
@@ -450,7 +520,7 @@ if (!Object.keys) Object.keys = function(o) {
 					for(var i=0;i<arr.length;i++){
 						var dt = arr[i];
 						if(dt.path.join("#")==dat.path){
-							dt.tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
+							dt.tags.push({name:dat.name,id:dat.id,audience_size:dat.size,type:dat.type});
 							$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 							break;//跳出循环
 						}
@@ -460,9 +530,8 @@ if (!Object.keys) Object.keys = function(o) {
 				var _newData = {};
 				_newData = $.extend(_newData, dat);
 				_newData.path = dat.path.split("#");
-				_newData.tags = [{name:dat.name,id:dat.id,audience_size:dat.size}];
-				Tool.addClassify(_newData,0,_this.dropup);//加到DOM 树，
-				_this.listenScroll();
+				_newData.tags = [{name:dat.name,id:dat.id,audience_size:dat.size,type:dat.type}];
+				Tool.addClassify(_newData,0,_this.dropup, _this.drop1, _this.drop2);//加到DOM 树，
 				//加到数据里面去
 				if(!_this.config.seldata) _this.config.seldata = [];
 				_this.config.seldata.push(_newData);
@@ -500,7 +569,9 @@ if (!Object.keys) Object.keys = function(o) {
 		this.dropup = $('<ul class="dropdown-menu blend-dropup" >');
 		this.vlist = this.drop2.vList3({
 			data:_this.config.recdata,
-			ajaxOption:_this.config.reajaxOptions
+			ajaxOption:_this.config.reajaxOptions,
+			returnList : _this.config.returnList,
+			formatNoMatches : _this.config.formatNoMatches
 		});//实例化推荐下拉菜单
 		
 		this.vlist.updateTip(_this.config.tip);//更新搜索提示文字
@@ -516,8 +587,7 @@ if (!Object.keys) Object.keys = function(o) {
 		var cfg = this.config;
 		if(cfg.seldata && cfg.seldata.length){
 			cfg.seldata.forEach(function(o,idx){
-				Tool.addClassify(o,idx,_this.dropup);
-				_this.listenScroll();
+				Tool.addClassify(o,idx,_this.dropup, _this.drop1, _this.drop2);
 			});
 			$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 		}
@@ -586,10 +656,12 @@ if (!Object.keys) Object.keys = function(o) {
             url: "../data/blend.json",
 			xhrFields: { withCredentials: true}
         },
+		formatNoMatches : "查无结果",//无查询结果提示
 		pastecallback:null,//粘帖进行的回调
 		reajaxOptions:null,//点击手型，出现下拉菜单里面的搜索
 		recdata:null,//推荐下拉菜单数据
-		seldata:[]// 选中上拉菜单数据
+		seldata:[],// 选中上拉菜单数据
+		containerClass:null
 	};
 }(jQuery));
 
@@ -1126,7 +1198,7 @@ if (!Object.keys) Object.keys = function(o) {
 			}else {
 				var oldV = _this.peal.find("input").val();
 				var newV = $(this).attr("title");
-				if (oldV !== newV){
+				if (oldV != newV){
 					fireEvent(_this.elem.get(0),"ITEM_CHANGE",{val:value,text:newV});
 				}
 
@@ -1617,6 +1689,7 @@ if (!Object.keys) Object.keys = function(o) {
 		this.config.id = "drop" + (new Date()).valueOf();
 		this.config.wi = this.elem.width();
 		this.init();
+		element.data('drop3', this);
     };
 
 	/**
@@ -1642,9 +1715,14 @@ if (!Object.keys) Object.keys = function(o) {
 		***/		
 		_this.list.find("li.list-leaf").click(function(e){
 			var field = _this.elem.find("input");
+			var oldData = field.data();
 			var dat = $(this).data();
-			field.val(dat.txt).attr({"dara-val":dat.val,"data-txt":dat.txt,"data-id":dat.id});
+			field.val(dat.txt).attr({"data-val":dat.val,"data-txt":dat.txt,"data-id":dat.id});
+			$(_this.elem.get(0)).data("val", dat)
 			fireEvent(_this.elem.get(0),"ITEM_CLICK",dat);
+			if (oldData.val != dat.val){
+				fireEvent(_this.elem.get(0),"ITEM_CHANGE",dat)
+			}
 		});
 		
 		_this.list.find("li.drop-recursive").click(function(e){
@@ -1749,10 +1827,41 @@ if (!Object.keys) Object.keys = function(o) {
      */
     $.fn.drop3 = function (options) {
 		var the = this.first();
-        var drop = new Drop3(the, options);
-		the = $.extend(true,{},the,new exchange(drop));
-		return the;
+		if (typeof options === 'object'){
+			var drop = new Drop3(the, options);
+			the = $.extend(true,{},the,new exchange(drop));
+			return the;
+		} else if (typeof options === 'string'){
+			var instance = the.data('drop3');
+			if (!instance){
+				console.log("还未初始化")
+				return;
+			}
+			var args = Array.prototype.slice.call(arguments, 1);
+			var ret = instance[options](args);
+			return ret;
+		}
     };
+
+	Drop3.prototype.close = function(){
+		this.list.addClass("hidden");
+		this.elem.removeClass("focus");
+	}
+
+
+	Drop3.prototype.val = function(o){
+		var _this = this;
+		var o = o[0];
+		if(typeof(o)=="object"){
+			var txt = o[_this.config.textKey]||o.label||o.text||o.value||o.name;
+			var val = o.value || o.val || txt;
+			var id = o.id;
+			_this.elem.find("input").val(txt).attr({"data-val":val,"data-text":txt,"data-id":id});
+		}else{
+			_this.elem.find("input").val(o).attr({"data-val":o,"data-txt":o});
+		}
+		$(_this.elem.get(0)).data("val", {val: val, txt : txt});
+	}
 
     /***
     **和其他插件的交互
@@ -1773,6 +1882,7 @@ if (!Object.keys) Object.keys = function(o) {
 			}else{
 				drop.elem.find("input").val(o).attr({"data-val":o,"data-txt":o});
 			}
+			$(drop.elem.get(0)).data("val", drop.elem.find("input").data());
 			return drop.elem;
 		};
 		
@@ -3129,64 +3239,86 @@ if (!Object.keys) Object.keys = function(o) {
 		/***
 		** 里面输入内容发生改变
 		**/
-		this.input.on("input",function(e){
+		_this.input.on("input",function(e){
 			var input = $(this);
 			e.stopImmediatePropagation();
 			if(_this.config.type==3||_this.config.type==4){
 				_this.wrapper.addClass("loading");
 				var key = $(this).val();
-				var opt = _this.config.ajaxOptions;
 				var opt = $.extend({}, _this.config.ajaxOptions);
 				if (!opt.data){
 					opt.data = {key:key};
 				} else if (typeof opt.data === 'function') {
 					opt.data = opt.data(key);
 				}
-				$.ajax(opt).then(function(result){
+				//opt.processResults = null;
+				if (_this.xhr != null) {
+					//终止上一次的请求
+					_this.xhr.abort();
+
+					_this.xhr = null;
+				}
+				_this.xhr = $.ajax(opt);
+
+				_this.xhr.then(function(result){
 					if (_this.config.ajaxOptions.processResults){
 						result = _this.config.ajaxOptions.processResults(result)
 					}
 					if(typeof(result)=="string") result = JSON.parse(result);
 					_this.dropmenu.empty();
-					result.data.forEach(function(item,index){
-						var txt = (typeof(item)=="string")?item:(item.text||item.label||item.name);
-						var val = item.val || item.value || txt;
-						var id = item.id;
-						var re2 = new RegExp("["+key+"]+","i");	
-						var re = new RegExp(key,"i");
-						if(String(txt).match(re)){
-							var ma = String(txt).match(re)[0];
-						}else if(String(txt).match(re2)){
-							ma = String(txt).match(re2)[0];
-						}else{
-							ma = "";				
-						}
-						var len = ma.length;
-						var ree = new RegExp(ma,"i");
-						var start = txt.search(ree);
-						var arr = txt.split("");
-						arr.splice(start,0,"<em>");
-						arr.splice((start+len+1),0,"</em>");
-						var val1 = arr.join("");
-						if(!_this.config.rowdec){
-							var li = $('<li data-val="'+val+'" data-name="'+txt+'" data-text='+txt+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a></li>');
-							if(id) li.attr("data-id",id);
-						}else{
-							var li = _this.config.rowdec(item,index,val1);
-						}
-						_this.dropmenu.append(li);
-					});
+					var _datas = result.data;
+					if (_datas && _datas.length){
+						_datas.forEach(function(item,index){
+							var txt = (typeof(item)=="string")?item:(item.text||item.label||item.name);
+							var val = item.val || item.value || txt;
+							var id = item.id;
+							var re2 = new RegExp("["+key+"]+","i");
+							var re = new RegExp(key,"i");
+							if(String(txt).match(re)){
+								var ma = String(txt).match(re)[0];
+							}else if(String(txt).match(re2)){
+								ma = String(txt).match(re2)[0];
+							}else{
+								ma = "";
+							}
+							var len = ma.length;
+							var ree = new RegExp(ma,"i");
+							var start = txt.search(ree);
+							var arr = txt.split("");
+							arr.splice(start,0,"<em>");
+							arr.splice((start+len+1),0,"</em>");
+							var val1 = arr.join("");
+							if(!_this.config.rowdec){
+								var li = $('<li class="result-option" data-val="'+val+'" data-name="'+txt+'" data-text='+txt+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a></li>');
+								if(id) li.attr("data-id",id);
+							}else{
+								var li = _this.config.rowdec(item,index,val1);
+							}
+							if (item.path){
+								item.path = item.path.join("#").replace(/\s/g,"");
+							}
+							li.data("info", item);
+							_this.dropmenu.append(li);
+						});
+					} else {
+						_this.dropmenu.append('<li class="no-result">' +  _this.config.formatNoMatches + '</li>');
+					}
+
 					_this.dropmenu.removeClass("hidden");
 					_this.wrapper.removeClass("loading");
 					
 					_this.dropmenu.find("li").unbind("click").click(function(e){
 						e.preventDefault();
 						e.stopImmediatePropagation();
+						if ($(this).hasClass("no-result")){
+							return false;
+						}
 						if($(this).hasClass("selected")) return false;
 						if(_this.config.clickhide) _this.input.val($(this).data('text'));//点击之后隐藏
 						if(_this.config.clickhide)_this.dropmenu.addClass("hidden");//点击之后隐藏
 						_this.wrapper.find(".close-cus").removeClass("hide");// 显示右侧的 x 删除号
-						fireEvent(_this.elem.get(0),"ITEM_SELECT",$(this).data());
+						//modify by sisi 为了保证数据尽可能完整的返回 故修改成 $(this).data("info")
+						fireEvent(_this.elem.get(0),"ITEM_SELECT",$(this).data("info"));
 						if(!_this.config.clickhide){
 							$(this).addClass("selected");
 						}
@@ -6828,10 +6960,15 @@ if (!Object.keys) Object.keys = function(o) {
 				var value = o.val||o.value||text;
 				var did = o.id;
 				var ty = o.type;
-				if(o.parent) li.attr("data-path",o.parent.split(">").join("#").replace(/\s/g,""));
+				if(o.parent) {
+					var _path = o.parent.split(">").join("#").replace(/\s/g,"");
+					li.attr("data-path", _path);
+					o.path = _path;
+				}
+
 				txtWrapper.html(text).attr({"title":text});
-				li.attr({"data-name":text,"data-text":text,"deep":deep,"data-id":did,"data-val":value,"data-type":ty,"data-size":o.audienceSize});
-				if(o.audienceSize) txtWrapper.append("<span class='aud-size'>"+(o.audienceSize)+"</span>");
+				li.attr({"data-name":text,"data-text":text,"deep":deep,"data-id":did,"data-val":value,"data-type":ty,"data-size":o.audience_size});
+				if(o.audience_size) txtWrapper.append("<span class='aud-size'>"+(o.audience_size)+"</span>");
 				if(o.search) {
 					txtWrapper.addClass("do-search");
 					txtWrapper.append('<span class="glyphicon glyphicon-search v-search"></span>');
@@ -6847,6 +6984,7 @@ if (!Object.keys) Object.keys = function(o) {
 				txtWrapper.html(o);
 				li.attr({"data-text":o,"data-val":o,"deep":deep}).addClass("list-leaf");
 			}
+			li.data("info", o)
 			ul.append(li);
 		}
 		fa.append(ul);
@@ -6889,7 +7027,8 @@ if (!Object.keys) Object.keys = function(o) {
 			if($(this).hasClass("selected")) return false;
 			$(this).addClass("active");
 			var the = $(this);
-			fireEvent($(this).get(0),"ITEM_CLICK",the.data());
+			//modify by sisi 为了保证数据尽可能完整的返回 故修改成 .data("info")
+			fireEvent($(this).get(0),"ITEM_CLICK",the.data("info"));
 			$(this).addClass("selected");
 		});
 		
@@ -6900,7 +7039,8 @@ if (!Object.keys) Object.keys = function(o) {
 			_this.sepanel.removeClass("hidden");
 			_this.elem.addClass("search-mode");
 			var the = $(this);
-			var _data = the.data();
+			//modify by sisi 为了保证数据尽可能完整的返回 故修改成 .data("info")
+			var _data = the.data("info");
 			_data.search = true;
 			fireEvent($(this).get(0),"ITEM_CLICK",_data);
 		});
@@ -6933,6 +7073,7 @@ if (!Object.keys) Object.keys = function(o) {
 			type:3,
 			clickhide:false,
 			ajaxOptions: _this.config.ajaxOption,
+			formatNoMatches : _this.config.formatNoMatches,//无查询结果提示
 			rowdec:function(o,index,val1){
 				var txt = (typeof(o)=="string")?o:(o.text||o.label||o.name);
 				var val = o.val || o.value || txt;
@@ -6945,7 +7086,7 @@ if (!Object.keys) Object.keys = function(o) {
 				return _li;
 			}
 		});
-		_this.sepanel.append(_this.searchx).append("<button class='btn btn-default btn-search'>返回列表</button>");
+		_this.sepanel.append(_this.searchx).append("<button class='btn btn-default btn-search'>" + (_this.config.returnList ? _this.config.returnList : "返回列表" )+ "</button>");
 		_this.elem.append(_this.sepanel);
 	};
 
@@ -7026,6 +7167,7 @@ if (!Object.keys) Object.keys = function(o) {
 	$.fn.vList3.defaults = {
 		data:[],
 		expicon:"<i class='glyphicon glyphicon-menu-right'></i>",
+		returnList : "返回列表",
 		ajaxOption: {
 				type: "GET",
 				url: "../data/search.json"

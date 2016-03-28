@@ -103,7 +103,7 @@
 			}else {
 				var oldV = _this.peal.find("input").val();
 				var newV = $(this).attr("title");
-				if (oldV !== newV){
+				if (oldV != newV){
 					fireEvent(_this.elem.get(0),"ITEM_CHANGE",{val:value,text:newV});
 				}
 
