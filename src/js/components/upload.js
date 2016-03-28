@@ -292,7 +292,7 @@
             }, self.ajax);
 
             //这里生成一次data
-            var fd = this.$form.length ? new FormData(this.$form) : new FormData();
+            var fd = this.$form.length ? new FormData(this.$form[0]) : new FormData();
             fd.append(self.name, file);
             $.each(ajaxOption.data || {}, function(k, v) {
                 fd.append(k, v);
