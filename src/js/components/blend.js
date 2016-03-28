@@ -434,10 +434,11 @@
 	
 	Blend.prototype.listenScroll = function(){
 		var _this = this;
-		var drop3 = _this.elem.find(".ndp-drop3-wrapper");
-		drop3.parents().unbind("scroll").scroll(function(e){
-			drop3.trigger("WRAPPER_SCROLL",e.target);
-		});		
+		_this.elem.find(".blend-dropup").scroll(function(e){
+			$.each(_this.elem.find(".ndp-drop3-wrapper"), function(i, _drop3){
+				$(_drop3).trigger("WRAPPER_SCROLL",e.target);
+			});
+		});
 	}
 	/**
 	** 构建基础结构
