@@ -1383,7 +1383,7 @@ if (!Object.keys) Object.keys = function(o) {
 					fireEvent(_this.elem.get(0),"ITEM_CHANGE",{val:value,text:newV});
 				}
 
-				_this.peal.find("input").val(newV);
+				_this.peal.find("input").attr('data-val',value).val(newV);
 				fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,text:newV});
 			}
         });
