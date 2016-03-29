@@ -2,7 +2,7 @@
 ** sutable  plugin
 **@author ericever
 ***/
-;(function ($) { 
+;(function ($) {
     var self = this;
 	function newbody(fa,arr,cfg,deep){
 			var deep = arguments[3]||0;
@@ -121,27 +121,31 @@
 			return a;
 		}
 	};
-	
-    
+
+
     function Treable(element, options) {
 		var self = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.treable.defaults,element.data(),options);
 		this.config.wi = this.elem.width();
-		this.init();	
+		this.init();
     };
 	/***
 	**	横向滚动条
 	***/
 	Treable.prototype.scrollV = function(){
 		var _this = this;
+	        _this.elem = $('.ndp-treable-wrapper');
+	        _this.scroll = $(".horiz-scroll");
+	        _this.head = $(".treable-header");
+	        _this.foot = $(".sutable-footer");
 		var sdim = _this.scroll.get(0).getBoundingClientRect();//上下左右
 		var thumb = _this.scroll.find(".horiz-thumb");
 		var tdim = thumb.get(0).getBoundingClientRect();
 		var w = this.elem.width();
 		var colW = 40 + 12;//40 margin-left:40    12 border-right
-		this.head.find(".sutable-col[col]").each(function(idx,item){
-			colW += $(item).width();
+		$('.treable-header .sutable-col').each(function(){
+			colW += $(this).css('width').replace('px','')*1
 		});
 		if(tdim.left<sdim.left){
 			thumb.css("left",sdim.left+"px");
@@ -152,11 +156,11 @@
 		_this.scroll.toggleClass("show",colW>w?true:false).css("width",w+"px");
 		_this.elem.toggleClass("extend",colW>w?true:false)
 		if(colW>w){
-			thumb.css("width",(w/colW)*100+"%");	
+			thumb.css("width",(w/colW)*100+"%");
 		}
-		
+
 	};
-	
+
 	/****
 	** body  row,col,caret 的监听
 	***/
@@ -169,7 +173,7 @@
 			e.stopImmediatePropagation();
 			$(this).parents(".chart-wrapper.open:first").removeClass("open");
 		});
-		
+
 		/***
 		**事件  收起/展开按钮  树桩菜单的 展开/收起
 		**/
@@ -179,7 +183,7 @@
 			the.toggleClass("open");
 			the.find("li.treable-item").toggleClass("open",the.hasClass("open"));
 		});
-		
+
 		_this.elem.find(".sutable-col-status>.switcher").click(function(e){
 			e.stopImmediatePropagation();
 		});
@@ -189,14 +193,19 @@
 		_this.elem.find(".sutable-col-status>.switcher>label>input").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
 			var the = $(this).parent();
-			the.toggleClass("active");
-			if(!the.hasClass("active")){
-				var fa = $(this).parents(".treable-item:first");
-				fa.find("ul .switcher>label").removeClass("active");
+			if(the.parent().hasClass('disabled')){//如果 switcher 有 disabled,则返回
+				return;
 			}
+			the.toggleClass("active");
+			//只更改自己状态
+			//if(!the.hasClass("active")){
+			//	var fa = $(this).parents(".treable-item:first");
+			//	fa.find("ul .switcher>label").removeClass("active");
+			//}
+                        $(this).trigger('STATUS_UPDATE');
 			fireEvent(_this.elem.get(0),"STATUS_CHANGE",{status:the.hasClass("active")});
 		});
-		
+
 		// 点击 选中一行， 显示 toolbar   2016-3-18 取消
 		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
@@ -208,14 +217,14 @@
 			}
 			_this.toolbar.toggleClass("active",$(this).hasClass("focus"));
 		});
-		
-		/*** 
+
+		/***
 		** 鼠标离开一行
 		****/
 		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("mouseleave").mouseleave(function(e){
-			$(this).find(".dropdown-menu-money").addClass("hidden");	
+			$(this).find(".dropdown-menu-money").addClass("hidden");
 		});
-		
+
 		/***
 		** 点击了，下拉菜单中的选项
 		***/
@@ -238,9 +247,9 @@
 			dat.GD = _this.elem.find(".treable-item.open .chart-wrapper.open .tab-pane.active");
 			setTimeout(function(){
 				fireEvent(_this.elem.get(0),"CHART_LAYER_INIT",dat);//展现完成，抛出数据
-			},400);	
+			},400);
 		});
-		
+
 		/***
 		**
 		****/
@@ -253,18 +262,18 @@
 			dat.GD = $(panels[dat.index]);
 			fireEvent(_this.elem.get(0),"TAB_SHOW",dat);
 		});
-		
-		
+
+
 		/***
 		** 点击  toolbar  看图表 button 被点击 触发
 		***/
 		_this.elem.find("button[data-id=chart]").unbind("click").click(function(e){
 			_this.elem.find(".treable-row-wrapper>.treable-row.focus+.chart-wrapper").addClass("open");
 			_this.elem.find(".treable-row-wrapper>.treable-row:not(.focus)+.chart-wrapper.open").removeClass("open");//关闭其他的
-		});	
-		
-		
-		//点击 文字旁边的 钱 icon  
+		});
+
+
+		//点击 文字旁边的 钱 icon
 		_this.elem.find("i.font-icon-money").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
 			var dp = $(this).parents(".treable-row:first").find(".dropdown-menu-money").toggleClass("hidden");
@@ -275,7 +284,7 @@
 			dp.css({"top":(30)+"px","left":(x+5)+"px"});
 		});
 	};
-	
+
 	/**
 	**列表组件的初始化
 	**/
@@ -283,10 +292,10 @@
         var _this = this;
         this.concrate();//构建下来菜单的样子
 		this.initConfig();
-				
+
 		_this.elem.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
 		_this.scroll.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
-		
+
 		/***
 		** 表头 某一列的排序按钮被点击
 		***/
@@ -297,8 +306,9 @@
 			var siblings = fa.siblings();
 			siblings.find(".sort-wrapper").children("i").removeClass("hi");
 			siblings.find(".sort-wrapper").children("i.glyphicon-triangle-bottom").addClass("hi");
-			fireEvent(_this.elem.get(0),"SORT_CLICK",{col:fa.attr("col"),val:fa.text()});
-		});	
+		            var sort = $(this).find('.hi').hasClass('glyphicon-triangle-top') ? 'up' : 'down';
+		            fireEvent(_this.elem.get(0), "SORT_CLICK", {col: fa.attr("col"), val: fa.text(), sort: sort});
+		});
 		/***
 		**鼠标按下 列缩放
 		***/
@@ -318,7 +328,7 @@
 				var w = e.clientX - column.get(0).getBoundingClientRect().left;
 				$(this).find(".split-line").css("left",end+"px");
 				if(start<end){//拉大
-						theCol.css("width",(w) + "px");				
+						theCol.css("width",(w) + "px");
 				}else{//缩小
 					var d = (parseInt(c)+1);
 					var next = $(".sutable-col[col="+d+"]");
@@ -346,11 +356,11 @@
 			_this.scrollV();// 是否显示横向滚动条
 			_this.elem.trigger("RESIZE_DONE");//鼠标拖动resize 列宽完成
 		});
-		
-		
+
+
 		/*****
 		** 横向滚动条拖动  thumb 拖动
-		****/ 
+		****/
 		_this.scroll.find(".horiz-thumb").unbind("mousedown").mousedown(function(e){
 //			e.stopImmediatePropagation();
 			var thumb = $(this);
@@ -370,20 +380,20 @@
 					thumb.css("left",0);
 				}else if(tdim.right>sdim.right){
 					thumb.css("left",(sdim.right-tdim.width - sdim.left)+"px");
-				}				
-				
+				}
+
 				var w = tdim.left - sdim.left; if(w<0) w = 0;
-				
+
 				_this.elem.children("[role=table]").css("left",-w+"px");
 			});
 		});
-		
+
 		_this.scroll.mouseleave(function(e){
 			_this.scroll.unbind("mousemove");
 			var lf = _this.scroll.find(".horiz-thumb").css("left");
 			_this.scroll.find(".horiz-thumb").css("left",lf+"px");
 		});
-		
+
 		_this.scroll.mouseup(function(e){
 			_this.scroll.unbind("mousemove");
 			var thumb = $(this).children(":first");
@@ -396,7 +406,7 @@
 				thumb.css("left",0);
 			}
 		});
-		
+
 		/***
 		** 点击滚动条空白处
 		***/
@@ -418,15 +428,15 @@
 				thumb.css("left",0);
 			}else if(tdim.right>sdim.right){
 				thumb.css("left",(sdim.right-tdim.width - sdim.left)+"px");
-			}				
+			}
 
 			var w = tdim.left - sdim.left; if(w<0) w = 0;
 			_this.elem.children("[role=table]").css("left",-w+"px");
-		});		
-		
+		});
+
 		/***
 		** 点击工具栏按钮，发出事件。 2016-3-18号 不再显示toolbar
-		***/		
+		***/
 		$(".sutable-toolbar").click(function(e){
 			var ta = $(e.target);
 			var id = ta.data("id");
@@ -436,17 +446,17 @@
 				fireEvent(e.target,"TOOLBAR_CLICK",{id:id,name:id,dataID:dataID});
 			}
 		});
-		
+
 		//body 里面的监听
 		_this.listenBody();
-		
-		
+
+
 		$(window).resize(function(e){
 			_this.config.wi = _this.elem.width();
 			_this.allocate(_this.config.wi);
 		});
-		
-	
+
+
 		//组件构建完成
 		this.elem.trigger("MISSION_COMPLETE");
     };
@@ -505,18 +515,18 @@
 			_this.foot = $("<ul class='sutable-footer'  />");
 			_this.elem.append(_this.foot);
 		}
-		
+
 		_this.scroll = $("<div class='horiz-scroll' />").html("<div class='horiz-thumb' />");
-		_this.elem.append(_this.scroll);	
-		
-		
+		_this.elem.append(_this.scroll);
+
+
 		this.allocate(cfg.wi);//分配宽度
-		
+
 		/***
 		** 显示 排序图标
 		***/
 		if(cfg.sort){
-			var st = "<span class='sort-wrapper'><i class='glyphicon glyphicon-triangle-top'></i><i class='glyphicon glyphicon-triangle-bottom hi'></i></span>";			
+			var st = "<span class='sort-wrapper'><i class='glyphicon glyphicon-triangle-top'></i><i class='glyphicon glyphicon-triangle-bottom hi'></i></span>";
 			if(cfg.sort instanceof Array){
 				cfg.sort.forEach(function(num,idx){
 					_this.head.find(".sutable-col[col="+num+"]").append(st);
@@ -525,10 +535,10 @@
 				_this.head.find(".sutable-col").append(st);
 			}
 		};
-		
+
 		this.scrollV();//是否显示滚动条
     }
-	
+
 	/***
 	** 宽度发生变化
 	***/
@@ -548,14 +558,17 @@
 				cfg.colDims.push(ew);
 			});//让他超出 ，无所谓
 		}
-		this.foot.css("width",w+"px");//最下面的 
+		this.foot.css("width",w+"px");//最下面的
 		this.scroll.css("width",w+"px");//横向滚动条
 	};
-	
+
+
+
+
     /**
      * jquery 提供了一个objct 即 fn，which is a shotcut of jquery object prototype
      * or you can call it jquery plugin shell  == fn
-     *  类似于  Class.prototype.jqplugin = function(){};0  
+     *  类似于  Class.prototype.jqplugin = function(){};0
      *  the   $.fn  [same as] Class.prototype
      * plugin entrance
      */
@@ -565,25 +578,25 @@
         the = $.extend(true,{},the,new exchange(treable));
 		return the;
     };
-	
+
     /***
     **和其他插件的交互
 	** factory Class
     **@param {Drop} drop :  instacne of the plugin builder
     **/
-    function exchange(treable){		
+    function exchange(treable){
 		//不能使用直接 == treable.toolbar的方式，因为，传入的 this 变了
 		this.toolbar = function(bool){
 			treable.toolbar.toggleClass("active",bool);
 		}
-		
+
 		/***
 		** 外部调用这里 resize 宽度
 		***/
 		this.resize = function(w){
 			treable.allocate(w);
 		};
-		
+
 		/***
 		**外部调用，折叠展开树桩菜单
 		**@param {Boolean} bool  true:折叠，false展开
@@ -593,7 +606,7 @@
 			rows.toggleClass("open",bool);
 			return treable.elem;
 		}
-		
+
 		/***
 		** 更新列表
 		***/
@@ -605,8 +618,8 @@
 			return treable.elem;
 		}
     }
-	
-	
+
+
 	  var old = $.fn.treable;
 	  $.fn.treable.Constructor = Treable;
 	  // table NO CONFLICT
@@ -614,7 +627,7 @@
 	  $.fn.treable.noConflict = function () {
 		$.fn.treable = old;
 		return this;
-	  }		
+	  }
 	/***
 	** outside accessible default setting
 	**/
