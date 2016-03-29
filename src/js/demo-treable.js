@@ -368,7 +368,7 @@ require(['./config'],function(){
   "legend": {}
 };
 			var data1 = [{id:"1111",label: [{status:true},{name:"中华人民共和国"},{text:2000},{text:2},{text:20},{text:2000},
-							   {text:2},{text:20},{text:2},{text:20}],
+							   {text:2},{text:20},{text:2},{text:20},{text:'wrwdsffwefw'},{text:"2012-12-25 11:30:30"}],
 						     sub:[{id:"11110",label:[{status:true},{name:"美国"},{text:1100},{text:2},{text:20},{text:2000},{text:2},{text:20},{text:2},{text:20}],
 								 sub:[{id:"111101",label:[{status:true},{name:"11-11-11"},{text:910},{text:2},{text:20},{text:2000},{text:2},{text:20},{text:2},{text:20}]}]  	
 								},
@@ -428,8 +428,7 @@ require(['./config'],function(){
 				//这个配置是用来显示，图表层展开时 tab项的，有几个项就有几个数组元素，name是tab上显示的名字
 				tabs:[
 					  {id:"1101",name:'线状图',type:"line"},
-					  {id:"1102",name:"饼状图",type:"pie"},
-					  {id:"1103",name:"堆积图",type:'dui'}
+					  {id:"1102",name:"饼状图",type:"pie"}
 					 ],
 				todata:[{name:"调整预算出价",id:"price"},{name:"编辑",id:"edit"},{name:"看图表",id:"chart"}]//工具条上的按钮
 			}).on("MISSION_COMPLETE",function(e){
@@ -469,14 +468,16 @@ require(['./config'],function(){
 			
 			//展开收起 树状菜单 
 			$("#info").click(function(){
-//				bool = !bool;
-				tre.fold(false);
+				bool = !bool;
+				tre.fold(bool);
 			});	
 			
 			//更新列表数据
 			$("#success").click(function(){
 				bool = !bool;
-				tre.update(bool?data2:data1);
+				var dat = bool?data2:data1;
+				console.log(bool);
+				tre.update(dat);
 			});
 			
         });
