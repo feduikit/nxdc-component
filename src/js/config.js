@@ -24,7 +24,8 @@ require.config({
 		'blend':'./components/blend',
 		'vList':'./components/vList',
 		'vList3':'./components/vList3',
-		'bubble':'./components/bubble'
+		'bubble':'./components/bubble',
+		'bootdrop':'./components/bootDrop'
     },
     shim:{
 		bootstrap:{
@@ -74,6 +75,9 @@ require.config({
 		},
 		'com/ndpmedia/vis/ChartEventListener':{
 			deps:['NVis']
+		},
+		bootdrop:{
+			deps:['bootstrap']
 		}
     }
 });
