@@ -31,7 +31,7 @@
 					row.addClass('treable-row-wrapper-parent');
 				}
 				//添加 弹出下拉菜单，点击money 符号的时候
-				var html = $('<ul class="dropdown-menu dropdown-menu-money hidden" />');		
+				var html = $('<ul class="dropdown-menu dropdown-menu-money hidden" />');
 				cfg.todata.forEach(function(item,index){
 					var txt = item.name||item.label||item.text||item;
 					var val = item.val||item.value||txt;
@@ -79,7 +79,7 @@
 						}else{
 							column.attr({"data-val":val,"title":val}).html(col);
 						}
-					}		
+					}
 					row.append(column);
 				});
 
@@ -106,7 +106,7 @@
 	var Help = {
 		recursive:function(fa,arr,cfg,deep){
 			var ul = newbody(fa,arr,cfg,deep);
-			fa.append(ul);		
+			fa.append(ul);
 		},
 		fixPageXY: function(the){
 			var html = document.documentElement;
@@ -282,6 +282,7 @@
 			var x = icon.pageX - offParent.pageX;
 			//var y = icon.pageY - offParent.pageY;
 			dp.css({"top":(30)+"px","left":(x+5)+"px"});
+			$(this).trigger('DROPDOWN_MENU_MONEY_SHOW',{dom:dp});
 		});
 	};
 
@@ -548,7 +549,7 @@
 		var cfg = this.config;
 		var rw  = w - 70 - 130 - 40;//80 第一列的宽度， 120 名称咧的宽度,40 : margin-left
 		var ew = rw/(cfg.head.length - 2);
-		cfg.colDims = [70,130];//列宽度 存储 
+		cfg.colDims = [70,130];//列宽度 存储
 		if(ew>50){
 			dom.find(".sutable-col:gt(1)").css("width",ew+"px").each(function(){
 				cfg.colDims.push(ew);

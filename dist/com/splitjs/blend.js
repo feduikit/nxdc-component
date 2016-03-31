@@ -16,6 +16,7 @@
 		** 构建类目，并加入tag
 		***/
 		addClassify:function (o,idx,dropup, _drop1, _drop2){
+			dropup.removeClass("hidden");
 			var idx = idx || 0;
 			var li = $("<li class='blend-sel-item' data-serial="+idx+" />");
 			var liclose = '<button type="button" class="close close1" aria-label="Close"><span class="x1"aria-hidden="true">&times;</span></button>';
@@ -119,11 +120,11 @@
 			e.stopImmediatePropagation();
 			var key = $(this).val();
 			if(_this.paste){//标记，表示当前处在 粘帖状态
+				_this.paste = false;// 取消标注
 				if(_this.config.pastecallback){
 					_this.config.pastecallback(key,_this.dropup,_this.config.seldata,Tool);
 					return false;// 不进行下面的请求了
 				}
-				_this.paste = false;// 取消标注
 			}
 			var opt = $.extend({}, _this.config.ajaxOptions);
 			if (!opt.data){
@@ -266,6 +267,10 @@
 				$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 				fireEvent(_this.elem.get(0),"SERIAL_RESIGN",data);
 			}
+
+			if (!_this.dropup.find("li").length){
+				_this.dropup.addClass("hidden");
+			}
 		});
 
 		Blend.prototype.unSelect = function(_type, _id){
@@ -344,18 +349,7 @@
 				//如果点击区域不在当前blend区域内，则恢复其他blend为初始状态
 				$this.removeClass("ndp-blend-wrapper-open");
 				var $element = getCurrentElement($this);
-				$element.input.val("");
-				$element.drop1.addClass("hidden").empty();
-				$element.drop2.addClass("hidden");
-				$element.vlist.fold();
-				$element.vlist.hspanel();
-				//取消 年份下拉菜单的focus 信息和 下拉菜单
-				$.each($element.dropup.find(".ndp-drop3-wrapper"), function(i, _drop3){
-					console.log("关闭drop3")
-					$(_drop3).drop3("close");
-				});
-                console.log("关闭")
-				fireEvent($element.elem.get(0),"close");
+				_this.close($element)
 			});
 
 			//获取当前元素
@@ -373,11 +367,31 @@
 		_this.listenScroll();
     };
 
+	Blend.prototype.close = function($element){
+		var _this = this;
+		if (!$element){
+			$element = _this;
+		}
+		console.log($element)
+		$element.input.val("");
+		$element.drop1.addClass("hidden").empty();
+		$element.drop2.addClass("hidden");
+		$element.vlist.fold();
+		$element.vlist.hspanel();
+		//取消 年份下拉菜单的focus 信息和 下拉菜单
+		$.each($element.dropup.find(".ndp-drop3-wrapper"), function(i, _drop3){
+			console.log("关闭drop3")
+			$(_drop3).drop3("close");
+		});
+		fireEvent($element.elem.get(0),"close");
+	}
+
 	/***
 	**
 	***/
 	Blend.prototype.selectDAT = function(dats){
 		var _this = this;
+		_this.dropup.removeClass("hidden");
 		$.each(dats, function(i, dat){
 			var li = _this.dropup.find("li[data-path='"+dat.path+"']");
 			if(li.length){//已经存在分类了
@@ -390,7 +404,7 @@
 					var arr = _this.config.seldata;
 					for(var i=0;i<arr.length;i++){
 						var dt = arr[i];
-						if(dt.path.join("#")==dat.path){
+						if(dt.path.join("#").replace(/\s/g,"") ==dat.path ){
 							dt.tags.push({name:dat.name,id:dat.id,audience_size:dat.size,type:dat.type});
 							$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 							break;//跳出循环
@@ -440,7 +454,7 @@
 		this.icon = $("<span class='icon-wrapper'><i class='glyphicon glyphicon-thumbs-up'></i></span>");
 		this.drop1 = $('<ul class="dropdown-menu blend-search-drop hidden"  />');//搜索的下拉菜单
 		this.drop2 = $('<div class="ndp-vList3-wrapper blend-classify-drop hidden" name="blend-rec" />');//分类下拉菜单
-		this.dropup = $('<ul class="dropdown-menu blend-dropup" >');
+		this.dropup = $('<ul class="dropdown-menu blend-dropup hidden" >');
 		this.vlist = this.drop2.vList3({
 			data:_this.config.recdata,
 			ajaxOption:_this.config.reajaxOptions,
@@ -478,7 +492,15 @@
 		} else if (typeof options === 'string'){
 			var instance = the.data('blend');
 			var args = Array.prototype.slice.call(arguments, 1);
-			var ret = instance[options](args);
+			var ret;
+			if (options == 'close'){
+				ret = instance[options]();
+			} else if (options == 'selectDAT'){
+				ret = instance[options](args[0]);
+			}
+			else {
+				ret = instance[options](args);
+			}
 			return ret;
 		}
 
