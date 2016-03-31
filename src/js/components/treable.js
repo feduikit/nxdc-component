@@ -282,6 +282,7 @@
 			var x = icon.pageX - offParent.pageX;
 			//var y = icon.pageY - offParent.pageY;
 			dp.css({"top":(30)+"px","left":(x+5)+"px"});
+			$(this).trigger('DROPDOWN_MENU_MONEY_SHOW',{dom:dp});
 		});
 	};
 
