@@ -32,12 +32,11 @@
 .ndp-blend-wrapper .icon-wrapper{
 	position: relative;
 	top:0;
-	left:0;
+	left:10px;
 	display: inline-block;
-	width: 30px;
+	width: auto;
 	height: 30px;
 	margin: 0;
-	text-align: center;
 }
 .ndp-blend-wrapper .icon-wrapper>i{
 	font-size: 20px;

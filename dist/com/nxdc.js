@@ -568,7 +568,12 @@ if (!Object.keys) Object.keys = function(o) {
 		var _this = this;
 		this.input = $("<input class='form-input blend-input' />");
 		this.downwrapper = $("<div class='down-wrapper' />");
-		this.icon = $("<span class='icon-wrapper'><i class='glyphicon glyphicon-thumbs-up'></i></span>");
+		this.icon = $("<span class='icon-wrapper'></span>");
+		if (_this.config.icon){
+			this.icon.append(_this.config.icon);
+		} else {
+			this.icon.append("<i class='glyphicon glyphicon-thumbs-up'></i>");
+		}
 		this.drop1 = $('<ul class="dropdown-menu blend-search-drop hidden"  />');//搜索的下拉菜单
 		this.drop2 = $('<div class="ndp-vList3-wrapper blend-classify-drop hidden" name="blend-rec" />');//分类下拉菜单
 		this.dropup = $('<ul class="dropdown-menu blend-dropup hidden" >');
@@ -578,10 +583,21 @@ if (!Object.keys) Object.keys = function(o) {
 			returnList : _this.config.returnList,
 			formatNoMatches : _this.config.formatNoMatches
 		});//实例化推荐下拉菜单
-		
+
 		this.vlist.updateTip(_this.config.tip);//更新搜索提示文字
+		this.elem.css("visibility", "hidden");
+		this.elem.css("position", "absolute");
 		this.downwrapper.append(this.input).append(this.icon).append(this.drop1).append(this.drop2);
 		this.elem.append(this.dropup).append(this.downwrapper);
+		//临时解决树状菜单图标自定义过宽引起的问题（推荐英文版 recommendation 很长）
+		var _lw = this.icon.width();
+		var _w = this.elem.width() -  _lw - 50;
+		this.input.css('width',_w);
+		this.drop1.css('width',_w);
+		this.drop2.css('width',_w);
+		this.dropup.css('width',_w);
+		this.elem.css("position", "relative");
+		this.elem.css("visibility", "visible");
 	};
 
 	/****
@@ -5831,7 +5847,7 @@ if (!Object.keys) Object.keys = function(o) {
 			var x = icon.pageX - offParent.pageX;
 			//var y = icon.pageY - offParent.pageY;
 			dp.css({"top":(30)+"px","left":(x+5)+"px"});
-			$(this).trigger('DROPDOWN_MENU_MONEY_SHOW',{dom:dp});
+			$(this).trigger('DROPDOWN_MENU_MONEY_SHOW', {dom:dp});
 		});
 	};
 
