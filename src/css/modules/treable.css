@@ -360,13 +360,15 @@
 .treable-row>.sutable-col{
 	position: relative;
 	display:inline-block;
+	box-sizing: border-box;
 	height:100%;
 	margin: 0;
 	top:0;
 /*	text-align: center;*/
 	white-space: nowrap;
 	float: left;
-	border-right: 1px solid transparent;
+	border:1px solid transparent;
+/*	border-right: 1px solid transparent;*/
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;

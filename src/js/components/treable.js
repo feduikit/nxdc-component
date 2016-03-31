@@ -546,7 +546,7 @@
 		var w = w||this.elem.width();
 		var dom = this.elem
 		var cfg = this.config;
-		var rw  = w - 70 - 130 - 40 - 2;//80 第一列的宽度， 120 名称咧的宽度,40 : margin-left
+		var rw  = w - 70 - 130 - 40;//80 第一列的宽度， 120 名称咧的宽度,40 : margin-left
 		var ew = rw/(cfg.head.length - 2);
 		cfg.colDims = [70,130];//列宽度 存储 
 		if(ew>50){
