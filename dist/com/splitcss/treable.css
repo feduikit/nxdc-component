@@ -133,9 +133,11 @@
 	min-height: calc(100% - 40px);
 	width: 100%;
 }
+/*
 .extend .treable-body{
 	width:400%;
 }
+*/
 /***
 **  列表 行
 ***/
@@ -219,9 +221,24 @@
 /***
 ** 图表界面
 **/
+/****
+** 图表 所在层  chart 和 tabs 所在的层
+***/
+.treable-row-wrapper>.chart-wrapper{
+	position: relative;
+	overflow: hidden;
+	height: 0;
+	-webkit-transition: all 0.4s ease-in-out;
+	-moz-transition: all 0.4s ease-in-out;
+	transition:all 0.4s ease-in-out;		
+}
+
+/****
+**  图表里面的tabs
+***/
 .treable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper{
 	position: relative;
-	top:0;
+	top:0;chart
 	height: 0;
 	margin: 0;
 	padding: 0;
@@ -235,17 +252,6 @@
 	background-color: #e0e0e0;
 }
 
-/****
-** 图表 所在层  chart 和 tabs 所在的层
-***/
-.treable-row-wrapper>.chart-wrapper{
-	position: relative;
-	overflow: hidden;
-	height: 0;
-	-webkit-transition: all 0.4s ease-in-out;
-	-moz-transition: all 0.4s ease-in-out;
-	transition:all 0.4s ease-in-out;		
-}
 
 /***
 ** 图表层 关闭按钮
@@ -268,6 +274,7 @@
 ***/
 .treable-row-wrapper>.chart-wrapper.open{
 	height: 290px; /***图表层的高度***/
+	width: 100%;
 }
 
 /***
@@ -360,13 +367,15 @@
 .treable-row>.sutable-col{
 	position: relative;
 	display:inline-block;
+	box-sizing: border-box;
 	height:100%;
 	margin: 0;
 	top:0;
 /*	text-align: center;*/
 	white-space: nowrap;
 	float: left;
-	border-right: 1px solid transparent;
+	border:1px solid transparent;
+/*	border-right: 1px solid transparent;*/
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -458,6 +467,7 @@
 
 .treable-row .sutable-col-name,.treable-header .sutable-col-name{
 	min-width: 130px!important;
+	padding-right: 15px;
 /*	width: 15%;*/
 }
 /****
