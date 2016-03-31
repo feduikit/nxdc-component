@@ -367,7 +367,7 @@ require(['./config'],function(){
   ],
   "legend": {}
 };
-			var data1 = [{id:"1111",label: [{status:true},{name:"中华人民共和国"},{text:2000},{text:2},{text:20},{text:2000},
+			var data1 = [{id:"1111",label: [{status:true},{name:"中华人民共和国2342434阿尔额收到"},{text:2000},{text:2},{text:20},{text:2000},
 							   {text:2},{text:20},{text:2},{text:20},{text:'wrwdsffwefw'},{text:"2012-12-25 11:30:30"}],
 						     sub:[{id:"11110",label:[{status:true},{name:"美国"},{text:1100},{text:2},{text:20},{text:2000},{text:2},{text:20},{text:2},{text:20}],
 								 sub:[{id:"111101",label:[{status:true},{name:"11-11-11"},{text:910},{text:2},{text:20},{text:2000},{text:2},{text:20},{text:2},{text:20}]}]  	

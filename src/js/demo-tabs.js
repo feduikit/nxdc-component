@@ -1,11 +1,12 @@
 require(['./config'],function(){
     require(['jquery','utils'],function($){
         require(['bootstrap','./components/tabs'],function(){
-			$("div.ndp-tab-wrapper[name=plain-tab]").tabs({
+			var a = $("div.ndp-tab-wrapper[name=plain-tab]").tabs({
+				default:2,
 				list:["hello","world","china","hello11111"]
 			}).on("TAB_CHANGE",function(e){
 				console.log(e.originalEvent.data);//{index: 第几个tab(默认从0开始) int,name:tab名称 string}
-			}).val(2);
+			});
 			
 			$("div.ndp-tab-wrapper[name=badge-tab]").tabs({
 				default:1,

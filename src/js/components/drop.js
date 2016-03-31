@@ -74,7 +74,9 @@
 
         _this.peal.click(function(e){
             e.stopImmediatePropagation();
-			_this.elem.toggleClass("focus");
+			$(".ndp-drop-wrapper").removeClass("focus");
+			$(".ndp-drop-wrapper ul.drop-list").addClass("hidden");		
+			_this.elem.toggleClass("focus");	
             _this.list.toggleClass("hidden");
             setDirect(_this);
         });
