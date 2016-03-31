@@ -21,7 +21,7 @@ require(['./config'],function(){
 			});	
 			
 			$("div.ndp-sinput-wrapper[name=icon-clear]").sinput({
-				xion:"<span><i class='glyphicon glyphicon-remove-circle'></i></span>",
+				xion:"<span><i class='font-icon font-icon-money'></i></span>",
 				placeholder:"请输入",
 				pos:"left"
 			});
