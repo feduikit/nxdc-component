@@ -5551,109 +5551,109 @@ if (!Object.keys) Object.keys = function(o) {
 ***/
 ;(function ($) {
     var self = this;
-	function newbody(fa,arr,cfg,deep){
-			var deep = arguments[3]||0;
-			var gap = arguments[4]||5;
-			deep++;
-			var rec = arguments.callee;
-			var ul = $("<ul role='table' />");
-			if(deep>1){
-				ul.addClass("sub-layer");
-			}else{
-				ul.addClass("treable-body");
-				var root = fa;
-			}
-			for(var i=0;i<arr.length;i++){
-				var o = arr[i];
-				var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group;
-				var cols = o[cfg.textKey]||o.text||o.label||o.title||o.name;
-				var id = o.id;
-				var li = $("<li class='treable-item'  deep="+deep+" />");
-				if(id){
-					li.attr('data-id',id);
-				}
-				var wrapper = $('<div class="treable-row-wrapper">');
-				var row = $('<div class="treable-row" deep='+deep+'></div>');
-				if(deep==1){//对第一级加租
-					row.addClass('treable-row-wrapper-parent');
-				}
-				//添加 弹出下拉菜单，点击money 符号的时候
-				var html = $('<ul class="dropdown-menu dropdown-menu-money hidden" />');		
-				cfg.todata.forEach(function(item,index){
-					var txt = item.name||item.label||item.text||item;
-					var val = item.val||item.value||txt;
-					var id = item.id;
-					var li = '<li data-id='+id+' data-name='+txt+' data-val='+val+' ><a href="javascript:void(0)">'+txt+'</a></li>';
-					html.append(li);
-				});
-				row.append(html);
-				var chartWrapper = $("<div class='chart-wrapper' data-id="+id+" />");//图表层
-				var chartClose = '<button type="button" class="close chart-close"><span aria-hidden="true">&times;</span></button>';//图标层关闭按钮
-				var chart = $('<div class="ndp-tab-wrapper" deep='+deep+' index='+i+' role="table" />');
-				chart.tabs({list:cfg.tabs});//图表层上面的 tabs 初始化
-				var panels = $("<div class='tab-content tab-content-cus' />");
-				cfg.tabs.forEach(function(item,index){
-					var panel = $('<div role="tabpanel" class="tab-pane "  data-name='+item.name+' data-type='+item.type+' />');
-					if(index==0) panel.addClass("active");
-					panels.append(panel);
-				});
-				chartWrapper.append(chart).append(panels).append(chartClose);//显示到层上
-				wrapper.append(row).append(chartWrapper);
-				cols.forEach(function(col,idx){
-					var switcher = '<span class="switcher">\
-					<label class = "active" ><input type = "checkbox" class = "scheckbox"> </label></span>';
-					var column = $('<span class="sutable-col" col='+idx+' />');
-					if(cfg.colDims&&cfg.colDims.length){
-						column.css("width",cfg.colDims[idx]+"px");
-					}
-					if(idx==0) {
-						column.addClass("sutable-col-status");
-						column.html(switcher);
-						if(typeof(col)=="object" && col.status===false){
-							column.find('[type="checkbox"]').attr("checked",false);
-							column.find('label.active').removeClass('active');
-						}
-					}else if(idx==1){
-						column.addClass("sutable-col-name");
-					}
-					if(idx>0){
-						if(typeof(col)=="object"){
-							var val = col.label||col.text||col.name;
-							column.attr({"data-val":val,title:val}).html(val);
-							if(idx == 1){
-								column.append("<i class='font-icon font-icon-money'></i>");
-							}
-						}else{
-							column.attr({"data-val":val,"title":val}).html(col);
-						}
-					}		
-					row.append(column);
-				});
 
-				if(array && array instanceof Array){
-					var html = $('<span class="btn-plus-minus" />');
-					if(cfg.caret){
-						html.html(cfg.caret).addClass("custom-caret");
-					}else{
-						html.html('<i class="line-hor"></i><i class="line-ver"></i>');
-					}
-					li.append(html).append(wrapper).addClass("open");//row
-					rec(li,array,cfg,deep);
-				}else{
-					li.append(wrapper);//row
-				}
-				ul.append(li);
-			}
-		if(ul.hasClass("treable-body")){
-			return ul;
-		}else{
-			fa.append(ul);
-		}
-	};
 	var Help = {
 		recursive:function(fa,arr,cfg,deep){
-			var ul = newbody(fa,arr,cfg,deep);
-			fa.append(ul);		
+		var deep = arguments[3]||0;
+		var gap = arguments[4]||5;
+		deep++;
+		var rec = arguments.callee;
+		var ul = $("<ul role='table' />");
+		if(deep>1){
+			ul.addClass("sub-layer");
+		}else{
+			ul.addClass("treable-body");
+			var root = fa;
+		}
+		for(var i=0;i<arr.length;i++){
+			var o = arr[i];
+			var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group;
+			var cols = o[cfg.textKey]||o.text||o.label||o.title||o.name;
+			var id = o.id;
+			var li = $("<li class='treable-item'  deep="+deep+" />");
+			if(id){
+				li.attr('data-id',id);
+			}
+			var wrapper = $('<div class="treable-row-wrapper">');
+			var row = $('<div class="treable-row" deep='+deep+'></div>');
+			if(deep==1){//对第一级加租
+				row.addClass('treable-row-wrapper-parent');
+			}
+			//添加 弹出下拉菜单，点击money 符号的时候
+			var html = $('<ul class="dropdown-menu dropdown-menu-money hidden" />');
+			cfg.todata.forEach(function(item,index){
+				var txt = item.name||item.label||item.text||item;
+				var val = item.val||item.value||txt;
+				var id = item.id;
+				var li = '<li data-id='+id+' data-name='+txt+' data-val='+val+' ><a href="javascript:void(0)">'+txt+'</a></li>';
+				html.append(li);
+			});
+			row.append(html);
+			var chartWrapper = $("<div class='chart-wrapper' data-id="+id+" />");//图表层
+			var chartClose = '<button type="button" class="close chart-close"><span aria-hidden="true">&times;</span></button>';//图标层关闭按钮
+			var chart = $('<div class="ndp-tab-wrapper" deep='+deep+' index='+i+' role="table" />');
+			chart.tabs({list:cfg.tabs});//图表层上面的 tabs 初始化
+			var panels = $("<div class='tab-content tab-content-cus' />");
+			cfg.tabs.forEach(function(item,index){
+				var panel = $('<div role="tabpanel" class="tab-pane "  data-name='+item.name+' data-type='+item.type+' />');
+				if(index==0) panel.addClass("active");
+				panels.append(panel);
+			});
+			chartWrapper.append(chart).append(panels).append(chartClose);//显示到层上
+			wrapper.append(row).append(chartWrapper);
+			cols.forEach(function(col,idx){
+				var switcher = '<span class="switcher">\
+				<label class = "active" ><input type = "checkbox" class = "scheckbox"> </label></span>';
+				var column = $('<span class="sutable-col" col='+idx+' />');
+				if(cfg.colDims&&cfg.colDims.length){
+					column.css("width",cfg.colDims[idx]+"px");
+				}
+				if(idx==0) {
+					column.addClass("sutable-col-status");
+					column.html(switcher);
+					if(typeof(col)=="object" && col.status===false){
+						column.find('[type="checkbox"]').attr("checked",false);
+						column.find('label.active').removeClass('active');
+					}
+					if(typeof(col)=="object"){
+						var value = col.value;
+						column.attr('value',value);
+					}
+				}else if(idx==1){
+					column.addClass("sutable-col-name");
+				}
+				if(idx>0){
+					if(typeof(col)=="object"){
+						var val = col.label||col.text||col.name;
+						column.attr({"data-val":val,title:val}).html(val);
+						var value = col.value;
+						column.attr('value',value);
+						if(idx == 1){
+							column.append("<i class='font-icon font-icon-money'></i>");
+						}
+
+					}else{var value = col.value;
+						column.attr({"data-val":val,"title":val}).html(col);
+					}
+				}
+				row.append(column);
+			});
+
+			if(array && array instanceof Array){
+				var html = $('<span class="btn-plus-minus" />');
+				if(cfg.caret){
+					html.html(cfg.caret).addClass("custom-caret");
+				}else{
+					html.html('<i class="line-hor"></i><i class="line-ver"></i>');
+				}
+				li.append(html).append(wrapper).addClass("open");//row
+				rec(li,array,cfg,deep);
+			}else{
+				li.append(wrapper);//row
+			}
+			ul.append(li);
+		}
+		fa.append(ul);
 		},
 		fixPageXY: function(the){
 			var html = document.documentElement;
@@ -5829,6 +5829,7 @@ if (!Object.keys) Object.keys = function(o) {
 			var x = icon.pageX - offParent.pageX;
 			//var y = icon.pageY - offParent.pageY;
 			dp.css({"top":(30)+"px","left":(x+5)+"px"});
+			$(this).trigger('DROPDOWN_MENU_MONEY_SHOW',{dom:dp});
 		});
 	};
 
@@ -6093,9 +6094,9 @@ if (!Object.keys) Object.keys = function(o) {
 		var w = w||this.elem.width();
 		var dom = this.elem
 		var cfg = this.config;
-		var rw  = w - 70 - 130 - 40 - 2;//80 第一列的宽度， 120 名称咧的宽度,40 : margin-left
-		var ew = rw/(cfg.head.length - 2);
-		cfg.colDims = [70,130];//列宽度 存储 
+		var rw  = w - 70 - 130 - 40;//80 第一列的宽度， 120 名称咧的宽度,40 : margin-left
+		var ew = rw/(cfg.head.length - 2)-5;
+		cfg.colDims = [70,130];//列宽度 存储
 		if(ew>50){
 			dom.find(".sutable-col:gt(1)").css("width",ew+"px").each(function(){
 				cfg.colDims.push(ew);
@@ -6158,9 +6159,8 @@ if (!Object.keys) Object.keys = function(o) {
 		** 更新列表
 		***/
 		this.update = function(data){
-			var body = newbody(treable.elem,data,treable.config);
-			console.log(body);
-			treable.elem.find(".treable-body").replaceWith(body);
+			treable.elem.find(".treable-body").remove();
+			Help.recursive(treable.elem,data,treable.config);
 			treable.listenBody();
 			return treable.elem;
 		}
@@ -6184,7 +6184,7 @@ if (!Object.keys) Object.keys = function(o) {
 		tail:null,//列表尾部数据
 		caret:null,//展开，折叠的 图标是 默认是  +  - 号
 		sort:null,
-		tabs:[],
+		tabs:[{id:"1101",name:'线状图',type:"line"},{id:"1102",name:"饼状图",type:"pie"},{id:"1103",name:"堆积图",type:'dui'}],
 		todata:null// toolbar 显示的数据 [{name:'',id:''},{name:'',id:''},{}], function 或者数据
 	};
 }(jQuery));
