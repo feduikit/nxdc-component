@@ -5,7 +5,10 @@
 		var self = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.drop.defaults,element.data(),options);
+		var id = (new Date()).valueOf();
 		this.config.width = this.elem.width();
+		this.config.id = id;
+		this.elem.attr("id",id);
 		this.init();
     };
 
@@ -74,8 +77,8 @@
 
         _this.peal.click(function(e){
             e.stopImmediatePropagation();
-			$(".ndp-drop-wrapper").removeClass("focus");
-			$(".ndp-drop-wrapper ul.drop-list").addClass("hidden");		
+			$(".ndp-drop-wrapper[id!="+_this.config.id+"]").removeClass("focus");
+			$(".ndp-drop-wrapper[id!="+_this.config.id+"] ul.drop-list").addClass("hidden");		
 			_this.elem.toggleClass("focus");	
             _this.list.toggleClass("hidden");
             setDirect(_this);

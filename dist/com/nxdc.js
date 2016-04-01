@@ -1319,7 +1319,10 @@ if (!Object.keys) Object.keys = function(o) {
 		var self = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.drop.defaults,element.data(),options);
+		var id = (new Date()).valueOf();
 		this.config.width = this.elem.width();
+		this.config.id = id;
+		this.elem.attr("id",id);
 		this.init();
     };
 
@@ -1388,10 +1391,11 @@ if (!Object.keys) Object.keys = function(o) {
 
         _this.peal.click(function(e){
             e.stopImmediatePropagation();
-			$(".ndp-drop-wrapper").removeClass("focus");
-			$(".ndp-drop-wrapper ul.drop-list").addClass("hidden");		
+			$(".ndp-drop-wrapper[id!="+_this.config.id+"]").removeClass("focus");
+			$(".ndp-drop-wrapper[id!="+_this.config.id+"] ul.drop-list").addClass("hidden");		
 			_this.elem.toggleClass("focus");	
             _this.list.toggleClass("hidden");
+						console.log(_this.list.get(0));
             setDirect(_this);
         });
 
@@ -6542,8 +6546,10 @@ if (!Object.keys) Object.keys = function(o) {
 		***/
 		_this.elem.find("span.inspliter").mousedown(function(e){
 			var column = $(this).parent();
+			_this.elem.find("span.inspliter").removeAttr("data-column");
 			var c = parseInt(column.attr("col"));
-			var theCol = $(".sutable-col[col="+c+"]");
+			$(this).attr("data-column",c);//设置拖动的列
+			var theCol = _this.elem.find(".sutable-col[col="+c+"]");
 			var minw = window.getComputedStyle(theCol.get(0)).minWidth;
 			var the = $(this).get(0).getBoundingClientRect();
 			var el = _this.elem.get(0).getBoundingClientRect();
@@ -6582,25 +6588,29 @@ if (!Object.keys) Object.keys = function(o) {
 		**/
 		_this.elem.mouseup(function(e){
 			e.stopImmediatePropagation();
+			
+			
+			var spliter = _this.elem.find("span.inspliter[data-column]");
+			var c = spliter.data("column");
+			var theCol = _this.elem.find(".sutable-col[col='"+c+"']");
+
+			var minw = window.getComputedStyle(theCol.get(0)).minWidth;
+			var pos1 = Help.fixPageXY(theCol);
+			var pos2 = Help.fixPageXY(_this.elem.find("span.split-line"));
+			if(pos2.pageX>(pos1.pageX+theCol.width())){//在原来基础上拉大了
+				theCol.css("width",(pos2.pageX - pos1.pageX) + "px");
+			}else{//在原来基础上缩小了
+				
+			}				
+			
+			
+			
 			_this.elem.removeClass("resize-cursor");
 			_this.elem.find(".split-line").removeClass("active");
 			_this.elem.unbind("mousemove");
 			_this.scrollV();// 是否显示横向滚动条
 			_this.elem.trigger("RESIZE_DONE");//鼠标拖动resize 列宽完成
-			
-			
-			var column = $(this).parent();
-			var c = parseInt(column.attr("col"));
-			var theCol = $(".sutable-col[col="+c+"]");
-			var minw = window.getComputedStyle(theCol.get(0)).minWidth;
-			var pos1 = Help.fixPageXY(theCol);
-			var pos2 = Help.fixPageXY($(this));
-			if(pos2.pageX>(pos1.pageX+theCol.width())){//在原来基础上拉大了
-					theCol.css("width",(pos2.pageX - pos1.pageX) + "px");
-			}else{//在原来基础上缩小了
 				
-			}			
-			
 		});
 
 
