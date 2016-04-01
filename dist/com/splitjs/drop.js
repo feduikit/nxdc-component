@@ -178,6 +178,26 @@
 				}else{
 					items.last().addClass("em");
 				}
+				//新增，类似原生select 的功能
+			}else if((e.keyCode>=65 && e.keyCode<=90)||(e.keyCode>=48 && e.keyCode<=57)){//输入的是字母
+				var char = String.fromCharCode(e.keyCode);
+				var RE = new RegExp("^"+char,'i');
+				var lis = _this.list.find("li[text]");
+				for(var i=0;i<lis.length;i++){
+					var li = $(lis.get(i));
+					var txt = li.attr("text");
+					var val = li.attr("value");
+					 if(RE.test(txt)){
+						if(!_this.list.hasClass("hidden")){
+							 li.siblings().removeClass("em"); 
+							 li.addClass("em");
+						}else{
+							_this.elem.find("input").val(txt).attr("data-val",val);
+							fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:val,text:txt});
+						}
+						break;
+					 }						
+				}
 			}
 		});
 

@@ -123,17 +123,17 @@
 	};
 
 
-    function Treable(element, options) {
+    function Treable2(element, options) {
 		var self = this;
 		this.elem = element;
-		this.config = $.extend(true,{},$.fn.treable.defaults,element.data(),options);
+		this.config = $.extend(true,{},$.fn.treable2.defaults,element.data(),options);
 		this.config.wi = this.elem.width();
 		this.init();
     };
 	/***
 	**	横向滚动条
 	***/
-	Treable.prototype.scrollV = function(){
+	Treable2.prototype.scrollV = function(){
 		var _this = this;
 	        _this.elem = $('.ndp-treable-wrapper');
 	        _this.scroll = $(".horiz-scroll");
@@ -164,7 +164,7 @@
 	/****
 	** body  row,col,caret 的监听
 	***/
-	Treable.prototype.listenBody = function(){
+	Treable2.prototype.listenBody = function(){
 		var _this = this;
 		/***
 		** 关闭图表层
@@ -202,7 +202,7 @@
 			//	var fa = $(this).parents(".treable-item:first");
 			//	fa.find("ul .switcher>label").removeClass("active");
 			//}
-                        $(this).trigger('STATUS_UPDATE');
+            $(this).trigger('STATUS_UPDATE');
 			fireEvent(_this.elem.get(0),"STATUS_CHANGE",{status:the.hasClass("active")});
 		});
 
@@ -288,7 +288,7 @@
 	/**
 	**列表组件的初始化
 	**/
-    Treable.prototype.init = function () {
+    Treable2.prototype.init = function () {
         var _this = this;
         this.concrate();//构建下来菜单的样子
 		this.initConfig();
@@ -329,17 +329,18 @@
 				var w0 = theCol.get(0).getBoundingClientRect().width;
 				var gap = w - w0;
 				$(this).find(".split-line").css("left",end+"px");
-				if(start<end){//拉大
-					_this.elem.css("width",(_this.elem.width()+gap)+"px");
-					theCol.css("width",(w) + "px");
-				}else{//缩小
-					var d = (parseInt(c)+1);
-					var next = $(".sutable-col[col="+d+"]");
-					theCol.css("width",w + "px");
-				}
-				_this.config.colDims[c] = w;
+//				if(start<end){//拉大
+//					//_this.elem.css("width",(_this.elem.width()+gap)+"px");
+//					theCol.css("width",(w) + "px");
+//				}else{//缩小
+//					var d = (parseInt(c)+1);
+//					var next = $(".sutable-col[col="+d+"]");
+//					theCol.css("width",w + "px");
+//				}
+//				_this.config.colDims[c] = w;
 			});
 		});
+
 		/***
 		**离开这个区域了
 		**/
@@ -358,6 +359,20 @@
 			_this.elem.unbind("mousemove");
 			_this.scrollV();// 是否显示横向滚动条
 			_this.elem.trigger("RESIZE_DONE");//鼠标拖动resize 列宽完成
+			
+			
+			var column = $(this).parent();
+			var c = parseInt(column.attr("col"));
+			var theCol = $(".sutable-col[col="+c+"]");
+			var minw = window.getComputedStyle(theCol.get(0)).minWidth;
+			var pos1 = Help.fixPageXY(theCol);
+			var pos2 = Help.fixPageXY($(this));
+			if(pos2.pageX>(pos1.pageX+theCol.width())){//在原来基础上拉大了
+					theCol.css("width",(pos2.pageX - pos1.pageX) + "px");
+			}else{//在原来基础上缩小了
+				
+			}			
+			
 		});
 
 
@@ -463,7 +478,7 @@
 	/**
 	** 构建下来菜单样子
 	**/
-	Treable.prototype.concrate = function(){
+	Treable2.prototype.concrate = function(){
 		var _this = this;
 		this.toolbar = $("<div class='sutable-toolbar' role='table' />");
 		this.head = $("<ul class='treable-header' role='table' />").html('<li class=" treable-row"></li>');
@@ -471,7 +486,7 @@
 		this.elem.append(this.toolbar).append(this.head);
 	};
 
-    Treable.prototype.initConfig = function(){
+    Treable2.prototype.initConfig = function(){
         var _this = this;
 		var cfg = this.config;
 		if(cfg.todata){
@@ -541,7 +556,7 @@
 	/***
 	** 宽度发生变化
 	***/
-	Treable.prototype.allocate = function(w){
+	Treable2.prototype.allocate = function(w){
 		var w = w||1200;
 		var dom = this.elem;
 		var cfg = this.config;
@@ -571,9 +586,9 @@
      *  the   $.fn  [same as] Class.prototype
      * plugin entrance
      */
-    $.fn.treable = function (options) {
+    $.fn.treable2 = function (options) {
 		var the = this.first();
-        var treable = new Treable(the, options);
+        var treable = new Treable2(the, options);
         the = $.extend(true,{},the,new exchange(treable));
 		return the;
     };
@@ -611,7 +626,6 @@
 		***/
 		this.update = function(data){
 			var body = newbody(treable.elem,data,treable.config);
-			console.log(body);
 			treable.elem.find(".treable-body").replaceWith(body);
 			treable.listenBody();
 			return treable.elem;
@@ -619,18 +633,18 @@
     }
 
 
-	  var old = $.fn.treable;
-	  $.fn.treable.Constructor = Treable;
+	  var old = $.fn.treable2;
+	  $.fn.treable2.Constructor = Treable2;
 	  // table NO CONFLICT
 	  // ===============
-	  $.fn.treable.noConflict = function () {
+	  $.fn.treable2.noConflict = function () {
 		$.fn.treable = old;
 		return this;
 	  }
 	/***
 	** outside accessible default setting
 	**/
-	$.fn.treable.defaults = {
+	$.fn.treable2.defaults = {
 		head:null,//列表头数据
 		body:null,//列表内容数据
 		tail:null,//列表尾部数据

@@ -138,7 +138,7 @@
 	        _this.elem = $('.ndp-treable-wrapper');
 	        _this.scroll = $(".horiz-scroll");
 	        _this.head = $(".treable-header");
-	        _this.foot = $(".sutable-footer");
+	        _this.foot = $(".treable-footer");
 		var sdim = _this.scroll.get(0).getBoundingClientRect();//上下左右
 		var thumb = _this.scroll.find(".horiz-thumb");
 		var tdim = thumb.get(0).getBoundingClientRect();
@@ -280,7 +280,6 @@
 			var icon = Help.fixPageXY($(this));
 			var offParent = Help.fixPageXY($(this).parents(".treable-row:first"));
 			var x = icon.pageX - offParent.pageX;
-			//var y = icon.pageY - offParent.pageY;
 			dp.css({"top":(30)+"px","left":(x+5)+"px"});
 			$(this).trigger('DROPDOWN_MENU_MONEY_SHOW', {dom:dp});
 		});
@@ -315,21 +314,24 @@
 		***/
 		_this.elem.find("span.inspliter").mousedown(function(e){
 			var column = $(this).parent();
-			var c = column.attr("col");
+			var c = parseInt(column.attr("col"));
 			var theCol = $(".sutable-col[col="+c+"]");
 			var minw = window.getComputedStyle(theCol.get(0)).minWidth;
 			var the = $(this).get(0).getBoundingClientRect();
 			var el = _this.elem.get(0).getBoundingClientRect();
 			var start = (the.left-el.left + the.width);
-			_this.elem.find(".split-line").css("left",start+"px").addClass("active");
+			_this.elem.find(".split-line").css("left",(start-1)+"px").addClass("active");
 			_this.elem.addClass("resize-cursor");
-			_this.elem.off("mousemove").mousemove(function(e){
+			_this.elem.unbind("mousemove").mousemove(function(e){
 				e.stopImmediatePropagation();
-				var end = e.clientX - el.left + 1;
+				var end = e.clientX - el.left - 2;
 				var w = e.clientX - column.get(0).getBoundingClientRect().left;
+				var w0 = theCol.get(0).getBoundingClientRect().width;
+				var gap = w - w0;
 				$(this).find(".split-line").css("left",end+"px");
 				if(start<end){//拉大
-						theCol.css("width",(w) + "px");
+					_this.elem.css("width",(_this.elem.width()+gap)+"px");
+					theCol.css("width",(w) + "px");
 				}else{//缩小
 					var d = (parseInt(c)+1);
 					var next = $(".sutable-col[col="+d+"]");
@@ -509,7 +511,7 @@
 		}
 		//构建列表尾部
 		if(cfg.tail){
-			_this.foot = $("<ul class='sutable-footer'  />");
+			_this.foot = $("<ul class='treable-footer'  />");
 			_this.elem.append(_this.foot);
 		}
 
@@ -540,10 +542,10 @@
 	** 宽度发生变化
 	***/
 	Treable.prototype.allocate = function(w){
-		var w = w||this.elem.width();
-		var dom = this.elem
+		var w = w||1200;
+		var dom = this.elem;
 		var cfg = this.config;
-		var rw  = w - 70 - 130 - 40 - 1;//80 第一列的宽度， 120 名称咧的宽度,40 : margin-left
+		var rw  = w - 70 - 130 - 40 - 2;//80 第一列的宽度， 120 名称咧的宽度,40 : margin-left  2 是border
 		var ew = rw/(cfg.head.length - 2);
 		cfg.colDims = [70,130];//列宽度 存储
 		if(ew>50){

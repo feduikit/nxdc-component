@@ -19,6 +19,7 @@ require.config({
 		'drop2':'./components/drop2',
 		'drop3':'./components/drop3',
 		'treable':'./components/treable',
+		'treable2':'./components/treable2',
 		'sutable':'./components/sutable',
 		'timerange':'./components/timerange',
 		'blend':'./components/blend',
@@ -52,6 +53,9 @@ require.config({
 		treable:{
 			deps:['bootstrap','tabs','drop2']
 		},
+		treable2:{
+			deps:['bootstrap','tabs','drop2']
+		},		
 		sutable:{
 			deps:['bootstrap']
 		},

@@ -2,10 +2,11 @@
 	position: relative;
 	padding: 0!important;
 	box-sizing: border-box;
-	width: 100%;
+/*	width: 100%;*/
 	border: 1px solid #e0e0e0;
-	/*width: 1200px;*/
-	overflow: hidden;
+/*	min-width: 1200px;*/
+/*	overflow: hidden;*/
+
 }
 .ndp-treable-wrapper.resize-cursor{
 	cursor: col-resize;
@@ -30,7 +31,7 @@
 	transition: all 0.3s ease-in-out ;
 }
 .extend .sutable-toolbar{
-	width: 400%;
+/*	width: 400%;*/
 }
 
 .sutable-toolbar>*{
@@ -69,8 +70,8 @@
 ***/
 .treable-header{
 	position: relative;
-	min-width: 100%;
-	width: 400%;
+	width: 100%;
+/*	width: 400%;*/
     white-space: nowrap;
 	margin: 0;
 	padding: 0;
@@ -81,7 +82,7 @@
 /****
 **列表尾
 ***/
-.sutable-footer{
+.treable-footer{
 	position: fixed;
 /*	position: absolute;*/
 	height: 50px;
@@ -152,7 +153,7 @@
 .treable-header>.treable-row{
 	position: relative;
 	height: 40px;
-	width: 100%;
+/*	width: 100%;*/
 	margin: 0;
 	padding: 0;
 	line-height:normal;
@@ -371,17 +372,15 @@
 	height:100%;
 	margin: 0;
 	top:0;
-/*	text-align: center;*/
 	white-space: nowrap;
 	float: left;
 	border:1px solid transparent;
-/*	border-right: 1px solid transparent;*/
-	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	cursor:default;
 	padding-left: 10px;
-/*	transition:all 0.1s linear;*/
+	overflow: hidden;
+	transition:width 0.1s;
 }
 .treable-row>.sutable-col.active{
 	border-right-color:deepskyblue;
@@ -504,6 +503,7 @@
 	z-index: 20;
 /*	top:15%;*/
 	right: 0px;
+/*	left:0px;*/
 	overflow: visible;
 	border-right: 1px solid #ccc;
 /*	background-color: red;*/
