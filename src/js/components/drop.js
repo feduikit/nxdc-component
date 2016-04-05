@@ -259,7 +259,7 @@
 				fireEvent(_this.elem.get(0),"APPLY_CLICK",{checkedArr:cksArr});
 			});
 
-			$(document).click(function(e){
+			$(document,document.body).click(function(e){
 				if(!(e.target.tagName == "INPUT" && e.target.type == "checkbox")){
 					//$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
 					$(".ndp-drop-wrapper ul.drop-list").addClass("hidden");

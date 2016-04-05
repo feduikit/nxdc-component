@@ -365,8 +365,12 @@
 			var minw = window.getComputedStyle(theCol.get(0)).minWidth;
 			var pos1 = Help.fixPageXY(theCol);
 			var pos2 = Help.fixPageXY(_this.elem.find("span.split-line"));
+			var w = pos2.pageX - pos1.pageX;
+			var gap = w - theCol.width();
 			if(pos2.pageX>(pos1.pageX+theCol.width())){//在原来基础上拉大了
-				theCol.css("width",(pos2.pageX - pos1.pageX) + "px");
+				var wi = parseFloat(_this.elem.get(0).getBoundingClientRect().width);
+				_this.elem.css("width",(wi+gap-2)+"px");
+				theCol.css("width",w + "px");
 			}else{//在原来基础上缩小了
 				
 			}				

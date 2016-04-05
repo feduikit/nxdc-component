@@ -280,7 +280,17 @@
 			var icon = Help.fixPageXY($(this));
 			var offParent = Help.fixPageXY($(this).parents(".treable-row:first"));
 			var x = icon.pageX - offParent.pageX;
-			dp.css({"top":(30)+"px","left":(x+5)+"px"});
+		
+			var dpPage   =   Help.fixPageXY(dp);
+			
+			var footPage = Help.fixPageXY(_this.elem.find(".treable-footer"));
+			
+			if((dpPage.pageY +90)<=footPage.pageY){
+				dp.css({"top":30+"px","left":(x+5)+"px"});
+			}else{
+				dp.css({"top":(-105)+"px" ,"left":(x+5)+"px"});
+			}
+		
 			$(this).trigger('DROPDOWN_MENU_MONEY_SHOW', {dom:dp});
 		});
 	};
