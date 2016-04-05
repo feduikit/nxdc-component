@@ -113,7 +113,9 @@ fieldset[disabled] .btn-default:hover {
     background-color: #f9f9f9;
     border-color: #b9c3cd
 }
-
+.bs-example>.btn-outline:hover, 
+.bs-example>.btn-outline:focus, 
+.bs-example>.btn-outline:active,
 .btn-outline.focus,
 .btn-outline:focus,
 .btn-outline:hover {

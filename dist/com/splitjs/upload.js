@@ -87,7 +87,7 @@
             if (this.size < file.size) {
                 msg.push(self.text.error.size);
             }
-            if (this.type && !new RegExp(this.type, 'igm').test(file.type)) {
+            if (this.type && !new RegExp(this.type, 'ig').test(file.type)) {
                 msg.push(self.text.error.type);
             }
 

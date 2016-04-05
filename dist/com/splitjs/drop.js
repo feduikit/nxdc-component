@@ -258,15 +258,15 @@
 				_this.peal.find("input").attr("checkedArr",JSON.stringify(cksArr)).val(vals.join(","));
 				fireEvent(_this.elem.get(0),"APPLY_CLICK",{checkedArr:cksArr});
 			});
-
-			$(document).click(function(e){
-				if(!(e.target.tagName == "INPUT" && e.target.type == "checkbox")){
-					//$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
-					$(".ndp-drop-wrapper ul.drop-list").addClass("hidden");
-				}
-				$(".ndp-drop-wrapper").removeClass("focus");
-			});
 		}
+		
+		$(document,document.body).click(function(e){
+			if(!(e.target.tagName == "INPUT" && e.target.type == "checkbox")){
+				//$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
+				$(".ndp-drop-wrapper ul.drop-list").addClass("hidden");
+			}
+			$(".ndp-drop-wrapper").removeClass("focus");
+		});
     };
 
 	/**

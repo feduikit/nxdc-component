@@ -1572,15 +1572,15 @@ if (!Object.keys) Object.keys = function(o) {
 				_this.peal.find("input").attr("checkedArr",JSON.stringify(cksArr)).val(vals.join(","));
 				fireEvent(_this.elem.get(0),"APPLY_CLICK",{checkedArr:cksArr});
 			});
-
-			$(document).click(function(e){
-				if(!(e.target.tagName == "INPUT" && e.target.type == "checkbox")){
-					//$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
-					$(".ndp-drop-wrapper ul.drop-list").addClass("hidden");
-				}
-				$(".ndp-drop-wrapper").removeClass("focus");
-			});
 		}
+		
+		$(document,document.body).click(function(e){
+			if(!(e.target.tagName == "INPUT" && e.target.type == "checkbox")){
+				//$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
+				$(".ndp-drop-wrapper ul.drop-list").addClass("hidden");
+			}
+			$(".ndp-drop-wrapper").removeClass("focus");
+		});
     };
 
 	/**
@@ -5403,6 +5403,13 @@ if (!Object.keys) Object.keys = function(o) {
 		});
 		
 		
+		/****
+		**点击重置按钮
+		****/
+		_this.elem.find(".timerange-reset").click(function(){
+			_this.elem.find(".timerange-cell.active").removeClass("active");
+		});
+		
 		$(document).click(function(e){
 			if(!$(e.target).parents(".ndp-timerange-wrapper").length || !$(e.target).hasClass('ndp-timerange-wrapper')){
 				_this.elem.find(".ndp-drop-wrapper").removeClass("focus");
@@ -5423,8 +5430,9 @@ if (!Object.keys) Object.keys = function(o) {
 			data:ZONEARR,
 			textKey:cfg.lan
 		}).val(ZONEARR[3]);
-		var txt = $("<span class='timerange-desc'  />").html("按住鼠标左键滑动，选取时间目标");
-		_this.head.append(droplist).append(txt);
+		var txt = $("<span class='timerange-desc'  />").html("按住鼠标左键滑动，选取时间目标。");
+		var reset = $("<span class='timerange-reset'>重置</span>");
+		_this.head.append(droplist).append(txt).append(reset);
 		_this.body = $("<div class='timerange-body' />");
 		var xq  = $("<ul class='timerange-xq' >");
 		DAYARR.forEach(function(item,index){
@@ -5868,7 +5876,17 @@ if (!Object.keys) Object.keys = function(o) {
 			var icon = Help.fixPageXY($(this));
 			var offParent = Help.fixPageXY($(this).parents(".treable-row:first"));
 			var x = icon.pageX - offParent.pageX;
-			dp.css({"top":(30)+"px","left":(x+5)+"px"});
+		
+			var dpPage   =   Help.fixPageXY(dp);
+			
+			var footPage = Help.fixPageXY(_this.elem.find(".treable-footer"));
+			
+			if((dpPage.pageY +90)<=footPage.pageY){
+				dp.css({"top":30+"px","left":(x+5)+"px"});
+			}else{
+				dp.css({"top":(-105)+"px" ,"left":(x+5)+"px"});
+			}
+		
 			$(this).trigger('DROPDOWN_MENU_MONEY_SHOW', {dom:dp});
 		});
 	};
@@ -6596,8 +6614,12 @@ if (!Object.keys) Object.keys = function(o) {
 			var minw = window.getComputedStyle(theCol.get(0)).minWidth;
 			var pos1 = Help.fixPageXY(theCol);
 			var pos2 = Help.fixPageXY(_this.elem.find("span.split-line"));
+			var w = pos2.pageX - pos1.pageX;
+			var gap = w - theCol.width();
 			if(pos2.pageX>(pos1.pageX+theCol.width())){//在原来基础上拉大了
-				theCol.css("width",(pos2.pageX - pos1.pageX) + "px");
+				var wi = parseFloat(_this.elem.get(0).getBoundingClientRect().width);
+				_this.elem.css("width",(wi+gap-2)+"px");
+				theCol.css("width",w + "px");
 			}else{//在原来基础上缩小了
 				
 			}				
@@ -7157,7 +7179,7 @@ if (!Object.keys) Object.keys = function(o) {
             if (this.size < file.size) {
                 msg.push(self.text.error.size);
             }
-            if (this.type && !new RegExp(this.type, 'igm').test(file.type)) {
+            if (this.type && !new RegExp(this.type, 'ig').test(file.type)) {
                 msg.push(self.text.error.type);
             }
 
