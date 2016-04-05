@@ -108,6 +108,7 @@ fieldset[disabled] .btn-default:hover {
     background-color: #d9e0e3;
     border-color: #d9e0e3
 }
+.bs-example>.btn-outline,
 .btn-outline {
     color: #666;
     background-color: #f9f9f9;
