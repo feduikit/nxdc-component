@@ -143,10 +143,12 @@
 		var thumb = _this.scroll.find(".horiz-thumb");
 		var tdim = thumb.get(0).getBoundingClientRect();
 		var w = this.elem.width();
-		var colW = 40 + 12;//40 margin-left:40    12 border-right
-		$('.treable-header .sutable-col').each(function(){
-			colW += $(this).css('width').replace('px','')*1
-		});
+		var colW = 40 + 10;//40 margin-left:40    10 border-right
+//		$('.treable-header .sutable-col').each(function(){
+//			colW += $(this).css('width').replace('px','')*1
+//		});
+		colW = colW + eval(_this.config.colDims.join("+"));//获得宽度
+		
 		if(tdim.left<sdim.left){
 			thumb.css("left",sdim.left+"px");
 		}else if(tdim.right>sdim.right){
@@ -277,20 +279,20 @@
 		_this.elem.find("i.font-icon-money").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
 			var dp = $(this).parents(".treable-row:first").find(".dropdown-menu-money").toggleClass("hidden");
+			dp.css("opacity",0);
 			var icon = Help.fixPageXY($(this));
 			var offParent = Help.fixPageXY($(this).parents(".treable-row:first"));
-			var x = icon.pageX - offParent.pageX;
-		
-			var dpPage   =   Help.fixPageXY(dp);
-			
-			var footPage = Help.fixPageXY(_this.elem.find(".treable-footer"));
-			
-			if((dpPage.pageY +90)<=footPage.pageY){
-				dp.css({"top":30+"px","left":(x+5)+"px"});
-			}else{
-				dp.css({"top":(-105)+"px" ,"left":(x+5)+"px"});
-			}
-		
+			var x = icon.pageX - offParent.pageX;			
+			setTimeout(function(){
+				dp.removeAttr("style");
+				var dpPage   =   Help.fixPageXY(dp);
+				var footPage = Help.fixPageXY(_this.elem.find(".treable-footer"));					   
+				if((dpPage.pageY +90)<=footPage.pageY){
+					dp.css({"top":30+"px","left":(x+5)+"px"});
+				}else{
+					dp.css({"top":(-105)+"px" ,"left":(x+5)+"px"});
+				}
+			});
 			$(this).trigger('DROPDOWN_MENU_MONEY_SHOW', {dom:dp});
 		});
 	};
@@ -335,13 +337,11 @@
 			_this.elem.unbind("mousemove").mousemove(function(e){
 				e.stopImmediatePropagation();
 				var end = e.clientX - el.left - 2;
-				var w = e.clientX - column.get(0).getBoundingClientRect().left;
-				var w0 = theCol.get(0).getBoundingClientRect().width;
-				var gap = w - w0;
+				var w = e.clientX - column.get(0).getBoundingClientRect().left-0.4;
 				$(this).find(".split-line").css("left",end+"px");
 				if(start<end){//拉大
-					_this.elem.css("width",(_this.elem.width()+gap)+"px");
-					theCol.css("width",(w) + "px");
+					//_this.elem.css("width",(_this.elem.width()+gap)+"px");
+					theCol.css("width",w + "px");
 				}else{//缩小
 					var d = (parseInt(c)+1);
 					var next = $(".sutable-col[col="+d+"]");
@@ -368,6 +368,8 @@
 			_this.elem.unbind("mousemove");
 			_this.scrollV();// 是否显示横向滚动条
 			_this.elem.trigger("RESIZE_DONE");//鼠标拖动resize 列宽完成
+			var w1 = eval(_this.config.colDims.join("+"));//获得宽度
+			_this.elem.find(".chart-wrapper").css("width",(w1+5)+"px");
 		});
 
 
@@ -404,9 +406,13 @@
 		_this.scroll.mouseleave(function(e){
 			_this.scroll.unbind("mousemove");
 			var lf = _this.scroll.find(".horiz-thumb").css("left");
+						console.log(lf);
 			_this.scroll.find(".horiz-thumb").css("left",lf+"px");
 		});
 
+		/****
+		** 横向滚动条
+		****/
 		_this.scroll.mouseup(function(e){
 			_this.scroll.unbind("mousemove");
 			var thumb = $(this).children(":first");
@@ -428,12 +434,12 @@
 			var thumb = $(this).find(".horiz-thumb");
 			var tdim = thumb.get(0).getBoundingClientRect();
 			var sdim = $(this).get(0).getBoundingClientRect();
-
-			if(e.clientX>=tdim.left){
-				thumb.css("left",(tdim.left - sdim.left + 20)+"px");
-			}else{
-				thumb.css("left",(tdim.left - sdim.left - 20)+"px");
-			}
+			console.log("click");
+//			if(e.clientX>=tdim.left){
+//				thumb.css("left",(tdim.left - sdim.left + 20)+"px");
+//			}else{
+//				thumb.css("left",(tdim.left - sdim.left - 20)+"px");
+//			}
 			/***
 			** 超出边界的控制
 			***/
@@ -558,15 +564,18 @@
 		var rw  = w - 70 - 130 - 40 - 2;//80 第一列的宽度， 120 名称咧的宽度,40 : margin-left  2 是border
 		var ew = rw/(cfg.head.length - 2);
 		cfg.colDims = [70,130];//列宽度 存储
-		if(ew>50){
-			dom.find(".sutable-col:gt(1)").css("width",ew+"px").each(function(){
+		if(ew>60){
+			this.head.find(".sutable-col:gt(1)").css("width",ew+"px").each(function(){
 				cfg.colDims.push(ew);
 			});
+			dom.find(".sutable-col:gt(1)").css("width",ew+"px");
 		}else{
 			dom.find(".sutable-col:gt(2)").css("width",80+"px").each(function(){
 				cfg.colDims.push(ew);
 			});//让他超出 ，无所谓
+			dom.find(".sutable-col:gt(1)").css("width",ew+"px");
 		}
+		console.log(cfg.colDims.length);
 		this.foot.css("width",w+"px");//最下面的
 		this.scroll.css("width",w+"px");//横向滚动条
 	};
