@@ -228,10 +228,12 @@
 			var val = o.value || o.val || txt;
 			var id = o.id;
 			_this.elem.find("input").val(txt).attr({"data-val":val,"data-text":txt,"data-id":id});
+			$(_this.elem.get(0)).data("val", {val: val, txt : txt});
 		}else{
 			_this.elem.find("input").val(o).attr({"data-val":o,"data-txt":o});
+			$(_this.elem.get(0)).data("val", {val: o, txt : o});
 		}
-		$(_this.elem.get(0)).data("val", {val: val, txt : txt});
+
 	}
 
     /***

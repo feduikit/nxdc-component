@@ -10,6 +10,7 @@
 		this.config.id = id;
 		this.elem.attr("id",id);
 		this.init();
+		element.data('drop', this);
     };
 
     /**
@@ -291,13 +292,16 @@
 	***/
     Drop.prototype.initConfig = function(){
         var _this = this;
-        if(this.placeholder){
-            _this.peal.find("input").attr("placeholder",_this.placeholder);
+        if(_this.config.placeholder){
+            _this.peal.find("input").attr("placeholder",_this.config.placeholder);
         }
 
         if(_this.config.val){
             _this.peal.find("input").val(_this.config.val);
-        }
+			$(_this.elem.get(0)).data('val', _this.config.val);
+        } else {
+			$(_this.elem.get(0)).data('val', '');
+		}
 
 		//ser 需要设置名字
         if(_this.config.name){
@@ -365,10 +369,44 @@
      */
     $.fn.drop = function (options) {
 		var the = this.first();
-        var drop = new Drop(the, options);
-		the = $.extend(true,{},the,new exchange(drop));
-		return the;
+		if (typeof options === 'object'){
+			var drop = new Drop(the, options);
+			the = $.extend(true,{},the,new exchange(drop));
+			return the;
+		} else if (typeof options === 'string'){
+			var instance = the.data('drop');
+			if (!instance){
+				console.log("还未初始化")
+				return;
+			}
+			var args = Array.prototype.slice.call(arguments, 1);
+			var ret = instance[options](args);
+			return ret;
+		}
     };
+
+	Drop.prototype.val = function(o){
+		var _this = this;
+		var o = o[0];
+		if(typeof(o)=="object"){
+			var txt = o[_this.config.textKey]||o.label||o.text||o.value||o.name;
+			var val = o.value || o.val || o.id || txt;
+			_this.elem.find("input").val(txt).attr("data-val",val);
+			$(_this.elem.get(0)).data('val', val);
+		}else{
+			_this.elem.find("input").val(o).attr("data-val",o);
+			$(_this.elem.get(0)).data('val', o);
+		}
+	}
+
+	Drop.prototype.data = function(o){
+		var _this = this;
+		var _data = {
+			'val': _this.elem.find("input").attr("data-val"),
+			'txt' : _this.elem.find("input").val()
+		}
+		return _data;
+	}
 
     /***
     **和其他插件的交互
