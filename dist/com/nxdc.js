@@ -1395,7 +1395,6 @@ if (!Object.keys) Object.keys = function(o) {
 			$(".ndp-drop-wrapper[id!="+_this.config.id+"] ul.drop-list").addClass("hidden");		
 			_this.elem.toggleClass("focus");	
             _this.list.toggleClass("hidden");
-						console.log(_this.list.get(0));
             setDirect(_this);
         });
 
