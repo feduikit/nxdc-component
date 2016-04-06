@@ -1,0 +1,40 @@
+@font-face {
+    font-family: 'NXDC FONTS';
+    src:    url('../../fonts/iconfont.eot?vjbjes');
+    src:    url('../../fonts/iconfont.eot?vjbjes#iefix') format('embedded-opentype'),
+        url('../../fonts/iconfont.ttf?vjbjes') format('truetype'),
+        url('../../fonts/iconfont.woff?vjbjes') format('woff'),
+        url('../../fonts/iconfont.svg?vjbjes#iconfont') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.font-icon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'NXDC FONTS'!important;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+}
+
+i.font-icon{
+	display: inline;
+}
+
+.font-icon-edit:before    { content: "\e674"; }
+.font-icon-copy:before    { content: "\e676"; }
+.font-icon-attention:before { content: "\e924"; }
+.font-icon-help:before { content: "\e655"; }
+.font-icon-money:before { content: "\e683"; }
+.font-icon-attention:before { content: "\e657"; }
+.font-icon-check:before { content: "\e69b"; }
+.font-icon-user:before { content: "\e69f"; }
+.font-icon-update:before { content: "\e69e"; }
+.font-icon-back:before { content: "\e69d"; }

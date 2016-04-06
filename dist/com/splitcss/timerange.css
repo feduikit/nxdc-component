@@ -1,0 +1,171 @@
+.ndp-timerange-wrapper{
+	position: relative;
+	width: 700px;
+	height: 588px;
+	border:1px solid #e0e0e0;
+}
+/***
+** 头部信息
+***/
+.timerange-head{
+	position: relative;
+	height: 50px;
+	border-bottom: 1px solid #e0e0e0;
+	margin: 0;
+	padding: 0;
+}
+
+.timerange-head>.ndp-drop-wrapper{
+	position: relative;
+	width: 250px;
+	margin-top:10px;
+	margin-left: 10px;
+	border-color:#e0e0e0;
+}
+
+/****
+** 最上边的提示文字
+****/
+.timerange-desc{
+	position: absolute;
+	display: inline-block;
+	height: 30px;
+	right: 0;
+	margin-top:10px;
+	margin-right: 40px;
+	line-height: 30px;
+	color:#cdcdcd;
+}
+
+/***
+** 重置按钮
+****/
+.timerange-reset{
+	position: absolute;
+	right: 15px;
+	top:17px;
+	cursor: pointer;
+}
+.timerange-reset:hover{
+	text-decoration: underline;
+}
+
+.timerange-body{
+	position: relative;
+}
+
+.timerange-xq{
+	height: 36px;
+	border-bottom: 1px solid #e0e0e0;
+	padding-left: 70px;
+}
+.timerange-xq>li{
+	position: relative;
+	border-width: 0;
+	margin: 0!important;
+	float: left;
+	height: 100%;
+	line-height: 36px;
+	width: 89.7px;
+	text-align: center;
+}
+
+/***
+** 24小时
+***/
+.time-field{
+	position: relative;
+	height: 100%;
+	overflow: hidden;
+}
+.time-list{
+	position: relative;
+	float: left;
+	width: 70px;
+	border-right: 1px solid #e0e0e0;
+}
+.time-list>li{
+	height: 20.9px;
+	line-height: 20px;
+	padding-left: 25px;
+	color:#666;
+	font-size:12px;
+}
+
+
+/***
+**
+***/
+.timerange-cell-list{
+	position: relative;
+	float: left;
+	width: calc(100% - 70px);
+	height: 100%;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	user-select:none;
+}
+
+/***
+** 行
+***/
+.timerange-row{
+	height: 20.89px;
+	border-bottom: 1px solid #e0e0e0;
+}
+
+/***
+** 列
+***/
+.timerange-cell{
+	position: relative;
+	display: inline-block;
+	width:14.28%;
+	height: 100%;
+	border-right: 1px solid #e0e0e0;
+	cursor: default;
+}
+.timerange-cell.active{
+	background-color:#fc9711;
+}
+
+.timerange-cell:hover{
+	background-color: #fb7507;
+}
+.timerange-cell:nth-last-child(1){
+	border-right: 1px solid transparent;
+}
+
+
+/****
+** 横向 纵向的线
+***/
+.hor-line{
+	position: absolute;
+	display:none;
+	left:0;
+	width: 100%;
+	height: 0;
+	border-top:1px dashed #fc9711; 
+	z-index: 101;
+	transition:all 0.3s;
+	overflow: hidden;
+	pointer-events:none;
+}
+.ver-line{
+	position: absolute;
+	display:none;
+	top:0;
+	left:0;
+	width: 0;
+	height: 100%;
+	border-left:1px dashed #fc9711; 
+	z-index: 100;
+	transition:all 0.3s;
+	overflow: hidden;
+	pointer-events:none;
+}
+
+.timerange-body.hover .ver-line,.timerange-body.hover .hor-line{
+	display: inline-block;
+}

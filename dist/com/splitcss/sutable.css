@@ -1,0 +1,525 @@
+.ndp-sutable-wrapper .tooltip-cus{
+	left:0;
+	top:0;
+	cursor: default;
+}
+.ndp-sutable-wrapper .tooltip.bottom .tooltip-arrow{
+	left:18px;
+	border-bottom-color:white;
+}
+
+.ndp-sutable-wrapper .tooltip-inner{
+	min-width: 100px;
+	border-radius: 2px;
+	border:1px solid #e0e0e;
+	-webkit-box-shadow: 0 0 1px black!important;
+	box-shadow: 0 0 1px black!important;
+	color:black;
+	background-color:white;
+}
+.ndp-sutable-wrapper{
+	position: relative;
+	padding: 0!important;
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 1280px;
+	border:1px solid #e0e0e0;
+	overflow: hidden;
+}
+.ndp-sutable-wrapper.resize-cursor{
+	cursor: col-resize;
+}
+
+/***
+**列表头
+***/
+.sutable-header{
+	position: relative;
+	min-width: 100%;
+	width: 100%;
+/*	width: 400%;*/
+    white-space: nowrap;
+	margin: 0;
+	padding: 0;
+	border:1px solid transparent;
+	background-color: white;
+}
+
+
+.sutable-header>.sutable-row{
+	position: relative;
+	height: 40px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	line-height:normal;
+	color:black;
+	font-weight: bold;
+	font-size:11px;
+}
+
+
+.sutable-header>.sutable-row>.sutable-col{
+	border-right: 1px solid #e0e0e0;
+}
+
+.sutable-header>.sutable-row>.sutable-col:nth-last-child(1){
+	border-right: 1px solid transparent;
+}
+
+/***
+** 标题行 尾号 按钮
+***/
+.sutable-col .font-icon-help{
+	color:#a2a2a2;
+	font-size: 10px;
+	margin-left: 3px;
+}
+.sutable-row>.sutable-col.attention{
+	color:#fd8a36;
+}
+
+.sutable-row>.sutable-col.attention>i{
+	display: inline;
+	margin-right: 5px;
+	color#f6c76d;
+}
+.att-wrapper{
+	display: inline;
+	width: 100%;
+}
+
+/****
+**列表尾
+***/
+.sutable-footer{
+	position: relative;
+	height: 40px;
+	background-color: #969da4;
+	bottom: 0;
+	margin: 0;
+	width: 100%;
+	overflow: hidden;
+}
+.sutable-footer>.sutable-row>.sutable-col{
+	position: relative;
+	display: inline-block;
+	width: 80px;
+	float: left;
+	line-height: 40px;
+	color:white;
+}
+.sutable-footer .sutable-col.sutable-col-sum{
+	width: 362px!important;
+	padding-left: 60px;
+}
+
+/***
+** 横向滚动条
+***/
+.horiz-scroll{
+	position: fixed;
+	z-index: 200;
+	width: calc(100% - 15px - 15px - 200px - 6px);
+	bottom: 0;
+	background-color: white;
+}
+.horiz-scroll.show{
+	height: 14px;
+	padding-top:2.8px;
+}
+.horiz-scroll.show .horiz-thumb{
+	position: relative;
+	z-index: 100;
+	width: 99%;
+	height: 60%;
+	background-color: #ccc;
+	border-radius: 5px;
+	cursor: default;
+}
+
+.shrink-expand .sutable-footer{
+	width: calc(100% - 15px - 15px - 200px - 6px + 120px);
+}
+
+
+.sutable-body{
+	position: relative;
+	min-height: calc(100% - 40px);
+	width: 100%;
+}
+.extend .sutable-body{
+	width:400%;
+}
+/***
+**  列表 行
+***/
+.sutable-row{
+	position: relative;
+	margin: 0;
+	height: 100%;
+	line-height:0;
+/*	overflow: hidden;*/
+}
+
+/***
+** 显示图表界面
+***/
+.sutable-body .sutable-row.focus{
+	background-color: rgba(80, 80, 80, 0.8);
+	color:white;
+}
+.sutable-body .sutable-row.focus:hover{
+	background-color: rgba(80, 80, 80, 0.8);
+}
+
+/***
+** li 列表 样式设置
+***/
+.sutable-body li.sutable-item{
+	position: relative;
+	height: 40px;
+	background-color:white;
+	overflow: hidden;
+}
+.sutable-body li.sutable-item.open{
+	height: inherit;
+	overflow: visible;
+}
+.sutable-body li.sutable-item>div.spinner{
+	position: relative;
+	padding-left: 20px;
+	height: 0;
+	width: 100%;
+	text-align: left;
+	-webkit-transition: all 0.5s;
+	transition: all 0.5s;
+}
+.sutable-body li.sutable-item>div.spinner.active{
+	height: 20px;
+	background-color:#ffffed;
+	display: block;
+}
+
+.sutable-body li.sutable-item[deep='2']{
+	border:1px solid #e0e0e0;
+/*	border-bottom-width: 0;	*/
+	border-top-width: 0;
+	border-right-width: 0;
+	background-color:#f7f9fa;
+}
+.sutable-body li.sutable-item[deep='2']:nth-last-child(1){
+	border-bottom-width: 0;
+}
+
+.sutable-body li.sutable-item[deep='3']{
+	border-width: 0;
+	border-left: 1px solid #e0e0e0;
+	background-color:#eff1f4;
+	height: 42px;	
+}
+
+/***
+** 新增广告组
+***/
+.sutable-body li.sutable-item-spec{
+	height: 24px;
+	border:1px solid transparent;
+	font-size: 1em;
+	padding:4px 20px;
+	border-width: 0;
+	cursor: pointer;
+	color:#999999;
+}
+.sutable-body li.sutable-item-spec:hover{
+	background-color: #eee;
+}
+.sutable-body li.sutable-item-spec[deep='2']{
+	padding-left: 40px;
+}
+.sutable-body li.sutable-item-spec[deep='3']{
+	border-top:1px solid transparent;
+	height: 24PX;
+}
+
+
+
+li.sutable-item.open[deep='2']>.sutable-row-wrapper.asparent{
+	border-bottom:1px solid #e0e0e0;
+}
+
+
+.sutable-body .sutable-row{
+	position: relative;
+	height: 42px;
+	border:1px solid transparent;
+}
+.sutable-body li.sutable-item.open .sutable-row[deep='1']{
+	border-bottom: 1px solid #e0e0e0;
+	border-top: 1px solid #e0e0e0;
+}
+.sutable-body li.sutable-item .sutable-row[deep='1']{
+	border-top: 1px solid #e0e0e0;
+	border-bottom: 1px solid transparent;
+}
+
+.ndp-sutable-wrapper .sutable-body li.sutable-item .sutable-row[deep]:hover{
+/*	background-color: #f6f6f6;*/
+	background-color: white;
+	box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+	z-index: 10;
+/*
+	box-shadow: 0 0 12 rgba(0, 0, 0, 0.2);
+	z-index: 200;
+*/
+}
+.sutable-body li.sutable-item .sutable-row[deep='3']{
+	border-bottom: 1px solid #e0e0e0;
+}
+
+
+
+.sub-layer{
+	padding-left: 20px;
+}
+
+/***
+** col  列
+***/
+.sutable-row>.sutable-col{
+	position: relative;
+	display:inline-block;
+	height:100%;
+	margin: 0;
+	top:0;
+	padding-left: 10px;
+/*	text-align: center;*/
+	white-space: nowrap;
+	float: left;
+	border-right: 1px solid transparent;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	cursor:default;
+	color:#666;
+/*	transition:all 0.1s linear;*/
+}
+.sutable-row>.sutable-col.active{
+	border-right-color:deepskyblue;
+}
+
+.sutable-row .sutable-col-name{
+	padding-left:20px;
+	margin-left: 41px;
+	width: 226px!important;
+}
+.sutable-body .sutable-row .sutable-col-name>span:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.sutable-header .sutable-row>.sutable-col-name{
+	margin-left: 41px;/*****修正问题****/
+}
+.sutable-row[deep='2']>.sutable-col-name{
+	margin-left: 20px;/***还有20px padding***/ 
+	width: 100px;
+}
+.sutable-row[deep='3']>.sutable-col-name{
+	margin-left: -1px;/***还有40px padding***/ 
+	width: 100px;
+}
+
+/***
+** 开关按钮列
+***/
+.sutable-row .sutable-col-oc{
+	position: relative;
+	width: 72px!important;
+}
+.sutable-col-oc>span.switcher{
+	position: absolute;
+	width: 30px;
+	margin: 0;
+	padding: 0;
+	padding-top:5px;
+	left:50%;
+	margin-left: -15px;
+}
+.sutable-col-oc>span.switcher>label{
+	background-color: transparent;
+}
+
+.sutable-row .sutable-col-operation{
+	position: absolute;
+	padding-left: 10px;
+	width: 62px!important;
+	z-index: 900;
+}
+.sutable-row .sutable-col-operation>i{
+	cursor: pointer;
+	margin: 0;
+	margin-right: 10px;
+}
+.sutable-row .sutable-col-operation>i:hover{
+	color:black;
+}
+
+
+.sutable-header .sutable-col{
+	line-height: 40px;
+}
+.sutable-row .sutable-col:nth-child(n+3){
+	line-height: 40px;
+	min-width: 60px;
+	width:inherit;
+}
+/***
+** 排序
+***/
+.sutable-header .sutable-col>.sort-wrapper{
+	position: relative;
+	display: inline-block;
+/*	height: 100%;*/
+/*	width: 12px;*/
+/*	top:0;*/
+	margin-left: 3px;
+	cursor: pointer;
+	overflow: hidden;
+	padding-top:2px;
+}
+
+.sutable-header .sutable-col>.sort-wrapper>i{
+	display: block;
+	font-size: 7px;
+	left: 0;
+	color:#8c8c8c;
+}
+.sutable-header .sutable-col>.sort-wrapper>i.hi{
+	color:black;
+}
+/*
+.sutable-col>.sort-wrapper>i:hover{
+	color:#dfdfdf;
+}
+*/
+
+.sutable-col>.sort-wrapper>i.glyphicon-triangle-top{
+	margin-top:85%;
+}
+
+
+.sutable-body .sutable-col{
+	line-height: 42px;
+}
+
+.sutable-row .sutable-col-status,.sutable-header .sutable-col-status{
+	width: 96px!important;
+/*	width: 15%;*/
+}
+/*
+.sutable-row[deep='2']>.sutable-col-name{
+	width: calc((100% + 20px) * 0.15)
+}
+.sutable-row[deep='3']>.sutable-col-name{
+	width: calc((100% + 40px) * 0.15)
+}
+*/
+.sutable-row>.sutable-col>.inspliter{
+	position: absolute;
+	display: inline-block;
+	width: 0;
+	height: 70%;
+	z-index: 20;
+	top:15%;
+	right: 0px;
+	overflow: visible;
+	border-right: 0 solid #ccc;
+/*	background-color: red;*/
+}
+
+.sutable-row>.sutable-col>.inspliter:hover{
+	cursor: col-resize;
+}
+
+.split-line{
+	position: absolute;
+	display: inline-block;
+	z-index: 100;
+	top:0;
+	bottom: 0;
+	border-left: 1px solid transparent;
+}
+.split-line.active{
+	border-left: 1px solid #0683ba;
+}
+
+
+/***
+**加减号
+***/
+.btn-plus-minus{
+	position: absolute;
+	display: inline-block;
+	width: 17px;
+	height: 17px;
+	left: 10px;
+	top:11px;
+	z-index: 60;
+	border:1px solid #d4d4d4;
+}
+/****
+** 用户自定义 caret
+***/
+.btn-plus-minus.custom-caret{
+	text-align: center;
+	padding-top:3px;
+	border:0;
+}
+.btn-plus-minus.custom-caret>*{
+	font-size:10px;
+	transition:all 0.3s linear;
+}
+
+.open>.btn-plus-minus.custom-caret>*{
+	transform: rotate(180deg);
+}
+
+.open>.btn-plus-minus>.line-ver{
+	display: none;
+}
+
+.btn-plus-minus+div+ul{
+	height: 0;
+	overflow: hidden;
+}
+.open>.btn-plus-minus+div+ul{
+	overflow: visible;
+	height: inherit;
+}
+
+
+.btn-plus-minus>.line-hor{
+	position: absolute;
+	display: inline-block;
+	width: 75%;
+	top:43.34%;
+	left:13.3%;
+	border-bottom:1px solid #b1b1b1;
+}
+.btn-plus-minus>.line-ver{
+	position: absolute;
+	display: inline-block;
+	height: 75%;
+	top:11.2%;
+	left:45.5%;
+	border-left:1px solid #b1b1b1;
+}
+
+
+.ndp-sutable-wrapper .switcher>label.active:before{
+	background-color: #79a64a;
+}
+
+
+
