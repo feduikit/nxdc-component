@@ -318,11 +318,13 @@
 
     $.fn.fileupload = function(options) {
         var returnVal = this;
+        //这里合并配置
+        $.extend(true, $.fn.fileupload.defaults, options)
         //这里链接字符串
         //生成html属性
         $.fn.fileupload.defaults.html || tplLink();
         this.each(function(key, the) {
-            new FileUpload($.extend({ container: the }, $.fn.fileupload.defaults, options));
+            new FileUpload($.extend({ container: the }, $.fn.fileupload.defaults));
         })
         return returnVal;
     };
