@@ -7,7 +7,12 @@ require(['./config'],function(){
 				},
 			//	button: '#upload-button',
 				allowSize: [],
-				type: 'image'
+				type: 'image',
+				text: {
+					upload: {
+						linkword: '呵呵哒'
+					}
+				}
 			});			
         });
     });
