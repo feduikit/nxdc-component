@@ -7,7 +7,8 @@
 	content:"";
 	width: 16px;
     height: 16px;
-	padding-left: 0.5px;
+	padding-left: 0.85px;
+	padding-top:1.2px;
 	line-height: 12px;
  	border:1px solid #b5b5b5;
 	bottom: 0;
@@ -20,11 +21,13 @@
 }
 
 .form-input[type="checkbox"]:checked+label:before{
-	content:"\e013";/**** 对号 *****/
+	font-family:"NXDC FONTS" !important;
+	content:"\e69b";/**** 对号 *****/
 	box-shadow: 0 0 0;
 	color:#fd9611;
-	border-width: 0;
+/*	border-width: 0;*/
 	cursor: pointer;
+	font-size: 10px;
 }
 
 .form-input[type="checkbox"]+label{

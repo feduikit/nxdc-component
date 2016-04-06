@@ -15,13 +15,13 @@ require(['./config'],function(){
 			});	
 			
 			$("div.ndp-sinput-wrapper[name=icon-sinput2]").sinput({
-				xion:"<span><i class='glyphicon glyphicon-folder-open'></i></span>",
+				xion:"<span><i class='font-icon font-icon-user'></i></span>",
 				placeholder:"请输入",
 				pos:"left"
 			});	
 			
 			$("div.ndp-sinput-wrapper[name=icon-clear]").sinput({
-				xion:"<span><i class='glyphicon glyphicon-remove-circle'></i></span>",
+				xion:"<span><i class='font-icon font-icon-money'></i></span>",
 				placeholder:"请输入",
 				pos:"left"
 			});

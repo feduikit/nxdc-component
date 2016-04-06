@@ -189,7 +189,7 @@
 		**@params {int} idx  从0开始
 		**/
 		this.val = function(idx){
-			tabs.tabwrapper.find("li[role=presentation][index='"+idx+"']").addClass("active")
+			tabs.tabwrapper.find("li[role=presentation][data-index='"+idx+"']").addClass("active")
 				.siblings().removeClass("active");
 			return tabs.elem;
 		}

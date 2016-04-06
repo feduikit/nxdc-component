@@ -5,7 +5,8 @@
 		fixPageXY: function(the){
 			var html = document.documentElement;
 			var body = document.body;
-			var the = (the.get(0)||the).getBoundingClientRect();
+		
+			var the = ((the.get&&the.get(0))||the).getBoundingClientRect();
 			var a = {};
 			a.pageX = parseFloat(the.left) + (html.scrollLeft || body && body.scrollLeft || 0);
 			a.pageX -= html.clientLeft || 0;
@@ -22,7 +23,7 @@
 			var gap = arguments[4]||5;
 			deep++;
 			var rec = arguments.callee;
-			var ul = $("<ul class='drop-list'/>");
+			var ul = $("<ul class='drop-list' />");
 			if(cfg.type!=3 && deep>1){
 				ul.addClass("hidden");
 			}
@@ -59,6 +60,7 @@
 		this.config.id = "drop" + (new Date()).valueOf();
 		this.config.wi = this.elem.width();
 		this.init();
+		element.data('drop3', this);
     };
 
 	/**
@@ -76,10 +78,7 @@
             e.stopImmediatePropagation();
 			_this.elem.toggleClass("focus");
 			_this.list.toggleClass("hidden").css("width",(_this.elem.width()+2)+"px");
-			if(!_this.list.hasClass("hidden")){
-				var page = Help.fixPageXY(_this.elem);
-				_this.list.css({"top":(page.pageY+30)+"px","left":page.pageX+"px"});
-			}
+			_this.pos();
         });
 		
 		/***
@@ -87,9 +86,14 @@
 		***/		
 		_this.list.find("li.list-leaf").click(function(e){
 			var field = _this.elem.find("input");
+			var oldData = field.data();
 			var dat = $(this).data();
-			field.val(dat.txt).attr({"dara-val":dat.val,"data-txt":dat.txt,"data-id":dat.id});
+			field.val(dat.txt).attr({"data-val":dat.val,"data-txt":dat.txt,"data-id":dat.id});
+			$(_this.elem.get(0)).data("val", dat)
 			fireEvent(_this.elem.get(0),"ITEM_CLICK",dat);
+			if (oldData.val != dat.val){
+				fireEvent(_this.elem.get(0),"ITEM_CHANGE",dat)
+			}
 		});
 		
 		_this.list.find("li.drop-recursive").click(function(e){
@@ -120,29 +124,20 @@
 		});	
 		
 		$(window).resize(function(){
-			if(!_this.list.hasClass("hidden")){
-				var page = Help.fixPageXY(_this.elem);
-				_this.list.css({"top":(page.pageY+30)+"px","left":page.pageX+"px"});
-			}		
+			_this.pos();	
 		});
 		
 		$(document).scroll(function(){
-			if(!_this.list.hasClass("hidden")){
-				var page = Help.fixPageXY(_this.elem);
-				_this.list.css({"top":(page.pageY+30)+"px","left":page.pageX+"px"});
-			}		
+			_this.pos();		
 		});
 		
 		/****
 		** 外部容器 发生了 scroll事件
 		****/
-		_this.elem.on("WRAPPER_SCROLL",function(){
-			if(!_this.list.hasClass("hidden")){
-				var page = Help.fixPageXY(_this.elem);
-				_this.list.css({"top":(page.pageY+30)+"px","left":page.pageX+"px"});
-			}			
+		_this.elem.on("WRAPPER_SCROLL",function(e,$ta){
+			_this.pos($ta);
 		});
-		
+
 		/****
 		** 包裹他的容器被删除了
 		***/
@@ -151,6 +146,15 @@
 		});
     };
 
+	//
+	Drop3.prototype.pos = function($ta){
+		var _this = this;
+		if(!_this.list.hasClass("hidden")){
+			var page = Help.fixPageXY(_this.elem);
+			var page2 = Help.fixPageXY(_this.config.bind);
+			_this.list.css({"top":(page.pageY-page2.pageY+30)+"px","left":(page.pageX-page2.pageX)+"px"});	
+		}
+	}
 	/**
 	** 构建下来菜单样子
 	**/
@@ -161,7 +165,11 @@
 		this.list = $("<div class='drop3-list-wrapper hidden'  tabindex='-1' id="+_this.config.id+" />").css("width",(_this.config.wi+2)+"px");
 		
 		this.elem.append(html);	
-		$(document.body).append(this.list);
+		if(_this.config.bind){
+			_this.config.bind.append(this.list);
+		}else{
+			$(document.body).append(this.list);
+		}
 	};
 	/***
 	** 设置用户配置选项
@@ -190,10 +198,43 @@
      */
     $.fn.drop3 = function (options) {
 		var the = this.first();
-        var drop = new Drop3(the, options);
-		the = $.extend(true,{},the,new exchange(drop));
-		return the;
+		if (typeof options === 'object'){
+			var drop = new Drop3(the, options);
+			the = $.extend(true,{},the,new exchange(drop));
+			return the;
+		} else if (typeof options === 'string'){
+			var instance = the.data('drop3');
+			if (!instance){
+				console.log("还未初始化")
+				return;
+			}
+			var args = Array.prototype.slice.call(arguments, 1);
+			var ret = instance[options](args);
+			return ret;
+		}
     };
+
+	Drop3.prototype.close = function(){
+		this.list.addClass("hidden");
+		this.elem.removeClass("focus");
+	}
+
+
+	Drop3.prototype.val = function(o){
+		var _this = this;
+		var o = o[0];
+		if(typeof(o)=="object"){
+			var txt = o[_this.config.textKey]||o.label||o.text||o.value||o.name;
+			var val = o.value || o.val || txt;
+			var id = o.id;
+			_this.elem.find("input").val(txt).attr({"data-val":val,"data-text":txt,"data-id":id});
+			$(_this.elem.get(0)).data("val", {val: val, txt : txt});
+		}else{
+			_this.elem.find("input").val(o).attr({"data-val":o,"data-txt":o});
+			$(_this.elem.get(0)).data("val", {val: o, txt : o});
+		}
+
+	}
 
     /***
     **和其他插件的交互
@@ -214,15 +255,16 @@
 			}else{
 				drop.elem.find("input").val(o).attr({"data-val":o,"data-txt":o});
 			}
+			$(drop.elem.get(0)).data("val", drop.elem.find("input").data());
 			return drop.elem;
 		};
 		
 		/***
 		**设置下拉菜单位置
 		***/
-		this.resetPos = function(){
-			var page = Help.fixPageXY(drop.elem);
-			drop.list.css({"top":(page.pageY+30)+"px","left":page.pageX+"px"});			
+		this.resetPos = function($ta){
+			drop.pos($ta);
+			return drop.elem;
 		}
     }
 	/***
@@ -234,6 +276,7 @@
 		allowInput:false,//是否允许输入 默认情况下不允许输入
 		allowInputType:"number",
         val:null,//默认值
+		bind:null,//下拉菜单绑定到那个dom上
 		caret:"glyphicon-triangle-right",//只是箭头的样式，仅支持bootstrap 里面列出的 glyphicon
         data:[]//下拉菜单列表
 	};

@@ -34,3 +34,7 @@ i.font-icon{
 .font-icon-help:before { content: "\e655"; }
 .font-icon-money:before { content: "\e683"; }
 .font-icon-attention:before { content: "\e657"; }
+.font-icon-check:before { content: "\e69b"; }
+.font-icon-user:before { content: "\e69f"; }
+.font-icon-update:before { content: "\e69e"; }
+.font-icon-back:before { content: "\e69d"; }

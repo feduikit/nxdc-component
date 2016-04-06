@@ -209,6 +209,16 @@
     font-style: normal;
 }
 
+.ndp-search-wrapper .dropdown-menu-cus .no-result{
+    text-align: center;
+    padding-top: 15px;
+    width: 100%;
+    height: 50px;
+    font-weight: 700;
+    background-color: #F7F7F7;
+    color: #A7A7A7;
+}
+
 .close-cus {
     position: absolute;
     height: 100%;

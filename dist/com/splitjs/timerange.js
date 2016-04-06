@@ -230,6 +230,13 @@
 		});
 		
 		
+		/****
+		**点击重置按钮
+		****/
+		_this.elem.find(".timerange-reset").click(function(){
+			_this.elem.find(".timerange-cell.active").removeClass("active");
+		});
+		
 		$(document).click(function(e){
 			if(!$(e.target).parents(".ndp-timerange-wrapper").length || !$(e.target).hasClass('ndp-timerange-wrapper')){
 				_this.elem.find(".ndp-drop-wrapper").removeClass("focus");
@@ -250,8 +257,9 @@
 			data:ZONEARR,
 			textKey:cfg.lan
 		}).val(ZONEARR[3]);
-		var txt = $("<span class='timerange-desc'  />").html("按住鼠标左键滑动，选取时间目标");
-		_this.head.append(droplist).append(txt);
+		var txt = $("<span class='timerange-desc'  />").html("按住鼠标左键滑动，选取时间目标。");
+		var reset = $("<span class='timerange-reset'>重置</span>");
+		_this.head.append(droplist).append(txt).append(reset);
 		_this.body = $("<div class='timerange-body' />");
 		var xq  = $("<ul class='timerange-xq' >");
 		DAYARR.forEach(function(item,index){

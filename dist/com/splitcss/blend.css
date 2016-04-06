@@ -32,12 +32,11 @@
 .ndp-blend-wrapper .icon-wrapper{
 	position: relative;
 	top:0;
-	left:0;
+	left:10px;
 	display: inline-block;
-	width: 30px;
+	width: auto;
 	height: 30px;
 	margin: 0;
-	text-align: center;
 }
 .ndp-blend-wrapper .icon-wrapper>i{
 	font-size: 20px;
@@ -60,7 +59,11 @@
 	margin-top:-1px;
 	display: block;
 	box-shadow: 0 0 1px rgba(224, 224, 224, 0.5);
+	overflow-y: auto;
+	overflow-x: hidden;
+	max-height: 300px;
 }
+
 .dropdown-menu.blend-search-drop>li>a{
 	position: relative;
 	border-bottom: 1px solid #e0e0e0;
@@ -80,6 +83,17 @@
 .dropdown-menu.blend-search-drop em{
 	font-style: normal;
 	color:#fd9611;
+}
+
+
+.dropdown-menu .blend-search-drop .no-result{
+	text-align: center;
+	padding-top: 15px;
+	width: 100%;
+	height: 50px;
+	font-weight: 700;
+	background-color: #F7F7F7;
+	color: #A7A7A7;
 }
 
 /****

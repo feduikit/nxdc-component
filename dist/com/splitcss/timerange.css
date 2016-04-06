@@ -23,15 +23,31 @@
 	border-color:#e0e0e0;
 }
 
+/****
+** 最上边的提示文字
+****/
 .timerange-desc{
 	position: absolute;
 	display: inline-block;
 	height: 30px;
 	right: 0;
 	margin-top:10px;
+	margin-right: 40px;
 	line-height: 30px;
-	padding-right: 20px;
 	color:#cdcdcd;
+}
+
+/***
+** 重置按钮
+****/
+.timerange-reset{
+	position: absolute;
+	right: 15px;
+	top:17px;
+	cursor: pointer;
+}
+.timerange-reset:hover{
+	text-decoration: underline;
 }
 
 .timerange-body{

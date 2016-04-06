@@ -19,12 +19,14 @@ require.config({
 		'drop2':'./components/drop2',
 		'drop3':'./components/drop3',
 		'treable':'./components/treable',
+		'treable2':'./components/treable2',
 		'sutable':'./components/sutable',
 		'timerange':'./components/timerange',
 		'blend':'./components/blend',
 		'vList':'./components/vList',
 		'vList3':'./components/vList3',
-		'bubble':'./components/bubble'
+		'bubble':'./components/bubble',
+		'bootdrop':'./components/bootDrop'
     },
     shim:{
 		bootstrap:{
@@ -51,6 +53,9 @@ require.config({
 		treable:{
 			deps:['bootstrap','tabs','drop2']
 		},
+		treable2:{
+			deps:['bootstrap','tabs','drop2']
+		},		
 		sutable:{
 			deps:['bootstrap']
 		},
@@ -74,6 +79,9 @@ require.config({
 		},
 		'com/ndpmedia/vis/ChartEventListener':{
 			deps:['NVis']
+		},
+		bootdrop:{
+			deps:['bootstrap']
 		}
     }
 });

@@ -90,9 +90,11 @@
 	position: absolute;
 	content:attr(data-content);
 	top: 70%;
-	left:33%;
+	left:110px;
+	right: 60px;
 	color:#b9c3cd;
 }
+
 .ndp-vList3-wrapper ul.list-deepest{
 	border-width: 0;
 }
@@ -147,7 +149,7 @@
 /*****
 **
 ****/
-.ndp-vList3-wrapper li.list-leaf.active.selected>span.list-txt-wrapper{
+.ndp-vList3-wrapper li.list-leaf.selected>span.list-txt-wrapper{
 	color:#ccc;
 	cursor: not-allowed;
 }

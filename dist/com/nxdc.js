@@ -132,7 +132,8 @@ if (!Object.keys) Object.keys = function(o) {
 		/***
 		** 构建类目，并加入tag
 		***/
-		addClassify:function (o,idx,dropup){
+		addClassify:function (o,idx,dropup, _drop1, _drop2){
+			dropup.removeClass("hidden");
 			var idx = idx || 0;
 			var li = $("<li class='blend-sel-item' data-serial="+idx+" />");
 			var liclose = '<button type="button" class="close close1" aria-label="Close"><span class="x1"aria-hidden="true">&times;</span></button>';
@@ -144,40 +145,53 @@ if (!Object.keys) Object.keys = function(o) {
 			}).attr("data-path",o.path.join("#").replace(/\s/g,""));
 			li.attr("data-path",o.path.join("#").replace(/\s/g,""));
 			var tagbox = $('<div class="tag-box"  />');
-			if(o.tags && o.tags.length) {
-				o.tags.forEach(function(item,index){
-					tagbox.append(Tool.tag(item,idx));
-				});
-			}else if(o.start && o.end){//如果是日期
+			if(o.start && o.end){//如果是日期
 				var arr = [];
-				for(var i=0;i<40;i++){
+				for(var i=0;i<=40;i++){
 					arr.push({text:(1980+i),val:(1980+i)});
 				}
-				var start = $("<div class='ndp-drop3-wrapper' name='year-start' />").drop3({
+				var start = $("<div class='ndp-drop3-wrapper year' name='year-start' />").drop3({
 					data:arr,
-					allowInput:true,
+					allowInput:false,
+					bind:dropup.parent(),
 					caret:"glyphicon-menu-right"
 				}).val(o.start).on("ITEM_CLICK",function(e){
 					o.start = e.originalEvent.data.val;
 				});
-				var end = $("<div class='ndp-drop3-wrapper' name='year-end' />").drop3({
+				var end = $("<div class='ndp-drop3-wrapper year' name='year-end' />").drop3({
 					data:arr,
-					allowInput:true,
+					allowInput:false,
+					bind:dropup.parent(),
 					caret:"glyphicon-menu-right"
 				}).val(o.end).on("ITEM_CLICK",function(e){
 					o.end = e.originalEvent.data.val;
 				}); 
 				tagbox.append(start).append("<hr />").append(end);
+				Tool.select(_drop1, _drop2, o.type)
+			}else if(o.tags && o.tags.length) {
+				o.tags.forEach(function(item,index){
+					tagbox.append(Tool.tag(item,idx));
+					Tool.select(_drop1, _drop2, item.type, item.id);
+				});
 			}
 			li.append(bread).append(tagbox).append(liclose);
 			dropup.append(li);
-		}
+		},
+		select : function(_drop1, _drop2, _type, _id){
+			//外部搜索框
+			_drop1.find('a[data-type="' + _type +'"]' + (_id ? '[data-id="' + _id + '"]' : ''))
+				.addClass("selected");
+			//树状
+			_drop2.find('li[data-type="' + _type +'"]' + (_id ? '[data-id="' + _id + '"]' : ''))
+				.addClass("selected");
+	    }
 	};
 
 	function Blend(element, options) {
 		var self = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.blend.defaults,element.data(),options);
+		self.config = this.config;
 		this.init();
 		element.data('blend', this);
     };
@@ -186,7 +200,16 @@ if (!Object.keys) Object.keys = function(o) {
 	**/
     Blend.prototype.init = function () {
         var _this = this;
-		this.elem.addClass(this.config.containerClass);//设置 包裹容器的 dim,外观
+		if (this.config.containerClass){
+			var _container = $('<div></div>')
+			this.elem.parent().append(_container);
+			_container.addClass(this.config.containerClass);
+			_container.append(this.elem);
+			self.pClass = this.config.containerClass;
+		} else {
+			self.pClass = "ndp-blend-wrapper";
+		}
+		//this.elem.addClass(this.config.containerClass);//设置 包裹容器的 dim,外观
         this.concrate();//构建下来菜单的样子
 		this.initConfig();
  
@@ -214,11 +237,11 @@ if (!Object.keys) Object.keys = function(o) {
 			e.stopImmediatePropagation();
 			var key = $(this).val();
 			if(_this.paste){//标记，表示当前处在 粘帖状态
+				_this.paste = false;// 取消标注
 				if(_this.config.pastecallback){
 					_this.config.pastecallback(key,_this.dropup,_this.config.seldata,Tool);
 					return false;// 不进行下面的请求了
 				}
-				_this.paste = false;// 取消标注
 			}
 			var opt = $.extend({}, _this.config.ajaxOptions);
 			if (!opt.data){
@@ -227,40 +250,51 @@ if (!Object.keys) Object.keys = function(o) {
 				opt.data = opt.data(key);
 			}
 			//opt.processResults = null;
+			if (_this.xhr != null) {
+				//终止上一次的请求
+				_this.xhr.abort();
 
-			if(_this.xhr && _this.xhr.abort) _this.xhr.abort();//终止上一次的请求
-			_this.xhr = $.ajax(opt).then(function(result){
+				_this.xhr = null;
+			}
+			_this.xhr = $.ajax(opt);
+			_this.xhr.then(function(result){
 				if (_this.config.ajaxOptions.processResults){
 					result = _this.config.ajaxOptions.processResults(result)
 				}
 				if(typeof(result)=="string") result = JSON.parse(result);
 				_this.drop1.empty();
 				_this.drop2.addClass("hidden");
-				_this.insdata = result.data;//保留数据 
-				result.data.forEach(function(item,index){
-					var txt = (typeof(item)=="string")?item:(item.text||item.label||item.name||item.value);
-					var val = item.value||item.val||txt;
-					var re2 = new RegExp("["+key+"]+","i");	
-					var re = new RegExp(key,"i");
-					if(String(val).match(re)){
-						var ma = String(txt).match(re)[0];
-					}else if(String(txt).match(re2)){
-						ma = String(txt).match(re2)[0];
-					}else{
-						ma = "";				
-					}
-					var len = ma.length;
-					var ree = new RegExp(ma,"i");
-					var start = txt.search(ree);
-					var arr = txt.split("");
-					arr.splice(start,0,"<em>");
-					arr.splice((start+len+1),0,"</em>");
-					var val1 = arr.join("");
-					var asize = item.audienceSize||item.audience_size;
-					var li = '<li val="'+val+'"  tabIndex='+index+' >\
-					<a class="txt-mark" href="#" data-type="'+(item.type)+'" data-id="'+(item.id)+'" data-val="'+val+'" index="'+index+'" data-name="'+txt+'" data-path="'+item.path.join("#").replace(/\s/g,"") +'" data-size="'+asize+'" >'+(val1||txt)+'<span class="aud-class">'+asize+'</span></a></li>';
-					_this.drop1.append(li);
-				});	
+				_this.insdata = result.data;//保留数据
+				if (_this.insdata && _this.insdata.length){
+					result.data.forEach(function(item,index){
+						var txt = (typeof(item)=="string")?item:(item.text||item.label||item.name||item.value);
+						var val = item.value||item.val||txt;
+						var re2 = new RegExp("["+key+"]+","i");
+						var re = new RegExp(key,"i");
+						if(String(val).match(re)){
+							var ma = String(txt).match(re)[0];
+						}else if(String(txt).match(re2)){
+							ma = String(txt).match(re2)[0];
+						}else{
+							ma = "";
+						}
+						var len = ma.length;
+						var ree = new RegExp(ma,"i");
+						var start = txt.search(ree);
+						var arr = txt.split("");
+						arr.splice(start,0,"<em>");
+						arr.splice((start+len+1),0,"</em>");
+						var val1 = arr.join("");
+						var asize = item.audienceSize||item.audience_size;
+						var li = $('<li val="'+val+'"  tabIndex='+index+' >\
+					<a class="txt-mark" href="#" data-type="'+(item.type)+'" data-id="'+(item.id)+'" data-val="'+val+'" index="'+index+'" data-name="'+txt+'" data-path="'+item.path.join("#").replace(/\s/g,"") +'" data-size="'+asize+'" >'+(val1||txt)+'<span class="aud-class">'+asize+'</span></a></li>');
+						item.path = item.path.join("#").replace(/\s/g,"");
+						li.find(".txt-mark").data("info", item);
+						_this.drop1.append(li);
+					});
+				} else {
+					_this.drop1.append('<li class="no-result">' + _this.config.formatNoMatches+ '</li>');
+				}
 				_this.drop1.removeClass("hidden");
 			},function(err){
 					console.log(err);
@@ -276,40 +310,11 @@ if (!Object.keys) Object.keys = function(o) {
 			var the = $(e.target);
 			if(e.target.tagName=="A" && the.hasClass("txt-mark")){
 				if(the.hasClass("selected")) return false;//如果是已经selected  就不要加了
-				_this.selectDAT([the.data()]);
+				//modify by sisi 为了保证数据尽可能完整的返回 故修改成 .data("info")
+				_this.selectDAT([the.data("info")]);
 				var index = the.attr("index");
-//				var index = the.attr("index");
-//				var path = the.data("path");
-//				var li = _this.dropup.find("li[data-path='"+path+"']");
-//				var box = li.find(".tag-box");
-//				var dat = the.data();
-//				if(li.length){//已经存在分类了，
-//					var serial = parseInt(li.data("serial"));// 选中数组中的第几个
-//					//
-//
-//					box.append(Tool.tag(dat,serial));
-//					//加到数据里面去
-//					var arr = _this.config.seldata;
-//					arr[serial].tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
-//					$(_this.elem.get(0)).data("seldata", _this.config.seldata);
-////					for(var i=0;i<arr.length;i++){
-////						var dt = arr[i];
-////						if(dt.path.join("#")==dat.path){
-////							dt.tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
-////							break;//跳出循环
-////						}
-////					}
-//				}else {
-//					dat.path = dat.path.split("#");
-//					dat.tags = [dat.name];
-//					var serial = (_this.config.seldata &&_this.config.seldata.length)||0
-//					Tool.addClassify(dat,serial,_this.dropup);// 出现在DOM上
-//					if(!_this.config.seldata) _this.config.seldata = [];
-//					_this.config.seldata.push(dat);	//加入数据中
-//					$(_this.elem.get(0)).data("seldata", _this.config.seldata);
-//				}
 				the.addClass("selected");
-				fireEvent(_this.elem.get(0),"ITEM_CLICK",_this.insdata[index]);
+				fireEvent(_this.elem.get(0),"ITEM_CLICK",the.data("info"));
 			}
 		});
 		/***
@@ -344,7 +349,7 @@ if (!Object.keys) Object.keys = function(o) {
 				var dat = arr.splice(idx,1);//删除的数据
 			    if (dat && dat[0]){
 					//下拉列表中selected恢复让其可选
-					_this.unSelect(parent.path, parent.type, dat[0].id);
+					_this.unSelect(parent.type, dat[0].id);
 				}
 				if(!box.children().length){
 					row.remove();
@@ -362,27 +367,47 @@ if (!Object.keys) Object.keys = function(o) {
 				tali.find(".ndp-drop3-wrapper").trigger("BEEN_REMOVED");
 				tali.remove();//删除一行
 				var data = _this.config.seldata.splice(serial,1);//删除这一行的数据
-				if (data && data[0] && data[0].tags && data[0].tags.length > 0){
-					//下拉列表中selected恢复让其可选
-					var parent = data[0];
-					var tags = parent.tags;
-					$.each(tags, function(_i, _tag){
-						_this.unSelect(parent.path, parent.type, _tag.id);
-					})
+				if (data && data[0]){
+					if (data[0].tags && data[0].tags.length > 0){
+						//有子项，无子项
+						//下拉列表中selected恢复让其可选
+						var parent = data[0];
+						var tags = parent.tags;
+						$.each(tags, function(_i, _tag){
+							_this.unSelect(parent.type, _tag.id);
+						})
+					} else {
+						_this.unSelect(data[0].type);
+					}
+
 				}
 				$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 				fireEvent(_this.elem.get(0),"SERIAL_RESIGN",data);
 			}
+
+			if (!_this.dropup.find("li").length){
+				_this.dropup.addClass("hidden");
+			}
 		});
 
-		Blend.prototype.unSelect = function(_path, _type, _id){
+		Blend.prototype.unSelect = function(_type, _id){
 			var _this = this;
 			//外部搜索框
-			_this.drop1.find('a[data-path="' + (_path.join("#").replace(/\s/g,"")) +'"][data-type="' + _type +'"][data-id="' + _id + '"]')
+			_this.drop1.find('a[data-type="' + _type +'"]' + (_id ? '[data-id="' + _id + '"]' : ''))
 				.removeClass("selected");
 			//树状
-			_this.drop2.find('li[data-path="' + (_path.join("#").replace(/\s/g,"")) +'"][data-type="' + _type +'"][data-id="' + _id + '"]')
+			_this.drop2.find('li[data-type="' + _type +'"]' + (_id ? '[data-id="' + _id + '"]' : ''))
 					.removeClass("selected");
+		}
+
+		Blend.prototype.select = function(_type, _id){
+			var _this = this;
+			//外部搜索框
+			_this.drop1.find('a[data-type="' + _type +'"]' + (_id ? '[data-id="' + _id + '"]' : ''))
+				.addClass("selected");
+			//树状
+			_this.drop2.find('li[data-type="' + _type +'"]' + (_id ? '[data-id="' + _id + '"]' : ''))
+				.addClass("selected");
 		}
 
 		//点击返回按钮
@@ -409,31 +434,81 @@ if (!Object.keys) Object.keys = function(o) {
 				_this.selectDAT([dat]);
 			}
 		});
-		
-		
+
+
 		/****
 		** 点击域外区域，收起下拉菜单
 		***/
-		$(document).click(function(){
-			_this.drop1.addClass("hidden");
-			_this.drop2.addClass("hidden");
-			_this.vlist.fold();
-			_this.vlist.hspanel();
-			//取消 年份下拉菜单的focus 信息和 下拉菜单
-			_this.dropup.find(".ndp-drop-wrapper ul.drop-list").addClass("hidden");
-			_this.dropup.find(".ndp-drop-wrapper").removeClass("focus");
-		});
-		
-		_this.elem.find(".blend-dropup").scroll(function(){
-			$(this).find(".ndp-drop3-wrapper").trigger("WRAPPER_SCROLL");
-		});
+		var _s = 'mouseup.' + self.pClass;
+		$(document.body).off(_s)
+			.on(_s, function (e) {
+			var $target = $(e.target);
+			var $blend = $target.closest('.' + self.pClass);
+			if ($target.parents(".drop3-list-wrapper").length){
+				$($blend[0]).addClass("ndp-blend-wrapper-open");
+				return;
+			}
+			$($blend[0]).addClass("ndp-blend-wrapper-open");
+			var $all = $('.'+ self.pClass + '.ndp-blend-wrapper-open');
+
+			$all.each(function () {
+				var $this = $(this);
+				if (this == $blend[0]) {
+					if (!$target.parents(".drop3-list-wrapper").length){
+						var $element = getCurrentElement($this);
+						//取消 年份下拉菜单的focus 信息和 下拉菜单
+						$.each($element.dropup.find(".ndp-drop3-wrapper"), function(i, _drop3){
+							$(_drop3).drop3("close");
+						});
+					}
+					return;
+				}
+				//如果点击区域不在当前blend区域内，则恢复其他blend为初始状态
+				$this.removeClass("ndp-blend-wrapper-open");
+				var $element = getCurrentElement($this);
+				_this.close($element)
+			});
+
+			//获取当前元素
+			function getCurrentElement($this){
+				var $element;
+				if (self.pClass == 'ndp-blend-wrapper'){
+					$element = $this.data('blend');
+				} else {
+					$element = $this.find(".ndp-blend-wrapper").data('blend');
+				}
+				return $element;
+			}
+		})
+
+		_this.listenScroll();
     };
-	
+
+	Blend.prototype.close = function($element){
+		var _this = this;
+		if (!$element){
+			$element = _this;
+		}
+		console.log($element)
+		$element.input.val("");
+		$element.drop1.addClass("hidden").empty();
+		$element.drop2.addClass("hidden");
+		$element.vlist.fold();
+		$element.vlist.hspanel();
+		//取消 年份下拉菜单的focus 信息和 下拉菜单
+		$.each($element.dropup.find(".ndp-drop3-wrapper"), function(i, _drop3){
+			console.log("关闭drop3")
+			$(_drop3).drop3("close");
+		});
+		fireEvent($element.elem.get(0),"close");
+	}
+
 	/***
 	**
 	***/
 	Blend.prototype.selectDAT = function(dats){
 		var _this = this;
+		_this.dropup.removeClass("hidden");
 		$.each(dats, function(i, dat){
 			var li = _this.dropup.find("li[data-path='"+dat.path+"']");
 			if(li.length){//已经存在分类了
@@ -446,8 +521,8 @@ if (!Object.keys) Object.keys = function(o) {
 					var arr = _this.config.seldata;
 					for(var i=0;i<arr.length;i++){
 						var dt = arr[i];
-						if(dt.path.join("#")==dat.path){
-							dt.tags.push({name:dat.name,id:dat.id,audience_size:dat.size});
+						if(dt.path.join("#").replace(/\s/g,"") ==dat.path ){
+							dt.tags.push({name:dat.name,id:dat.id,audience_size:dat.size,type:dat.type});
 							$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 							break;//跳出循环
 						}
@@ -457,8 +532,8 @@ if (!Object.keys) Object.keys = function(o) {
 				var _newData = {};
 				_newData = $.extend(_newData, dat);
 				_newData.path = dat.path.split("#");
-				_newData.tags = [{name:dat.name,id:dat.id,audience_size:dat.size}];
-				Tool.addClassify(_newData,0,_this.dropup);//加到DOM 树，
+				_newData.tags = [{name:dat.name,id:dat.id,audience_size:dat.size,type:dat.type}];
+				Tool.addClassify(_newData,0,_this.dropup, _this.drop1, _this.drop2);//加到DOM 树，
 				//加到数据里面去
 				if(!_this.config.seldata) _this.config.seldata = [];
 				_this.config.seldata.push(_newData);
@@ -476,6 +551,16 @@ if (!Object.keys) Object.keys = function(o) {
 //		this.dropup.css("top",(-h-4)+"px");
 	}
 	
+	Blend.prototype.listenScroll = function(){
+		var _this = this;
+		_this.elem.find(".blend-dropup").scroll(function(e){
+			$.each(_this.elem.find(".ndp-drop3-wrapper"), function(i, _drop3){
+				$(_drop3).trigger("WRAPPER_SCROLL",e.target);
+			});
+
+			fireEvent(_this.elem.get(0),"BLEND_DROPUP_SCROLL");
+		});
+	}
 	/**
 	** 构建基础结构
 	**/
@@ -483,18 +568,36 @@ if (!Object.keys) Object.keys = function(o) {
 		var _this = this;
 		this.input = $("<input class='form-input blend-input' />");
 		this.downwrapper = $("<div class='down-wrapper' />");
-		this.icon = $("<span class='icon-wrapper'><i class='glyphicon glyphicon-thumbs-up'></i></span>");
+		this.icon = $("<span class='icon-wrapper'></span>");
+		if (_this.config.icon){
+			this.icon.append(_this.config.icon);
+		} else {
+			this.icon.append("<i class='glyphicon glyphicon-thumbs-up'></i>");
+		}
 		this.drop1 = $('<ul class="dropdown-menu blend-search-drop hidden"  />');//搜索的下拉菜单
 		this.drop2 = $('<div class="ndp-vList3-wrapper blend-classify-drop hidden" name="blend-rec" />');//分类下拉菜单
-		this.dropup = $('<ul class="dropdown-menu blend-dropup" >');
+		this.dropup = $('<ul class="dropdown-menu blend-dropup hidden" >');
 		this.vlist = this.drop2.vList3({
 			data:_this.config.recdata,
-			ajaxOption:_this.config.reajaxOptions
+			ajaxOption:_this.config.reajaxOptions,
+			returnList : _this.config.returnList,
+			formatNoMatches : _this.config.formatNoMatches
 		});//实例化推荐下拉菜单
-		
+
 		this.vlist.updateTip(_this.config.tip);//更新搜索提示文字
+		this.elem.css("visibility", "hidden");
+		this.elem.css("position", "absolute");
 		this.downwrapper.append(this.input).append(this.icon).append(this.drop1).append(this.drop2);
 		this.elem.append(this.dropup).append(this.downwrapper);
+		//临时解决树状菜单图标自定义过宽引起的问题（推荐英文版 recommendation 很长）
+		var _lw = this.icon.width();
+		var _w = this.elem.width() -  _lw - 50;
+		this.input.css('width',_w);
+		this.drop1.css('width',_w);
+		this.drop2.css('width',_w);
+		this.dropup.css('width',_w);
+		this.elem.css("position", "relative");
+		this.elem.css("visibility", "visible");
 	};
 
 	/****
@@ -505,7 +608,7 @@ if (!Object.keys) Object.keys = function(o) {
 		var cfg = this.config;
 		if(cfg.seldata && cfg.seldata.length){
 			cfg.seldata.forEach(function(o,idx){
-				Tool.addClassify(o,idx,_this.dropup);
+				Tool.addClassify(o,idx,_this.dropup, _this.drop1, _this.drop2);
 			});
 			$(_this.elem.get(0)).data("seldata", _this.config.seldata);
 		}
@@ -522,7 +625,15 @@ if (!Object.keys) Object.keys = function(o) {
 		} else if (typeof options === 'string'){
 			var instance = the.data('blend');
 			var args = Array.prototype.slice.call(arguments, 1);
-			var ret = instance[options](args);
+			var ret;
+			if (options == 'close'){
+				ret = instance[options]();
+			} else if (options == 'selectDAT'){
+				ret = instance[options](args[0]);
+			}
+			else {
+				ret = instance[options](args);
+			}
 			return ret;
 		}
 
@@ -574,13 +685,205 @@ if (!Object.keys) Object.keys = function(o) {
             url: "../data/blend.json",
 			xhrFields: { withCredentials: true}
         },
+		formatNoMatches : "查无结果",//无查询结果提示
 		pastecallback:null,//粘帖进行的回调
 		reajaxOptions:null,//点击手型，出现下拉菜单里面的搜索
 		recdata:null,//推荐下拉菜单数据
-		seldata:[]// 选中上拉菜单数据
+		seldata:[],// 选中上拉菜单数据
+		containerClass:null
 	};
 }(jQuery));
 
+/**
+** deal dropdown  and dropup  input, select input ,drop button 插件
+**author: ericever
+**create time: 2015-7-24
+**/
+;(function($, window, document, undefined){
+    'use strict';
+    var BootDrop = function (element, options) {
+        var self = this;
+        self.$element = $(element);
+        self.config = $.extend(true,{},$.fn.bootDrop.defaults,element.data(),options);
+        var type = self.config.type;
+        var list = self.config.list;
+        
+        function addItem(da){
+            if(da.checked){
+                var layer = $('<div class="user-layer" id='+da.class+'>');
+                layer.append('<ul class="user-title"><li>'+da.text +'</li></ul>');
+                layer.append('<ul class="user-body"><li index="0"><select multiple="multiple" class="ext-cond"></li></ul>');
+                layer.insertBefore($("#other"));//加入DOM
+            }       
+        }
+        function build(){
+            if(type == "input"){
+                    var init = self.config.init;
+                    var the = $(element);
+                    var p = self.config.prop;
+                    var sc = self.config.list||(the.data("list") && the.data("list").match(/[^\[\]'",]+/ig))||[];
+                    var  hder = self.config.holder||the.data("hold");
+                    var  index = (self.config.value>=0)?self.config.value:the.data("val"); 
+                    if(the.children().length){//组件已经创建，查看列表是否变化，智能更新列表,更新placeholder
+                        var ul = the.find("ul.dropdown-menu");
+                        if(sc.join("") != ul.text()){
+                            ul.empty();
+                        }
+                        the.find("input").attr("placeholder",hder);
+                        if(index>=0) the.find("input").val(p?sc[index][p]:sc[index]);
+                    }else{
+                        var input=$('<input class="form-control" type="text" readonly="true" data-toggle="dropdown">');
+                        if(hder) input.attr("placeholder",hder)
+                        if(self.config.max){
+                            var val = self.config.min; 
+                        }else{
+                            if(index>=0) val = (p&&sc[index])?sc[index][p]:sc[index];
+                        }
+                        if(val) input.val(val);
+                        var caret = $('<span class="caret" data-toggle="dropdown"></span>');
+                        var ul = $('<ul class="dropdown-menu">');
+                        var len = self.config.max?(self.config.max+1):sc.length;
+                        var start = self.config.min||0;
+                        if(init && typeof(init)=="function") init(i,sc[index]);
+                        for(var i=start;i<len;i++){
+                            var da = self.config.max?i:sc[i];
+                            var li = $("<li><a>"+(p?da[p]:da)+"</a></li>");
+                            ul.append(li);
+                            (function(the,li,da,i){
+                                li.unbind("click").click(function(){
+                                    var c = $(this).text().trim();
+                                    if(c!=the.find(type).val()){
+                                        the.find(type).val(c).attr("theValue",c);
+                                        the.trigger("selectChanged",{index:i,data:da});
+                                    }
+                                });
+                            }(the,li,da,i));
+                        }
+                        the.append(input).append(caret).append(ul);
+                    }                             
+            }else if(type=="folder"){
+                        var the = $(element);
+                        if(self.config.list && self.config.list.length>0){
+                            var lis = self.config.list;
+                        }else{
+                            lis = (the.data("list") && the.data("list").match(/[^\[\]'",]+/ig))||[];
+                        }
+                        var  hder = self.config.holder||the.data("hold");
+                        var  index = parseInt(the.data("val"))||self.config.value;                    
+                        if(the.children().length){//组件已经创建，查看列表是否变化，智能更新列表
+                            var ul = the.find("ul.dropdown-menu");
+                            if(lis.join("") != ul.text()){
+                                ul.empty();
+                                for(var j=0;j<lis.length;j++){
+                                    ul.append("<li><a>"+(lis[j][self.config.prop])+"</a></li>");
+                                }
+                            }
+                            return;
+                        }
+                        var input = $('<input class="form-control" type="text" readonly="true" data-toggle="dropdown">');
+                        if(hder) input.attr("placeholder",hder);
+                        if(index!=-1) input.attr("value",lis[index][self.config.prop]);
+                        var caret = $('<span class="caret" data-toggle="dropdown"></span>');
+                        var ul = $('<ul class="dropdown-menu">');
+                        var p = self.config.prop;
+                        for(i=0;i<lis.length;i++){
+                            var o = lis[i];
+                            var li = $("<li>"+(o[p])+"</li>");
+                            if(o.sub){
+                                (function(li){
+                                    li.click(function(e){
+                                        e.stopPropagation();
+                                        if($(this).find("ul.collapse").hasClass("in")){
+                                            $(this).find("ul.collapse").removeClass("in");
+                                        }else{
+                                            $(this).find("ul.collapse").addClass("in");
+                                        }
+                                    });
+                                }(li));
+                                li.attr({"data-toggle":"collapse","aria-expanded":false});                                                             li.attr("data-target","#"+o.class).attr("aria-controls",o.class);
+                                li.prepend('<i class="glyphicon glyphicon-triangle-right">');
+                                var ull = $("<ul class='sub-list collapse fade' id="+o.class+">");
+                                for(var j=0;j<o.sub.length;j++){
+                                     addItem(o.sub[j]);
+                                    var lii = $("<li>"+o.sub[j][p]+"<i class='glyphicon glyphicon-ok' style='opacity:"+(o.sub[j].checked?1:0)+"'></i></li>"); 
+                                    ull.append(lii);
+                                    (function(lii,da){
+                                        lii.unbind('click').click(function(e){
+                                            e.stopPropagation();
+                                            var check = $(this).children("i.glyphicon-ok");
+                                            var dis = check.css("opacity");
+                                            (dis=="0")?check.css("opacity","1"):check.css("opacity","0");
+                                            $(this).trigger("toggleItem",{show:parseInt(dis)-1,data:da});
+                                        });
+                                    }(lii,o.sub[j]));                                    
+                                }
+                                li.append(ull);
+                            }else{
+                                addItem(o);
+                                li.append('<i class="glyphicon glyphicon-ok" style="opacity:'+(o.checked?1:0)+'"></i>');
+                                (function(li,da){
+                                    li.unbind('click').click(function(e){
+                                        e.stopPropagation();
+                                        var check = $(this).children("i.glyphicon-ok");
+                                        var dis = check.css("opacity");
+                                        (dis=="0")?check.css("opacity","1"):check.css("opacity","0");
+                                        $(this).trigger("toggleItem",{show:parseInt(dis)-1,data:da});
+                                    });
+                                }(li,o));
+                            }
+                            ul.append(li);
+                        }
+                        the.append(input).append(caret).append(ul); 
+            }                     
+        };
+        
+        function destory(){
+            $(element).empty();
+            self.$element.children("ul.dropdown-menu>li").unbind("click");
+        };
+        
+        function lastTime(tag){
+            self.config.capacity = $(element).find(tag).text()||self.config.capacity;
+        }
+        
+        this.startup = function(){
+            build();
+			this.$element.find("input[type],span.caret").click(function(e){
+				e.stopImmediatePropagation();
+				console.log(1111);
+				$(this).parent().toggleClass("open");
+			});
+        }
+    };
+    
+    /***
+    ** 入口
+    **/
+    $.fn.bootDrop = function(options){
+		var the = this.first();
+        var bd = new BootDrop(the,options);
+        bd.startup();
+        return the;
+    }
+	
+	/***
+	** outside accessible default setting
+	**/
+	$.fn.bootDrop.defaults = {
+        list:null,
+        type:"input",//input-drop  or button-drop
+        caret:'<span class="caret"></span>',
+        capacity:"",//默认 input 里面或者 button 上面应该显示的值
+        placeholder:"",//给 input 使用的
+        buttonClass:"",
+        value:-1,
+        porp:null,
+        holder:null,
+        max:null,
+        min:null,
+        init:null
+	};	
+}(jQuery, window, document));
 ;(function ($) { //start with a [;] 
     var self = this;    
     
@@ -1016,8 +1319,12 @@ if (!Object.keys) Object.keys = function(o) {
 		var self = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.drop.defaults,element.data(),options);
+		var id = (new Date()).valueOf();
 		this.config.width = this.elem.width();
+		this.config.id = id;
+		this.elem.attr("id",id);
 		this.init();
+		element.data('drop', this);
     };
 
     /**
@@ -1085,7 +1392,9 @@ if (!Object.keys) Object.keys = function(o) {
 
         _this.peal.click(function(e){
             e.stopImmediatePropagation();
-			_this.elem.toggleClass("focus");
+			$(".ndp-drop-wrapper[id!="+_this.config.id+"]").removeClass("focus");
+			$(".ndp-drop-wrapper[id!="+_this.config.id+"] ul.drop-list").addClass("hidden");		
+			_this.elem.toggleClass("focus");	
             _this.list.toggleClass("hidden");
             setDirect(_this);
         });
@@ -1114,11 +1423,11 @@ if (!Object.keys) Object.keys = function(o) {
 			}else {
 				var oldV = _this.peal.find("input").val();
 				var newV = $(this).attr("title");
-				if (oldV !== newV){
+				if (oldV != newV){
 					fireEvent(_this.elem.get(0),"ITEM_CHANGE",{val:value,text:newV});
 				}
 
-				_this.peal.find("input").val(newV);
+				_this.peal.find("input").attr('data-val',value).val(newV);
 				fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,text:newV});
 			}
         });
@@ -1187,6 +1496,35 @@ if (!Object.keys) Object.keys = function(o) {
 				}else{
 					items.last().addClass("em");
 				}
+				//新增，类似原生select 的功能
+			}else if((e.keyCode>=65 && e.keyCode<=90)||(e.keyCode>=48 && e.keyCode<=57)){//输入的是字母
+				var char = String.fromCharCode(e.keyCode);
+				var RE = new RegExp("^"+char,'i');
+				var domList = _this.list.get(0);
+				var lis = _this.list.find("li[text]");
+				console.log(domList.clientHeight + " : " + domList.scrollHeight);
+				for(var i=0;i<lis.length;i++){
+					var li = $(lis.get(i));
+					var txt = li.attr("text");
+					var val = li.attr("value");
+					 if(RE.test(txt)){
+						if(!_this.list.hasClass("hidden")){
+							 li.siblings().removeClass("em"); 
+							 li.addClass("em");
+								
+						     if(domList.scrollHeight>domList.clientHeight || 		domList.offsetHeight>domList.clientHeight){//存在滚动条
+								 var ch = li.get(0).offsetTop - domList.clientHeight;
+								 if(ch>0){
+									 _this.list.scrollTop(ch+30);
+								 }
+							 }
+						}else{
+							_this.elem.find("input").val(txt).attr("data-val",val);
+							fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:val,text:txt});
+						}
+						break;
+					 }						
+				}
 			}
 		});
 
@@ -1244,15 +1582,15 @@ if (!Object.keys) Object.keys = function(o) {
 				_this.peal.find("input").attr("checkedArr",JSON.stringify(cksArr)).val(vals.join(","));
 				fireEvent(_this.elem.get(0),"APPLY_CLICK",{checkedArr:cksArr});
 			});
-
-			$(document).click(function(e){
-				if(!(e.target.tagName == "INPUT" && e.target.type == "checkbox")){
-					//$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
-					$(".ndp-drop-wrapper ul.drop-list").addClass("hidden");
-				}
-				$(".ndp-drop-wrapper").removeClass("focus");
-			});
 		}
+		
+		$(document,document.body).click(function(e){
+			if(!(e.target.tagName == "INPUT" && e.target.type == "checkbox")){
+				//$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
+				$(".ndp-drop-wrapper ul.drop-list").addClass("hidden");
+			}
+			$(".ndp-drop-wrapper").removeClass("focus");
+		});
     };
 
 	/**
@@ -1277,13 +1615,16 @@ if (!Object.keys) Object.keys = function(o) {
 	***/
     Drop.prototype.initConfig = function(){
         var _this = this;
-        if(this.placeholder){
-            _this.peal.find("input").attr("placeholder",_this.placeholder);
+        if(_this.config.placeholder){
+            _this.peal.find("input").attr("placeholder",_this.config.placeholder);
         }
 
         if(_this.config.val){
             _this.peal.find("input").val(_this.config.val);
-        }
+			$(_this.elem.get(0)).data('val', _this.config.val);
+        } else {
+			$(_this.elem.get(0)).data('val', '');
+		}
 
 		//ser 需要设置名字
         if(_this.config.name){
@@ -1351,10 +1692,44 @@ if (!Object.keys) Object.keys = function(o) {
      */
     $.fn.drop = function (options) {
 		var the = this.first();
-        var drop = new Drop(the, options);
-		the = $.extend(true,{},the,new exchange(drop));
-		return the;
+		if (typeof options === 'object'){
+			var drop = new Drop(the, options);
+			the = $.extend(true,{},the,new exchange(drop));
+			return the;
+		} else if (typeof options === 'string'){
+			var instance = the.data('drop');
+			if (!instance){
+				console.log("还未初始化")
+				return;
+			}
+			var args = Array.prototype.slice.call(arguments, 1);
+			var ret = instance[options](args);
+			return ret;
+		}
     };
+
+	Drop.prototype.val = function(o){
+		var _this = this;
+		var o = o[0];
+		if(typeof(o)=="object"){
+			var txt = o[_this.config.textKey]||o.label||o.text||o.value||o.name;
+			var val = o.value || o.val || o.id || txt;
+			_this.elem.find("input").val(txt).attr("data-val",val);
+			$(_this.elem.get(0)).data('val', val);
+		}else{
+			_this.elem.find("input").val(o).attr("data-val",o);
+			$(_this.elem.get(0)).data('val', o);
+		}
+	}
+
+	Drop.prototype.data = function(o){
+		var _this = this;
+		var _data = {
+			'val': _this.elem.find("input").attr("data-val"),
+			'txt' : _this.elem.find("input").val()
+		}
+		return _data;
+	}
 
     /***
     **和其他插件的交互
@@ -1549,7 +1924,8 @@ if (!Object.keys) Object.keys = function(o) {
 		fixPageXY: function(the){
 			var html = document.documentElement;
 			var body = document.body;
-			var the = (the.get(0)||the).getBoundingClientRect();
+		
+			var the = ((the.get&&the.get(0))||the).getBoundingClientRect();
 			var a = {};
 			a.pageX = parseFloat(the.left) + (html.scrollLeft || body && body.scrollLeft || 0);
 			a.pageX -= html.clientLeft || 0;
@@ -1566,7 +1942,7 @@ if (!Object.keys) Object.keys = function(o) {
 			var gap = arguments[4]||5;
 			deep++;
 			var rec = arguments.callee;
-			var ul = $("<ul class='drop-list'/>");
+			var ul = $("<ul class='drop-list' />");
 			if(cfg.type!=3 && deep>1){
 				ul.addClass("hidden");
 			}
@@ -1603,6 +1979,7 @@ if (!Object.keys) Object.keys = function(o) {
 		this.config.id = "drop" + (new Date()).valueOf();
 		this.config.wi = this.elem.width();
 		this.init();
+		element.data('drop3', this);
     };
 
 	/**
@@ -1620,10 +1997,7 @@ if (!Object.keys) Object.keys = function(o) {
             e.stopImmediatePropagation();
 			_this.elem.toggleClass("focus");
 			_this.list.toggleClass("hidden").css("width",(_this.elem.width()+2)+"px");
-			if(!_this.list.hasClass("hidden")){
-				var page = Help.fixPageXY(_this.elem);
-				_this.list.css({"top":(page.pageY+30)+"px","left":page.pageX+"px"});
-			}
+			_this.pos();
         });
 		
 		/***
@@ -1631,9 +2005,14 @@ if (!Object.keys) Object.keys = function(o) {
 		***/		
 		_this.list.find("li.list-leaf").click(function(e){
 			var field = _this.elem.find("input");
+			var oldData = field.data();
 			var dat = $(this).data();
-			field.val(dat.txt).attr({"dara-val":dat.val,"data-txt":dat.txt,"data-id":dat.id});
+			field.val(dat.txt).attr({"data-val":dat.val,"data-txt":dat.txt,"data-id":dat.id});
+			$(_this.elem.get(0)).data("val", dat)
 			fireEvent(_this.elem.get(0),"ITEM_CLICK",dat);
+			if (oldData.val != dat.val){
+				fireEvent(_this.elem.get(0),"ITEM_CHANGE",dat)
+			}
 		});
 		
 		_this.list.find("li.drop-recursive").click(function(e){
@@ -1664,29 +2043,20 @@ if (!Object.keys) Object.keys = function(o) {
 		});	
 		
 		$(window).resize(function(){
-			if(!_this.list.hasClass("hidden")){
-				var page = Help.fixPageXY(_this.elem);
-				_this.list.css({"top":(page.pageY+30)+"px","left":page.pageX+"px"});
-			}		
+			_this.pos();	
 		});
 		
 		$(document).scroll(function(){
-			if(!_this.list.hasClass("hidden")){
-				var page = Help.fixPageXY(_this.elem);
-				_this.list.css({"top":(page.pageY+30)+"px","left":page.pageX+"px"});
-			}		
+			_this.pos();		
 		});
 		
 		/****
 		** 外部容器 发生了 scroll事件
 		****/
-		_this.elem.on("WRAPPER_SCROLL",function(){
-			if(!_this.list.hasClass("hidden")){
-				var page = Help.fixPageXY(_this.elem);
-				_this.list.css({"top":(page.pageY+30)+"px","left":page.pageX+"px"});
-			}			
+		_this.elem.on("WRAPPER_SCROLL",function(e,$ta){
+			_this.pos($ta);
 		});
-		
+
 		/****
 		** 包裹他的容器被删除了
 		***/
@@ -1695,6 +2065,15 @@ if (!Object.keys) Object.keys = function(o) {
 		});
     };
 
+	//
+	Drop3.prototype.pos = function($ta){
+		var _this = this;
+		if(!_this.list.hasClass("hidden")){
+			var page = Help.fixPageXY(_this.elem);
+			var page2 = Help.fixPageXY(_this.config.bind);
+			_this.list.css({"top":(page.pageY-page2.pageY+30)+"px","left":(page.pageX-page2.pageX)+"px"});	
+		}
+	}
 	/**
 	** 构建下来菜单样子
 	**/
@@ -1705,7 +2084,11 @@ if (!Object.keys) Object.keys = function(o) {
 		this.list = $("<div class='drop3-list-wrapper hidden'  tabindex='-1' id="+_this.config.id+" />").css("width",(_this.config.wi+2)+"px");
 		
 		this.elem.append(html);	
-		$(document.body).append(this.list);
+		if(_this.config.bind){
+			_this.config.bind.append(this.list);
+		}else{
+			$(document.body).append(this.list);
+		}
 	};
 	/***
 	** 设置用户配置选项
@@ -1734,10 +2117,43 @@ if (!Object.keys) Object.keys = function(o) {
      */
     $.fn.drop3 = function (options) {
 		var the = this.first();
-        var drop = new Drop3(the, options);
-		the = $.extend(true,{},the,new exchange(drop));
-		return the;
+		if (typeof options === 'object'){
+			var drop = new Drop3(the, options);
+			the = $.extend(true,{},the,new exchange(drop));
+			return the;
+		} else if (typeof options === 'string'){
+			var instance = the.data('drop3');
+			if (!instance){
+				console.log("还未初始化")
+				return;
+			}
+			var args = Array.prototype.slice.call(arguments, 1);
+			var ret = instance[options](args);
+			return ret;
+		}
     };
+
+	Drop3.prototype.close = function(){
+		this.list.addClass("hidden");
+		this.elem.removeClass("focus");
+	}
+
+
+	Drop3.prototype.val = function(o){
+		var _this = this;
+		var o = o[0];
+		if(typeof(o)=="object"){
+			var txt = o[_this.config.textKey]||o.label||o.text||o.value||o.name;
+			var val = o.value || o.val || txt;
+			var id = o.id;
+			_this.elem.find("input").val(txt).attr({"data-val":val,"data-text":txt,"data-id":id});
+			$(_this.elem.get(0)).data("val", {val: val, txt : txt});
+		}else{
+			_this.elem.find("input").val(o).attr({"data-val":o,"data-txt":o});
+			$(_this.elem.get(0)).data("val", {val: o, txt : o});
+		}
+
+	}
 
     /***
     **和其他插件的交互
@@ -1758,15 +2174,16 @@ if (!Object.keys) Object.keys = function(o) {
 			}else{
 				drop.elem.find("input").val(o).attr({"data-val":o,"data-txt":o});
 			}
+			$(drop.elem.get(0)).data("val", drop.elem.find("input").data());
 			return drop.elem;
 		};
 		
 		/***
 		**设置下拉菜单位置
 		***/
-		this.resetPos = function(){
-			var page = Help.fixPageXY(drop.elem);
-			drop.list.css({"top":(page.pageY+30)+"px","left":page.pageX+"px"});			
+		this.resetPos = function($ta){
+			drop.pos($ta);
+			return drop.elem;
 		}
     }
 	/***
@@ -1778,6 +2195,7 @@ if (!Object.keys) Object.keys = function(o) {
 		allowInput:false,//是否允许输入 默认情况下不允许输入
 		allowInputType:"number",
         val:null,//默认值
+		bind:null,//下拉菜单绑定到那个dom上
 		caret:"glyphicon-triangle-right",//只是箭头的样式，仅支持bootstrap 里面列出的 glyphicon
         data:[]//下拉菜单列表
 	};
@@ -3113,64 +3531,86 @@ if (!Object.keys) Object.keys = function(o) {
 		/***
 		** 里面输入内容发生改变
 		**/
-		this.input.on("input",function(e){
+		_this.input.on("input",function(e){
 			var input = $(this);
 			e.stopImmediatePropagation();
 			if(_this.config.type==3||_this.config.type==4){
 				_this.wrapper.addClass("loading");
 				var key = $(this).val();
-				var opt = _this.config.ajaxOptions;
 				var opt = $.extend({}, _this.config.ajaxOptions);
 				if (!opt.data){
 					opt.data = {key:key};
 				} else if (typeof opt.data === 'function') {
 					opt.data = opt.data(key);
 				}
-				$.ajax(opt).then(function(result){
+				//opt.processResults = null;
+				if (_this.xhr != null) {
+					//终止上一次的请求
+					_this.xhr.abort();
+
+					_this.xhr = null;
+				}
+				_this.xhr = $.ajax(opt);
+
+				_this.xhr.then(function(result){
 					if (_this.config.ajaxOptions.processResults){
 						result = _this.config.ajaxOptions.processResults(result)
 					}
 					if(typeof(result)=="string") result = JSON.parse(result);
 					_this.dropmenu.empty();
-					result.data.forEach(function(item,index){
-						var txt = (typeof(item)=="string")?item:(item.text||item.label||item.name);
-						var val = item.val || item.value || txt;
-						var id = item.id;
-						var re2 = new RegExp("["+key+"]+","i");	
-						var re = new RegExp(key,"i");
-						if(String(txt).match(re)){
-							var ma = String(txt).match(re)[0];
-						}else if(String(txt).match(re2)){
-							ma = String(txt).match(re2)[0];
-						}else{
-							ma = "";				
-						}
-						var len = ma.length;
-						var ree = new RegExp(ma,"i");
-						var start = txt.search(ree);
-						var arr = txt.split("");
-						arr.splice(start,0,"<em>");
-						arr.splice((start+len+1),0,"</em>");
-						var val1 = arr.join("");
-						if(!_this.config.rowdec){
-							var li = $('<li data-val="'+val+'" data-name="'+txt+'" data-text='+txt+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a></li>');
-							if(id) li.attr("data-id",id);
-						}else{
-							var li = _this.config.rowdec(item,index,val1);
-						}
-						_this.dropmenu.append(li);
-					});
+					var _datas = result.data;
+					if (_datas && _datas.length){
+						_datas.forEach(function(item,index){
+							var txt = (typeof(item)=="string")?item:(item.text||item.label||item.name);
+							var val = item.val || item.value || txt;
+							var id = item.id;
+							var re2 = new RegExp("["+key+"]+","i");
+							var re = new RegExp(key,"i");
+							if(String(txt).match(re)){
+								var ma = String(txt).match(re)[0];
+							}else if(String(txt).match(re2)){
+								ma = String(txt).match(re2)[0];
+							}else{
+								ma = "";
+							}
+							var len = ma.length;
+							var ree = new RegExp(ma,"i");
+							var start = txt.search(ree);
+							var arr = txt.split("");
+							arr.splice(start,0,"<em>");
+							arr.splice((start+len+1),0,"</em>");
+							var val1 = arr.join("");
+							if(!_this.config.rowdec){
+								var li = $('<li class="result-option" data-val="'+val+'" data-name="'+txt+'" data-text='+txt+' index='+index+' tabIndex='+index+'><a href="#">'+(val1||txt)+'</a></li>');
+								if(id) li.attr("data-id",id);
+							}else{
+								var li = _this.config.rowdec(item,index,val1);
+							}
+							if (item.path){
+								item.path = item.path.join("#").replace(/\s/g,"");
+							}
+							li.data("info", item);
+							_this.dropmenu.append(li);
+						});
+					} else {
+						_this.dropmenu.append('<li class="no-result">' +  _this.config.formatNoMatches + '</li>');
+					}
+
 					_this.dropmenu.removeClass("hidden");
 					_this.wrapper.removeClass("loading");
 					
 					_this.dropmenu.find("li").unbind("click").click(function(e){
 						e.preventDefault();
 						e.stopImmediatePropagation();
+						if ($(this).hasClass("no-result")){
+							return false;
+						}
 						if($(this).hasClass("selected")) return false;
 						if(_this.config.clickhide) _this.input.val($(this).data('text'));//点击之后隐藏
 						if(_this.config.clickhide)_this.dropmenu.addClass("hidden");//点击之后隐藏
 						_this.wrapper.find(".close-cus").removeClass("hide");// 显示右侧的 x 删除号
-						fireEvent(_this.elem.get(0),"ITEM_SELECT",$(this).data());
+						//modify by sisi 为了保证数据尽可能完整的返回 故修改成 $(this).data("info")
+						fireEvent(_this.elem.get(0),"ITEM_SELECT",$(this).data("info"));
 						if(!_this.config.clickhide){
 							$(this).addClass("selected");
 						}
@@ -4753,7 +5193,7 @@ if (!Object.keys) Object.keys = function(o) {
 		**@params {int} idx  从0开始
 		**/
 		this.val = function(idx){
-			tabs.tabwrapper.find("li[role=presentation][index='"+idx+"']").addClass("active")
+			tabs.tabwrapper.find("li[role=presentation][data-index='"+idx+"']").addClass("active")
 				.siblings().removeClass("active");
 			return tabs.elem;
 		}
@@ -5012,6 +5452,13 @@ if (!Object.keys) Object.keys = function(o) {
 		});
 		
 		
+		/****
+		**点击重置按钮
+		****/
+		_this.elem.find(".timerange-reset").click(function(){
+			_this.elem.find(".timerange-cell.active").removeClass("active");
+		});
+		
 		$(document).click(function(e){
 			if(!$(e.target).parents(".ndp-timerange-wrapper").length || !$(e.target).hasClass('ndp-timerange-wrapper')){
 				_this.elem.find(".ndp-drop-wrapper").removeClass("focus");
@@ -5032,8 +5479,9 @@ if (!Object.keys) Object.keys = function(o) {
 			data:ZONEARR,
 			textKey:cfg.lan
 		}).val(ZONEARR[3]);
-		var txt = $("<span class='timerange-desc'  />").html("按住鼠标左键滑动，选取时间目标");
-		_this.head.append(droplist).append(txt);
+		var txt = $("<span class='timerange-desc'  />").html("按住鼠标左键滑动，选取时间目标。");
+		var reset = $("<span class='timerange-reset'>重置</span>");
+		_this.head.append(droplist).append(txt).append(reset);
 		_this.body = $("<div class='timerange-body' />");
 		var xq  = $("<ul class='timerange-xq' >");
 		DAYARR.forEach(function(item,index){
@@ -5199,104 +5647,111 @@ if (!Object.keys) Object.keys = function(o) {
 ** sutable  plugin
 **@author ericever
 ***/
-;(function ($) { 
+;(function ($) {
     var self = this;
-	
+	function newbody(fa,arr,cfg,deep){
+			var deep = arguments[3]||0;
+			var gap = arguments[4]||5;
+			deep++;
+			var rec = arguments.callee;
+			var ul = $("<ul role='table' />");
+			if(deep>1){
+				ul.addClass("sub-layer");
+			}else{
+				ul.addClass("treable-body");
+				var root = fa;
+			}
+			for(var i=0;i<arr.length;i++){
+				var o = arr[i];
+				var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group;
+				var cols = o[cfg.textKey]||o.text||o.label||o.title||o.name;
+				var id = o.id;
+				var li = $("<li class='treable-item'  deep="+deep+" />");
+				if(id){
+					li.attr('data-id',id);
+				}
+				var wrapper = $('<div class="treable-row-wrapper">');
+				var row = $('<div class="treable-row" deep='+deep+'></div>');
+				if(deep==1){//对第一级加租
+					row.addClass('treable-row-wrapper-parent');
+				}
+				//添加 弹出下拉菜单，点击money 符号的时候
+				var html = $('<ul class="dropdown-menu dropdown-menu-money hidden" />');
+				cfg.todata.forEach(function(item,index){
+					var txt = item.name||item.label||item.text||item;
+					var val = item.val||item.value||txt;
+					var id = item.id;
+					var li = '<li data-id='+id+' data-name='+txt+' data-val='+val+' ><a href="javascript:void(0)">'+txt+'</a></li>';
+					html.append(li);
+				});
+				row.append(html);
+				var chartWrapper = $("<div class='chart-wrapper' data-id="+id+" />");//图表层
+				var chartClose = '<button type="button" class="close chart-close"><span aria-hidden="true">&times;</span></button>';//图标层关闭按钮
+				var chart = $('<div class="ndp-tab-wrapper" deep='+deep+' index='+i+' role="table" />');
+				chart.tabs({list:cfg.tabs});//图表层上面的 tabs 初始化
+				var panels = $("<div class='tab-content tab-content-cus' />");
+				cfg.tabs.forEach(function(item,index){
+					var panel = $('<div role="tabpanel" class="tab-pane "  data-name='+item.name+' data-type='+item.type+' />');
+					if(index==0) panel.addClass("active");
+					panels.append(panel);
+				});
+				chartWrapper.append(chart).append(panels).append(chartClose);//显示到层上
+				wrapper.append(row).append(chartWrapper);
+				cols.forEach(function(col,idx){
+					var switcher = '<span class="switcher">\
+					<label class = "active" ><input type = "checkbox" class = "scheckbox"> </label></span>';
+					var column = $('<span class="sutable-col" col='+idx+' />');
+					if(cfg.colDims&&cfg.colDims.length){
+						column.css("width",cfg.colDims[idx]+"px");
+					}
+					if(idx==0) {
+						column.addClass("sutable-col-status");
+						column.html(switcher);
+						if(typeof(col)=="object" && col.status===false){
+							column.find('[type="checkbox"]').attr("checked",false);
+							column.find('label.active').removeClass('active');
+						}
+					}else if(idx==1){
+						column.addClass("sutable-col-name");
+					}
+					if(idx>0){
+						if(typeof(col)=="object"){
+							var val = col.label||col.text||col.name;
+							column.attr({"data-val":val,title:val}).html(val);
+							if(idx == 1){
+								column.append("<i class='font-icon font-icon-money'></i>");
+							}
+						}else{
+							column.attr({"data-val":val,"title":val}).html(col);
+						}
+					}
+					row.append(column);
+				});
+
+				if(array && array instanceof Array){
+					var html = $('<span class="btn-plus-minus" />');
+					if(cfg.caret){
+						html.html(cfg.caret).addClass("custom-caret");
+					}else{
+						html.html('<i class="line-hor"></i><i class="line-ver"></i>');
+					}
+					li.append(html).append(wrapper).addClass("open");//row
+					rec(li,array,cfg,deep);
+				}else{
+					li.append(wrapper);//row
+				}
+				ul.append(li);
+			}
+		if(ul.hasClass("treable-body")){
+			return ul;
+		}else{
+			fa.append(ul);
+		}
+	};
 	var Help = {
 		recursive:function(fa,arr,cfg,deep){
-		var deep = arguments[3]||0;
-		var gap = arguments[4]||5;
-		deep++;
-		var rec = arguments.callee;
-		var ul = $("<ul role='table' />");
-		if(deep>1){
-			ul.addClass("sub-layer");
-		}else{
-			ul.addClass("treable-body");
-			var root = fa;
-		}
-		for(var i=0;i<arr.length;i++){
-			var o = arr[i];
-			var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group;
-			var cols = o[cfg.textKey]||o.text||o.label||o.title||o.name;
-			var id = o.id;
-			var li = $("<li class='treable-item'  deep="+deep+" />");
-			if(id){
-				li.attr('data-id',id);
-			}
-			var wrapper = $('<div class="treable-row-wrapper">');
-			var row = $('<div class="treable-row" deep='+deep+'></div>');
-			if(deep==1){//对第一级加租
-				row.addClass('treable-row-wrapper-parent');
-			}
-			//添加 弹出下拉菜单，点击money 符号的时候
-			var html = $('<ul class="dropdown-menu dropdown-menu-money hidden" />');		
-			cfg.todata.forEach(function(item,index){
-				var txt = item.name||item.label||item.text||item;
-				var val = item.val||item.value||txt;
-				var id = item.id;
-				var li = '<li data-id='+id+' data-name='+txt+' data-val='+val+' ><a href="javascript:void(0)">'+txt+'</a></li>';
-				html.append(li);
-			});
-			row.append(html);
-			var chartWrapper = $("<div class='chart-wrapper' data-id="+id+" />");//图表层
-			var chartClose = '<button type="button" class="close chart-close"><span aria-hidden="true">&times;</span></button>';//图标层关闭按钮
-			var chart = $('<div class="ndp-tab-wrapper" deep='+deep+' index='+i+' role="table" />');
-			chart.tabs({list:cfg.tabs});//图表层上面的 tabs 初始化
-			var panels = $("<div class='tab-content tab-content-cus' />");
-			cfg.tabs.forEach(function(item,index){
-				var panel = $('<div role="tabpanel" class="tab-pane "  data-name='+item.name+' data-type='+item.type+' />');
-				if(index==0) panel.addClass("active");
-				panels.append(panel);
-			});
-			chartWrapper.append(chart).append(panels).append(chartClose);//显示到层上
-			wrapper.append(row).append(chartWrapper);
-			cols.forEach(function(col,idx){
-				var switcher = '<span class="switcher">\
-				<label class = "active" ><input type = "checkbox" class = "scheckbox"> </label></span>';
-				var column = $('<span class="sutable-col" col='+idx+' />');
-				if(cfg.colDims&&cfg.colDims.length){
-					column.css("width",cfg.colDims[idx]+"px");
-				}
-				if(idx==0) {
-					column.addClass("sutable-col-status");
-					column.html(switcher);
-					if(typeof(col)=="object" && col.status===false){
-						column.find('[type="checkbox"]').attr("checked",false);
-						column.find('label.active').removeClass('active');
-					}
-				}else if(idx==1){
-					column.addClass("sutable-col-name");
-				}
-				if(idx>0){
-					if(typeof(col)=="object"){
-						var val = col.label||col.text||col.name;
-						column.attr({"data-val":val,title:val}).html(val);
-						if(idx == 1){
-							column.append("<i class='font-icon font-icon-money'></i>");
-						}
-					}else{
-						column.attr({"data-val":val,"title":val}).html(col);
-					}
-				}		
-				row.append(column);
-			});
-			
-			if(array && array instanceof Array){
-				var html = $('<span class="btn-plus-minus" />');
-				if(cfg.caret){
-					html.html(cfg.caret).addClass("custom-caret");
-				}else{
-					html.html('<i class="line-hor"></i><i class="line-ver"></i>');
-				}
-				li.append(html).append(wrapper).addClass("open");//row
-				rec(li,array,cfg,deep);
-			}else{
-				li.append(wrapper);//row
-			}
-			ul.append(li);
-		}
-		fa.append(ul);			
+			var ul = newbody(fa,arr,cfg,deep);
+			fa.append(ul);
 		},
 		fixPageXY: function(the){
 			var html = document.documentElement;
@@ -5311,28 +5766,34 @@ if (!Object.keys) Object.keys = function(o) {
 			return a;
 		}
 	};
-	
-    
+
+
     function Treable(element, options) {
 		var self = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.treable.defaults,element.data(),options);
 		this.config.wi = this.elem.width();
-		this.init();	
+		this.init();
     };
 	/***
 	**	横向滚动条
 	***/
 	Treable.prototype.scrollV = function(){
 		var _this = this;
+	        _this.elem = $('.ndp-treable-wrapper');
+	        _this.scroll = $(".horiz-scroll");
+	        _this.head = $(".treable-header");
+	        _this.foot = $(".treable-footer");
 		var sdim = _this.scroll.get(0).getBoundingClientRect();//上下左右
 		var thumb = _this.scroll.find(".horiz-thumb");
 		var tdim = thumb.get(0).getBoundingClientRect();
-		var w = this.elem.width();
-		var colW = 40 + 12;//40 margin-left:40    12 border-right
-		this.head.find(".sutable-col[col]").each(function(idx,item){
-			colW += $(item).width();
+		var w = this.elem.width(); // 不包括border的宽度
+		var colW = 40 + 10;//40 margin-left:40    10 border-right
+		$('.treable-header .sutable-col').each(function(index,item){
+			colW += $(item).get(0).getBoundingClientRect().width;
 		});
+//		colW = colW + eval(_this.config.colDims.join("+"));//获得内部内容的总宽度
+		
 		if(tdim.left<sdim.left){
 			thumb.css("left",sdim.left+"px");
 		}else if(tdim.right>sdim.right){
@@ -5342,11 +5803,9 @@ if (!Object.keys) Object.keys = function(o) {
 		_this.scroll.toggleClass("show",colW>w?true:false).css("width",w+"px");
 		_this.elem.toggleClass("extend",colW>w?true:false)
 		if(colW>w){
-			thumb.css("width",(w/colW)*100+"%");	
+			thumb.css("width",(w/colW)*100+"%");
 		}
-		
 	};
-	
 	/****
 	** body  row,col,caret 的监听
 	***/
@@ -5359,7 +5818,6 @@ if (!Object.keys) Object.keys = function(o) {
 			e.stopImmediatePropagation();
 			$(this).parents(".chart-wrapper.open:first").removeClass("open");
 		});
-		
 		/***
 		**事件  收起/展开按钮  树桩菜单的 展开/收起
 		**/
@@ -5369,7 +5827,7 @@ if (!Object.keys) Object.keys = function(o) {
 			the.toggleClass("open");
 			the.find("li.treable-item").toggleClass("open",the.hasClass("open"));
 		});
-		
+
 		_this.elem.find(".sutable-col-status>.switcher").click(function(e){
 			e.stopImmediatePropagation();
 		});
@@ -5379,14 +5837,19 @@ if (!Object.keys) Object.keys = function(o) {
 		_this.elem.find(".sutable-col-status>.switcher>label>input").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
 			var the = $(this).parent();
-			the.toggleClass("active");
-			if(!the.hasClass("active")){
-				var fa = $(this).parents(".treable-item:first");
-				fa.find("ul .switcher>label").removeClass("active");
+			if(the.parent().hasClass('disabled')){//如果 switcher 有 disabled,则返回
+				return;
 			}
+			the.toggleClass("active");
+			//只更改自己状态
+			//if(!the.hasClass("active")){
+			//	var fa = $(this).parents(".treable-item:first");
+			//	fa.find("ul .switcher>label").removeClass("active");
+			//}
+                        $(this).trigger('STATUS_UPDATE');
 			fireEvent(_this.elem.get(0),"STATUS_CHANGE",{status:the.hasClass("active")});
 		});
-		
+
 		// 点击 选中一行， 显示 toolbar   2016-3-18 取消
 		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
@@ -5398,14 +5861,14 @@ if (!Object.keys) Object.keys = function(o) {
 			}
 			_this.toolbar.toggleClass("active",$(this).hasClass("focus"));
 		});
-		
-		/*** 
+
+		/***
 		** 鼠标离开一行
 		****/
 		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("mouseleave").mouseleave(function(e){
-			$(this).find(".dropdown-menu-money").addClass("hidden");	
+			$(this).find(".dropdown-menu-money").addClass("hidden");
 		});
-		
+
 		/***
 		** 点击了，下拉菜单中的选项
 		***/
@@ -5428,9 +5891,9 @@ if (!Object.keys) Object.keys = function(o) {
 			dat.GD = _this.elem.find(".treable-item.open .chart-wrapper.open .tab-pane.active");
 			setTimeout(function(){
 				fireEvent(_this.elem.get(0),"CHART_LAYER_INIT",dat);//展现完成，抛出数据
-			},400);	
+			},400);
 		});
-		
+
 		/***
 		**
 		****/
@@ -5443,29 +5906,39 @@ if (!Object.keys) Object.keys = function(o) {
 			dat.GD = $(panels[dat.index]);
 			fireEvent(_this.elem.get(0),"TAB_SHOW",dat);
 		});
-		
-		
+
+
 		/***
 		** 点击  toolbar  看图表 button 被点击 触发
 		***/
 		_this.elem.find("button[data-id=chart]").unbind("click").click(function(e){
 			_this.elem.find(".treable-row-wrapper>.treable-row.focus+.chart-wrapper").addClass("open");
 			_this.elem.find(".treable-row-wrapper>.treable-row:not(.focus)+.chart-wrapper.open").removeClass("open");//关闭其他的
-		});	
-		
-		
-		//点击 文字旁边的 钱 icon  
+		});
+
+
+		//点击 文字旁边的 钱 icon
 		_this.elem.find("i.font-icon-money").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
 			var dp = $(this).parents(".treable-row:first").find(".dropdown-menu-money").toggleClass("hidden");
+			dp.css("opacity",0);
 			var icon = Help.fixPageXY($(this));
 			var offParent = Help.fixPageXY($(this).parents(".treable-row:first"));
-			var x = icon.pageX - offParent.pageX;
-			//var y = icon.pageY - offParent.pageY;
-			dp.css({"top":(30)+"px","left":(x+5)+"px"});
+			var x = icon.pageX - offParent.pageX;			
+			setTimeout(function(){
+				dp.removeAttr("style");
+				var dpPage   =   Help.fixPageXY(dp);
+				var footPage = Help.fixPageXY(_this.elem.find(".treable-footer"));					   
+				if((dpPage.pageY +90)<=footPage.pageY){
+					dp.css({"top":30+"px","left":(x+5)+"px"});
+				}else{
+					dp.css({"top":(-dp.height()+5)+"px" ,"left":(x+5)+"px"});
+				}
+			});
+			$(this).trigger('DROPDOWN_MENU_MONEY_SHOW', {dom:dp});
 		});
 	};
-	
+
 	/**
 	**列表组件的初始化
 	**/
@@ -5473,10 +5946,10 @@ if (!Object.keys) Object.keys = function(o) {
         var _this = this;
         this.concrate();//构建下来菜单的样子
 		this.initConfig();
-				
+
 		_this.elem.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
 		_this.scroll.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
-		
+
 		/***
 		** 表头 某一列的排序按钮被点击
 		***/
@@ -5487,28 +5960,30 @@ if (!Object.keys) Object.keys = function(o) {
 			var siblings = fa.siblings();
 			siblings.find(".sort-wrapper").children("i").removeClass("hi");
 			siblings.find(".sort-wrapper").children("i.glyphicon-triangle-bottom").addClass("hi");
-			fireEvent(_this.elem.get(0),"SORT_CLICK",{col:fa.attr("col"),val:fa.text()});
-		});	
+		            var sort = $(this).find('.hi').hasClass('glyphicon-triangle-top') ? 'up' : 'down';
+		            fireEvent(_this.elem.get(0), "SORT_CLICK", {col: fa.attr("col"), val: fa.text(), sort: sort});
+		});
 		/***
 		**鼠标按下 列缩放
 		***/
 		_this.elem.find("span.inspliter").mousedown(function(e){
 			var column = $(this).parent();
-			var c = column.attr("col");
+			var c = parseInt(column.attr("col"));
 			var theCol = $(".sutable-col[col="+c+"]");
 			var minw = window.getComputedStyle(theCol.get(0)).minWidth;
 			var the = $(this).get(0).getBoundingClientRect();
 			var el = _this.elem.get(0).getBoundingClientRect();
 			var start = (the.left-el.left + the.width);
-			_this.elem.find(".split-line").css("left",start+"px").addClass("active");
+			_this.elem.find(".split-line").css("left",(start-1)+"px").addClass("active");
 			_this.elem.addClass("resize-cursor");
-			_this.elem.off("mousemove").mousemove(function(e){
+			_this.elem.unbind("mousemove").mousemove(function(e){
 				e.stopImmediatePropagation();
-				var end = e.clientX - el.left + 1;
-				var w = e.clientX - column.get(0).getBoundingClientRect().left;
+				var end = e.clientX - el.left - 2;
+				var w = e.clientX - column.get(0).getBoundingClientRect().left-0.4;
 				$(this).find(".split-line").css("left",end+"px");
 				if(start<end){//拉大
-						theCol.css("width",(w) + "px");				
+					//_this.elem.css("width",(_this.elem.width()+gap)+"px");
+					theCol.css("width",w + "px");
 				}else{//缩小
 					var d = (parseInt(c)+1);
 					var next = $(".sutable-col[col="+d+"]");
@@ -5535,12 +6010,14 @@ if (!Object.keys) Object.keys = function(o) {
 			_this.elem.unbind("mousemove");
 			_this.scrollV();// 是否显示横向滚动条
 			_this.elem.trigger("RESIZE_DONE");//鼠标拖动resize 列宽完成
+			var w1 = eval(_this.config.colDims.join("+"));//获得宽度
+			_this.elem.find(".chart-wrapper").css("width",(w1+5)+"px");
 		});
-		
-		
+
+
 		/*****
 		** 横向滚动条拖动  thumb 拖动
-		****/ 
+		****/
 		_this.scroll.find(".horiz-thumb").unbind("mousedown").mousedown(function(e){
 //			e.stopImmediatePropagation();
 			var thumb = $(this);
@@ -5560,20 +6037,23 @@ if (!Object.keys) Object.keys = function(o) {
 					thumb.css("left",0);
 				}else if(tdim.right>sdim.right){
 					thumb.css("left",(sdim.right-tdim.width - sdim.left)+"px");
-				}				
-				
+				}
+
 				var w = tdim.left - sdim.left; if(w<0) w = 0;
-				
+
 				_this.elem.children("[role=table]").css("left",-w+"px");
 			});
 		});
-		
+
 		_this.scroll.mouseleave(function(e){
 			_this.scroll.unbind("mousemove");
 			var lf = _this.scroll.find(".horiz-thumb").css("left");
 			_this.scroll.find(".horiz-thumb").css("left",lf+"px");
 		});
-		
+
+		/****
+		** 横向滚动条
+		****/
 		_this.scroll.mouseup(function(e){
 			_this.scroll.unbind("mousemove");
 			var thumb = $(this).children(":first");
@@ -5586,7 +6066,7 @@ if (!Object.keys) Object.keys = function(o) {
 				thumb.css("left",0);
 			}
 		});
-		
+
 		/***
 		** 点击滚动条空白处
 		***/
@@ -5595,12 +6075,11 @@ if (!Object.keys) Object.keys = function(o) {
 			var thumb = $(this).find(".horiz-thumb");
 			var tdim = thumb.get(0).getBoundingClientRect();
 			var sdim = $(this).get(0).getBoundingClientRect();
-
-			if(e.clientX>=tdim.left){
-				thumb.css("left",(tdim.left - sdim.left + 20)+"px");
-			}else{
-				thumb.css("left",(tdim.left - sdim.left - 20)+"px");
-			}
+//			if(e.clientX>=tdim.left){
+//				thumb.css("left",(tdim.left - sdim.left + 20)+"px");
+//			}else{
+//				thumb.css("left",(tdim.left - sdim.left - 20)+"px");
+//			}
 			/***
 			** 超出边界的控制
 			***/
@@ -5608,15 +6087,15 @@ if (!Object.keys) Object.keys = function(o) {
 				thumb.css("left",0);
 			}else if(tdim.right>sdim.right){
 				thumb.css("left",(sdim.right-tdim.width - sdim.left)+"px");
-			}				
+			}
 
 			var w = tdim.left - sdim.left; if(w<0) w = 0;
 			_this.elem.children("[role=table]").css("left",-w+"px");
-		});		
-		
+		});
+
 		/***
 		** 点击工具栏按钮，发出事件。 2016-3-18号 不再显示toolbar
-		***/		
+		***/
 		$(".sutable-toolbar").click(function(e){
 			var ta = $(e.target);
 			var id = ta.data("id");
@@ -5626,19 +6105,15 @@ if (!Object.keys) Object.keys = function(o) {
 				fireEvent(e.target,"TOOLBAR_CLICK",{id:id,name:id,dataID:dataID});
 			}
 		});
-		
+
 		//body 里面的监听
 		_this.listenBody();
-		
-		
+
+
 		$(window).resize(function(e){
 			_this.config.wi = _this.elem.width();
 			_this.allocate(_this.config.wi);
 		});
-		
-	
-		//组件构建完成
-		this.elem.trigger("MISSION_COMPLETE");
     };
 
 	/**
@@ -5692,21 +6167,21 @@ if (!Object.keys) Object.keys = function(o) {
 		}
 		//构建列表尾部
 		if(cfg.tail){
-			_this.foot = $("<ul class='sutable-footer'  />");
+			_this.foot = $("<ul class='treable-footer'  />");
 			_this.elem.append(_this.foot);
 		}
-		
+
 		_this.scroll = $("<div class='horiz-scroll' />").html("<div class='horiz-thumb' />");
-		_this.elem.append(_this.scroll);	
-		
-		
+		_this.elem.append(_this.scroll);
+
+
 		this.allocate(cfg.wi);//分配宽度
-		
+
 		/***
 		** 显示 排序图标
 		***/
 		if(cfg.sort){
-			var st = "<span class='sort-wrapper'><i class='glyphicon glyphicon-triangle-top'></i><i class='glyphicon glyphicon-triangle-bottom hi'></i></span>";			
+			var st = "<span class='sort-wrapper'><i class='glyphicon glyphicon-triangle-top'></i><i class='glyphicon glyphicon-triangle-bottom hi'></i></span>";
 			if(cfg.sort instanceof Array){
 				cfg.sort.forEach(function(num,idx){
 					_this.head.find(".sutable-col[col="+num+"]").append(st);
@@ -5715,37 +6190,42 @@ if (!Object.keys) Object.keys = function(o) {
 				_this.head.find(".sutable-col").append(st);
 			}
 		};
-		
+
 		this.scrollV();//是否显示滚动条
     }
-	
+
 	/***
 	** 宽度发生变化
 	***/
 	Treable.prototype.allocate = function(w){
-		var w = w||this.elem.width();
-		var dom = this.elem
+		var w = w||1200;
+		var dom = this.elem;
 		var cfg = this.config;
-		var rw  = w - 70 - 130 - 40;//80 第一列的宽度， 120 名称咧的宽度,40 : margin-left
+		var rw  = w - 70 - 130 - 40 - 2;//80 第一列的宽度， 120 名称咧的宽度,40 : margin-left  2 是border
 		var ew = rw/(cfg.head.length - 2);
-		cfg.colDims = [70,130];//列宽度 存储 
-		if(ew>50){
-			dom.find(".sutable-col:gt(1)").css("width",ew+"px").each(function(){
+		cfg.colDims = [70,130];//列宽度 存储
+		if(ew>60){
+			this.head.find(".sutable-col:gt(1)").css("width",ew+"px").each(function(){
 				cfg.colDims.push(ew);
 			});
+			dom.find(".sutable-col:gt(1)").css("width",ew+"px");
 		}else{
 			dom.find(".sutable-col:gt(2)").css("width",80+"px").each(function(){
 				cfg.colDims.push(ew);
 			});//让他超出 ，无所谓
+			dom.find(".sutable-col:gt(1)").css("width",ew+"px");
 		}
-		this.foot.css("width",w+"px");//最下面的 
+		this.foot.css("width",w+"px");//最下面的
 		this.scroll.css("width",w+"px");//横向滚动条
 	};
-	
+
+
+
+
     /**
      * jquery 提供了一个objct 即 fn，which is a shotcut of jquery object prototype
      * or you can call it jquery plugin shell  == fn
-     *  类似于  Class.prototype.jqplugin = function(){};0  
+     *  类似于  Class.prototype.jqplugin = function(){};0
      *  the   $.fn  [same as] Class.prototype
      * plugin entrance
      */
@@ -5755,25 +6235,25 @@ if (!Object.keys) Object.keys = function(o) {
         the = $.extend(true,{},the,new exchange(treable));
 		return the;
     };
-	
+
     /***
     **和其他插件的交互
 	** factory Class
     **@param {Drop} drop :  instacne of the plugin builder
     **/
-    function exchange(treable){		
+    function exchange(treable){
 		//不能使用直接 == treable.toolbar的方式，因为，传入的 this 变了
 		this.toolbar = function(bool){
 			treable.toolbar.toggleClass("active",bool);
 		}
-		
+
 		/***
 		** 外部调用这里 resize 宽度
 		***/
 		this.resize = function(w){
 			treable.allocate(w);
 		};
-		
+
 		/***
 		**外部调用，折叠展开树桩菜单
 		**@param {Boolean} bool  true:折叠，false展开
@@ -5783,19 +6263,20 @@ if (!Object.keys) Object.keys = function(o) {
 			rows.toggleClass("open",bool);
 			return treable.elem;
 		}
-		
+
 		/***
 		** 更新列表
 		***/
 		this.update = function(data){
-			treable.elem.find(".treable-body").remove();
-			Help.recursive(treable.elem,data,treable.config);
+			var body = newbody(treable.elem,data,treable.config);
+			console.log(body);
+			treable.elem.find(".treable-body").replaceWith(body);
 			treable.listenBody();
 			return treable.elem;
 		}
     }
-	
-	
+
+
 	  var old = $.fn.treable;
 	  $.fn.treable.Constructor = Treable;
 	  // table NO CONFLICT
@@ -5803,7 +6284,7 @@ if (!Object.keys) Object.keys = function(o) {
 	  $.fn.treable.noConflict = function () {
 		$.fn.treable = old;
 		return this;
-	  }		
+	  }
 	/***
 	** outside accessible default setting
 	**/
@@ -5813,7 +6294,7 @@ if (!Object.keys) Object.keys = function(o) {
 		tail:null,//列表尾部数据
 		caret:null,//展开，折叠的 图标是 默认是  +  - 号
 		sort:null,
-		tabs:[{id:"1101",name:'线状图',type:"line"},{id:"1102",name:"饼状图",type:"pie"},{id:"1103",name:"堆积图",type:'dui'}],
+		tabs:[],
 		todata:null// toolbar 显示的数据 [{name:'',id:''},{name:'',id:''},{}], function 或者数据
 	};
 }(jQuery));
@@ -6009,6 +6490,8 @@ if (!Object.keys) Object.keys = function(o) {
             this.$num = this.$wrapper.find('.upload-num');
             this.$msg = this.$wrapper.find('.upload-msg');
             this.$wrapper.appendTo($(this.container));
+            this.$button = $(this.button);
+            this.$form = $(this.form);
             this.setSize();
             this.bindEvent();
         },
@@ -6019,6 +6502,8 @@ if (!Object.keys) Object.keys = function(o) {
             input.onchange = function(e) {
                 e.files = this.files;
                 self.drop(e);
+                input.onchange = null;
+                input = null;
             };
             input.click();
         },
@@ -6031,8 +6516,11 @@ if (!Object.keys) Object.keys = function(o) {
                 .on('dragleave', this.dragLeave.bind(this))
                 .on('dragover', this.dragOver.bind(this))
                 .on('drop', this.drop.bind(this))
-                .on('click', '.upload-button', this.popFileSelect.bind(this))
-                //阻止浏览器默认行。
+                .on('click', '.upload-button', this.popFileinput.bind(this));
+
+            this.$button.on('click', this.uploadByButton.bind(this));
+
+            //阻止浏览器默认行。
             $(document).on({
                 'dragenter': false,
                 'dragover': false,
@@ -6040,29 +6528,43 @@ if (!Object.keys) Object.keys = function(o) {
                 'drop': false
             });
         },
-        popFileSelect: function() {
-            this.$wrapper.attr('data-state', 'selecting');
-            this.showMsg('');
+        /**
+         * 弹出文件选择框
+         */
+        popFileinput: function() {
+            this.beforeSelecting();
             this.createFileInput();
+        },
+        /**
+         * 通过按钮上传文件
+         */
+        uploadByButton: function() {
+            var self = this;
+            if (self.file) {
+                self.upload.call(self, self.file);
+            } else {
+                self.error({ msg: self.text.error.none, type: 'file' });
+            }
         },
         /**
          * 判断上传的文件是否符合规范
          */
-        dragDetectDeferred: function(files) {
+        fileErrorDetect: function(files) {
             var msg = [];
             var file = files[0];
             var dtd = $.Deferred();;
             var self = this;
+            var url = null;
             if (files.length < 1) {
                 msg.push(self.text.error.none);
-            } 
-             if (files.length > 1) {
+            }
+            if (files.length > 1) {
                 msg.push(self.text.error.number);
-            } 
-             if (this.size < file.size) {
+            }
+            if (this.size < file.size) {
                 msg.push(self.text.error.size);
-            } 
-             if (this.type && !new RegExp(this.type, 'igm').test(file.type)) {
+            }
+            if (this.type && !new RegExp(this.type, 'ig').test(file.type)) {
                 msg.push(self.text.error.type);
             }
 
@@ -6072,28 +6574,27 @@ if (!Object.keys) Object.keys = function(o) {
             }
             //这里判断是图片，而且可允许的尺寸中有，那么就要判断了
             else {
-                self.getURLDeferred(file).done(function(src) {
-                    if (self.type == 'image') {
-                        self.getImgSize(src, function(w, h) {
-                            if (self.allowSize.length && self.allowSize.indexOf(w + '*' + h) == -1) {
-                                msg.push(self.text.error.allowSize);
-                                self.error({ msg: msg.join(self.text.upload.linkword), type: 'file' });
-                                dtd.reject(false);
-                            } else {
-                                self.setSize.call(self, w, h);
-                                dtd.resolve(src);
-                            }
-                        });
-                    } else {
-                        self.setSize.call(self);
-                        dtd.resolve(src);
-                    }
-                });
+                url = self.createObjectURL(file);
+                if (self.type == 'image') {
+                    self.getImgSize(url, function(w, h) {
+                        if (self.allowSize.length && self.allowSize.indexOf(w + '*' + h) == -1) {
+                            msg.push(self.text.error.allowSize);
+                            self.error({ msg: msg.join(self.text.upload.linkword), type: 'file' });
+                            dtd.reject(url);
+                        } else {
+                            self.setSize.call(self, w, h);
+                            dtd.resolve(url);
+                        }
+                    });
+                } else {
+                    self.setSize.call(self);
+                    dtd.resolve(url);
+                }
             }
             return dtd;
         },
         /**
-         * 上传处理
+         * 上传错误处理
          */
         error: function(e) {
             this.onerror && this.onerror(e);
@@ -6125,7 +6626,8 @@ if (!Object.keys) Object.keys = function(o) {
          * 拖拽进入
          */
         dragEnter: function(e) {
-            this.$wrapper.attr('data-state', 'selecting')
+            this.file = null;
+            this.beforeSelecting();
             this.ondragenter && this.ondragenter(e);
             e.preventDefault();
         },
@@ -6144,22 +6646,35 @@ if (!Object.keys) Object.keys = function(o) {
             e.preventDefault();
         },
         /**
+         * 准备上传
+         */
+        beforeSelecting: function() {
+            this.$wrapper.attr('data-state', 'selecting');
+            this.showMsg('');
+
+        },
+        /**
          * 放下文件时
          */
         drop: function(e) {
             //jquery对event做了封装，但是保留了原来的event,这个event就是e.originalEvent
             var files = Array.prototype.slice.call(e.files || e.originalEvent.dataTransfer.files, 0);
             var self = this;
-            this.$wrapper.attr('data-state', 'selected')
-            this.ondrop && this.ondrop(e);
+            self.$wrapper.attr('data-state', 'selected');
+
+            self.ondrop && self.ondrop(e);
             e.preventDefault();
 
-            this.dragDetectDeferred(files).then(function(src) {
-                self.createPreview.call(self, files[0], src);
-                self.upload.call(self, files[0], src);
-            }, function() {
-                self.createPreview.call(self, false)
-            });
+            self.fileErrorDetect(files)
+                .done(function(src) {
+                    self.file = files[0];
+                    self.createPreview.call(self, files[0], src);
+                    self.$button.length || self.upload.call(self, files[0]);
+                })
+                .always(function(src) {
+                    //赶紧revoke生成的url
+                    src && self.revokeObjectURL(src);
+                });
         },
         /**
          * 设置div尺寸
@@ -6179,23 +6694,24 @@ if (!Object.keys) Object.keys = function(o) {
             }
             this.$wrapper.find('.upload-content').css({ width: w0 + 'px', height: h0 + 'px' });
         },
+        revokeObjectURL: function(url) {
+            if (window.webkitURL) {
+                window.webkitURL.revokeObjectURL(url)
+            } else if (window.URL) {
+                window.URL.revokeObjectURL(url)
+            }
+        },
         /**
          * 生成url
          */
-        getURLDeferred: function(file) {　
-            var dtd = $.Deferred();
-            var fr = new FileReader();
+        createObjectURL: function(file) {　
+            var url = null;
             if (window.webkitURL) {
-                dtd.resolve(window.webkitURL.createObjectURL(file));
+                url = window.webkitURL.createObjectURL(file)
             } else if (window.URL) {
-                dtd.resolve(window.URL.createObjectURL(file));
-            } else {
-                fr.onload = function(e) {
-                    dtd.resolve(fr.result);
-                }
-                fr.readAsDataURL(file);
+                url = window.URL.createObjectURL(file);
             }
-            return dtd;
+            return url;
         },
         /**
          * 生成预览
@@ -6217,6 +6733,7 @@ if (!Object.keys) Object.keys = function(o) {
                 tpl = defaultTpl[this.type].replace('{{src}}', src);
             }
             this.$wrapper.find('.upload-preview').html(tpl);
+
         },
         /**
          * 获取图片的宽高
@@ -6243,6 +6760,7 @@ if (!Object.keys) Object.keys = function(o) {
                 processData: false,
                 xhr: function() {
                     var xhr = new XMLHttpRequest();
+                    xhr.withCredentials = true;
                     self.$wrapper.attr('data-state', 'uploading');
                     self.showMsg(self.text.upload.uploading);
                     xhr.upload.onprogress = self.progress.bind(self);
@@ -6251,7 +6769,7 @@ if (!Object.keys) Object.keys = function(o) {
             }, self.ajax);
 
             //这里生成一次data
-            var fd = new FormData();
+            var fd = this.$form.length ? new FormData(this.$form[0]) : new FormData();
             fd.append(self.name, file);
             $.each(ajaxOption.data || {}, function(k, v) {
                 fd.append(k, v);
@@ -6267,7 +6785,10 @@ if (!Object.keys) Object.keys = function(o) {
                 })
                 .fail(function(xhr, status, err) {
                     self.error.call(self, { msg: xhr.responseText, type: 'ajax', textStatus: status, xhr: xhr, error: err });
-                });
+                })
+                .always(function() {
+                    self.file = null;
+                })
         }
 
     }
@@ -6303,6 +6824,12 @@ if (!Object.keys) Object.keys = function(o) {
                 allowSize: '宽高尺寸有问题'
             }
         },
+        //这里是上传按钮
+        //如果有,则给按钮绑定上传事件，当按钮点击时则上传
+        //如果没有，则拖放后立即上传
+        button: false,
+        //这里看是否需要通过form来创建上传数据
+        form: false,
         name: 'file',
         type: 'image',
         width: 560,
@@ -6770,10 +7297,15 @@ if (!Object.keys) Object.keys = function(o) {
 				var value = o.val||o.value||text;
 				var did = o.id;
 				var ty = o.type;
-				if(o.parent) li.attr("data-path",o.parent.split(">").join("#").replace(/\s/g,""));
+				if(o.parent) {
+					var _path = o.parent.split(">").join("#").replace(/\s/g,"");
+					li.attr("data-path", _path);
+					o.path = _path;
+				}
+
 				txtWrapper.html(text).attr({"title":text});
-				li.attr({"data-name":text,"data-text":text,"deep":deep,"data-id":did,"data-val":value,"data-type":ty,"data-size":o.audienceSize});
-				if(o.audienceSize) txtWrapper.append("<span class='aud-size'>"+(o.audienceSize)+"</span>");
+				li.attr({"data-name":text,"data-text":text,"deep":deep,"data-id":did,"data-val":value,"data-type":ty,"data-size":o.audience_size});
+				if(o.audience_size) txtWrapper.append("<span class='aud-size'>"+(o.audience_size)+"</span>");
 				if(o.search) {
 					txtWrapper.addClass("do-search");
 					txtWrapper.append('<span class="glyphicon glyphicon-search v-search"></span>');
@@ -6789,6 +7321,7 @@ if (!Object.keys) Object.keys = function(o) {
 				txtWrapper.html(o);
 				li.attr({"data-text":o,"data-val":o,"deep":deep}).addClass("list-leaf");
 			}
+			li.data("info", o)
 			ul.append(li);
 		}
 		fa.append(ul);
@@ -6831,7 +7364,8 @@ if (!Object.keys) Object.keys = function(o) {
 			if($(this).hasClass("selected")) return false;
 			$(this).addClass("active");
 			var the = $(this);
-			fireEvent($(this).get(0),"ITEM_CLICK",the.data());
+			//modify by sisi 为了保证数据尽可能完整的返回 故修改成 .data("info")
+			fireEvent($(this).get(0),"ITEM_CLICK",the.data("info"));
 			$(this).addClass("selected");
 		});
 		
@@ -6842,7 +7376,8 @@ if (!Object.keys) Object.keys = function(o) {
 			_this.sepanel.removeClass("hidden");
 			_this.elem.addClass("search-mode");
 			var the = $(this);
-			var _data = the.data();
+			//modify by sisi 为了保证数据尽可能完整的返回 故修改成 .data("info")
+			var _data = the.data("info");
 			_data.search = true;
 			fireEvent($(this).get(0),"ITEM_CLICK",_data);
 		});
@@ -6875,6 +7410,7 @@ if (!Object.keys) Object.keys = function(o) {
 			type:3,
 			clickhide:false,
 			ajaxOptions: _this.config.ajaxOption,
+			formatNoMatches : _this.config.formatNoMatches,//无查询结果提示
 			rowdec:function(o,index,val1){
 				var txt = (typeof(o)=="string")?o:(o.text||o.label||o.name);
 				var val = o.val || o.value || txt;
@@ -6887,7 +7423,7 @@ if (!Object.keys) Object.keys = function(o) {
 				return _li;
 			}
 		});
-		_this.sepanel.append(_this.searchx).append("<button class='btn btn-default btn-search'>返回列表</button>");
+		_this.sepanel.append(_this.searchx).append("<button class='btn btn-default btn-search'>" + (_this.config.returnList ? _this.config.returnList : "返回列表" )+ "</button>");
 		_this.elem.append(_this.sepanel);
 	};
 
@@ -6968,6 +7504,7 @@ if (!Object.keys) Object.keys = function(o) {
 	$.fn.vList3.defaults = {
 		data:[],
 		expicon:"<i class='glyphicon glyphicon-menu-right'></i>",
+		returnList : "返回列表",
 		ajaxOption: {
 				type: "GET",
 				url: "../data/search.json"

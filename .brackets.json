@@ -157,6 +157,10 @@
         "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-vList.js",
         "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-upload.js",
         "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-tree.js",
-        "demo-treable.js"
+        "demo-treable.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-treable.js",
+        "com/ndpmedia/vis/ChartEventListener.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/lib/hicharts/NVis.min.js",
+        "demo-tip.js"
     ]
 }

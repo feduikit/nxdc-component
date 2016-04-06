@@ -5,8 +5,12 @@
 		var self = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.drop.defaults,element.data(),options);
+		var id = (new Date()).valueOf();
 		this.config.width = this.elem.width();
+		this.config.id = id;
+		this.elem.attr("id",id);
 		this.init();
+		element.data('drop', this);
     };
 
     /**
@@ -74,7 +78,9 @@
 
         _this.peal.click(function(e){
             e.stopImmediatePropagation();
-			_this.elem.toggleClass("focus");
+			$(".ndp-drop-wrapper[id!="+_this.config.id+"]").removeClass("focus");
+			$(".ndp-drop-wrapper[id!="+_this.config.id+"] ul.drop-list").addClass("hidden");		
+			_this.elem.toggleClass("focus");	
             _this.list.toggleClass("hidden");
             setDirect(_this);
         });
@@ -103,11 +109,11 @@
 			}else {
 				var oldV = _this.peal.find("input").val();
 				var newV = $(this).attr("title");
-				if (oldV !== newV){
+				if (oldV != newV){
 					fireEvent(_this.elem.get(0),"ITEM_CHANGE",{val:value,text:newV});
 				}
 
-				_this.peal.find("input").val(newV);
+				_this.peal.find("input").attr('data-val',value).val(newV);
 				fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,text:newV});
 			}
         });
@@ -176,6 +182,35 @@
 				}else{
 					items.last().addClass("em");
 				}
+				//新增，类似原生select 的功能
+			}else if((e.keyCode>=65 && e.keyCode<=90)||(e.keyCode>=48 && e.keyCode<=57)){//输入的是字母
+				var char = String.fromCharCode(e.keyCode);
+				var RE = new RegExp("^"+char,'i');
+				var domList = _this.list.get(0);
+				var lis = _this.list.find("li[text]");
+				console.log(domList.clientHeight + " : " + domList.scrollHeight);
+				for(var i=0;i<lis.length;i++){
+					var li = $(lis.get(i));
+					var txt = li.attr("text");
+					var val = li.attr("value");
+					 if(RE.test(txt)){
+						if(!_this.list.hasClass("hidden")){
+							 li.siblings().removeClass("em"); 
+							 li.addClass("em");
+								
+						     if(domList.scrollHeight>domList.clientHeight || 		domList.offsetHeight>domList.clientHeight){//存在滚动条
+								 var ch = li.get(0).offsetTop - domList.clientHeight;
+								 if(ch>0){
+									 _this.list.scrollTop(ch+30);
+								 }
+							 }
+						}else{
+							_this.elem.find("input").val(txt).attr("data-val",val);
+							fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:val,text:txt});
+						}
+						break;
+					 }						
+				}
 			}
 		});
 
@@ -233,15 +268,15 @@
 				_this.peal.find("input").attr("checkedArr",JSON.stringify(cksArr)).val(vals.join(","));
 				fireEvent(_this.elem.get(0),"APPLY_CLICK",{checkedArr:cksArr});
 			});
-
-			$(document).click(function(e){
-				if(!(e.target.tagName == "INPUT" && e.target.type == "checkbox")){
-					//$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
-					$(".ndp-drop-wrapper ul.drop-list").addClass("hidden");
-				}
-				$(".ndp-drop-wrapper").removeClass("focus");
-			});
 		}
+		
+		$(document,document.body).click(function(e){
+			if(!(e.target.tagName == "INPUT" && e.target.type == "checkbox")){
+				//$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
+				$(".ndp-drop-wrapper ul.drop-list").addClass("hidden");
+			}
+			$(".ndp-drop-wrapper").removeClass("focus");
+		});
     };
 
 	/**
@@ -266,13 +301,16 @@
 	***/
     Drop.prototype.initConfig = function(){
         var _this = this;
-        if(this.placeholder){
-            _this.peal.find("input").attr("placeholder",_this.placeholder);
+        if(_this.config.placeholder){
+            _this.peal.find("input").attr("placeholder",_this.config.placeholder);
         }
 
         if(_this.config.val){
             _this.peal.find("input").val(_this.config.val);
-        }
+			$(_this.elem.get(0)).data('val', _this.config.val);
+        } else {
+			$(_this.elem.get(0)).data('val', '');
+		}
 
 		//ser 需要设置名字
         if(_this.config.name){
@@ -340,10 +378,44 @@
      */
     $.fn.drop = function (options) {
 		var the = this.first();
-        var drop = new Drop(the, options);
-		the = $.extend(true,{},the,new exchange(drop));
-		return the;
+		if (typeof options === 'object'){
+			var drop = new Drop(the, options);
+			the = $.extend(true,{},the,new exchange(drop));
+			return the;
+		} else if (typeof options === 'string'){
+			var instance = the.data('drop');
+			if (!instance){
+				console.log("还未初始化")
+				return;
+			}
+			var args = Array.prototype.slice.call(arguments, 1);
+			var ret = instance[options](args);
+			return ret;
+		}
     };
+
+	Drop.prototype.val = function(o){
+		var _this = this;
+		var o = o[0];
+		if(typeof(o)=="object"){
+			var txt = o[_this.config.textKey]||o.label||o.text||o.value||o.name;
+			var val = o.value || o.val || o.id || txt;
+			_this.elem.find("input").val(txt).attr("data-val",val);
+			$(_this.elem.get(0)).data('val', val);
+		}else{
+			_this.elem.find("input").val(o).attr("data-val",o);
+			$(_this.elem.get(0)).data('val', o);
+		}
+	}
+
+	Drop.prototype.data = function(o){
+		var _this = this;
+		var _data = {
+			'val': _this.elem.find("input").attr("data-val"),
+			'txt' : _this.elem.find("input").val()
+		}
+		return _data;
+	}
 
     /***
     **和其他插件的交互

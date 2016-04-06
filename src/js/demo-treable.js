@@ -367,8 +367,8 @@ require(['./config'],function(){
   ],
   "legend": {}
 };
-			var data1 = [{id:"1111",label: [{status:true},{name:"中华人民共和国"},{text:2000},{text:2},{text:20},{text:2000},
-							   {text:2},{text:20},{text:2},{text:20}],
+			var data1 = [{id:"1111",label: [{status:true},{name:"中华人民共和国2342434阿尔额收到"},{text:2000},{text:2},{text:20},{text:2000},
+							   {text:2},{text:20},{text:2},{text:20},{text:'wrwdsffwefw'},{text:"2012-12-25 11:30:30"}],
 						     sub:[{id:"11110",label:[{status:true},{name:"美国"},{text:1100},{text:2},{text:20},{text:2000},{text:2},{text:20},{text:2},{text:20}],
 								 sub:[{id:"111101",label:[{status:true},{name:"11-11-11"},{text:910},{text:2},{text:20},{text:2000},{text:2},{text:20},{text:2},{text:20}]}]  	
 								},
@@ -425,19 +425,28 @@ require(['./config'],function(){
 				body:data1,
 				tail:[{},{}],
 				sort:[3,5,7,9],//base from 0 
-				todata:[{name:"调整预算出价",id:"price"},{name:"编辑",id:"edit"},{name:"看图表",id:"chart"}]//工具条上的按钮
+				//这个配置是用来显示，图表层展开时 tab项的，有几个项就有几个数组元素，name是tab上显示的名字
+				tabs:[
+					  {id:"1101",name:'线状图',type:"line"},
+					  {id:"1102",name:"饼状图",type:"pie"}
+					 ],
+				todata:[{name:"调整预算出价",id:"price"},{name:"看图表",id:"chart"}]//工具条上的按钮
 			}).on("MISSION_COMPLETE",function(e){
 				
 			}).on("SORT_CLICK",function(e){
 				var evt = e.originalEvent;
 				
-			}).on("TOOLBAR_CLICK",function(e){
-				console.log(e.originalEvent.data);
+			}).on("TOOLBAR_CLICK",function(e){// 点击最上面浮出的toolbar 或者，每一行的下拉菜单，[调整预算出价，编辑，看图表] 
+				console.log(e.originalEvent.data);//返回数据如下
+				//{id: "chart", val: "看图表", name: "看图表", dataID: 11110}
+				//id 点击的是哪个按钮，name：按钮的名字， dataID: 选中行(所在行)的数据id 
 			}).on("STATUS_CHANGE",function(e){
 				var evt = e.originalEvent;
 				
 			}).on("TAB_SHOW CHART_LAYER_INIT",function(e){
-				var da = e.originalEvent.data;
+				var da = e.originalEvent.data; // 返回数据如下
+				//{name: "编辑", id: "edit", dataID: 11110, GD: jQUERY}
+				// name 选中的tab的名称， dataID :所在行数据id   GD: JQUERY对象，图表的绘图区域DOM
 				if(e.type == "CHART_LAYER_INIT"){//首次打开图表层
 					var chartWidget = new ChartWidget();
 					chartWidget.placeAt(da.GD);
@@ -459,14 +468,16 @@ require(['./config'],function(){
 			
 			//展开收起 树状菜单 
 			$("#info").click(function(){
-//				bool = !bool;
-				tre.fold(false);
+				bool = !bool;
+				tre.fold(bool);
 			});	
 			
 			//更新列表数据
 			$("#success").click(function(){
 				bool = !bool;
-				tre.update(bool?data2:data1);
+				var dat = bool?data2:data1;
+				console.log(bool);
+				tre.update(dat);
 			});
 			
         });

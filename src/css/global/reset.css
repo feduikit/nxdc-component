@@ -21,7 +21,14 @@ html,body{
 	outline: none;
 }
 
-button.btn:focus{
+/****
+** 圆角边框 改为 平角边框
+****/
+.btn{
+	border-radius: 0;
+}
+
+.btn:focus{
 	outline: 0;
 }
 

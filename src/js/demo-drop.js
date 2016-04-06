@@ -2,7 +2,18 @@ require(['./config'],function(){
     require(['jquery','utils'],function($){
         require(['bootstrap','./components/drop'],function(){
             var the = $("div.ndp-drop-wrapper[name=inline-drop]").drop({
-                data:[{text:"中国",value:12},{text:"日本",value:100},{name:3,val:121},{text:4,id:777}],
+                data:[{text:"中国",value:12},{text:"日本",value:100},
+					  {name:3,val:121},
+					  {text:4,id:777},
+					  {text:"asas",id:7771},
+					  {text:"Dewe",id:7772},
+					  {text:"Fewwev",id:7773},
+					  {text:"Cdsfsf",id:7774},
+					  {text:"J的身份为",id:7775},
+					  {text:"Ferwer",id:7776},
+					  {text:"ydsfsdf",id:7777},
+					  {text:"Tfsdff",id:7778},
+					 ],
 				name:"country"// 为了便于 serialize  最好定义一个名字
             }).on("ITEM_CLICK",function(e){
 				//下拉选择项点击事件

@@ -25,10 +25,15 @@
 				var value = o.val||o.value||text;
 				var did = o.id;
 				var ty = o.type;
-				if(o.parent) li.attr("data-path",o.parent.split(">").join("#").replace(/\s/g,""));
+				if(o.parent) {
+					var _path = o.parent.split(">").join("#").replace(/\s/g,"");
+					li.attr("data-path", _path);
+					o.path = _path;
+				}
+
 				txtWrapper.html(text).attr({"title":text});
-				li.attr({"data-name":text,"data-text":text,"deep":deep,"data-id":did,"data-val":value,"data-type":ty,"data-size":o.audienceSize});
-				if(o.audienceSize) txtWrapper.append("<span class='aud-size'>"+(o.audienceSize)+"</span>");
+				li.attr({"data-name":text,"data-text":text,"deep":deep,"data-id":did,"data-val":value,"data-type":ty,"data-size":o.audience_size});
+				if(o.audience_size) txtWrapper.append("<span class='aud-size'>"+(o.audience_size)+"</span>");
 				if(o.search) {
 					txtWrapper.addClass("do-search");
 					txtWrapper.append('<span class="glyphicon glyphicon-search v-search"></span>');
@@ -44,6 +49,7 @@
 				txtWrapper.html(o);
 				li.attr({"data-text":o,"data-val":o,"deep":deep}).addClass("list-leaf");
 			}
+			li.data("info", o)
 			ul.append(li);
 		}
 		fa.append(ul);
@@ -86,7 +92,8 @@
 			if($(this).hasClass("selected")) return false;
 			$(this).addClass("active");
 			var the = $(this);
-			fireEvent($(this).get(0),"ITEM_CLICK",the.data());
+			//modify by sisi 为了保证数据尽可能完整的返回 故修改成 .data("info")
+			fireEvent($(this).get(0),"ITEM_CLICK",the.data("info"));
 			$(this).addClass("selected");
 		});
 		
@@ -97,7 +104,8 @@
 			_this.sepanel.removeClass("hidden");
 			_this.elem.addClass("search-mode");
 			var the = $(this);
-			var _data = the.data();
+			//modify by sisi 为了保证数据尽可能完整的返回 故修改成 .data("info")
+			var _data = the.data("info");
 			_data.search = true;
 			fireEvent($(this).get(0),"ITEM_CLICK",_data);
 		});
@@ -130,6 +138,7 @@
 			type:3,
 			clickhide:false,
 			ajaxOptions: _this.config.ajaxOption,
+			formatNoMatches : _this.config.formatNoMatches,//无查询结果提示
 			rowdec:function(o,index,val1){
 				var txt = (typeof(o)=="string")?o:(o.text||o.label||o.name);
 				var val = o.val || o.value || txt;
@@ -142,7 +151,7 @@
 				return _li;
 			}
 		});
-		_this.sepanel.append(_this.searchx).append("<button class='btn btn-default btn-search'>返回列表</button>");
+		_this.sepanel.append(_this.searchx).append("<button class='btn btn-default btn-search'>" + (_this.config.returnList ? _this.config.returnList : "返回列表" )+ "</button>");
 		_this.elem.append(_this.sepanel);
 	};
 
@@ -223,6 +232,7 @@
 	$.fn.vList3.defaults = {
 		data:[],
 		expicon:"<i class='glyphicon glyphicon-menu-right'></i>",
+		returnList : "返回列表",
 		ajaxOption: {
 				type: "GET",
 				url: "../data/search.json"

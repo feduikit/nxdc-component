@@ -2,10 +2,11 @@
 	position: relative;
 	padding: 0!important;
 	box-sizing: border-box;
-	width: 100%;
+/*	width: 100%;*/
 	border: 1px solid #e0e0e0;
-	/*width: 1200px;*/
+	min-width: 1200px;
 	overflow: hidden;
+
 }
 .ndp-treable-wrapper.resize-cursor{
 	cursor: col-resize;
@@ -69,7 +70,7 @@
 ***/
 .treable-header{
 	position: relative;
-	min-width: 100%;
+/*	width: 100%;*/
 	width: 400%;
     white-space: nowrap;
 	margin: 0;
@@ -81,7 +82,7 @@
 /****
 **列表尾
 ***/
-.sutable-footer{
+.treable-footer{
 	position: fixed;
 /*	position: absolute;*/
 	height: 50px;
@@ -150,7 +151,7 @@
 .treable-header>.treable-row{
 	position: relative;
 	height: 40px;
-	width: 100%;
+/*	width: 100%;*/
 	margin: 0;
 	padding: 0;
 	line-height:normal;
@@ -219,9 +220,24 @@
 /***
 ** 图表界面
 **/
+/****
+** 图表 所在层  chart 和 tabs 所在的层
+***/
+.treable-row-wrapper>.chart-wrapper{
+	position: relative;
+	overflow: hidden;
+	height: 0;
+	-webkit-transition: all 0.4s ease-in-out;
+	-moz-transition: all 0.4s ease-in-out;
+	transition:all 0.4s ease-in-out;
+}
+
+/****
+**  图表里面的tabs
+***/
 .treable-row-wrapper>.chart-wrapper>.ndp-tab-wrapper{
 	position: relative;
-	top:0;
+	top:0;chart
 	height: 0;
 	margin: 0;
 	padding: 0;
@@ -235,17 +251,6 @@
 	background-color: #e0e0e0;
 }
 
-/****
-** 图表 所在层  chart 和 tabs 所在的层
-***/
-.treable-row-wrapper>.chart-wrapper{
-	position: relative;
-	overflow: hidden;
-	height: 0;
-	-webkit-transition: all 0.4s ease-in-out;
-	-moz-transition: all 0.4s ease-in-out;
-	transition:all 0.4s ease-in-out;		
-}
 
 /***
 ** 图表层 关闭按钮
@@ -267,7 +272,8 @@
 ** 整个图表层的高度
 ***/
 .treable-row-wrapper>.chart-wrapper.open{
-	height: 290px; /***图表层的高度***/
+	height: 300px; /***图表层的高度***/
+	width: 25%;
 }
 
 /***
@@ -278,6 +284,9 @@
 	float: left;
 	width: calc(100% - 150px);
 	height: 100%;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
 }
 .treable-row-wrapper>.chart-wrapper.open>.tab-content-cus .tab-pane{
 	position: relative;
@@ -357,19 +366,19 @@
 .treable-row>.sutable-col{
 	position: relative;
 	display:inline-block;
+	box-sizing: border-box;
 	height:100%;
 	margin: 0;
 	top:0;
-/*	text-align: center;*/
 	white-space: nowrap;
 	float: left;
-	border-right: 1px solid transparent;
-	overflow: hidden;
+	border:1px solid transparent;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	cursor:default;
 	padding-left: 10px;
-/*	transition:all 0.1s linear;*/
+	overflow: hidden;
+	transition:width 0.1s;
 }
 .treable-row>.sutable-col.active{
 	border-right-color:deepskyblue;
@@ -455,6 +464,7 @@
 
 .treable-row .sutable-col-name,.treable-header .sutable-col-name{
 	min-width: 130px!important;
+	padding-right: 15px;
 /*	width: 15%;*/
 }
 /****
@@ -491,6 +501,7 @@
 	z-index: 20;
 /*	top:15%;*/
 	right: 0px;
+/*	left:0px;*/
 	overflow: visible;
 	border-right: 1px solid #ccc;
 /*	background-color: red;*/
