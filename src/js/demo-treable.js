@@ -430,7 +430,7 @@ require(['./config'],function(){
 					  {id:"1101",name:'线状图',type:"line"},
 					  {id:"1102",name:"饼状图",type:"pie"}
 					 ],
-				todata:[{name:"调整预算出价",id:"price"},{name:"编辑",id:"edit"},{name:"看图表",id:"chart"}]//工具条上的按钮
+				todata:[{name:"调整预算出价",id:"price"},{name:"看图表",id:"chart"}]//工具条上的按钮
 			}).on("MISSION_COMPLETE",function(e){
 				
 			}).on("SORT_CLICK",function(e){
