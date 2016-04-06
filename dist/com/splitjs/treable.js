@@ -143,12 +143,12 @@
 		var thumb = _this.scroll.find(".horiz-thumb");
 		var tdim = thumb.get(0).getBoundingClientRect();
 		var w = this.elem.width(); // 不包括border的宽度
-		var colW = 40 + 10;//40 margin-left:40    10 border-right
+		var colW = 41;//41 margin-left:41    10 border-right
 		$('.treable-header .sutable-col').each(function(index,item){
 			colW += $(item).get(0).getBoundingClientRect().width;
 		});
 //		colW = colW + eval(_this.config.colDims.join("+"));//获得内部内容的总宽度
-		
+//		console.log(colW + ":" + w);
 		if(tdim.left<sdim.left){
 			thumb.css("left",sdim.left+"px");
 		}else if(tdim.right>sdim.right){
@@ -158,7 +158,10 @@
 		_this.scroll.toggleClass("show",colW>w?true:false).css("width",w+"px");
 		_this.elem.toggleClass("extend",colW>w?true:false)
 		if(colW>w){
-			thumb.css("width",(w/colW)*100+"%");
+//			thumb.css("width",(w/colW)*100+"%");
+			thumb.css("width",(w-colW+w)+"px");
+		}else{
+			
 		}
 	};
 	/****

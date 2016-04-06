@@ -2,9 +2,8 @@
 	position: relative;
 	padding: 0!important;
 	box-sizing: border-box;
-/*	width: 100%;*/
+	width: 100%;
 	border: 1px solid #e0e0e0;
-	min-width: 1200px;
 	overflow: hidden;
 
 }
@@ -114,7 +113,7 @@
 	height: 14px;
 	padding-top:2.8px;
 }
-.horiz-scroll.show .horiz-thumb{
+.ndp-treable-wrapper .horiz-scroll.show .horiz-thumb{
 	position: relative;
 	z-index: 100;
 	width: 99%;

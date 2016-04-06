@@ -188,7 +188,6 @@
 				var RE = new RegExp("^"+char,'i');
 				var domList = _this.list.get(0);
 				var lis = _this.list.find("li[text]");
-				console.log(domList.clientHeight + " : " + domList.scrollHeight);
 				for(var i=0;i<lis.length;i++){
 					var li = $(lis.get(i));
 					var txt = li.attr("text");
