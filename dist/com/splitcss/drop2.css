@@ -61,14 +61,14 @@
 	text-decoration: none;
 }
 
-.dropdown-menu .drop-list-item>.content-part {
+.dropdown-menu .drop-list-item>a.content-part {
     position: relative;
     display: inline-block;
     width: 100%;
     height: 30px;
     line-height: 30px;
     margin: 0;
-    padding: 0 20px;
+    padding: 0;
 }
 
 /****
@@ -84,7 +84,7 @@
 	color:#333;
 }
 
-.dropdown-menu .list-leaf[deep='2']>a{
+.dropdown-menu .list-leaf[deep='2']>a.content-part{
 	padding-left: 20px;
 	color:#333;
 }
