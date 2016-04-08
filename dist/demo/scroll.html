@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+	<title>--</title>
+	<style>
+		/*主窗*/
+		
+		#Scroll {
+			width: 200px;
+			height: 400px;
+			background: #f8f8f8
+		}
+		/*左边内容区*/
+		
+		#ScroLeft {
+			float: left;
+			height: 100%;
+			width: 190px;
+			overflow: hidden
+		}
+		/*滚动条背景*/
+		
+		#ScroRight {
+			position: relative;
+			float: right;
+			height: 100%;
+			width: 10px;
+			background: #F1F1F1;
+			overflow: hidden;
+		}
+		/*滚动条*/
+		
+		#ScroLine {
+			position: absolute;
+			z-index: 1;
+			top: 0px;
+			left: 0px;
+			width: 100%;
+			height: 20px;
+			overflow: hidden;
+			background: #666666
+		}
+	</style>
+</head>
+<script>
+	var Scrolling = false;
+
+	function $(o) {
+		return document.getElementById(o)
+	}
+
+	function ScroMove() {
+		Scrolling = true
+	}
+	document.onmousemove = function (e) {
+		if (Scrolling == false) return;
+		ScroNow(e)
+	}
+	document.onmouseup = function (e) {
+		Scrolling = false
+	}
+
+	function ScroNow(event) {
+		var event = event ? event : (window.event ? window.event : null);
+		var Y = event.clientY - $("Scroll").getBoundingClientRect().top - $("ScroLine").clientHeight / 2;
+		var H = $("ScroRight").clientHeight - $("ScroLine").clientHeight;
+		var SH = Y / H * ($("ScroLeft").scrollHeight - $("ScroLeft").clientHeight);
+		if (Y < 0) Y = 0;
+		if (Y > H) Y = H;
+		$("ScroLine").style.top = Y + "px";
+		$("ScroLeft").scrollTop = SH;
+	}
+
+	function ScrollWheel() {
+		var Y = $("ScroLeft").scrollTop;
+		var H = $("ScroLeft").scrollHeight - $("ScroLeft").clientHeight;
+		if (event.wheelDelta >= 120) {
+			Y = Y - 80
+		} else {
+			Y = Y + 80
+		}
+		if (Y < 0) Y = 0;
+		if (Y > H) Y = H;
+		$("ScroLeft").scrollTop = Y;
+		var SH = Y / H * $("ScroRight").clientHeight - $("ScroLine").clientHeight;
+		if (SH < 0) SH = 0;
+		$("ScroLine").style.top = SH + "px";
+	}
+</script>
+
+<body>
+	<div id="Scroll" onselectstart="return false" onmousewheel="ScrollWheel()">
+		<div id="ScroLeft">
+
+			内容1111
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br> 内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br> 内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容5555
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br> 内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br> 内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容
+			<br>内容0000
+			<br>
+
+		</div>
+		<div id="ScroRight" onclick="ScroNow(event)">
+			<div id="ScroLine" OnMouseDown="ScroMove()"></div>
+		</div>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,185 @@
+.ndp-table-wrapper {
+    box-sizing: border-box;
+}
+
+.ndp-table-header {
+    position: relative;
+    font-weight: bolder;
+    margin: 0;
+    padding: 0;
+}
+
+
+/***
+**列拖动区域
+**/
+
+i.col-spliter {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -3px;
+    width: 6px;
+    cursor: col-resize;
+}
+
+.ndp-table-header span {
+    position: relative;
+}
+
+
+/***
+**标题行 下面展现内容的部分
+**/
+
+.ndp-table-body {
+    position: relative;
+    overflow-y: auto;
+}
+
+
+/***
+** row  行
+**/
+
+.ndp-table-row {
+    position: relative;
+    box-sizing: border-box;
+    width: calc(100% - 15px);
+    height: 40px;
+    line-height: 40px;
+    padding: 0;
+    margin: 0;
+    color: #666;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid #e0e0e0;
+    border-top: 1px solid #e0e0e0;
+}
+
+.ndp-table-row:nth-child(n+2) {
+    border-top: none;
+}
+
+.ndp-table-row:nth-child(n+2).active {
+    border-top: 1px solid #fd9611;
+    position: relative;
+    top: -1px;
+}
+
+.ndp-table-body .ndp-table-row-hover {
+    background-color: #fff4e7;
+    cursor: pointer;
+}
+
+/***
+
+**选中的一行
+**/
+
+.ndp-table-row.active {
+    background-color: #fff4e7;
+    border: 1px solid #fd9611;
+}
+
+
+/***
+**col  列
+**/
+
+.ndp-table-col {
+    position: relative;
+    float: left;
+    box-sizing: border-box;
+    display: table-cell;
+    height: 100%;
+    padding: 0 10px;
+    text-align: left;
+    border: 1px solid transparent;
+    overflow: hidden;
+}
+.ndp-table-col.active {
+    background-color: #fff4e7;
+    color: #666;
+    border-right-color: #fd9611;
+    border-left-color: #fd9611;
+}
+.ndp-table-header .ndp-table-col.active,
+.ndp-table-body .ndp-table-row:first-child .ndp-table-col.active {
+    border-top-color: #fd9611;
+}
+.ndp-table-header ~ .ndp-table-body .ndp-table-row:first-child .ndp-table-col.active {
+    border-top-color: transparent;
+}
+.ndp-table-body .ndp-table-row:last-child .ndp-table-col.active {
+     border-bottom-color: #fd9611;
+}
+.ndp-table-col.highLight {
+    border-right: 1px solid #6d6d6d;
+}
+
+.ndp-table-col.highLight:nth-last-child(1) {
+    border-width: 0;
+}
+
+.ndp-table-header .ndp-table-col-split {
+    border-right: 1px solid #e0e0e0;
+}
+.ndp-table-body .ndp-table-col-split {
+    border-right: 1px solid transparent;
+}
+.ndp-table-col.highLight {
+    border-right: 1px dashed #fd9611;
+}
+.ndp-table-col-hover {
+    background-color: #fff4e7;
+    cursor: pointer;
+}
+/**
+**排序按钮的样式
+**/
+
+.sort-direct {
+    position: absolute;
+    display: inline-block;
+    margin: 0;
+    margin-left: 5px;
+    width: 12px;
+    height: 100%;
+    overflow: hidden;
+}
+
+.sort-direct>.glyphicon {
+    position: absolute;
+    width: 100%;
+    height: 10px;
+    padding: 0;
+    margin: 0;
+    font-size: 10px;
+    color: #666;
+    cursor: pointer;
+}
+
+span.head-txt {
+    position: relative;
+    display: inline-block;
+    height: 100%;
+    display: inline-block;
+    max-width: calc(100% - 42px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0;
+}
+
+.sort-direct>.glyphicon.active {
+    color: #666;
+}
+
+.sort-direct>.glyphicon-triangle-top {
+    top: calc(50% - 7px);
+}
+
+.sort-direct>.glyphicon-triangle-bottom {
+    top: 50%;
+}

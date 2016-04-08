@@ -1,0 +1,110 @@
+.ndp-vList-wrapper{
+	position: relative;
+	display: inline-block;
+}
+ul.list-deepest{
+	border:1px solid #ccc;
+}
+
+
+li.list-item{
+	position: relative;
+	min-height: 40px;
+	color:#808080;
+	padding-top:10px;/** 行高 调整需要修改 **/
+}
+
+/***
+** 下一集菜单
+**/
+li>ul.list-root{
+	position: relative;
+	width: 100%;
+	margin-top:28px;
+	transition:opacity,height,display, 0.3s ease-in-out;
+}
+
+li[deep] span.list-txt-wrapper{
+	position: absolute;
+	display: block;
+	width: 100%;
+	top:0;
+	height: 40px;/** 行高 调整需要修改 **/
+	line-height: 40px;/** 行高 调整需要修改 **/
+	padding-left: 12px;
+	overflow:hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	cursor: pointer;
+}
+li[deep="2"] span.list-txt-wrapper{
+	padding-left: 24px;
+}
+li[deep="3"] span.list-txt-wrapper{
+	padding-left: 36px;
+}
+li[deep="4"] span.list-txt-wrapper{
+	padding-left: 48px;
+}
+
+.ndp-vList-wrapper ul[deep="2"]{
+	background-color: #f6f6f6;
+}
+
+.ndp-vList-wrapper ul[deep="3"]{
+	background-color: #eeeeee;
+}
+
+li[asparent].active>span.list-txt-wrapper>i{
+	-webkit-transform: rotate(90deg);
+	transform: rotate(90deg);
+
+  -webkit-animation: ro 0.2s ease-in-out;
+    -moz-animation: ro 0.2s ease-in-out;
+    animation: ro 0.2s ease-in-out;	
+}
+
+.list-txt-wrapper i{
+	position: absolute;
+	left:85%;
+	top:30%;	
+}
+
+li.list-leaf:hover{
+	background-color: #f7f0e8;
+	color:#fc7408;
+}
+li[asparent].focus>.list-txt-wrapper,li.list-leaf.active{
+	color:#6f6f6f;
+	font-weight: bold;
+}
+.list-txt-wrapper.leaf-icon>i{
+	left:12px;
+	margin-top:2px;/***图片居中***/
+}
+
+li[deep="1"] .list-txt-wrapper.leaf-icon{
+	padding-left:29px
+}
+li[deep="2"] .list-txt-wrapper.leaf-icon{
+	padding-left:41px;
+}
+li[deep="2"] .list-txt-wrapper.leaf-icon>i{
+	left:24px;
+}
+
+li[deep="3"] .list-txt-wrapper.leaf-icon{
+	padding-left:calc(36px + 12px + 5px);
+}
+li[deep="3"] .list-txt-wrapper.leaf-icon>i{
+	left:36px;
+}
+li[deep="4"] .list-txt-wrapper.leaf-icon{
+	padding-left:calc(48px + 12px + 5px)
+}
+li[deep="4"] .list-txt-wrapper.leaf-icon>i{
+	left:48px;
+}
+
+
+

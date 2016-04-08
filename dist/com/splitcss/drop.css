@@ -1,0 +1,215 @@
+/***
+**
+**/
+.ndp-drop-wrapper{
+    position: relative;
+    display: inline-block;
+	box-sizing: border-box;
+    min-width:120px;
+    min-height: 30px;
+    border:1px solid #e0e0e0;
+    height: 30px;
+    padding: 0;
+}
+.ndp-drop-wrapper.focus{
+	box-shadow:0 0 1px #ccc;
+}
+
+.drop-peal{
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+}
+
+
+.ndp-drop-wrapper .drop-peal>input[type]{
+    position: relative;
+    height: 100%;
+    width: calc(100% - 25px);
+    padding: 0 5px;
+    background-color:transparent;
+	border-color: transparent;
+	border-width: 0;
+	box-shadow: 0 0 0;
+}
+.drop-peal>span.caret-wrapper{
+    position: absolute;
+    box-sizing: border-box;
+    right: 0;
+    margin: 0;
+    top:0;       
+    width: 25px;
+    height: 100%;
+	transform: rotate(90deg);
+	border-radius: 0!important;
+	border:0;
+}
+span.caret-wrapper>span.caret{
+	position: absolute;
+	font-size: 10px;
+	width: 1em;
+	border:0;
+	top:50%;
+	margin-top:-2px;
+	color:#8f8f8f;
+}
+.focus span.caret-wrapper>span.caret{
+	color:#fd9611;
+}
+span.caret-wrapper.turnback{
+	transform: rotate(270deg);
+}
+.drop-peal span.caret{
+    background-color:transparent;
+}
+.drop-split-peal>input[type]{
+    background-color: #c4c4c4;
+}
+.drop-split-peal>span.caret-wrapper{
+    background-color: #9e9e9e;
+}
+.drop-split-peal>span.caret-wrapper:hover{
+    background-color: #ebebeb;
+}
+
+span.caret-wrapper>span.caret{
+    position: absolute;
+    left:25%;
+    top:40%;
+}
+.drop-peal+ul.drop-list{
+    position: absolute;
+    box-sizing: border-box!important;
+    z-index: 400;
+    width: calc(100% + 2px);
+    left: -1px;
+    top:101%;
+    border:1px solid #e0e0e0;
+    box-shadow: 0 3px 1px  1px rgba(227, 227, 227, 0.5);
+    max-height: 300px;
+    overflow-y: auto;
+	background-color: white;
+}
+
+.ndp-drop-wrapper ul.drop-list>li{
+    overflow: hidden;
+	width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+	user-select:none;
+	-webkit-user-select:none;
+	-moz-user-seelct:none;
+}
+.ndp-drop-wrapper li.drop-one-item{
+	position: relative;
+	width: 100%;
+    min-height: 30px;
+    line-height: 30px;
+    padding: 0;	
+	padding-left:5px;
+	cursor: default;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+li.drop-one-item>i.glyphicon{
+	font-size: 10px;
+	margin-right: 2px;
+}
+/**
+** 不能点击，disabled
+**/
+li.drop-one-item.disabled,li.drop-one-item.disabled:hover{
+	opacity: 0.7;
+	color:#b5b5b5;
+	background-color: #dee7e7;
+	cursor: not-allowed;
+}
+/***
+高亮
+**/
+.ndp-drop-wrapper li.drop-one-item.em{
+	background-color: #f7f0e8;
+	color:#fc7408;;
+}
+/**
+** 分割线
+**/
+li.drop-one-item.split-line{
+	border-bottom: 1px solid #e0e0e0;
+}
+/**
+** 子层菜单
+**/
+ul.sub-drop-list{
+	position: relative;
+	width: 100%;
+	height: auto;
+	margin: 0;
+	padding: 0;
+}
+ul.sub-drop-list>li.drop-one-item{
+	
+}
+ul>li.drop-one-item:hover{
+    background-color: #f7f0e8;
+    color:#fc7408;
+	cursor: pointer;
+}
+ul>li.drop-recursive:hover{
+	color:black;
+	background-color: white;
+}
+li.drop-recursive>i.glyphicon.turndown{
+	transform: rotate(90deg);	
+}
+
+/***
+** 分组 显示下拉菜单
+** 组名  高亮
+**/
+li[deep='0'].group-hilight{
+	font-weight: bolder;
+}
+li[deep='0'].group-hilight li.drop-one-item{
+	font-weight: normal;
+}
+
+/***
+** checkbox 层
+**/
+li.drop-one-item.all-banner,li.drop-one-item.all-banner:hover{
+	background-color: #496080;
+	color:white;
+}
+li.checkbox-item>input[type=checkbox]{
+	position: relative;
+}
+li.checkbox-item>span{
+	position: relative;
+	float: left;
+	display: inline-block;
+	width: 80%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+li.apply-item{
+	padding: 0!important;
+}
+li.apply-item>button.btn{
+	position: relative;
+	margin: 0;
+	border-radius: 0;
+	width: 100%;
+	color:#fc7d08;
+	background-color: white;
+	border:1px solid #fd9611;
+}
+li.apply-item>button.btn:hover{
+	background-color: #fd9611;
+	color:white;
+}

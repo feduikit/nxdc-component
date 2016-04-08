@@ -1,0 +1,66 @@
+input,input[type=text],input[type=password],input[type=number],input[type=email],textarea{
+	font-size: 14px;
+	padding: 0 10px;
+	border:1px solid #e0e0e0;
+}
+
+input:focus,input[type=text]:focus,input[type=password]:focus,
+input[type=number]:focus,input[type=email]:focus,
+textarea:focus{
+	box-shadow: 0 0 1px #ccc;
+}
+
+
+inpput[disabled],input[type=text][disabled],
+input[type=password][disabled],textarea[disabled]{
+	background-color: #dee7e7;
+}
+
+.form-input{
+	width: 140px;
+	height: 30px;
+	transition:all 0.3s;
+}
+.form-input.form-input-warning,.form-textarea.form-textarea-warning{
+	border-color:#e56d43;
+}
+.form-input.form-input-warning:hover,.form-textarea.form-textarea-warning:hover{
+	border-color:#dc542f;
+	box-shadow: 0 0 1px #dc542f;
+}
+
+.form-input.form-input-alert,.form-textarea.form-textarea-alert{
+	border-color:#e1b00b;
+}
+.form-input.form-input-alert:hover,.form-textarea.form-textarea-alert:hover{
+	border-color:#d79a07;
+	box-shadow: 0 0 1px #d79a07;
+}
+
+.form-textarea{
+	height: 72px;
+	padding: 10px;
+	transition:all 0.3s;
+}
+
+
+.form-select-wrapper{
+	position: relative;
+	display: inline-block;
+	border-radius: 0;
+	border:1px solid #e0e0e0;
+	height: 30px;
+	width: 100px;
+}
+.form-select-wrapper:hover{
+	box-shadow: 0 0 1px #ccc;
+}
+.form-select-wrapper>select{
+	position: relative;
+	border-width: 0;
+	width: 100%;
+	height: 100%;
+}
+.form-select-wrapper>select>option{
+	background-color: white;
+}

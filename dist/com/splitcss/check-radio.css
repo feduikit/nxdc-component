@@ -1,0 +1,70 @@
+.form-input[type="checkbox"]{
+	display: none;
+}
+.form-input[type="checkbox"]+label:before{
+	position: absolute;
+	display: inline-block;
+	content:"";
+	width: 16px;
+    height: 16px;
+	padding-left: 0.85px;
+	padding-top:1.2px;
+	line-height: 12px;
+ 	border:1px solid #b5b5b5;
+	bottom: 0;
+	margin: 0 -20px;
+	font-family: 'Glyphicons Halflings';
+}
+.form-input[type="checkbox"]+label:hover:before{
+	box-shadow: 0 0 2px #c1c1c1;
+	border-color:#fd9611;
+}
+
+.form-input[type="checkbox"]:checked+label:before{
+	font-family:"NXDC FONTS" !important;
+	content:"\e69b";/**** 对号 *****/
+	box-shadow: 0 0 0;
+	color:#fd9611;
+/*	border-width: 0;*/
+	cursor: pointer;
+	font-size: 10px;
+}
+
+.form-input[type="checkbox"]+label{
+	position: relative;
+	left:20px;
+}
+/**** radio ****/
+.form-input[type="radio"]{
+	display: none;
+}
+.form-input[type="radio"]+label{
+	margin: 0 10px;
+}
+
+.form-input[type="radio"]+label:before{
+	position: absolute;
+	display: inline-block;
+	content:"";
+	font-family: 'Glyphicons Halflings';	
+	content:"";
+	width: 14px;
+    height: 14px;
+	border-radius: 100%;
+	line-height: 8px;
+	border:1px solid #ccc;
+	margin: 0 -18px;
+	margin-top:1px;
+	text-align: center;
+}
+.form-input[type="radio"]+label:hover:before{
+	box-shadow: 0 0 2px #c1c1c1;
+	border-color:#fd9611;
+}
+.form-input[type="radio"]:checked+label:before{
+	content:"\2022"; /*** 选中时 里面的原点 ****/
+	font-size: 15px;
+	box-shadow: 0 0 0;
+	color:#fd9611;
+}
+
