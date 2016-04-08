@@ -33,6 +33,10 @@
     margin: 0;
 }
 
+.drop2-wrapper .dropdown-menu li{
+    display:block;
+}
+
 .dropdown-menu .drop-list-item {
     margin: 0;
     padding: 0;
@@ -64,7 +68,7 @@
     height: 30px;
     line-height: 30px;
     margin: 0;
-    padding: 0;
+    padding: 0 20px;
 }
 
 /****
@@ -97,13 +101,11 @@
 
 .dropdown-menu .drop-list-item>.content-part>.txt-part {
     display: inline-block;
-    width: calc(100% - 24px);
     height: 100%;
 }
 
 .dropdown-menu .drop-list-item>.content-part.title-layer>.txt-part {
     font-weight: bolder;
-    width: calc(100% - 10px);
 }
 
 .dropdown-menu .drop-list-item>.content-part.title-layer>.icon-part {
