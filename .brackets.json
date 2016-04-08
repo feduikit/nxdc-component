@@ -161,6 +161,7 @@
         "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-treable.js",
         "com/ndpmedia/vis/ChartEventListener.js",
         "/Users/ericever/Desktop/develop/nxdc_ui/lib/hicharts/NVis.min.js",
-        "demo-tip.js"
+        "demo-tip.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-tip.js"
     ]
 }

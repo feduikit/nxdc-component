@@ -118,6 +118,8 @@
 
 			a.pageY = parseFloat(the.top) + (html.scrollTop || body && body.scrollTop || 0);
 			a.pageY -= html.clientTop || 0;
+			
+			a.pageYB = a.pageY + the.height;
 			return a;
 		}
 	};
@@ -208,17 +210,17 @@
 			fireEvent(_this.elem.get(0),"STATUS_CHANGE",{status:the.hasClass("active")});
 		});
 
-		// 点击 选中一行， 显示 toolbar   2016-3-18 取消
-		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("click").click(function(e){
-			e.stopImmediatePropagation();
-			if(!$(this).hasClass("focus")){
-				_this.elem.find(".treable-row-wrapper>.treable-row.focus").removeClass("focus");
-				$(this).addClass("focus");
-			}else{
-				$(this).removeClass("focus");
-			}
-			_this.toolbar.toggleClass("active",$(this).hasClass("focus"));
-		});
+		// 点击 选中一行， 显示 toolbar   2016-4-8 取消
+//		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("click").click(function(e){
+//			e.stopImmediatePropagation();
+//			if(!$(this).hasClass("focus")){
+//				_this.elem.find(".treable-row-wrapper>.treable-row.focus").removeClass("focus");
+//				$(this).addClass("focus");
+//			}else{
+//				$(this).removeClass("focus");
+//			}
+//			_this.toolbar.toggleClass("active",$(this).hasClass("focus"));
+//		});
 
 		/***
 		** 鼠标离开一行
@@ -286,8 +288,9 @@
 			setTimeout(function(){
 				dp.removeAttr("style");
 				var dpPage   =   Help.fixPageXY(dp);
-				var footPage = Help.fixPageXY(_this.elem.find(".treable-footer"));					   
-				if((dpPage.pageY +90)<=footPage.pageY){
+				var footPage = Help.fixPageXY(_this.elem.find(".treable-footer"));
+				var thePage = Help.fixPageXY(_this.elem);
+				if((dpPage.pageY +90)<=footPage.pageY && (dpPage.pageY +90)<=thePage.pageYB){
 					dp.css({"top":30+"px","left":(x+5)+"px"});
 				}else{
 					dp.css({"top":(-dp.height()+5)+"px" ,"left":(x+5)+"px"});
@@ -452,17 +455,17 @@
 		});
 
 		/***
-		** 点击工具栏按钮，发出事件。 2016-3-18号 不再显示toolbar
+		** 点击工具栏按钮，发出事件。 2016-4-8号 不再显示toolbar
 		***/
-		$(".sutable-toolbar").click(function(e){
-			var ta = $(e.target);
-			var id = ta.data("id");
-			var val = ta.data("name");
-			var dataID = _this.elem.find("li.treable-item:has(.treable-row.focus)").data("id");
-			if(id && val){
-				fireEvent(e.target,"TOOLBAR_CLICK",{id:id,name:id,dataID:dataID});
-			}
-		});
+//		$(".sutable-toolbar").click(function(e){
+//			var ta = $(e.target);
+//			var id = ta.data("id");
+//			var val = ta.data("name");
+//			var dataID = _this.elem.find("li.treable-item:has(.treable-row.focus)").data("id");
+//			if(id && val){
+//				fireEvent(e.target,"TOOLBAR_CLICK",{id:id,name:id,dataID:dataID});
+//			}
+//		});
 
 		//body 里面的监听
 		_this.listenBody();

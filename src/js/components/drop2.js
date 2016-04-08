@@ -12,22 +12,26 @@
 		for(var i=0;i<arr.length;i++){
 			var o = arr[i];
 			var li = $("<li class='drop-list-item' data-index="+i+"/>");
-			var ctx = $("<div class='content-part' data-index="+i+" data-deep="+deep+"/>");
+			var ctx = $("<a  href='javascript:void(0);' class='content-part' data-index="+i+" data-deep="+deep+"/>");
 			li.append(ctx);
-			var icon = $("<span class='icon-part' />");
-			ctx.append(icon);
-			var txt = $("<span class='txt-part' />");
-			ctx.append(txt);
+			if(o.icon){
+				var icon = $("<span class='icon-part' />");
+				ctx.append(icon);
+			}
+//			var txt = $("<span class='txt-part' />");
+//			ctx.append(txt);
 			if(typeof(o)=="object"){				
 				var array = o.sub||o.son||o.next||o.group||o.children;
 				var text = o.text||o.label||o.title||o.name;
-				if(o.href){
-					text = '<a href="'+o.href+'">'+text+'</a>';
-				}
+				var val = o.val||o.value||text;
+//				if(o.href){
+//					text = '<a href="'+o.href+'">'+text+'</a>';
+//				}
 				if(o.class){
 					li.addClass(o.class);
 				}
-				txt.html(text).attr("title",text); ctx.data("val",text);
+				//txt.html(text).attr("title",text); ctx.data("val",text);
+				ctx.append(text).attr("title",text); ctx.attr({"data-val":val,"data-text":text});
 				li.attr({"value":text,"deep":deep});
 				if(array && array instanceof Array){
 					ctx.addClass("title-layer");
@@ -36,7 +40,8 @@
 					li.addClass("list-leaf");
 				}
 			}else{
-				txt.html(o);ctx.data("val",o)
+				//txt.html(o);ctx.data("val",o);
+				ctx.append(o).attr({"data-val":o,"data-text":o});
 				li.attr({"value":o,"deep":deep}).addClass("list-leaf");
 			}
 			ul.append(li);
@@ -69,11 +74,11 @@
 			var val = $(this).text();
 			if(_this.config.type==2) {//如果是 第二种类型的 下拉菜单
 				if(_this.hold.data("val")!=val) {
-					fireEvent($(this).get(0),"SELECT_CHANGE",{value:$(this).data("val")});
+					fireEvent($(this).get(0),"SELECT_CHANGE",{value:$(this).data("val"),text:$(this).data("text")});
 				}
 				_this.hold.html(val).data("val",val);
 			}else{	
-				fireEvent($(this).get(0),"ITEM_CLICK",{value:$(this).data("val")});
+				fireEvent($(this).get(0),"ITEM_CLICK",{value:$(this).data("val"),text:$(this).data("text")});
 			}	
 		});		
 		

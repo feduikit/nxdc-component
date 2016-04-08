@@ -7,10 +7,10 @@ require(['./config'],function(){
 				caret:"<i class='glyphicon glyphicon-menu-down'></i>",
 				label:"文字drop测试",
 				data:[
-					  {label:"用户设置"},
-					  {label:"修改密码"},
-					  {label:"接触绑定"},
-					  {label:"退出"}
+					  {label:"用户设置fefwef赤那剁手党", val:1},
+					  {label:"修改密码",val:2},
+					  {label:"接触绑定",val:3},
+					  {label:"退出",val:4}
 					 ]
 			}).on("ITEM_CLICK",function(e){
 				//下拉选项被点击

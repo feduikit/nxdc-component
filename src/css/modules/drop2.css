@@ -38,10 +38,23 @@
     padding: 0;
     color: #333;
 }
-.dropdown-menu .list-leaf:hover {
+.dropdown-menu .drop-list-item>a{
+	padding-left: 10px;
+}
+
+.dropdown-menu .list-leaf{
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.dropdown-menu .drop-list-item .list-leaf:hover{
+	background: #f7f0e8;
+}
+.dropdown-menu .list-leaf:hover,.dropdown-menu .list-leaf>a:hover {
     background: #f7f0e8;
     color: #fc7408;
     cursor: pointer;
+	text-decoration: none;
 }
 
 .dropdown-menu .drop-list-item>.content-part {
@@ -52,6 +65,27 @@
     line-height: 30px;
     margin: 0;
     padding: 0;
+}
+
+/****
+** 标题行
+***/
+.dropdown-menu .drop-list-item>.content-part.title-layer{
+	color:black;
+	font-weight: bolder;
+	padding-left: 10px;
+}
+.dropdown-menu .drop-list-item>.content-part.title-layer:hover{
+	background-color: white;
+	color:#333;
+}
+
+.dropdown-menu .list-leaf[deep='2']>a{
+	padding-left: 20px;
+	color:#333;
+}
+.dropdown-menu .list-leaf[deep='2']>a:hover{
+	color: #fc7408;
 }
 
 .dropdown-menu .drop-list-item>.content-part>.icon-part {
