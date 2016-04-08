@@ -5044,6 +5044,7 @@ if (!Object.keys) Object.keys = function(o) {
 
 		
 		this.tabwrapper.find("li").click(function(e){
+			e.stopImmediatePropagation();
 			if(!$(this).hasClass("active")){
 				$(this).addClass("active").siblings().removeClass("active");
 				fireEvent(_this.elem.get(0),"TAB_CHANGE",$(this).data());
@@ -5879,6 +5880,15 @@ if (!Object.keys) Object.keys = function(o) {
 			$(this).find(".dropdown-menu-money").addClass("hidden");
 		});
 
+		//事件不再抛出来， 图标区域内的
+		_this.elem.find(".tab-content.tab-content-cus").unbind("click").click(function(e){
+			e.stopImmediatePropagation();
+		});
+		
+		//打开的 图表层，关闭
+		_this.elem.unbind("click").click(function(e){
+			$(this).find(".chart-wrapper.open").removeClass("open");
+		});
 		/***
 		** 点击了，下拉菜单中的选项
 		***/
@@ -6280,7 +6290,6 @@ if (!Object.keys) Object.keys = function(o) {
 		***/
 		this.update = function(data){
 			var body = newbody(treable.elem,data,treable.config);
-			console.log(body);
 			treable.elem.find(".treable-body").replaceWith(body);
 			treable.listenBody();
 			return treable.elem;

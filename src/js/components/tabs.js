@@ -35,6 +35,7 @@
 
 		
 		this.tabwrapper.find("li").click(function(e){
+			e.stopImmediatePropagation();
 			if(!$(this).hasClass("active")){
 				$(this).addClass("active").siblings().removeClass("active");
 				fireEvent(_this.elem.get(0),"TAB_CHANGE",$(this).data());
