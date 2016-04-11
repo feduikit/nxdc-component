@@ -437,7 +437,7 @@ require(['./config'],function(){
 				var evt = e.originalEvent;
 				
 			}).on("TOOLBAR_CLICK",function(e){// 点击最上面浮出的toolbar 或者，每一行的下拉菜单，[调整预算出价，编辑，看图表] 
-				console.log(e.originalEvent.data);//返回数据如下
+				//console.log(e.originalEvent.data);//返回数据如下
 				//{id: "chart", val: "看图表", name: "看图表", dataID: 11110}
 				//id 点击的是哪个按钮，name：按钮的名字， dataID: 选中行(所在行)的数据id 
 			}).on("STATUS_CHANGE",function(e){
@@ -445,6 +445,8 @@ require(['./config'],function(){
 				
 			}).on("TAB_SHOW CHART_LAYER_INIT",function(e){
 				var da = e.originalEvent.data; // 返回数据如下
+				console.log(da);
+				console.log(da.GD.get(0));
 				//{name: "编辑", id: "edit", dataID: 11110, GD: jQUERY}
 				// name 选中的tab的名称， dataID :所在行数据id   GD: JQUERY对象，图表的绘图区域DOM
 				if(e.type == "CHART_LAYER_INIT"){//首次打开图表层
