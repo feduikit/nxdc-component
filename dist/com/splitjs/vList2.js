@@ -24,10 +24,11 @@
 			if(typeof(o)=="object"){
 				var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group||o.children;
 				var text = o[cfg.textKey]||o.text||o.label||o.title||o.name;
+				var _title = text;
 				if(o.href){
 					text = '<a href="'+o.href+'">'+text+'</a>';
 				}
-				txt.html(text).attr("title",text);
+				txt.html(text).attr("title",_title);
 
 				li.attr({"value":text,"deep":deep});
 				if(array && array instanceof Array){
