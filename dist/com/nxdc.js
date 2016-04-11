@@ -5769,7 +5769,7 @@ if (!Object.keys) Object.keys = function(o) {
 
 			a.pageY = parseFloat(the.top) + (html.scrollTop || body && body.scrollTop || 0);
 			a.pageY -= html.clientTop || 0;
-			
+
 			a.pageYB = a.pageY + the.height;
 			return a;
 		}
@@ -5814,7 +5814,7 @@ if (!Object.keys) Object.keys = function(o) {
 //			thumb.css("width",(w/colW)*100+"%");
 			thumb.css("width",(w-colW+w)+"px");
 		}else{
-			
+
 		}
 	};
 	/****
@@ -5835,6 +5835,7 @@ if (!Object.keys) Object.keys = function(o) {
 		_this.elem.find("span.btn-plus-minus").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
 			var the = $(this).parents("li.treable-item:first");
+			the.find('.chart-wrapper.open:first').removeClass("open");//关闭图表层
 			the.toggleClass("open");
 			the.find("li.treable-item").toggleClass("open",the.hasClass("open"));
 		});
@@ -5884,7 +5885,7 @@ if (!Object.keys) Object.keys = function(o) {
 		_this.elem.find(".tab-content.tab-content-cus").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
 		});
-		
+
 		//打开的 图表层，关闭
 		_this.elem.unbind("click").click(function(e){
 			$(this).find(".chart-wrapper.open").removeClass("open");
@@ -5944,7 +5945,7 @@ if (!Object.keys) Object.keys = function(o) {
 			dp.css("opacity",0);
 			var icon = Help.fixPageXY($(this));
 			var offParent = Help.fixPageXY($(this).parents(".treable-row:first"));
-			var x = icon.pageX - offParent.pageX;			
+			var x = icon.pageX - offParent.pageX;
 			setTimeout(function(){
 				dp.removeAttr("style");
 				var dpPage   =   Help.fixPageXY(dp);
