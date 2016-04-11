@@ -486,18 +486,19 @@
 
 .dropdown-menu.dropdown-menu-money{
 	position: absolute;
-	z-index: 100;
+	z-index: 850;
 	display: block;
 	top:65px;
 	left:222px;
 	box-shadow: 0 0 12px #eee;
+	background-color: white;
 }
 .treable-row>.sutable-col>.inspliter{
 	position: absolute;
 	display: inline-block;
 	width: 5px;
 	height: 99%;
-	z-index: 20;
+	z-index: 10;
 /*	top:15%;*/
 	right: 0px;
 /*	left:0px;*/
