@@ -5909,7 +5909,7 @@ if (!Object.keys) Object.keys = function(o) {
 			fireEvent(_this.elem.get(0),"TOOLBAR_CLICK",o);
 			var dat = _this.config.todata[1];
 			dat.dataID = dataid;
-			dat.GD = _this.elem.find(".treable-item.open .chart-wrapper.open .tab-pane.active");
+			dat.GD = _this.elem.find(".treable-item .chart-wrapper.open .tab-pane.active");//折叠后无法显示绘图区域的bug
 			setTimeout(function(){
 				fireEvent(_this.elem.get(0),"CHART_LAYER_INIT",dat);//展现完成，抛出数据
 			},400);
@@ -5921,7 +5921,7 @@ if (!Object.keys) Object.keys = function(o) {
 		_this.elem.on("TAB_CHANGE",function(e){
 			e.stopImmediatePropagation();
 			var dat = e.originalEvent.data;
-			var panels = _this.elem.find(".treable-item.open .chart-wrapper.open .tab-pane");
+			var panels = _this.elem.find(".treable-item .chart-wrapper.open .tab-pane");//无法抛出gd的bug
 			panels.removeClass("active");
 			$(panels[dat.index]).addClass("active");
 			dat.GD = $(panels[dat.index]);
