@@ -205,4 +205,13 @@
 	top:inherit;
 	bottom: 1px;
 }
+/****
+** mini模式下 图片的大小
+***/
+.mini-state img{
+	position: relative;
+	top:10px;
+	width: 25px;
+	height: 25px;
+}
 

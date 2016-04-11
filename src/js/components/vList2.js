@@ -5,7 +5,7 @@
 	**/
 	function recursive(arr,cfg,fa,deep){
 		if(arr.length<=0) return;
-		var reg = /^<[^><]+>.+?>$/i
+		//var reg = /^<[^><]+>.+?>$/i;
 		deep++;
 		var rec = arguments.callee;
 		var ul = $("<ul class='list-root' deep="+deep+"  />");
@@ -39,10 +39,10 @@
 					li.addClass("list-leaf");
 				}
 				if(o.icon){
-					if(reg.test(o.icon)){
+					if(typeof(o.icon) == "string"){//如果是 字体文件
 						icon.append(o.icon);
 					}else{
-						icon.append("<img width='80%' height='80%' src="+o.icon+" />");
+						icon.append("<img  src="+o.icon.sm+" />");
 					}
 				}
 			}else{
@@ -127,6 +127,17 @@
 				$(this).trigger("expand_complete");//展开事件
 			}
 		});
+	
+		// 大小 图标转换
+		_this.elem.on("STATE_CHANGE",function(type,val){
+			console.log(val);
+			_this.config.data.forEach(function(item,index){
+				if(item instanceof Object  && item.big){
+					var img = _this.elem.find(".list-root>li[data-index="+index+"] img");
+					val?img.attr("src",item.big):img.attr("src",item.sm);
+				}
+			});		
+		});
     };
 
 	/**
@@ -166,7 +177,7 @@
 		if(!the.hasClass("menu-mini-mode") && the.hasClass("hidden")) the.removeClass("hidden");
 		the.toggleClass("menu-mini-mode hidden");
 		this.elem.find("li:has(li.active)>.content-part");
-		if(this.elem.hasClass("mini-state")){//mini模式
+		if(this.elem.hasClass("mini-state")){//mini模式  全部展开
 			this.elem.find("li[deep='1']:has(ul)").unbind("mouseenter").mouseenter(function(){
 				var wh = window.innerHeight;
 				var face = $(this).find("ul:has(li[deep='2'])");
@@ -184,9 +195,11 @@
 				$(this).removeClass("active");
 				$(this).children("ul:has(li[deep='2'])").addClass("hidden");
 			});
-		}else{
+			this.elem.trigger("STATE_CHANGE",0);
+		}else{// 大分类模式，图标变大
 			this.elem.find("li[deep='1']:has(ul)").unbind("mouseenter");
 			this.elem.find("li[deep='1']:has(ul)").unbind("mouseleave");
+			this.elem.trigger("STATE_CHANGE",1);
 		}
 	}
     /**
