@@ -3,6 +3,7 @@ require.config({
     paths:{
         'jquery':'../../lib/jquery/jquery.min',
         'bootstrap':'../../lib/bootstrap/dist/js/bootstrap.min',
+		'moment':'../../lib/moment/min/moment.min',
 		'NVis':'../../lib/hicharts/NVis.min',
 		'utils':'./Compatibility/utils',
 		
@@ -26,7 +27,8 @@ require.config({
 		'vList':'./components/vList',
 		'vList3':'./components/vList3',
 		'bubble':'./components/bubble',
-		'bootdrop':'./components/bootDrop'
+		'bootdrop':'./components/bootDrop',
+		'datepicker':'./components/daterangepicker'
     },
     shim:{
 		bootstrap:{
@@ -82,6 +84,9 @@ require.config({
 		},
 		bootdrop:{
 			deps:['bootstrap']
+		},
+		datepicker:{
+			deps:['moment']
 		}
     }
 });
