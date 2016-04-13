@@ -71,8 +71,9 @@
 }
 .form-input[type="radio"]:checked+label:before{
 	position: absolute;
-	content:"●"; /*** 选中时 里面的原点 ****/
-	font-size: 14px;
+	content:"\2022";
+	/*** 选中时 里面的原点 ****/
+	font-size: 18.5px;
 	box-shadow: 0 0 0;
 	color:#fd9611;
 }
