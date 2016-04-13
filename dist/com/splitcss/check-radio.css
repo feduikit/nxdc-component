@@ -29,7 +29,7 @@
 	color:#fd9611;
 /*	border-width: 0;*/
 	cursor: pointer;
-	font-size: 10px;
+	font-size: 9px;
 }
 
 .form-input[type="checkbox"]+label{
