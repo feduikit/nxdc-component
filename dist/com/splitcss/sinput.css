@@ -43,12 +43,15 @@
 }
 .ndp-sinput-wrapper>input[type]{
 	position: relative;
+	display: inline-block;
 	height: 100%;
 	width: 100%;
 	border-width:0;
 	line-height: normal;
-	padding: 0 5px;
+	padding: 0 3px;
 	border-width: 0;
+	font-size:12px;
+	vertical-align: top;
 }
 .ndp-sinput-wrapper.active>input[type]{
 		box-shadow: 0 0 0;
@@ -89,6 +92,9 @@
 	overflow: hidden;
 	z-index: 100;
 	cursor: pointer;
+	width: 14px;
+	height: 14px;
+	vertical-align: top;
 }
 /**
 .xion-cus>i:hover{
@@ -99,8 +105,12 @@
 
 .xion-cus>*{
 	position: relative;
+	margin: 0;
+	padding: 0;
 	width: 100%;
 	font-size: 16px;
+	overflow: hidden;
+	color:#979da3;
 }
 
 /**

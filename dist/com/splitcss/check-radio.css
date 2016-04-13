@@ -1,18 +1,20 @@
 .form-input[type="checkbox"]{
 	display: none;
+	vertical-align: top;
 }
 .form-input[type="checkbox"]+label:before{
 	position: absolute;
 	display: inline-block;
 	content:"";
-	width: 16px;
-    height: 16px;
+	width: 15px;
+    height: 15px;
 	padding-left: 0.85px;
 	padding-top:1.2px;
 	line-height: 12px;
  	border:1px solid #b5b5b5;
 	bottom: 0;
-	margin: 0 -20px;
+	margin: 0;
+	margin-left:-22px;
 	font-family: 'Glyphicons Halflings';
 }
 .form-input[type="checkbox"]+label:hover:before{
@@ -32,38 +34,45 @@
 
 .form-input[type="checkbox"]+label{
 	position: relative;
-	left:20px;
+	font-size: 12px!important;
 }
 /**** radio ****/
 .form-input[type="radio"]{
 	display: none;
+	vertical-align: top;
 }
 .form-input[type="radio"]+label{
-	margin: 0 10px;
+	margin: 0;
+	margin-right: 10px;
+	font-size: 12px;
 }
 
+/****
+** radio  前面的圆圈
+*****/
 .form-input[type="radio"]+label:before{
 	position: absolute;
 	display: inline-block;
 	content:"";
 	font-family: 'Glyphicons Halflings';	
-	content:"";
-	width: 14px;
-    height: 14px;
+	width: 15px;
+    height: 15px;
 	border-radius: 100%;
 	line-height: 8px;
 	border:1px solid #ccc;
-	margin: 0 -18px;
+	margin: 0;
 	margin-top:1px;
 	text-align: center;
+	margin-left: -22px;
 }
 .form-input[type="radio"]+label:hover:before{
 	box-shadow: 0 0 2px #c1c1c1;
 	border-color:#fd9611;
 }
 .form-input[type="radio"]:checked+label:before{
-	content:"\2022"; /*** 选中时 里面的原点 ****/
-	font-size: 15px;
+	position: absolute;
+	content:"●"; /*** 选中时 里面的原点 ****/
+	font-size: 14px;
 	box-shadow: 0 0 0;
 	color:#fd9611;
 }
