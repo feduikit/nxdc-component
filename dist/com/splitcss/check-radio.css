@@ -22,15 +22,17 @@
 	border-color:#fd9611;
 }
 
+/***
+
 .form-input[type="checkbox"]:checked+label:before{
 	font-family:"NXDC FONTS" !important;
-	content:"\e69b";/**** 对号 *****/
+	content:"\e69b";
 	box-shadow: 0 0 0;
 	color:#fd9611;
-/*	border-width: 0;*/
 	cursor: pointer;
 	font-size: 9px;
 }
+*/
 
 .form-input[type="checkbox"]+label{
 	position: relative;
@@ -42,6 +44,7 @@
 	vertical-align: top;
 }
 .form-input[type="radio"]+label{
+	position: relative;
 	margin: 0;
 	margin-right: 10px;
 	font-size: 12px;
@@ -69,12 +72,41 @@
 	box-shadow: 0 0 2px #c1c1c1;
 	border-color:#fd9611;
 }
+/****
 .form-input[type="radio"]:checked+label:before{
 	position: absolute;
 	content:"\2022";
-	/*** 选中时 里面的原点 ****/
+	** 选中时 里面的原点 ***
 	font-size: 18.5px;
 	box-shadow: 0 0 0;
 	color:#fd9611;
 }
+*/
+
+.form-input[type="radio"]:checked+label>.radio-dot{
+	position: absolute;
+	display: inline-block;
+	border-radius: 100%;
+	width: 7px;
+	height: 7.5px;
+	background-color: #fd9611;
+	left: -18px;;
+	top:4.5px;
+	overflow: hidden;
+}
+
+.form-input[type="checkbox"]:checked+label>.checkbox-mark{
+	display: inline-block;
+	position: absolute;
+	left: -17.7px;
+	top:1.8px;
+	width: 6.3px;
+	height: 11.2px;
+	border-right: 1px solid #fd9611;
+	border-bottom: 1px solid #fd9611;
+	-webkit-transform: rotate(41deg);
+	-moz-transform: rotate(41deg);
+	transform: rotate(41deg);
+}
+
 

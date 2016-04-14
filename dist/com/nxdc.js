@@ -2906,7 +2906,7 @@ if (!Object.keys) Object.keys = function(o) {
 			var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group;
 			var text = o[cfg.textKey]||o.text||o.label||o.title||o.name;
 			var val = o.val||o.value||text;
-			var li = $("<li class='drop-one-item' text="+text+" value="+val+" deep="+deep+" title='"+text+"' />");
+			var li = $("<li class='drop-one-item' text='"+text+"' value='"+val+"' deep="+deep+" title='"+text+"' />");
 			var pad = (deep+2)*5 + 2;
 			li.css({"padding-left":pad+"px"});
 			if(array && array instanceof Array){
@@ -3201,7 +3201,7 @@ if (!Object.keys) Object.keys = function(o) {
 					recursive(li,sub,_this.config,0);
 					_this.list.append(li);
 				}else{
-					li = $("<li class='drop-one-item' text="+text+" value="+val+" deep='0' title='"+text+"' >"+"<span title='"+text+"' >"+text+"</span>"+"</li>");
+					li = $("<li class='drop-one-item' text='"+text+"' value='"+val+"' deep='0' title='"+text+"' >"+"<span title='"+text+"' >"+text+"</span>"+"</li>");
 					if(item.disable) li.addClass("disabled");
 					if(item.split) li.addClass("split-line");
 					if(_this.config.type==4){
