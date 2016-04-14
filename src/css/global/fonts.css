@@ -35,8 +35,23 @@ i.font-icon{
 .font-icon-money:before { content: "\e683"; }
 .font-icon-attention:before { content: "\e657"; }
 .font-icon-check:before { content: "\e69b"; }
-.font-icon-user:before { content: "\e69f"; }
+.font-icon-user:before { content: "\e6a9"; }
 .font-icon-update:before { content: "\e69e"; }
 .font-icon-back:before { content: "\e69d"; }
 .icon-remindicon:before { content: "\e6a3"; }
 
+.size-2x{
+	font-size: 24px;
+}
+
+.size-3x{
+	font-size: 36px;
+}
+
+.size-4x{
+	font-size: 48px;
+}
+
+.size-5x{
+	font-size: 60px;
+}

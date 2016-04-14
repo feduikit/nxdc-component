@@ -5633,7 +5633,7 @@ if (!Object.keys) Object.keys = function(o) {
 		if(cfg.xion&&cfg.type!=2){
 			var ru = this.elem.height();
 			var xion = $(cfg.xion).addClass('xion-cus')
-				.css({width:(ru-2)+"px",height:ru+"px",lineHeight:(ru+4)+"px"});
+				.css({width:ru+"px",height:ru+"px",lineHeight:(ru+4)+"px"});
 			if(cfg.pos=="left"){
 				_this.elem.prepend(xion);
 				_this.input.css({"left":ru+"px","paddingLeft":"0"});

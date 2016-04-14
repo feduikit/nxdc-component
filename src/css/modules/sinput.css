@@ -84,7 +84,7 @@
 **/
 .xion-cus{
 	position: absolute;
-	display: inline-block;
+	display: inline-blocverticalk;
 	margin: 0;
 	height: 100%;
 	padding: 0;
@@ -103,14 +103,15 @@
 }
 */
 
-.xion-cus>*{
+.xion-cus>i.font-icon{
 	position: relative;
 	margin: 0;
 	padding: 0;
-	width: 100%;
-	font-size: 16px;
-	overflow: hidden;
+	font-size: 14px;
 	color:#979da3;
+	width: 14px;
+	height: 14px;
+	overflow: hidden;
 }
 
 /**
