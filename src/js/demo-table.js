@@ -4,9 +4,9 @@ require(['./config'],function(){
             var bool = false;
 			var data1 = [{id:1101,name:"CHINA ROC",info:"USA AMERICA",gender:"JING DU"},
                          {id:1102,name:"日本",info:"hello - japan 34",gender:"MAN"},
-                         {id:1103,name:"hello_1",info:"hello - euro 33",gender:"no sign"},
-						 {id:1104,name:"hello_2",info:"hello - euro 41",gender:"sign"},
-						 {id:1105,name:"hello_3",info:"hello - china 53",gender:"no sign"}];			
+                         {id:1103,name:"hello 1",info:"hello - euro 33",gender:"no sign"},
+						 {id:1104,name:"hello 2",info:"hello - euro 41",gender:"sign"},
+						 {id:1105,name:"hello world",info:"hello - china 53",gender:"no sign"}];			
 			
 			
             var data2 = [{id:1101,name:"中国",info:"加勒比还到过",gender:"超人大战"},
@@ -31,7 +31,7 @@ require(['./config'],function(){
             
             $(".ndp-js-example2 .ndp-table-wrapper").table({
                 head:{col1:"第一列",col2:"第二列",col3:"第三列",col4:"第四列"},//["Offer ID","col 2","COl 3","Col 4"]
-                data:[{id:1101,name:"hello123",info:"hello -china 123",gender:"man"},
+                data:[{id:1101,name:"hello123",info:"hello china 123",gender:"man"},
                       {id:1102,name:"hello_23",info:"hello - japan 34",gender:"woman"},
                       {id:1103,name:"hello_34",info:"hello - euro 23",gender:"no sign"}],
                 rowNail:true,//允许选中行
