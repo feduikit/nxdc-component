@@ -131,11 +131,10 @@
 	
 		// 大小 图标转换
 		_this.elem.on("STATE_CHANGE",function(type,val){
-			console.log(val);
 			_this.config.data.forEach(function(item,index){
-				if(item instanceof Object  && item.big){
+				if(item.icon instanceof Object  && item.icon.big){
 					var img = _this.elem.find(".list-root>li[data-index="+index+"] img");
-					val?img.attr("src",item.big):img.attr("src",item.sm);
+					val?img.attr("src",item.icon.big):img.attr("src",item.icon.sm);
 				}
 			});		
 		});
@@ -196,11 +195,11 @@
 				$(this).removeClass("active");
 				$(this).children("ul:has(li[deep='2'])").addClass("hidden");
 			});
-			this.elem.trigger("STATE_CHANGE",0);
+			this.elem.trigger("STATE_CHANGE",1);
 		}else{// 大分类模式，图标变大
 			this.elem.find("li[deep='1']:has(ul)").unbind("mouseenter");
 			this.elem.find("li[deep='1']:has(ul)").unbind("mouseleave");
-			this.elem.trigger("STATE_CHANGE",1);
+			this.elem.trigger("STATE_CHANGE",0);
 		}
 	}
     /**
