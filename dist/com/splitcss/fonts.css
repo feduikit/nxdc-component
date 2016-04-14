@@ -38,7 +38,26 @@ i.font-icon{
 .font-icon-user:before { content: "\e6a9"; }
 .font-icon-update:before { content: "\e69e"; }
 .font-icon-back:before { content: "\e69d"; }
-.icon-remindicon:before { content: "\e6a3"; }
+.font-icon-remind:before { content: "\e6a3"; }
+.font-icon-key:before { content: "\e68f"; }
+.font-icon-navigation:before { content: "\e687"; }
+.font-icon-picture:before { content: "\e682"; }
+.font-icon-mail:before { content: "\e681"; }
+.font-icon-qq:before { content: "\e680"; }
+.font-icon-search0:before { content: "\e672"; }
+.font-icon-search1:before { content: "\e673"; }
+.font-icon-calendar:before { content: "\e671"; }
+.font-icon-home:before { content: "\e661"; }
+.font-icon-disable:before { content: "\e65f"; }
+.font-icon-correct:before { content: "\e65b"; }
+.font-icon-error:before { content: "\e65c"; }
+.font-icon-dl0:before { content: "\e66c"; }
+.font-icon-dl1:before { content: "\e6dd"; }
+.font-icon-del0:before { content: "\e66e"; }
+.font-icon-del1:before { content: "\e66f"; }
+.font-icon-lock:before { content: "\e6a0"; }
+.font-icon-recycle:before { content: "\e69e"; }
+
 
 .size-2x{
 	font-size: 24px;
