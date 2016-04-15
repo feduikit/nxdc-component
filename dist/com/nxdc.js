@@ -6242,16 +6242,21 @@ if (!Object.keys) Object.keys = function(o) {
                 } else {
                     col = $('<span class="ndp-table-col" title="' + text + '" col=' + i + ' >' + text + '</span>');
                 }
-
+				if(/^<img/i.test(text)){
+					col.removeAttr("title");
+				}
                 row.append(col);
             }
         } else {
             Object.keys(arr).forEach(function(item, index) {
                 if (args[2]) {
-                    col = $('<span class="ndp-table-col" title="' + arr[item] + '" col=' + index + ' ><span class="head-txt">' + arr[item] + '</span></span>');
+                    col = $('<span class="ndp-table-col" title="' +arr[item]+ '" col=' +index+ ' ><span class="head-txt">' + arr[item] + '</span></span>');
                 } else {
-                    col = $('<span class="ndp-table-col" title="' + arr[item] + '"  col=' + index + '>' + arr[item] + '</span>');
+                    col = $('<span class="ndp-table-col" title="' +arr[item]+ '" col=' +index+ '>' + arr[item] + '</span>');
                 }
+				if(/^<img/i.test(arr[item])){
+					col.removeAttr("title");
+				}				
                 row.append(col);
             });
         }
