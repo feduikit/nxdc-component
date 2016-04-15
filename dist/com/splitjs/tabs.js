@@ -1,4 +1,4 @@
-;(function ($) { 
+;(function ($) {
 	function setAble(_this){
 		//主需要  把整个 程序里面的 disabled 替换成 hidden 就可以实现，需要时再显示的效果
 		setTimeout(function(){
@@ -10,9 +10,9 @@
 			}else{
 				$(_this.elem.find("span.more-tabs")).removeClass(cla).removeAttr("stop");
 			}
-		},250);			
+		},250);
 	}
-	
+
     /***
 	**@constructor {Class} Tabs
 	**/
@@ -20,7 +20,7 @@
 		var self = this;
 		this.elem = element;
 		this.config = $.extend(true,{},$.fn.tabs.defaults,element.data(),options);
-		this.init();	
+		this.init();
     };
 
 	/**
@@ -33,7 +33,7 @@
         this.concrate();//构建下来菜单的样子
 		this.initConfig();
 
-		
+
 		this.tabwrapper.find("li").click(function(e){
 			e.stopImmediatePropagation();
 			if(!$(this).hasClass("active")){
@@ -41,16 +41,16 @@
 				fireEvent(_this.elem.get(0),"TAB_CHANGE",$(this).data());
 			}
 		});
-		
+
 		if(_this.config.rm){
 			this.tabwrapper.find("li>a>i").click(function(e){
-				e.preventDefault();			
+				e.preventDefault();
 				var index = parseInt($(this).parent().parent().attr("index"));//删除的数据索引
-				var the = _this.tabwrapper.find("li[index="+index+"]");					
+				var the = _this.tabwrapper.find("li[index="+index+"]");
 				var  yon = the.hasClass("active");
 				the.remove();
 				if(yon){
-					_this.tabwrapper.find("li:eq(0)").addClass("active");	
+					_this.tabwrapper.find("li:eq(0)").addClass("active");
 				}
 				if(_this.tabwrapper.children().length==1) {
 					_this.tabwrapper.find("li>a>i").addClass("hidden");
@@ -63,9 +63,9 @@
 			});
 			this.tabwrapper.find("li").mouseleave(function(){
 				$(this).find("i").addClass("transparent");
-			});	
+			});
 		}
-		
+
 //		if(_this.config.type==2){
 			//向左的按钮
 			_this.preButton.unbind("click").click(function(e){
@@ -82,11 +82,11 @@
 					$(_self).attr("now",now);
 					_this.moreButton.attr("now",now);
 					if(now==0){ $(_self).addClass(_this.config.negClass);  }
-					setAble(_this);						
-				},250);		
+					setAble(_this);
+				},250);
 			});
-			
-			
+
+
 			//右侧的 按钮点击
 			_this.moreButton.click(function(e){
 				var _self = this;
@@ -106,15 +106,15 @@
 				now++;
 				$(_self).attr("now",now);
 				_this.preButton.attr("now",now);
-				if(now>0){ 
-					_this.preButton.removeClass(_this.config.negClass);  
+				if(now>0){
+					_this.preButton.removeClass(_this.config.negClass);
 				}
-				setAble(_this);					
+				setAble(_this);
 				},250);
 			});
 //		}
     };
-	
+
 	/**
 	** 构建下来菜单样子
 	**/
@@ -134,7 +134,7 @@
 			if(id) li.attr("data-id",id);
 			if(type) li.attr("data-type",type);
 			if(index==_this.config.default) {li.addClass("active")};
-			if(_this.config.badge && ba){//是否显示 badge 
+			if(_this.config.badge && ba){//是否显示 badge
 				li.find("a").append("<span class='badge'>"+ba+"</span>");
 			}
 			_this.tabwrapper.append(li);
@@ -147,19 +147,24 @@
 		if(_this.config.rm){
 			_this.tabwrapper.find("li>a").append("<i class='glyphicon glyphicon-remove transparent'></i>");
 		}
-		
+
 //		if(_this.config.type==2){
 			_this.elem.addClass("specialWrapper");
 			_this.tabwrapper.addClass("one-line");
 			_this.tabwrapper.find("li").addClass("carousel");
 			_this.preButton = $("<span class='more-button pre-tabs disabled' now='0'><i class='glyphicon glyphicon-chevron-left'></i></span>");//向左翻
 			_this.moreButton = $("<span class='more-button more-tabs' now='0'><i class='glyphicon glyphicon-chevron-right'></i></span>");//向右翻
-			_this.elem.prepend(_this.preButton).append(_this.moreButton);			
-			
+			_this.elem.prepend(_this.preButton).append(_this.moreButton);
+
 			//这里最好监听 window的resize 事件
-			var tabR = _this.tabwrapper.children("li:last").get(0).getBoundingClientRect().right;
-			var wrapperR = _this.elem.get(0).getBoundingClientRect().right;	
-			if(wrapperR>=tabR){
+			if(_this.tabwrapper.children("li:last")[0]){
+				var tabR = _this.tabwrapper.children("li:last").get(0).getBoundingClientRect().right;
+				var wrapperR = _this.elem.get(0).getBoundingClientRect().right;
+				if(wrapperR>=tabR){
+					_this.moreButton.hide();
+					_this.preButton.hide();
+				}
+			}else{
 				_this.moreButton.hide();
 				_this.preButton.hide();
 			}
@@ -168,7 +173,7 @@
     /**
      * jquery 提供了一个objct 即 fn，which is a shotcut of jquery object prototype
      * or you can call it jquery plugin shell  == fn
-     *  类似于  Class.prototype.jqplugin = function(){};0  
+     *  类似于  Class.prototype.jqplugin = function(){};0
      *  the   $.fn  [same as] Class.prototype
      * plugin entrance
      */
@@ -178,7 +183,7 @@
 		the = $.extend(true,{},the,new exchange(tabs));
 		return the;
     };
-	
+
     /***
     **和其他插件的交互
 	** factory Class
@@ -195,7 +200,7 @@
 			return tabs.elem;
 		}
     }
-	
+
 	  var old = $.fn.tabs;
 	  $.fn.tabs.Constructor = Tabs;
 	  // Tabs NO CONFLICT
@@ -204,12 +209,12 @@
 		$.fn.tabs = old;
 		return this;
 	  }
-	
+
 	/***
 	** outside accessible default setting
 	**/
 	$.fn.tabs.defaults = {
-		default:0,//默认选中第几个tab 
+		default:0,//默认选中第几个tab
 		list:[],
 		badge:false,// 是否显示badge
 		rm:false,//是否允许删除tab

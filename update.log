@@ -1,3 +1,9 @@
+﻿2016.4.13
+
+1 修改tabs中 tabwrapper.children("li:last") 为0的判断
+
+版本："1.0.34"
+-------------------
 2016.4.13
 
 1 修改css checkbox   radio  
