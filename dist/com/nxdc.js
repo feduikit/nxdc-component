@@ -6330,7 +6330,7 @@ if (!Object.keys) Object.keys = function(o) {
                 count += len;
             });
         }
-        this.textLen.forEach(function(item, i) { self.textLen[i] = ((item / count) * 100).toFixed(2) });
+        this.textLen.forEach(function(item, i) { self.textLen[i] = ((item / count) * 100).toFixed(1) });
         this.head.append(fill(arr, $('<li class="ndp-table-row">'), 1));
         if (this.config.sort == "all") {
             self.head.find("li.ndp-table-row>span").append(sortString);

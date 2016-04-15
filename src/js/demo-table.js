@@ -30,7 +30,8 @@ require(['./config'],function(){
 			});
             
             $(".ndp-js-example2 .ndp-table-wrapper").table({
-                head:{col1:"第一列",col2:"第二列",col3:"第三列",col4:"第四列"},//["Offer ID","col 2","COl 3","Col 4"]
+                head:{col1:"产品编号",col2:"名称",col3:"图片",col4:"目标网页",col5:"品牌"
+                            ,col6:"价格",col7:"可用性",col8:"这是什么啊"},//["Offer ID","col 2","COl 3","Col 4"]
                 data:[{id:1101,name:"hello123",info:"hello china 123",gender:"man"},
                       {id:1102,name:"hello_23",info:"hello - japan 34",gender:"woman"},
                       {id:1103,name:"hello_34",info:"hello - euro 23",gender:"no sign"}],

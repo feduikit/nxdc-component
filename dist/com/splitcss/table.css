@@ -97,7 +97,10 @@ i.col-spliter {
     text-align: left;
     border: 1px solid transparent;
     overflow: hidden;
+	min-width: 50px;
 }
+
+
 .ndp-table-col.active {
     background-color: #fff4e7;
     color: #666;
