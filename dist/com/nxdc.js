@@ -5873,6 +5873,7 @@ if (!Object.keys) Object.keys = function(o) {
 				spinner.addClass("active");
 				$.ajax(_this.config.ajaxOptions).then(function(result){
 					if(typeof(result)=="string") result = JSON.parse(result);
+					result = _this.config.dataProxy? _this.config.dataProxy(result) : result;
 					li.children("ul.sub-layer").remove();
 					if(result.code==0){
 						Help.recursive(li,result.data,_this.config,deep); 
@@ -6216,6 +6217,7 @@ if (!Object.keys) Object.keys = function(o) {
             url: "../data/sutable.json",
 			xhrFields: { withCredentials: true}
         },
+        dataProxy: null,
 		namecall:function(){},//点击 广告活动名称的回调 传入参数 数据id
 		editcall:function(){},//点击编辑图标 回调函数  传入参数 数据id
 		copycall:function(){}//点击拷贝图标 回调函数   传入参数 数据id
