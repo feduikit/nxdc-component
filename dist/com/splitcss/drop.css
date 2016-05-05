@@ -154,7 +154,7 @@ ul.sub-drop-list>li.drop-one-item{
 	
 }
 ul>li.drop-one-item:hover{
-    background-color: #f7f0e8;
+    background-color: #f6f4f1;/**  走查bug  ***/
     color:#fc7408;
 	cursor: pointer;
 }

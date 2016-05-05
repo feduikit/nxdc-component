@@ -22,7 +22,7 @@
 	opacity: 1;
 }
 .modal-dialog-ndp>.modal-content button.close:hover{
-	background-color: #bd5959;
+	background-color: #e56d43;/*** 颜色值bug****/
 }
 .modal-dialog-ndp>.modal-content button.close:active{
 	background-color: #cc5252;

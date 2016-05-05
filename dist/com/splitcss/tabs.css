@@ -16,6 +16,7 @@ div.ndp-tab-wrapper.specialWrapper span.more-button {
     background-color: #fff;
     z-index: 200;
     cursor: pointer;
+	color:#707887;
 }
 
 div.specialWrapper span.more-button:hover {

@@ -6302,7 +6302,7 @@ if (!Object.keys) Object.keys = function(o) {
          ** 用户点击 一行
          ***/
         this.body.find(".ndp-table-row").click(function(e) {
-            e.stopPropagation();
+            //e.stopPropagation();
             var row = $(this).index(); //第几行
             fireEvent($(this).get(0), "ROW_CLICK", { row: row }); //第几行被点击
         });
@@ -6404,20 +6404,22 @@ if (!Object.keys) Object.keys = function(o) {
             this.head.find("li>span.ndp-table-col:nth-child(" + (cfg.activeCol + 1) + ")").addClass("active");
             this.body.find("li>span.ndp-table-col:nth-child(" + (cfg.activeCol + 1) + ")").addClass("active");
         }
-
+		// 允许选中一行
         if (cfg.rowNail) {
             this.body.find("li.ndp-table-row").unbind("click").click(function() {
                     $(this).hasClass("ndp-table-row-hover") ? $(this).removeClass("ndp-table-row-hover") : $(this).addClass("ndp-table-row-hover");
                     $(this).siblings().removeClass("ndp-table-row-hover");
-                })
-                .unbind("mouseenter").mouseenter(function() {
-                    $(this).addClass("ndp-table-row-hover");
-                })
-                .unbind("mouseleave").mouseleave(function() {
-                    $(this).removeClass("ndp-table-row-hover")
-                })
+					self.body.find("li.active").removeClass("active");
+					$(this).addClass("active");
+			})
+			.unbind("mouseenter").mouseenter(function() {
+				$(this).addClass("ndp-table-row-hover");
+			})
+			.unbind("mouseleave").mouseleave(function() {
+				$(this).removeClass("ndp-table-row-hover")
+			});
         }
-
+		
         this.body.find("li.ndp-table-row").unbind("mouseenter").mouseenter(function() {
                 $(this).addClass("ndp-table-row-hover");
             })

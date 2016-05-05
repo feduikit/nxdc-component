@@ -19,6 +19,12 @@
 .dropdown.drop2-wrapper button {
     background-color: transparent;
 }
+/***
+** hover 颜色，新增 走查bug。
+***/
+.dropdown.drop2-wrapper button:hover{
+	color:#fd9611;
+}
 
 .dropdown.drop2-wrapper.open {
     color: #fc7408;
@@ -52,10 +58,10 @@
 }
 
 .dropdown-menu .drop-list-item .list-leaf:hover{
-	background: #f7f0e8;
+	background: #f6f4f1;/****#f7f0e8***bug  */;
 }
 .dropdown-menu .list-leaf:hover,.dropdown-menu .list-leaf>a:hover {
-    background: #f7f0e8;
+    background: #f6f4f1;/****#f7f0e8** bug **/;
     color: #fc7408;
     cursor: pointer;
 	text-decoration: none;

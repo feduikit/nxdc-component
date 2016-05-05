@@ -30,7 +30,7 @@ require(['./config'],function(){
 			});
             
             $(".ndp-js-example2 .ndp-table-wrapper").table({
-                head:{col1:"产品编号",col2:"名称",col3:"图片",col4:"目标网页",col5:"品牌"
+                head:{col1:"产品编号",col2:"名称2",col3:"图片",col4:"目标网页",col5:"品牌"
                             ,col6:"价格",col7:"可用性",col8:"这是什么啊"},//["Offer ID","col 2","COl 3","Col 4"]
                 data:[{id:1101,name:"hello123",info:"hello china 123",gender:"man"},
                       {id:1102,name:"hello_23",info:"hello - japan 34",gender:"woman"},

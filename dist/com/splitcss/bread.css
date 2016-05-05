@@ -23,6 +23,10 @@
 	white-space: nowrap;
 }
 
+.ndp-bread-wrapper ol.breadcrumb li:nth-last-child(1){
+	color:#ccc;
+}
+
 .ndp-bread-wrapper ol.breadcrumb li i{
 	position: absolute;
 	left: 0;
