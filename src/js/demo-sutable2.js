@@ -242,6 +242,10 @@ var data2 = [{
 						break;
 					case "switch":// 点击 "开启/暂停" 列的 switch 按钮
 						console.log("状态:" + dat.value + " : id:" + dat.id);// value 0 关闭，1开启， id：所在行的数据id
+                        setTimeout(function(){
+                            console.log("发现错误，状态回到上一步");
+                            hwd.switchBack(dat.hwd);
+                        },2000);
 						break;
 					case "nextlayer"://点击加好 + 按钮，加载下一级数据
 						console.log("deep(深度层次):" + dat.deep + " : 上一级数据id" + dat.id + " : DOM fa(上一级DOM 节点) "+  dat.fa);// value 0 关闭，1开启， id：所在行的数据id

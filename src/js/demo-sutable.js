@@ -1047,6 +1047,8 @@ var data2 =  [{
 						break;
 					case "switch":// 点击 "开启/暂停" 列的 switch 按钮
 						console.log("状态:" + dat.value + " : id:" + dat.id);// value 0 关闭，1开启， id：所在行的数据id
+                        console.log("错误");
+                        dat.hwd.addClass("active");
 						break;
 				}
 			});

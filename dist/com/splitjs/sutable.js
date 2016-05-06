@@ -156,9 +156,11 @@
 		** 点击 开启/暂停 按钮
 		***/
 		_this.elem.find(".sutable-col-oc>.switcher").click(function(e){
-			var val = $(this).find("input[type=checkbox]:checked").length?1:0;
+            e.stopImmediatePropagation();
+			//var val = $(this).find("input[type=checkbox]:checked").length?1:0;
+            var val = $(this).children("label").hasClass("active")?0:1;// 现在的状态，当前点击之后的状态
 			var ser = $(this).parents(".sutable-row[serial]:first").attr("serial");
-			fireEvent($(this).get(0),"OPERATE_ACTION",{action:"switch",value:val,id:ser,hwd:$(this).children("label")});//1 开，0关
+			fireEvent($(this).get(0),"OPERATE_ACTION",{action:"switch",value:val,id:ser,hwd:$(this)});//1 开，0关
 		});
 		/***
 		**状态的打开/关闭
@@ -452,7 +454,16 @@
 			}
 			sutable.listenBody();
 			return sutable.elem;
-		}
+		};
+        
+        /****
+        ** @param {hwd} switcher 句柄
+        ** @param {val} 0 关闭，1 打开
+        **
+        ***/
+        this.switchBack = function(hwd){
+            hwd.children("label").toggleClass("active");
+        }
     }
 	
 	
