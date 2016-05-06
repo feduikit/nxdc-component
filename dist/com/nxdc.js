@@ -5897,7 +5897,7 @@ if (!Object.keys) Object.keys = function(o) {
 		_this.elem.find(".sutable-col-oc>.switcher").click(function(e){
 			var val = $(this).find("input[type=checkbox]:checked").length?1:0;
 			var ser = $(this).parents(".sutable-row[serial]:first").attr("serial");
-			fireEvent($(this).get(0),"OPERATE_ACTION",{action:"switch",value:val,id:ser});//1 开，0关
+			fireEvent($(this).get(0),"OPERATE_ACTION",{action:"switch",value:val,id:ser,hwd:$(this).children("label")});//1 开，0关
 		});
 		/***
 		**状态的打开/关闭

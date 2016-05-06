@@ -11,7 +11,7 @@
 
 .font-icon {
   position: relative;
-  top: 1px;
+/*  top: 1px;*/
   display: inline-block;
   font-family: 'NXDC FONTS'!important;
   font-style: normal;
@@ -39,7 +39,7 @@ i.font-icon{
 .font-icon-prohibit1:before { content: "\e6d6"; }
 .font-icon-help:before { content: "\e6d7"; }
 .font-icon-help1:before { content: "\e6d8"; }
-.font-icon-help:before { content: "\e655"; }
+.font-icon-help:before { content: "\e6d7"; }
 .font-icon-attention:before { content: "\e6d9"; }
 .font-icon-attention1:before { content: "\e6da"; }
 .font-icon-about:before { content: "\e6d9b"; }
@@ -49,7 +49,7 @@ i.font-icon{
 .font-icon-error:before { content: "\e6df"; }
 .font-icon-error1:before { content: "\e6e0"; }
 
-.font-icon-single:before { content: "\e6e1"; }
+.font-icon-single:before { content: "\e6e1"; } 
 .font-icon-single1:before { content: "\e6e2"; }
 .font-icon-export:before { content: "\e6e3"; }
 .font-icon-export1:before { content: "\e6e4"; }
@@ -128,9 +128,9 @@ i.font-icon{
 
 
 
-.font-icon-attention:before { content: "\e657"; }
+.font-icon-attention:before { content: "\e6d9"; }
 .font-icon-check:before { content: "\e69b"; }
-.font-icon-user:before { content: "\e6a9"; }
+
 .font-icon-update:before { content: "\e69e"; }
 .font-icon-back:before { content: "\e69d"; }
 

@@ -80,8 +80,8 @@
 }
 
 .sutable-row>.sutable-col.attention>i{
-	display: inline;
-	margin-right: 5px;
+/*	display: inline;*/
+	margin-right: 6px;
 	color#f6c76d;
 }
 .att-wrapper{
