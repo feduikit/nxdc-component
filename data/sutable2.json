@@ -1,0 +1,103 @@
+{
+	"code":0,
+	"desc":"success",
+	"data":[{
+		"id":1011,
+		"label": [{
+				"name": "美利坚合众国"
+			}, {
+				"text": "运行中",
+				"value":0
+			}, {
+				"text":7010
+			}, {
+				"text": "21000"
+			}, {
+				"text": "2000-1"
+			},
+			{
+				"text": "1100"
+			}, {
+				"text": "4000"
+			}, {
+				"text": "987"
+			}, {
+				"text": "601"
+			},{
+				"text":"201"
+			},{
+				"text":"222"
+			},{
+				"text":2100
+			},{
+				"status": false
+			}],
+			"hasChild":true
+		  },
+	{
+		"id":1022,
+		"label": [{
+			"name": "中国伊斯兰共和国"
+		}, {
+			"text": "审核未通过",
+			"value":2,
+			"reason":"活动已经被对方暂停"
+		}, {
+			"text": 21
+		}, {
+			"text": 120
+		}, {
+			"text": 12000
+		}, {
+			"text": 22
+		}, {
+			"text": 230
+		}, {
+			"text": 12
+		}, {
+			"text": 420
+		},{
+			"text":1500
+		},{
+			"text":2500
+		},{
+			"text":1100
+		},{
+			"status": true
+		}],
+		"hasChild":true
+	},
+	{
+		"id":1033,
+		"label": [{
+			"name": "美国"
+		}, {
+			"text": "运行中",
+			"value":0
+		}, {
+			"text": 52
+		}, {
+			"text": 720
+		}, {
+			"text": 62000
+		}, {
+			"text": 82
+		}, {
+			"text": 420
+		}, {
+			"text": 32
+		}, {
+			"text": 20
+		},{
+			"text":100
+		},{
+			"text":200
+		},{
+			"text":1100
+		},{
+			"status": true
+		}],
+		"hasChild":true
+	}
+]
+}

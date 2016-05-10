@@ -263,7 +263,14 @@ var data2 = [{
 			$("#updatesum").click(function(){
 				//[{text:2001},{text:2002},{text:2003}]
 				hwd.sum(sum);
-			});			
+			});	
+            
+            $("#ajax").click(function(){   
+                hwd.updateAjaxOption({
+                     url: "../data/sutable2.json"
+                });
+			});	        
+            
 			
         });
     });

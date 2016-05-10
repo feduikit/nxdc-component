@@ -308,7 +308,7 @@
     };
 
 	/**
-	** 构建下来菜单样子
+	** 构建下拉菜单样子
 	**/
 	Sutable.prototype.concrate = function(){
 		var _this = this;
@@ -463,6 +463,13 @@
         ***/
         this.switchBack = function(hwd){
             hwd.children("label").toggleClass("active");
+        };
+        
+        /***
+        **@param {Object} o  ajax 配置的json 对象
+        ***/
+        this.updateAjaxOption = function(o){
+            sutable.config.ajaxOptions = $.extend(true,{},sutable.config.ajaxOptions,o);
         }
     }
 	
