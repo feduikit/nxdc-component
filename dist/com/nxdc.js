@@ -30,17 +30,20 @@ if (!Object.keys) Object.keys = function(o) {
 		content:"这里填写你想要展示的提示内容！~~",// 可以使文字，也可以是html
 		btnOK:"OK",
 		icon:"",
-		callback:null
+		callback:null,
+        backdrop:true
 	};
     
     function build(){
   		pa = $(document.body);
-		if(pa.find("[id*='alert'][class*='modal fade']").length==0){
-			wrapper = $('<div class="modal fade" tabindex="-1" role="dialog" id="alert-holder">\
+        var htmlstring = '<div class="modal fade" tabindex="-1" role="dialog" id="alert-holder">\
 					  <div class="modal-dialog modal-md modal-dialog-ndp">\
 						<div class="modal-content"></div>\
 					  </div>\
-					</div>');
+					</div>';
+        
+		//if(pa.find("[id*='alert'][class*='modal fade']").length==0){
+			wrapper = $(htmlstring);
 			header = $('<div class="modal-header">\
 						  		<button class="close" data-dismiss="modal">\
 						  			<span aria-hidden="true">&times;</span>\
@@ -52,11 +55,11 @@ if (!Object.keys) Object.keys = function(o) {
 						    </div>');
 			wrapper.find("div.modal-content").append(header).append(body).append(footer);
 			pa.append(wrapper);
-		} else{
-            body =$("[id*='alert'][class*='modal fade'] .modal-body").empty();
-            wrapper =$("[id*='alert'][class*='modal fade']");
-            footer =$("[id*='alert'][class*='modal fade'] .modal-footer");            
-        }    
+//		} else{
+//            wrapper =$("[id*='alert'][class*='modal fade']");            
+//            body =$("[id*='alert'][class*='modal fade'] .modal-body").empty();
+//            footer =$("[id*='alert'][class*='modal fade'] .modal-footer");            
+//        }
     };
 
 	$(document).ready(function(){
@@ -65,6 +68,7 @@ if (!Object.keys) Object.keys = function(o) {
     
     win.showAlert = function(options){
         var cfg = $.extend(true,{},defaults,wrapper.data(),options);
+        console.log(cfg.backdrop);
         build();
         var icon = $('<div id="icon-holder"></div>');
         var content = $('<div id="content-holder"><div class="content-title"></div>\
@@ -112,7 +116,7 @@ if (!Object.keys) Object.keys = function(o) {
         }
 
         var the = $.extend(true,{},wrapper,wrapper.modal({
-//            backdrop:false, //是否显示黑色背景
+            backdrop:cfg.backdrop, //是否显示黑色背景
             keyboard:false
         }));
 

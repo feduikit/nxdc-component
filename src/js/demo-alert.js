@@ -39,6 +39,16 @@ require(['./config'],function(){
 								
 				});
 			
+                //不显示黑色背景
+				$("button.btn-info").click(function(){
+					showAlert({
+						callback:function(modal){
+							console.log(modal.text());
+						},
+                        backdrop:false
+					});			
+								
+				});            
 			
 			
         });
