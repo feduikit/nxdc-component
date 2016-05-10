@@ -2907,6 +2907,7 @@ if (!Object.keys) Object.keys = function(o) {
 			var text = o[cfg.textKey]||o.text||o.label||o.title||o.name;
 			var val = o.val||o.value||text;
 			var li = $("<li class='drop-one-item' text='"+text+"' value='"+val+"' deep="+deep+" title='"+text+"' />");
+			li.data("info", o);
 			var pad = (deep+2)*5 + 2;
 			li.css({"padding-left":pad+"px"});
 			if(array && array instanceof Array){
@@ -2936,8 +2937,8 @@ if (!Object.keys) Object.keys = function(o) {
         _this.peal.click(function(e){
             e.stopImmediatePropagation();
 			$(".ndp-drop-wrapper[id!="+_this.config.id+"]").removeClass("focus");
-			$(".ndp-drop-wrapper[id!="+_this.config.id+"] ul.drop-list").addClass("hidden");		
-			_this.elem.toggleClass("focus");	
+			$(".ndp-drop-wrapper[id!="+_this.config.id+"] ul.drop-list").addClass("hidden");
+			_this.elem.toggleClass("focus");
             _this.list.toggleClass("hidden");
             setDirect(_this);
         });
@@ -2954,6 +2955,8 @@ if (!Object.keys) Object.keys = function(o) {
             var value = $(this).attr("value");
 			//deep 表示树桩菜单第几层 base from 0。index:表示这一层的第几个， base from 1
 			$(_this.elem.get(0)).data('val', value);
+			$(_this.elem.get(0)).data('data', $(this).data("info"));
+
 			if(_this.config.type==3){
 				var oldV = _this.peal.find("input").val();
 				var newV = $(this).attr("title");
@@ -3051,9 +3054,9 @@ if (!Object.keys) Object.keys = function(o) {
 					var val = li.attr("value");
 					 if(RE.test(txt)){
 						if(!_this.list.hasClass("hidden")){
-							 li.siblings().removeClass("em"); 
+							 li.siblings().removeClass("em");
 							 li.addClass("em");
-								
+
 						     if(domList.scrollHeight>domList.clientHeight || 		domList.offsetHeight>domList.clientHeight){//存在滚动条
 								 var ch = li.get(0).offsetTop - domList.clientHeight;
 								 if(ch>0){
@@ -3065,7 +3068,7 @@ if (!Object.keys) Object.keys = function(o) {
 							fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:val,text:txt});
 						}
 						break;
-					 }						
+					 }
 				}
 			}
 		});
@@ -3125,7 +3128,7 @@ if (!Object.keys) Object.keys = function(o) {
 				fireEvent(_this.elem.get(0),"APPLY_CLICK",{checkedArr:cksArr});
 			});
 		}
-		
+
 		$(document,document.body).click(function(e){
 			if(!(e.target.tagName == "INPUT" && e.target.type == "checkbox")){
 				//$(".ndp-drop-wrapper ul.drop-list:has(li.drop-one-item)").addClass("hidden");
@@ -3198,6 +3201,7 @@ if (!Object.keys) Object.keys = function(o) {
 						li.addClass("group-hilight");
 					}
 					li.append(text).attr({"title":text,"value":text,"text":text});
+					li.data("info", item);
 					recursive(li,sub,_this.config,0);
 					_this.list.append(li);
 				}else{
@@ -3211,6 +3215,7 @@ if (!Object.keys) Object.keys = function(o) {
 					if (other) {
                         li.attr('data-other', other);
                     }
+					li.data("info", item);
 					_this.list.append(li);
 				}
 			}else if(typeof(item)=="number"||typeof(item)=="string"){
@@ -3221,6 +3226,7 @@ if (!Object.keys) Object.keys = function(o) {
 					var check = $("<input type='checkbox' value='" + val + "' />");
 					li.append(check);
 				}
+				li.data("info", item);
 				_this.list.append(li);
 			}
         });
@@ -3262,6 +3268,7 @@ if (!Object.keys) Object.keys = function(o) {
 			_this.elem.find("input").val(o).attr("data-val",o);
 			$(_this.elem.get(0)).data('val', o);
 		}
+		$(_this.elem.get(0)).data('data', o);
 	}
 
 	Drop.prototype.data = function(o){
@@ -3270,7 +3277,7 @@ if (!Object.keys) Object.keys = function(o) {
 			'val': _this.elem.find("input").attr("data-val"),
 			'txt' : _this.elem.find("input").val()
 		}
-		return _data;
+		return $.extend(_data, $(_this.elem.get(0)).data('data'));
 	}
 
     /***
@@ -3292,6 +3299,7 @@ if (!Object.keys) Object.keys = function(o) {
 				drop.elem.find("input").val(o).attr("data-val",o);
 				$(drop.elem.get(0)).data('val', o);
 			}
+			$(drop.elem.get(0)).data('data', o);
 			return drop.elem;
 		};
     }
