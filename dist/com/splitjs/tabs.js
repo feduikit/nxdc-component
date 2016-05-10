@@ -75,7 +75,7 @@
 					var now = parseInt($(_self).attr("now"));
 					if(now==0) return false;
 					$(_self).attr("now",now);
-					var w = _this.tabwrapper.find("li[index="+(now-1)+"]").width();
+					var w = _this.tabwrapper.find("li[data-index="+(now-1)+"]").width();
 					var currW = parseInt(_this.tabwrapper.css("left"));//ul left
 					_this.tabwrapper.css("left",(currW + w)+"px");
 					now--;
@@ -92,24 +92,25 @@
 				var _self = this;
 				clearTimeout(que);
 				que = setTimeout(function(){
-				if($(_self).attr("stop")) {
-					e.preventDefault();
-					e.stopImmediatePropagation();
-					return false;
-				}
-				var now = parseInt($(_self).attr("now"));
-				$(_self).attr("now",now);
-
-				var w = _this.tabwrapper.find("li[index="+now+"]").width();
-				var currW = parseInt(_this.tabwrapper.css("left"));
-				_this.tabwrapper.css("left",(currW - w) + "px");
-				now++;
-				$(_self).attr("now",now);
-				_this.preButton.attr("now",now);
-				if(now>0){
-					_this.preButton.removeClass(_this.config.negClass);
-				}
-				setAble(_this);
+                    if($(_self).attr("stop")) {
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                        return false;
+                    }
+                    var now = parseInt($(_self).attr("now"));
+                    $(_self).attr("now",now);
+                    console.log("now:" + now);
+                    var w = _this.tabwrapper.find("li[data-index="+now+"]").width();
+                    console.log("w:" + w);
+                    var currW = parseInt(_this.tabwrapper.css("left"));
+                    _this.tabwrapper.css("left",(currW - w) + "px");
+                    now++;
+                    $(_self).attr("now",now);
+                    _this.preButton.attr("now",now);
+                    if(now>0){
+                        _this.preButton.removeClass(_this.config.negClass);
+                    }
+                    setAble(_this);
 				},250);
 			});
 //		}
