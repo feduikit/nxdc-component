@@ -1,0 +1,47 @@
+.ndp-field-wrapper {
+	position: relative;
+    width: 100%;
+    min-height: 100px;
+    border:1px solid #ccc;
+    padding: 8px 10px;
+    font-size: 13px;
+    word-wrap: break-word;
+}
+
+.ndp-field-wrapper:focus,.ndp-field-wrapper:active{
+    box-shadow: 0 0 1px #ccc; 
+}
+
+.deco-tag{
+    padding: 4px;
+    color:#fc7408;
+    background-color: #fde9d0;
+    cursor: default;
+    overflow: hidden;
+}
+.deco-tag>.deco-close{
+    margin-left:5px;
+    font-size: 15px;
+    cursor: pointer;
+    overflow: hidden;
+}
+.deco-tag>.deco-close:hover{
+    color:#e86a08;
+}
+
+/**
+.deco-tag:after{
+    font-family: 'NXDC FONTS'!important;
+    display: inline-block;
+    content:"\e6a0";
+    font-size: 9px;
+    margin-left: 8px;
+    height:20px;
+    font-weight: bolder;
+    top:-10px;
+}
+.deco-tag:hover:after{
+    cursor: pointer;
+    color:#e86a08;
+}
+*/

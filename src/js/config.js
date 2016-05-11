@@ -28,7 +28,8 @@ require.config({
 		'vList3':'./components/vList3',
 		'bubble':'./components/bubble',
 		'bootdrop':'./components/bootDrop',
-		'datepicker':'./components/daterangepicker'
+		'datepicker':'./components/daterangepicker',
+        'field':'./components/field'
     },
     shim:{
 		bootstrap:{

@@ -127,6 +127,10 @@ i.font-icon{
 .font-icon-copy:before    { content: "\e676"; }
 
 
+.font-icon-error:before    { content: "\e6df"; }
+.font-icon-close:before    { content: "\e6a0"; }
+.font-icon-right:before    { content: "\e69c"; }
+
 
 .font-icon-attention:before { content: "\e6d9"; }
 .font-icon-check:before { content: "\e69b"; }
