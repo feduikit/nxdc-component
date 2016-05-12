@@ -91,6 +91,7 @@
             var tag = "<span class='deco-space'> </span><span class='deco-tag' spell-check='false' data-val="+o.val+" >"+o.text+"<span class='deco-close'>&times;</span></span>&nbsp;";
             document.execCommand("insertHTML",false,tag);
             field.tagListen();
+            field.elem.contents().focus();//pa
             return field.elem;
         };
         
@@ -108,7 +109,8 @@
                 the.replaceWith("{{"+val+"|"+txt+"}}");
             });
             clone.children("div").prepend("#b#n");
-            console.log(clone.text());
+            //console.log(clone.text());
+            return clone.text();
         };
     }
 	
