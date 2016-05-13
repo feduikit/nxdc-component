@@ -43,17 +43,17 @@
               if(nodeHtmlString.indexOf("deco-tag")!=-1||
                  ~nodeHtmlString.indexOf("deco-close")||~nodeHtmlString.indexOf("deco-space"))
               {  
+                e.stopImmediatePropagation();
+                e.preventDefault();
                   if(e.keyCode == 8){//删除
-                      if(~nodeHtmlString.indexOf("deco-close")) targetNode = targetNode.parentNode;
+                      console.log(nodeHtmlString);
+                      if($(targetNode).hasClass("deco-close")) targetNode = targetNode.parentNode;
                       var range = document.createRange();
                       range.selectNode(targetNode);
                       var sel = window.getSelection();
                       sel.removeAllRanges();
                       sel.addRange(range);
-                      document.execCommand("delete", false, null);                      
-                  }else{
-                    e.preventDefault();
-                    e.stopPropagation();
+                      document.execCommand("delete", false, null); 
                   }
               }
             } 
