@@ -1,6 +1,6 @@
 {
   "name": "NDPUI",
-  "version": "1.0.39",
+  "version": "1.0.40",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,7 +17,6 @@
     "grunt-contrib-cssmin": "*",
     "grunt-contrib-uglify": "*",
     "grunt-contrib-watch": "*",
-    "grunt-iconfont": "^0.2.1",
     "grunt-requirejs": "*"
   }
 }
