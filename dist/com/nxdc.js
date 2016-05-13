@@ -3858,11 +3858,18 @@ if (!Object.keys) Object.keys = function(o) {
         this.addTag = function(o){
             var tag = "<span class='deco-space'> </span><span class='deco-tag' spell-check='false' data-val="+o.val+" >"+o.text+"<span class='deco-close'>&times;</span></span>&nbsp;";
             document.execCommand("insertHTML",false,tag);
+            //mousedown event on your div because it steals the focus:  点击其他div 可能失去焦点
             field.tagListen();
             field.elem.contents().focus();//pa
             return field.elem;
         };
         
+        /****
+        ***
+        ****/
+        this.setContent = function(str){
+               
+        }
         /***
         **  获得输入的数据
         ***/
@@ -3877,9 +3884,36 @@ if (!Object.keys) Object.keys = function(o) {
                 the.replaceWith("{{"+val+"|"+txt+"}}");
             });
             clone.children("div").prepend("#b#n");
-            //console.log(clone.text());
             return clone.text();
         };
+        
+        /***
+        ** 用户把数据回填到这里，显示相应的格式
+        **@param {String} str 字符串数据
+        ***/
+        this.fill = function(strs){
+            var arr = strs.split("#b#n");
+            var pre = String(field.elem.html()).trim();
+            var cont = pre;
+            var x = "<span class='deco-close'>&times;</span>";
+            for(var i=0;i<arr.length;i++){
+                var str = arr[i];
+                var nstr = str.replace(/\{\{(.+?)\|(.+?)\}\}/ig,function(all,p1,p2){
+                   var space = "<span class='deco-space'></span>"; 
+                   var ctx = "<span class='deco-tag' data-val="+p1+">"+p2.trim() + x +"</span>";
+                   return space + ctx + "&nbsp;";
+                });
+                nstr=nstr.replace(/\s/,"");
+                console.log(nstr.trim());
+                if((i==0 && pre.length)||i>0){
+                    nstr = "<div>" +nstr + "</div>";
+                }
+                cont +=nstr;
+            }
+            field.elem.html(cont);
+            field.tagListen();
+            return field.elem;
+        }
     }
 	
 	  var old = $.fn.field;

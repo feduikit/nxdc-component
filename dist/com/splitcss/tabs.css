@@ -61,13 +61,17 @@ ul.nav-tabs-cus.one-line>li.carousel {
 }
 
 ul.nav-tabs-cus>li>a {
-    color: #666;
+    display: block;
+    color: #666;    
     border-radius: 0;
     outline: none;
+    font-size: 14px;
+    text-align: center;
 }
 
 ul.nav.nav-tabs-cus>li.active>a {
     border-top: 2px solid #fc7408;
+    color:#fc7408;
 }
 
 ul.nav.nav-tabs-cus>li:not(.active)>a:hover {
@@ -85,6 +89,8 @@ ul.nav.nav-tabs-cus>li>a>span.badge {
     font-weight: normal;
     font-size: 12px;
     margin: 0 5px;
+    border-radius: 6px;
+    padding: 2px 5px;
 }
 
 ul.nav.nav-tabs-cus>li>a>i.glyphicon-remove {
