@@ -103,6 +103,15 @@ module.exports=function (grunt) {
                 filter: 'isFile'              
               }]
         };
+//        o.iconfont = {
+//          options: {
+//              fontName: "ndpicon"
+//            },            
+//            your_target: {
+//                src: 'assets/*.svg',
+//                dest: 'src/css/font/'
+//            }  
+//        };
 //        o.watch.css = {//监视css文件发生的改变
 //            files : [(ske.type=="1")?'src/css/**/*.css':'css/**/*.css'],
 //            options : {nospawn : true}

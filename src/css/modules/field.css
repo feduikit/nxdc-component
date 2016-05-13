@@ -7,6 +7,9 @@
     font-size: 13px;
     word-wrap: break-word;
 }
+.ndp-field-wrapper>*{
+    line-height: 23px;
+}
 
 .ndp-field-wrapper:focus,.ndp-field-wrapper:active{
     box-shadow: 0 0 1px #ccc; 

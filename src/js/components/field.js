@@ -2,7 +2,13 @@
     var g = {
         mousePos : {x:0, y:0}
     }; //全局定义
-    var help = {}; //帮助类
+    var help = {
+        getSelectionStart:function() {
+            var node = document.getSelection().anchorNode;
+            return (node.nodeType == 3 ? node.parentNode : node);
+        }    
+    }; //帮助类
+
     function Field(element, options) {
 		var self = this;
 		this.elem = element;
@@ -30,16 +36,27 @@
             g.mousePos.y = e.pageY;            
         });
         
-        _this.elem.keyup(function(e){
-            //console.log(e.keyCode);
-            if(e.keyCode == 8){//删除
-                console.log(g.mousePos.x,g.mousePos.y);
-                var ele = document.elementFromPoint(e.clientX,e.clientY);  
-                console.log(ele);
-            }else {//输入数字和字符
-               
-            }
-              
+        _this.elem.keydown(function(e){
+            var targetNode = help.getSelectionStart();
+            if(targetNode != undefined && targetNode.nodeType === 1 && targetNode.nodeName == 'SPAN') {
+              var nodeHtmlString = targetNode.outerHTML;
+              if(nodeHtmlString.indexOf("deco-tag")!=-1||
+                 ~nodeHtmlString.indexOf("deco-close")||~nodeHtmlString.indexOf("deco-space"))
+              {  
+                  if(e.keyCode == 8){//删除
+                      if(~nodeHtmlString.indexOf("deco-close")) targetNode = targetNode.parentNode;
+                      var range = document.createRange();
+                      range.selectNode(targetNode);
+                      var sel = window.getSelection();
+                      sel.removeAllRanges();
+                      sel.addRange(range);
+                      document.execCommand("delete", false, null);                      
+                  }else{
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }
+              }
+            } 
         });
     };
     
@@ -136,7 +153,6 @@
                    return space + ctx + "&nbsp;";
                 });
                 nstr=nstr.replace(/\s/,"");
-                console.log(nstr.trim());
                 if((i==0 && pre.length)||i>0){
                     nstr = "<div>" +nstr + "</div>";
                 }
@@ -145,7 +161,14 @@
             field.elem.html(cont);
             field.tagListen();
             return field.elem;
-        }
+        };
+        
+        /****
+        ** 删除 tag
+        ****/
+        this.removeTag = function(){
+            
+        };
     }
 	
 	  var old = $.fn.field;

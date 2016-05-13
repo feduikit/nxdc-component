@@ -17,6 +17,7 @@
     "grunt-contrib-cssmin": "*",
     "grunt-contrib-uglify": "*",
     "grunt-contrib-watch": "*",
+    "grunt-iconfont": "^0.2.1",
     "grunt-requirejs": "*"
   }
 }
