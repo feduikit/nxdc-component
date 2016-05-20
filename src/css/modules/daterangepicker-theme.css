@@ -38,7 +38,8 @@
 .daterangepicker td.off.end-date,
 .daterangepicker td.disabled,
 .daterangepicker option.disabled {
-    color: #ccc;
+/*    color: #ccc;*/
+    color:#d8e0e3;
 }
 
 .daterangepicker td.available:hover,
@@ -55,7 +56,7 @@
 }
 
 .daterangepicker td.in-range {
-    background: #fce3bc;
+    background: #f7f0e8;
     border-radius: 0;
 }
 
@@ -106,7 +107,7 @@
 .daterangepicker .applyBtn {
     background: #fbe9cf;
     border: 1px solid #fbe9cf;
-    color: #f37200;
+    color: #fd9611;
     border-radius: 0;
 }
 

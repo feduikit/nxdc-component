@@ -94,7 +94,10 @@ require(['./config'],function(){
 						
 						form.append(user).append(pwd).append(email).append(gender).append(desc);
 						body.append(form);
-					}
+					},
+					footer:function(footer){
+						footer.addClass("footer-info")
+					}                   
 				});
 			});
 			
@@ -185,7 +188,7 @@ require(['./config'],function(){
 						
 					},
 					footer:function(footer){
-						footer.addClass("footer-login");
+						footer.addClass("footer-info");
 					}
 				});
 			});

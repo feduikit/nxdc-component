@@ -7,7 +7,7 @@
     /** 默认值 可以修改 **/
     height: 30px;
     box-sizing: border-box;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #b9c3cd;
     -webkit-transition: border-color ease-in-out .2s, -webkit-box-shadow ease-in-out .2s;
     -o-transition: border-color ease-in-out .2s, box-shadow ease-in-out .2s;
     transition: border-color ease-in-out .2s, box-shadow ease-in-out .2s;
@@ -40,8 +40,8 @@
 }
 
 .search-decoration>input[type][disabled] {
-    color: #bcbcbc;
-    background-color: #dee7e7;
+    color: #999;
+    background-color: #f6f6f6;
 }
 
 .search-decoration>input[type]:focus {
@@ -72,12 +72,13 @@
 **/
 
 .ndp-search-wrapper.disabled {
-    background-color: #dee7e7;
+    background-color: #f6f6f6;
+    border:1px solid #eaeaea;
 }
 
 .ndp-search-wrapper.disabled>.search-decoration>i {
-    color: #ccc;
-    background-color: #dee7e7;
+    color: #999;
+    background-color: #f6f6f6;
 }
 
 .search-drop {
@@ -106,7 +107,7 @@
     top: 15%;
     left: 100%;
     z-index: 100;
-    border-right: 1px solid #6f6f6f;
+    border-right: 1px solid #ccc;
 }
 
 .search-drop-wrapper {

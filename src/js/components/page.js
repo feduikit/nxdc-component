@@ -170,6 +170,7 @@
 			});	
 			_this.dropwrapper.find("ul.page-dropdown>li").click(function(e){
 				e.stopImmediatePropagation();
+                $(this).addClass("active").siblings().removeClass("active");
 				$(this).parent().addClass("hidden");
 				var per = parseInt($(this).text());
 				if(_this.pagetext.text()!=per){
@@ -253,13 +254,15 @@
 			}else if(cfg.type==3){
 				_this.dropwrapper.append(_this.num).append(down);
 			}
-			cfg.perPages.forEach(function(item){
+            //每页显示多少条
+			cfg.perPages.forEach(function(item,index){
 				if(typeof(item)=="string"||typeof(item)=="number"){
 					var str = item;
 				}else{
 					str = item.name||item.text||item.pages;
 				}
-				var li = $("<li />").text(str);
+				var li = $("<li data-val="+str+" />").text(str);
+                if(cfg.perPage==parseInt(str)) li.addClass("active");
 				drop.append(li);
 			});
 			_this.dropwrapper.append(drop);

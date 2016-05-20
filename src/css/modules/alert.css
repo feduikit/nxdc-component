@@ -40,6 +40,8 @@
 }
 .modal-body{
 	position: relative;
+    padding-top:20px; /*** UI走查bug ****/
+    padding-right:20px;
 }
 #icon-holder{
 	min-width: 0;
@@ -61,21 +63,33 @@
 	width:80%;
 	margin-left:20%;
 	min-height: 80px;
+    margin-top:10px;/*** UI 30px聚上面 ***/
 	
 }
 /***提示内容标题**/
 .content-title{
 	position: relative;
 	font-weight: bolder;
+    font-size: 14px;
 }
+
 /****提示内容***/
 .content-itself{
-	font-size: 14px;
+	font-size: 12px; /*** 走查bug ***/
 	word-break: break-word;
 }
 .modal-dialog-ndp>.modal-content>.modal-footer{
-	border-width:0;
+/*	border-width:0;*/
+    height: auto;
+    padding: 6px 0;
+    padding-right: 20px;
+    border-color:#dadee2;
 }
 .modal-dialog-ndp>.modal-content>.modal-footer button.btn{
 	border-radius: 0;
+    border-color:transparent;
+    margin: 0;
+    min-width: 60px;
+    background-color: #fd9611;
+    color:white;
 }

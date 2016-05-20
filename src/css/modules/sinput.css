@@ -38,8 +38,9 @@
 
 .ndp-sinput-wrapper[disabled],.ndp-sinput-wrapper[disabled].active{
 	box-shadow: 0 0 0 transparent;
-	background-color: #dee7e7;
+	background-color: #f6f6f6;
 	cursor:not-allowed;
+    border-color:1px solid #eaeaea;
 }
 .ndp-sinput-wrapper>input[type]{
 	position: relative;
@@ -61,9 +62,14 @@
 	letter-spacing: 2px;
 	font-size: 12px;
 }
+
+.ndp-sinput-wrapper>input[type][disabled]{
+    color:#999;
+    background-color: #f6f6f6;
+}
 .ndp-sinput-wrapper[disabled] *{
-	background-color: #dee7e7;
-	color:#ccc;
+	background-color: #f6f6f6;
+	color:#999;
 	cursor:not-allowed;
 }
 

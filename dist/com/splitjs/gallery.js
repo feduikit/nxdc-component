@@ -113,12 +113,13 @@
 				ul.append(li);
 			});	
 			
+			var theIMG = $("#gallery-carousel").find("img[data-img][index='0']");
+			theIMG.attr("src",theIMG.data("img"));                
 			var gData = _this.config.data[_this.config.current];
-			scale(gData.w,gData.h);
+            var theDOM = $("#gallery-carousel").find("div.item.active[index='0']");
+			scale(theDOM.attr("w"),theDOM.attr("h"));        
 			_this.wrapper.modal();//显示图片查看器
 			setButton();
-			var theIMG = $("#gallery-carousel").find("img[data-img][index='1']");
-			theIMG.attr("src",theIMG.data("img"));
 		});
 		
 		/***

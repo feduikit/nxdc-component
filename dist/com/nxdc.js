@@ -3873,7 +3873,7 @@ if (!Object.keys) Object.keys = function(o) {
         **@param {Object} o={val:值,text:显示的内容}
         ***/
         this.addTag = function(o){
-            var tag = "<span class='deco-space'> </span><span class='deco-tag' spell-check='false' data-val="+o.val+" >"+o.text+"<span class='deco-close'>&times;</span></span>&nbsp;";
+            var tag = "<span class='deco-space'> </span><span class='deco-tag' spell-check='false' data-val="+o.val+" ><span class='deco-close'>&times;</span>"+o.text+"</span>&nbsp;";
             document.execCommand("insertHTML",false,tag);
             //mousedown event on your div because it steals the focus:  点击其他div 可能失去焦点
             field.tagListen();
@@ -4070,12 +4070,13 @@ if (!Object.keys) Object.keys = function(o) {
 				ul.append(li);
 			});	
 			
+			var theIMG = $("#gallery-carousel").find("img[data-img][index='0']");
+			theIMG.attr("src",theIMG.data("img"));                
 			var gData = _this.config.data[_this.config.current];
-			scale(gData.w,gData.h);
+            var theDOM = $("#gallery-carousel").find("div.item.active[index='0']");
+			scale(theDOM.attr("w"),theDOM.attr("h"));        
 			_this.wrapper.modal();//显示图片查看器
 			setButton();
-			var theIMG = $("#gallery-carousel").find("img[data-img][index='1']");
-			theIMG.attr("src",theIMG.data("img"));
 		});
 		
 		/***
@@ -4608,6 +4609,7 @@ if (!Object.keys) Object.keys = function(o) {
 			});	
 			_this.dropwrapper.find("ul.page-dropdown>li").click(function(e){
 				e.stopImmediatePropagation();
+                $(this).addClass("active").siblings().removeClass("active");
 				$(this).parent().addClass("hidden");
 				var per = parseInt($(this).text());
 				if(_this.pagetext.text()!=per){
@@ -4691,13 +4693,15 @@ if (!Object.keys) Object.keys = function(o) {
 			}else if(cfg.type==3){
 				_this.dropwrapper.append(_this.num).append(down);
 			}
-			cfg.perPages.forEach(function(item){
+            //每页显示多少条
+			cfg.perPages.forEach(function(item,index){
 				if(typeof(item)=="string"||typeof(item)=="number"){
 					var str = item;
 				}else{
 					str = item.name||item.text||item.pages;
 				}
-				var li = $("<li />").text(str);
+				var li = $("<li data-val="+str+" />").text(str);
+                if(cfg.perPage==parseInt(str)) li.addClass("active");
 				drop.append(li);
 			});
 			_this.dropwrapper.append(drop);
@@ -8307,6 +8311,7 @@ if (!Object.keys) Object.keys = function(o) {
                 self.drop(e);
                 input.onchange = null;
                 input = null;
+                console.log(e);
             };
             input.click();
         },
@@ -8337,6 +8342,7 @@ if (!Object.keys) Object.keys = function(o) {
         popFileinput: function() {
             this.beforeSelecting();
             this.createFileInput();
+            this.$wrapper.find("div.upload-content").css({"width":"560px",height:"250px"});
         },
         /**
          * 通过按钮上传文件
@@ -8454,7 +8460,6 @@ if (!Object.keys) Object.keys = function(o) {
         beforeSelecting: function() {
             this.$wrapper.attr('data-state', 'selecting');
             this.showMsg('');
-
         },
         /**
          * 放下文件时

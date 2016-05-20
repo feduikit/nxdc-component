@@ -123,8 +123,8 @@ li.drop-one-item>i.glyphicon{
 **/
 li.drop-one-item.disabled,li.drop-one-item.disabled:hover{
 	opacity: 0.7;
-	color:#b5b5b5;
-	background-color: #dee7e7;
+	color:#999;
+	background-color: #f9f9f9;
 	cursor: not-allowed;
 }
 /***

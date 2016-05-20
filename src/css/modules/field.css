@@ -8,7 +8,7 @@
     word-wrap: break-word;
 }
 .ndp-field-wrapper>*{
-    line-height: 23px;
+    line-height: 24px;
 }
 
 .ndp-field-wrapper:focus,.ndp-field-wrapper:active{
@@ -23,9 +23,9 @@
     overflow: hidden;
 }
 .deco-tag>.deco-close{
-    margin-left:5px;
     font-size: 15px;
     cursor: pointer;
+    margin-right: 5px;
     overflow: hidden;
 }
 .deco-tag>.deco-close:hover{

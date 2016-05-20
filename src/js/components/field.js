@@ -105,7 +105,7 @@
         **@param {Object} o={val:值,text:显示的内容}
         ***/
         this.addTag = function(o){
-            var tag = "<span class='deco-space'> </span><span class='deco-tag' spell-check='false' data-val="+o.val+" >"+o.text+"<span class='deco-close'>&times;</span></span>&nbsp;";
+            var tag = "<span class='deco-space'> </span><span class='deco-tag' spell-check='false' data-val="+o.val+" ><span class='deco-close'>&times;</span>"+o.text+"</span>&nbsp;";
             document.execCommand("insertHTML",false,tag);
             //mousedown event on your div because it steals the focus:  点击其他div 可能失去焦点
             field.tagListen();

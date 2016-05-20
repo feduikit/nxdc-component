@@ -14,7 +14,18 @@ require(['./config'],function(){
 		"startDate": "01/20/2016",
 		"endDate": "01/26/2016"
 	}, function(start, end, label) {
-	});			
+	});	
+            
+            
+            
+        $('.daterangepicker-sample2').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true
+        },
+        function(start, end, label) {
+
+        });                    
+            
 			
         });
     });

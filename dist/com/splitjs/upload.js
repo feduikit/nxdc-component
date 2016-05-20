@@ -27,6 +27,7 @@
                 self.drop(e);
                 input.onchange = null;
                 input = null;
+                console.log(e);
             };
             input.click();
         },
@@ -57,6 +58,7 @@
         popFileinput: function() {
             this.beforeSelecting();
             this.createFileInput();
+            this.$wrapper.find("div.upload-content").css({"width":"560px",height:"250px"});
         },
         /**
          * 通过按钮上传文件
@@ -174,7 +176,6 @@
         beforeSelecting: function() {
             this.$wrapper.attr('data-state', 'selecting');
             this.showMsg('');
-
         },
         /**
          * 放下文件时

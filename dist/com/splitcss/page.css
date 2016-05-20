@@ -216,3 +216,8 @@ ul.page-dropdown>li:hover {
     color: #fd7611;
     background-color: #f7f0e8;
 }
+
+.ndp-page-wrapper ul.page-dropdown>li.active{
+    background-color: #fd9611;
+    color:white;
+}

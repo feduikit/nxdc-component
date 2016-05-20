@@ -18,6 +18,43 @@
   border-radius: 4px;
   width:278px;
 }
+.ndp-ui-dtpicker{
+    position: relative;
+    width: 220px;
+    padding: 0;
+}
+.ndp-ui-dtpicker>.fa.fa-calendar{
+    position: absolute;
+    z-index: 100;
+    right: 10px;
+    top:10px;
+}
+.ndp-ui-dtpicker:focus,.ndp-ui-dtpicker>input[type='text'].form-control{
+     outline: 0;
+     border:1px solid #ccc;
+}
+.table-condensed thead th.month{
+    color:#9eb2c2;
+}
+.table-condensed thead th.prev.available, .table-condensed thead th.next.available{
+    color:#dadee2;
+}
+.table-condensed thead th.prev.available:hover,.table-condensed thead th.next.available:hover{
+    color:#9eb2c2;
+}
+
+.table-condensed thead>tr:nth-child(2)>th{
+    color:#707887;
+}
+
+.table-condensed tbody>tr>td.available[data-title]:not(.off):hover{
+    color:#fd9611;
+}
+
+.daterangepicker .calendar.right div.calendar-table{
+    border-left: 1px solid #f2f4f6;
+}
+
 
 .daterangepicker.opensleft:before {
   position: absolute;
@@ -216,8 +253,9 @@
 }
 
 .daterangepicker select.monthselect {
-  margin-right: 2%;
-  width: 56%;
+  margin-right: 10%;
+  width: 40%;
+      
 }
 
 .daterangepicker select.yearselect {
@@ -237,7 +275,7 @@
 
 .daterangepicker .input-mini {
   border: 1px solid #ccc;
-  border-radius: 4px;
+/*  border-radius: 4px;*/
   color: #555;
   display: block;
   height: 30px;
