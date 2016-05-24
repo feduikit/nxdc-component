@@ -155,11 +155,11 @@ i.font-icon{
 .font-icon-del0:before { content: "\e66e"; }
 .font-icon-del1:before { content: "\e66f"; }
 .font-icon-lock:before { content: "\e766"; }
-.font-icon-lock2:before { content: "\e765"; }
+.font-icon-lock1:before { content: "\e765"; }
 .font-icon-recycle:before { content: "\e69e"; }
 
-.font-icon-time:before {content:"\e726";}
-.font-icon-time2:before {content:"\e764";}
+.font-icon-time:before { content:"\e762"; }
+.font-icon-time1:before { content:"\e764"; }
 
 
 .size-2x{
