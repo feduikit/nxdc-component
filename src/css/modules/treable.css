@@ -434,11 +434,19 @@
     width: 8px;
 	margin-left: 4px;
 	cursor: pointer;
-	overflow: hidden;
-    text-align: center;
-    
+/*	overflow: hidden;*/
+    text-align: center;   
 }
 
+.treable-header .sutable-col>.sort-wrapper>i.glyphicon{
+    position:relative;
+    display:block;
+    width: 8px;
+    height: 6px;
+    font-size: 8px;
+}
+
+/****
 .treable-header .sutable-col>.sort-wrapper>i{
 	display: block;
 	color:#8c8c8c;
@@ -452,15 +460,20 @@
 .treable-header .sutable-col>.sort-wrapper>i.hi{
 	color:black;
 }
-/*
+*/
+
+
+/****
 .sutable-col>.sort-wrapper>i:hover{
 	color:#dfdfdf;
 }
 */
 
+/**
 .ndp-treable-wrapper .sutable-col>.sort-wrapper>i.glyphicon-triangle-top{
 	margin-top:85%;
 }
+*/
 
 
 

@@ -3,8 +3,8 @@ require(['./config'],function(){
         require(['bootstrap','./components/vList2'],function(){
 			var me = $(".ndp-vList2-wrapper[name=plain]").vList2({
 				data:[{label:"广告投放112132321312",
-					   //icon:"<i class='glyphicon glyphicon-home'></i>",
-					   icon:{big:"../../assets/ggtf-big.png",sm:"../../assets/ggtf-sm.png"},
+					   icon:"<i class='glyphicon glyphicon-home'></i>",
+//					   icon:{big:"../../assets/ggtf-big.png",sm:"../../assets/ggtf-sm.png"},
 					   sub:[
 					  	{label:"河北"},
 						{label:"河南"},

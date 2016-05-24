@@ -92,8 +92,8 @@ i.font-icon{
 .font-icon-web1:before { content: "\e708"; }
 .font-icon-shoppting:before { content: "\e709"; }
 .font-icon-shopping1:before { content: "\e70a"; }
-.font-icon-ringer:before { content: "\e70b"; }
-.font-icon-ringer1:before { content: "\e70a"; }
+.font-icon-ringer:before { content: "\e737"; }
+.font-icon-ringer1:before { content: "\e736"; }
 .font-icon-notes:before { content: "\e70d"; }
 .font-icon-notes1:before { content: "\e70e"; }
 .font-icon-like:before { content: "\e70f"; }
@@ -154,8 +154,12 @@ i.font-icon{
 .font-icon-dl1:before { content: "\e66d"; }
 .font-icon-del0:before { content: "\e66e"; }
 .font-icon-del1:before { content: "\e66f"; }
-.font-icon-lock:before { content: "\e6a0"; }
+.font-icon-lock:before { content: "\e766"; }
+.font-icon-lock2:before { content: "\e765"; }
 .font-icon-recycle:before { content: "\e69e"; }
+
+.font-icon-time:before {content:"\e726";}
+.font-icon-time2:before {content:"\e764";}
 
 
 .size-2x{
