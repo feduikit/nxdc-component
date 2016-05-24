@@ -37,6 +37,12 @@ li[deep] span.list-txt-wrapper{
 	white-space: nowrap;
 	cursor: pointer;
 }
+
+li[deep]:not(.list-leaf) span.list-txt-wrapper:hover{
+    color:#fc7408;
+    background-color: #f6f4f1;
+}
+
 li[deep="2"] span.list-txt-wrapper{
 	padding-left: 24px;
 }
@@ -71,8 +77,8 @@ li[asparent].active>span.list-txt-wrapper>i{
 }
 
 li.list-leaf:hover{
-	background-color: #f7f0e8;
-	color:#fc7408;
+	background-color: #f6f4f1;
+	color:#fc7408;hover
 }
 li[asparent].focus>.list-txt-wrapper,li.list-leaf.active{
 	color:#6f6f6f;

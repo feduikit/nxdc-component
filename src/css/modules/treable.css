@@ -143,13 +143,13 @@
 	position: relative;
 	margin: 0;
 	height: 100%;
+    height: 36px;
 	line-height:0;
 /*	overflow: hidden;*/
 }
 
 .treable-header>.treable-row{
 	position: relative;
-	height: 40px;
 /*	width: 100%;*/
 	margin: 0;
 	padding: 0;
@@ -351,9 +351,9 @@
 ** 鼠标 hover 一行的高亮效果
 ***/
 .treable-body .treable-row:hover{
-	background-color: white;
-	box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
-	z-index: 10;
+	background-color: #e9e8e4;/******white;****/
+/*	box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);*/
+/*	z-index: 10;*/
 }
 
 .sub-layer{
@@ -379,6 +379,12 @@
 	overflow: hidden;
 	transition:width 0.1s;
 }
+.treable-header>.treable-row>.sutable-col{
+    border-width: 0;
+    line-height: 36px;
+}
+
+
 .treable-row>.sutable-col.active{
 	border-right-color:deepskyblue;
 }
@@ -414,11 +420,8 @@
 }
 
 
-.treable-header .sutable-col{
-	line-height: 40px;
-}
+
 .treable-row .sutable-col:nth-child(n+3){
-	line-height: 40px;
 	min-width: 60px;
 	width:inherit;
 }
@@ -427,22 +430,25 @@
 ***/
 .treable-header .sutable-col>.sort-wrapper{
 	position: absolute;
-	display: inline-block;
 	height: 100%;
-	width: 12px;
-	top:0;
+    width: 8px;
 	margin-left: 4px;
 	cursor: pointer;
 	overflow: hidden;
-	padding-top:2px;
+    text-align: center;
+    
 }
 
 .treable-header .sutable-col>.sort-wrapper>i{
 	display: block;
-	font-size: 7px;
-	left: 0;
 	color:#8c8c8c;
+    margin-bottom: 1px;
 }
+
+.treable-header .sutable-col>.sort-wrapper>i.glyphicon{
+    font-size: 8px;
+}
+
 .treable-header .sutable-col>.sort-wrapper>i.hi{
 	color:black;
 }
@@ -452,9 +458,10 @@
 }
 */
 
-.sutable-col>.sort-wrapper>i.glyphicon-triangle-top{
+.ndp-treable-wrapper .sutable-col>.sort-wrapper>i.glyphicon-triangle-top{
 	margin-top:85%;
 }
+
 
 
 .treable-body .sutable-col{
@@ -530,9 +537,9 @@
 .ndp-treable-wrapper .btn-plus-minus{
 	position: absolute;
 	display: inline-block;
-	width: 16px;
-	height: 16px;
-	left: 10px;
+	width: 13px;
+	height: 13px;
+	left: 13px;
 	top:12px;
 	z-index:300;
 	border:1px solid #d4d4d4;
@@ -568,7 +575,7 @@
 }
 
 
-.btn-plus-minus>.line-hor{
+.ndp-treable-wrapper .btn-plus-minus>.line-hor{
 	position: absolute;
 	display: inline-block;
 	width: 80%;
@@ -576,13 +583,37 @@
 	left:10%;
 	border-bottom:1px solid #b1b1b1;
 }
-.btn-plus-minus>.line-ver{
+.ndp-treable-wrapper .btn-plus-minus>.line-ver{
 	position: absolute;
 	display: inline-block;
 	height: 80%;
 	top:10%;
-	left:44%;
+	left:43.8%;
 	border-left:1px solid #b1b1b1;
 }
 
 
+.ndp-treable-wrapper .switcher>label{
+    width: 25px;
+    height: 14px;
+}
+
+/***
+中间白点 大小 
+**/
+.ndp-treable-wrapper .switcher>label.active:after{
+   margin-left:12px;
+}
+.ndp-treable-wrapper .switcher>label:after{
+     width: 13px;
+}
+/****
+**  底部的背景色
+****/
+.ndp-treable-wrapper .switcher>label.active:before{
+    background-color:#79a64a;
+}
+
+.ndp-treable-wrapper .switcher>label:before{
+    background-color:#b9c3cd;
+}

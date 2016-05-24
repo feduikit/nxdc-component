@@ -60,13 +60,13 @@ div.checkbox{
 }
 */
 
-#prompt-holder .footer-login{
-    text-align: inherit;
+#prompt-holder .modal-content>.footer-login{
+    text-align: left;
     padding-left: 215px;
 }
 
 
-#prompt-holder .footer-info{
-    text-align: inherit;
-     padding-left: 114px;
+#prompt-holder .modal-content>.footer-info{
+    text-align: left;
+    padding-left: 114px;
 }

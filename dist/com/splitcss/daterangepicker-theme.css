@@ -47,6 +47,12 @@
     background: transparent;
     border: 1px solid #fd9611;
 }
+.daterangepicker .table-condensed tr>td.active.start-date.available:hover,
+.daterangepicker .table-condensed tr>td.active.end-date.available:hover{
+    color:white;
+}
+
+
 
 .daterangepicker td.off:hover,
 .daterangepicker th.off:hover,
@@ -105,9 +111,9 @@
 /* range buttons */
 
 .daterangepicker .applyBtn {
-    background: #fbe9cf;
+    background: #fd9611;
     border: 1px solid #fbe9cf;
-    color: #fd9611;
+    color: white;
     border-radius: 0;
 }
 
