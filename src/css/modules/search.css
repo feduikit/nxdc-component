@@ -28,7 +28,7 @@
 .ndp-search-wrapper .search-decoration>input[type] {
     position: relative;
     height: 100%;
-    width: 100%;
+    width: calc(100% - 28px);
     margin: 0;
     float: left;
     padding-left: 8px;
