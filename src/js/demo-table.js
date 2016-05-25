@@ -14,12 +14,64 @@ require(['./config'],function(){
                          {id:1103,name:"hello_34",info:"hello - euro 23",gender:"no sign"},
 						 {id:1104,name:"hello_99",info:"hello - euro 11",gender:"sign"},
 						 {id:1105,name:"hello_134",info:"hello - china 23",gender:"no sign"}];
+            var  data3 = [
+                          {
+                            "cpm": 0.9009,
+                            "conversion": 333,
+                            "cpc": 0.00045045,
+                            "impression": 111,
+                            "cpa": 0.0003003,
+                            "cvr": 1.5,
+                            "bid_success_rate": 0.3333,
+                            "click": 222,
+                            "date": "2016-04-20",
+                            "cost": 0.1,
+                            "ctr": 2
+                          },
+                          {
+                            "cpm": 0.9009,
+                            "conversion": 333,
+                            "cpc": 0.00045045,
+                            "impression": 111,
+                            "cpa": 0.0003003,
+                            "cvr": 1.5,
+                            "bid_success_rate": 0.3333,
+                            "click": 222,
+                            "date": "2016-04-20",
+                            "cost": 0.1,
+                            "ctr": 2
+                          },
+                          {
+                            "cpm": 0.9009,
+                            "conversion": 333,
+                            "cpc": 0.00045045,
+                            "impression": 111,
+                            "cpa": 0.0003003,
+                            "cvr": 1.5,
+                            "bid_success_rate": 0.3333,
+                            "click": 222,
+                            "date": "2016-04-20",
+                            "cost": 0.1,
+                            "ctr": 2
+                          },
+                          {
+                            "cpm": 0.9009,
+                            "conversion": 333,
+                            "cpc": 0.00045045,
+                            "impression": 111,
+                            "cpa": 0.0003003,
+                            "cvr": 1.5,
+                            "bid_success_rate": 0.3333,
+                            "click": 222,
+                            "date": "2016-04-20",
+                            "cost": 0.1,
+                            "ctr": 2
+                          }
+                        ];
 			
 			var tb = $(".ndp-js-example1 .ndp-table-wrapper").table({
-                head:{col1:"第一列",col2:"第二列",col3:"第三列",col4:"第四列"},//["Offer ID","col 2","COl 3","Col 4"]
-                data:[{id:1101,name:"hello123",info:"hello -china 123",gender:"man"},
-                      {id:1102,name:"hello_23",info:"hello - japan 34",gender:"woman"},
-                      {id:1103,name:"hello_34",info:"hello - euro 23",gender:"no sign"}]
+                head:["cpm","conversion","cpc","impression","cpa","cvr","bid_success_rate","click","date","cost","ctr"],//["Offer ID","col 2","COl 3","Col 4"]
+                data:data3
             }).on("ROW_CLICK",function(e){//行被点击
 				console.log(e.originalEvent.data);// {row：第几行 int}//第几行
 			});

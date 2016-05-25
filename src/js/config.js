@@ -7,7 +7,7 @@ require.config({
 		'NVis':'../../lib/hicharts/NVis.min',
 		'utils':'./Compatibility/utils',
 		
-		
+		'table2':'./components/table2',
 		'tabs':'./components/tabs',
 		'bread':'./components/bread',
 		'alert':'./components/alert',

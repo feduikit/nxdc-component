@@ -24,8 +24,24 @@ require(['./config'],function(){
         },
         function(start, end, label) {
 
-        });                    
+        });   
             
+            
+$('.daterangepicker-sample2[name="hello1"]').daterangepicker({
+        "singleDatePicker": true,
+        "showDropdowns": true,
+        "opens": "nxdc-single",
+        "timePicker": true,
+        "timePicker24Hour": true,
+        "timePickerSeconds": true,
+        locale: {
+            format: 'MM/DD/YYYY h:mm A'
+        }
+    },
+    function(start, end, label) {
+
+    });
+                    
 			
         });
     });

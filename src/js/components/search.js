@@ -310,7 +310,7 @@
 			this.icon = $(cfg.magicon);
 			this.wrapper.append(this.icon);
 			var h = this.elem.height();
-			this.input.css({"width":((_this.wrapper.width()||_this.elem.wi)-(h||28)-2)+"px","height":(h||28)+"px","line-height":(h||28)+"px"});
+			this.input.css({"width":((_this.elem.wi)-(h||28)-2)+"px","height":(h||28)+"px","line-height":(h||28)+"px"});
 			this.icon.css({"width":(h||28)+"px","height":(h||28)+"px","line-height":(h||28)+"px"});
 		}
 		

@@ -111,9 +111,9 @@
 /* range buttons */
 
 .daterangepicker .applyBtn {
-    background: #fd9611;
-    border: 1px solid #fbe9cf;
-    color: white;
+    background: white;
+    border: 1px solid #fd9611;
+    color: #fd9611;
     border-radius: 0;
 }
 

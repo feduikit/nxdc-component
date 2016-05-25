@@ -403,7 +403,6 @@
 		});
 		cfg.colDims.push(72,62);
 		
-		
 //		this.foot.css("width",w+"px");//最下面的 
 //		this.scroll.css("width",w+"px");//横向滚动条
 	};

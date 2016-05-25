@@ -1,0 +1,76 @@
+.ndp-table2-wrapper{
+
+}
+
+
+.ndp-table2-wrapper .table th,.ndp-table2-wrapper .table td{
+    height: 36px;
+}
+
+.ndp-table2-wrapper .table-head,.ndp-table2-wrapper .table-body{
+    margin: 0;
+}
+
+.ndp-table2-wrapper .table-head tbody>tr>td,.ndp-table2-wrapper .table-body thead>tr>th{
+    position: relative;
+    line-height: 0;
+    margin: 0;
+    height: 0;
+    z-index: -1;
+    opacity: 0;
+}
+
+/*****
+** head  border 改为 1px
+****/
+.ndp-table2-wrapper>.table>thead>tr>th{
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    border:1px solid #ddd;
+}
+.ndp-table2-wrapper>.table-head{
+    z-index: 100;
+    height: 36px;
+    border:1px solid #ddd;
+    border-bottom:0;
+}
+
+.ndp-table2-wrapper>.table-head>thead>th>td{
+    border-bottom-width: 0;
+}
+
+.ndp-table2-wrapper>.table-head>tbody,.ndp-table2-wrapper>.table-body>thead{
+    visibility: hidden;
+    height: 0;
+    opacity: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.ndp-table2-wrapper>.table-body>thead>tr>th{
+    pointer-events: none;
+    overflow: hidden;
+}
+/***
+** 下半部分向上平移 1px
+***/
+.ndp-table2-wrapper>.table-body{
+    margin-top:-33px;
+    border:1px solid #ddd;
+    border-top:0;
+}
+
+
+.ndp-table2-wrapper>.table-body>tbody>tr:hover{
+    background-color: #e9e8e5;  /***** #fff4e7;****/
+    cursor: pointer;    
+}
+.ndp-table2-wrapper>.table-body>tbody>tr.active{
+    background-color: #e0e0e0e;
+    color:#666;
+}
+.ndp-table2-wrapper>.table-body>tbody>tr>td.active,.ndp-table2-wrapper>.table-head>thead>tr>th.active{
+     background-color: #e0e0e0e;
+     color:#666;
+}

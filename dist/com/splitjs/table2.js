@@ -1,0 +1,158 @@
+;(function($) {
+    var self = this;
+    function Table2(element, options) {
+        var self = this;
+        this.elem = element;
+        this.config = $.extend(true, {}, $.fn.table2.defaults, element.data(), options);
+        this.init();
+    };
+
+    /**
+     **列表组件的初始化
+     **/
+    Table2.prototype.init = function() {
+        var _this = this;
+        this.elem.addClass(this.config.containerClass); //设置 包裹容器的 dim,外观
+        this.build(); //构建 列表头
+        this.elem.append(this.head).append(this.body);
+        this.initConfig();
+        
+        
+        
+        //注册监听事件
+        this.elem.find(".table-body tbody>tr").click(function(){
+            if(_this.config.rowNail){
+                $(this).siblings().removeClass("active");
+                $(this).addClass("active");
+            }
+        });
+        
+        //注册监听列被点击事件
+        this.elem.find(".table-head thead>tr>th").click(function(){
+            if(_this.config.colNail){
+                var idx = $(this).data("index"); 
+                $(this).addClass("active").siblings().removeClass("active");
+                var col = _this.body.find("tbody td[data-col='"+idx+"']");
+                col.siblings().removeClass("active");
+                col.addClass("active");       
+            }
+        });
+    };
+
+    /***
+     ** 构建列表头部
+     **/
+    Table2.prototype.build = function() {
+        var _this = this;
+        this.head = $("<table class='table table-head '><thead><tr></tr></thead></table>");
+        var html = "";
+        this.config.head.forEach(function(item,index){
+            if(typeof(item)=="string") {
+                var txt = item; 
+            }else{
+                txt = item.text||item.label||item.name;
+            }
+            var val = item.value||item.val||txt;
+            html += "<th data-index="+index+" data-text="+txt+" data-val="+val+">"+txt+"</th>";
+        });
+         _this.head.find("tr").append(html);
+        this.body = $("<table class='table table-body'><thead><tr></tr></thead><tbody></tbody></table>");
+        this.body.find("thead>tr").append(html);  
+        this.buildBody(this.config.data);
+        
+        var head = this.body.clone().removeClass("table-body").addClass("table-head");
+        head.find("tbody>tr:first").siblings().remove();
+        this.head = head;
+        this.elem.append(this.head).append(this.body);
+    };
+
+    /**
+     ** 构建列表体
+     **/
+    Table2.prototype.buildBody = function(data) {
+        var _this = this;
+        data.forEach(function(rdata,index){
+            var rid = rdata.id||index
+            var tr = $("<tr data-row="+index+" data-id="+rid+" />");
+            var html = '';
+            Object.keys(rdata).forEach(function(key,idx){
+                    var val = rdata[key];
+                    html += "<td data-val="+val+" data-col="+idx+" >"+val+"</td>"
+            });
+            tr.html(html);
+            _this.body.find("tbody").append(tr);
+        });
+        
+    };
+
+    /***
+     ** 根据用户设置的 设置列表拥有的能力，比如 点击行，点击列，拖动等
+     **/
+    Table2.prototype.initConfig = function() {
+        var self = this;
+        var cfg = this.config;
+        if(cfg.rowNail){
+            this.elem.find(".table-body tbody>tr[data-row='"+cfg.activeRow+"']").addClass("active");
+        }
+        
+        if(cfg.colNail){
+            this.elem.find(".table-body tbody>tr>td[data-col='"+cfg.activeCol+"']").addClass("active");
+            this.elem.find(".table-head thead>tr>th[data-index='"+cfg.activeCol+"']").addClass("active");
+        }        
+    }
+
+
+    /**
+     * jquery 提供了一个objct 即 fn，which is a shotcut of jquery object prototype
+     * or you can call it jquery plugin shell  == fn
+     *  类似于  Class.prototype.jqplugin = function(){};
+     *  the   $.fn  [same as] Class.prototype
+     * plugin entrance
+     */
+    $.fn.table2 = function(options) {
+        var the = this.first();
+        var table = new Table2(the, options);
+        the = $.extend(true, {}, the, new exchange(table));
+        return the;
+    };
+
+    /***
+     **和其他插件的交互
+     ** factory Class
+     **@param {Drop} drop :  instacne of the plugin builder
+     **/
+    function exchange(table) {
+        /**
+         **@param {Object} msg {type:"类型"}
+         **/
+        this.update = function(body) {
+            
+        }
+    }
+
+
+    var old = $.fn.table2;
+    $.fn.table2.Constructor = Table2;
+    // table NO CONFLICT
+    // ===============
+    $.fn.table2.noConflict = function() {
+        $.fn.table = old;
+        return this;
+    }
+
+    /***
+     ** outside accessible default setting
+     **/
+    $.fn.table2.defaults = {
+        head: ["col1", "col2", "col3", "col4"], //列表头部列表,可以是 数组，也可以是 对象{name:"col1",name:"col2"}
+        data: [], //列表项数据
+        fixedhead:false,
+        rowNail: false, //是否允许 选中一行
+        colNail: false, //是否允许 选中一列
+        activeRow: NaN, //默认选中第几行
+        activeCol: NaN, //默认选中第几列
+        rowHeight: null, //列表每一行的高度  默认行高40px
+        listHeight: null, //设置列表高度，或者修改 ndp-table-wrapper class的高度
+        sort: null //“all” 所有列 都可以进行排序，【1，3，5】只有1，3，5列进行排序
+    };
+}(jQuery));
