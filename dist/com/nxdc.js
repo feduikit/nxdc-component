@@ -6810,9 +6810,16 @@ if (!Object.keys) Object.keys = function(o) {
         
         //注册监听事件
         _this.elem.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
+        
+        this.setListener();
+    };
+    
+    
+    Table2.prototype.setListener = function(){
+        _this = this;
         _this.head.find("thead>tr>th").on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
         
-        this.elem.find(".table-body tbody>tr").click(function(){
+        this.elem.find(".table-body tbody>tr").unbind("click").click(function(){
             if(_this.config.rowNail){
                 $(this).siblings().removeClass("active");
                 $(this).addClass("active");
@@ -6820,7 +6827,8 @@ if (!Object.keys) Object.keys = function(o) {
         });
         
         //注册监听列被点击事件
-        this.elem.find(".table-head thead>tr>th").click(function(){
+        this.elem.find(".table-head thead>tr>th").unbind("click").click(function(e){
+            e.stopImmediatePropagation();
             if(_this.config.colNail){
                 var idx = $(this).data("index"); 
                 $(this).addClass("active").siblings().removeClass("active");
@@ -6829,6 +6837,14 @@ if (!Object.keys) Object.keys = function(o) {
                 col.addClass("active");       
             }
         });
+        
+        
+        //点击 排序
+        this.head.find(".sort-field").unbind("click").click(function(evt){
+            evt.stopImmediatePropagation();
+            $(this).find("i").toggleClass("active");
+            $(this).parent().siblings().find("i.glyphicon-triangle-top").removeClass("active").siblings().addClass("active");
+        });        
     };
 
     /***
@@ -6846,14 +6862,15 @@ if (!Object.keys) Object.keys = function(o) {
             var val = item.value||item.val||txt;
             html += "<th data-index="+index+" data-text="+txt+" data-val="+val+">"+txt+"</th>";
         });
-        this.body = $("<table class='table table-body'><thead><tr></tr></thead><tbody></tbody></table>");
+        this.body = $("<div class='body-wrapper'><table class='table table-body'><thead><tr></tr></thead><tbody></tbody></table></div>");
         this.body.find("thead>tr").append(html);  
         this.buildBody(this.config.data);
         
-        var head = this.body.clone().removeClass("table-body").addClass("table-head");
-        head.find("tbody>tr:first").siblings().remove();
+        var head = this.body.clone();
+        head.find("table").removeClass("table-body").addClass("table-head");
+        //head.find("tbody>tr:first").siblings().remove();
         head.find("thead>tr>th").append("<span class='split-field'></span>");
-        this.head = head;
+        this.head = head.removeClass("body-wrapper").addClass("header-wrapper");
         this.elem.append(this.head).append(this.body);
     };
 
@@ -6898,7 +6915,7 @@ if (!Object.keys) Object.keys = function(o) {
         //排序 sort
         if(cfg.sort){
             cfg.sort.forEach(function(num){
-                _this.head.find("thead>tr>th[data-index="+num+"]").append("<span class='sort-field'><i class='glyphicon glyphicon-triangle-top'></i><i class='glyphicon glyphicon-triangle-bottom'></i></span>");
+                _this.elem.find("thead>tr>th[data-index="+num+"]").append("<span class='sort-field'><i class='glyphicon glyphicon-triangle-top'></i><i class='glyphicon glyphicon-triangle-bottom active'></i></span>");
             });
         }
     }
@@ -6927,8 +6944,12 @@ if (!Object.keys) Object.keys = function(o) {
         /**
          **@param {Object} msg {type:"类型"}
          **/
-        this.update = function(body) {
-            
+        this.update = function(data) {
+            table.elem.empty();
+            table.config.data = data;
+            table.build();
+            table.initConfig();
+            table.setListener();
         }
     }
 

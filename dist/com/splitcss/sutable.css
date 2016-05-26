@@ -70,10 +70,12 @@
 /***
 ** 标题行 尾号 按钮
 ***/
-.sutable-col .font-icon-help{
+.sutable-header .sutable-col .font-icon-help{
 	color:#a2a2a2;
 	font-size: 10px;
-	margin-left: 3px;
+	margin-left: 13px;
+    top:2px;
+    overflow: hidden;
 }
 .sutable-row>.sutable-col.attention{
 	color:#fd8a36;
@@ -378,10 +380,10 @@ li.sutable-item.open[deep='2']>.sutable-row-wrapper.asparent{
 ** 排序
 ***/
 .ndp-sutable-wrapper .sutable-header .sutable-col>.sort-wrapper{
-	position: relative;
+	position: absolute;
 	display: inline-block;
 	width: 8px;
-    height:50%;
+    height:100%;
 	margin-left: 3px;
 	cursor: pointer;
 }
@@ -394,7 +396,7 @@ li.sutable-item.open[deep='2']>.sutable-row-wrapper.asparent{
     -ms-transform: scale(0.75);
     -o-transform: scale(0.75);
     transform: scale(0.75);
-    top:6px;
+    top:10px;
     padding: 0;
     margin: 0;    
 }
@@ -404,7 +406,7 @@ li.sutable-item.open[deep='2']>.sutable-row-wrapper.asparent{
 
 
 .ndp-sutable-wrapper .sutable-col>.sort-wrapper>i.glyphicon-triangle-bottom{
-    top:13px;
+    top:17px;
 }
 
 

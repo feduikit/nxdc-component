@@ -88,7 +88,7 @@ i.font-icon{
 .font-icon-restart1:before { content: "\e704"; }
 .font-icon-setting:before { content: "\e705"; }
 .font-icon-setting1:before { content: "\e706"; }
-.font-icon-web:before { content: "\e707"; }
+.font-icon-web:before { content: "\e707"; }ring
 .font-icon-web1:before { content: "\e708"; }
 .font-icon-shoppting:before { content: "\e709"; }
 .font-icon-shopping1:before { content: "\e70a"; }
@@ -160,6 +160,29 @@ i.font-icon{
 
 .font-icon-time:before { content:"\e762"; }
 .font-icon-time1:before { content:"\e764"; }
+
+
+.font-icon-pc:before { content:"\e797"; }
+.font-icon-iphone:before { content:"\e798"; }
+.font-icon-banner:before { content:"\e799"; }
+.font-icon-facebook:before { content:"\e79a"; }
+.font-icon-cout:before { content:"\e79c"; }
+.font-icon-step1:before { content:"\e79d"; }
+.font-icon-step2:before { content:"\e79e"; }
+.font-icon-step3:before { content:"\e79f"; }
+.font-icon-instagram:before { content:"\e79b"; }
+.font-icon-oleft:before { content:"\e7a0"; }
+.font-icon-oright:before { content:"\e7a1"; }
+.font-icon-unused:before { content:"\e7a2"; }
+.font-icon-traffic:before { content:"\e7a3"; }
+.font-icon-tout:before { content:"\e7a4"; }
+.font-icon-stopu:before { content:"\e7a5"; }
+.font-icon-magic:before { content:"\e7a6"; }
+.font-icon-temp:before { content:"\e7a7"; }
+.font-icon-meye:before { content:"\e7a8"; }
+.font-icon-fire:before { content:"\e7aa"; }
+.font-icon-switch:before { content:"\e7a9"; }
+.font-icon-screen:before { content:"\e7ac"; }
 
 
 .size-2x{
