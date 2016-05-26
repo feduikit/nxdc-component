@@ -377,35 +377,34 @@ li.sutable-item.open[deep='2']>.sutable-row-wrapper.asparent{
 /***
 ** 排序
 ***/
-.sutable-header .sutable-col>.sort-wrapper{
+.ndp-sutable-wrapper .sutable-header .sutable-col>.sort-wrapper{
 	position: relative;
 	display: inline-block;
-/*	height: 100%;*/
-/*	width: 12px;*/
-/*	top:0;*/
+	width: 8px;
+    height:50%;
 	margin-left: 3px;
 	cursor: pointer;
-	overflow: hidden;
-	padding-top:2px;
 }
 
-.sutable-header .sutable-col>.sort-wrapper>i{
-	display: block;
-	font-size: 7px;
-	left: 0;
+.ndp-sutable-wrapper .sutable-header .sutable-col>.sort-wrapper>i{
+    position: absolute;
+	left: -20%;
 	color:#8c8c8c;
+    -webkit-transform: scale(0.75);
+    -ms-transform: scale(0.75);
+    -o-transform: scale(0.75);
+    transform: scale(0.75);
+    top:6px;
+    padding: 0;
+    margin: 0;    
 }
-.sutable-header .sutable-col>.sort-wrapper>i.hi{
+.ndp-sutable-wrapper .sutable-header .sutable-col>.sort-wrapper>i.hi{
 	color:black;
 }
-/*
-.sutable-col>.sort-wrapper>i:hover{
-	color:#dfdfdf;
-}
-*/
 
-.sutable-col>.sort-wrapper>i.glyphicon-triangle-top{
-	margin-top:85%;
+
+.ndp-sutable-wrapper .sutable-col>.sort-wrapper>i.glyphicon-triangle-bottom{
+    top:13px;
 }
 
 

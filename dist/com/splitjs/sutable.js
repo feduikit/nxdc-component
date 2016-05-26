@@ -169,10 +169,11 @@
 			e.stopImmediatePropagation();
 			var the = $(this).parent();
 			the.toggleClass("active");
-			if(!the.hasClass("active")){
-				var fa = $(this).parents(".sutable-item:first");
-				fa.find("ul .switcher>label").removeClass("active");
-			}
+        // 去掉连带关系
+//			if(!the.hasClass("active")){
+//				var fa = $(this).parents(".sutable-item:first");
+//				fa.find("ul .switcher>label").removeClass("active");
+//			}
 			fireEvent(_this.elem.get(0),"STATUS_CHANGE",{status:the.hasClass("active")});
 		});
 		

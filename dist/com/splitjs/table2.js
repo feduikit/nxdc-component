@@ -20,6 +20,9 @@
         
         
         //注册监听事件
+        _this.elem.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
+        _this.head.find("thead>tr>th").on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
+        
         this.elem.find(".table-body tbody>tr").click(function(){
             if(_this.config.rowNail){
                 $(this).siblings().removeClass("active");
@@ -44,7 +47,6 @@
      **/
     Table2.prototype.build = function() {
         var _this = this;
-        this.head = $("<table class='table table-head '><thead><tr></tr></thead></table>");
         var html = "";
         this.config.head.forEach(function(item,index){
             if(typeof(item)=="string") {
@@ -55,13 +57,13 @@
             var val = item.value||item.val||txt;
             html += "<th data-index="+index+" data-text="+txt+" data-val="+val+">"+txt+"</th>";
         });
-         _this.head.find("tr").append(html);
         this.body = $("<table class='table table-body'><thead><tr></tr></thead><tbody></tbody></table>");
         this.body.find("thead>tr").append(html);  
         this.buildBody(this.config.data);
         
         var head = this.body.clone().removeClass("table-body").addClass("table-head");
         head.find("tbody>tr:first").siblings().remove();
+        head.find("thead>tr>th").append("<span class='split-field'></span>");
         this.head = head;
         this.elem.append(this.head).append(this.body);
     };
@@ -76,8 +78,10 @@
             var tr = $("<tr data-row="+index+" data-id="+rid+" />");
             var html = '';
             Object.keys(rdata).forEach(function(key,idx){
+                if(idx<_this.config.head.length){
                     var val = rdata[key];
                     html += "<td data-val="+val+" data-col="+idx+" >"+val+"</td>"
+                }
             });
             tr.html(html);
             _this.body.find("tbody").append(tr);
@@ -89,16 +93,25 @@
      ** 根据用户设置的 设置列表拥有的能力，比如 点击行，点击列，拖动等
      **/
     Table2.prototype.initConfig = function() {
-        var self = this;
+        var _this = this;
         var cfg = this.config;
+        //行选中
         if(cfg.rowNail){
             this.elem.find(".table-body tbody>tr[data-row='"+cfg.activeRow+"']").addClass("active");
         }
         
+        //列 选中
         if(cfg.colNail){
             this.elem.find(".table-body tbody>tr>td[data-col='"+cfg.activeCol+"']").addClass("active");
             this.elem.find(".table-head thead>tr>th[data-index='"+cfg.activeCol+"']").addClass("active");
-        }        
+        }  
+        
+        //排序 sort
+        if(cfg.sort){
+            cfg.sort.forEach(function(num){
+                _this.head.find("thead>tr>th[data-index="+num+"]").append("<span class='sort-field'><i class='glyphicon glyphicon-triangle-top'></i><i class='glyphicon glyphicon-triangle-bottom'></i></span>");
+            });
+        }
     }
 
 

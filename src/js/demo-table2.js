@@ -75,7 +75,8 @@ require(['./config'],function(){
                 rowNail:true,
                 activeRow:0,
                 colNail:true,
-                activeCol:1
+                activeCol:1,
+                sort:[1,3,5]
             });
 			 			
         });
