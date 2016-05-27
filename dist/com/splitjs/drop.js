@@ -103,11 +103,11 @@
 			if(_this.config.type==3){
 				var oldV = _this.peal.find("input").val();
 				var newV = $(this).attr("title");
+                var gp = $(this).parents(".drop-one-item[deep='0']:first");
 				if (oldV !== newV){
 					fireEvent(_this.elem.get(0),"ITEM_CHANGE",{val:value,text:newV,group:gp.index(),gpname:gp.attr("title")});
 				}
 				_this.peal.find("input").attr('data-val',value).val(newV);
-				var gp = $(this).parents(".drop-one-item[deep='0']:first");
 				fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,text:newV,group:gp.index(),gpname:gp.attr("title")});
 			}else {
 				var oldV = _this.peal.find("input").val();
