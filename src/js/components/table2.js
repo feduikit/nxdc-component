@@ -26,7 +26,7 @@
         _this.head.find("thead>tr>th").on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
         
         var o = _this.elem.get(0).getBoundingClientRect();
-        //点击选中一行  
+        //点击选中一行 
         _this.elem.find(".table-body tbody>tr").unbind("click").click(function(){
             if(_this.config.rowNail){
                 $(this).siblings().removeClass("active");
