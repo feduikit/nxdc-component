@@ -13,32 +13,33 @@
     Table2.prototype.init = function() {
         var _this = this;
         this.elem.addClass(this.config.containerClass); //设置 包裹容器的 dim,外观
-        this.build(); //构建 列表头
-        this.elem.append(this.head).append(this.body);
+        this.build(); //构建
         this.initConfig();
-        
-        
-        
         //注册监听事件
         _this.elem.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
-        
         this.setListener();
     };
     
     
     Table2.prototype.setListener = function(){
-        _this = this;
+        var _this = this;
         _this.head.find("thead>tr>th").on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
         
-        this.elem.find(".table-body tbody>tr").unbind("click").click(function(){
+        var o = _this.elem.get(0).getBoundingClientRect();
+        //点击选中一行  
+        _this.elem.find(".table-body tbody>tr").unbind("click").click(function(){
             if(_this.config.rowNail){
                 $(this).siblings().removeClass("active");
                 $(this).addClass("active");
             }
+            var dat = $(this).data();
+            fireEvent($(this).get(0), "ROW_CLICK", dat); //第几行被点击
         });
         
         //注册监听列被点击事件
-        this.elem.find(".table-head thead>tr>th").unbind("click").click(function(e){
+        
+        //点击 选中一列
+        _this.elem.find(".table-head thead>tr>th").unbind("click").click(function(e){
             e.stopImmediatePropagation();
             if(_this.config.colNail){
                 var idx = $(this).data("index"); 
@@ -47,15 +48,45 @@
                 col.siblings().removeClass("active");
                 col.addClass("active");       
             }
+            var dat = $(this).data();
+            dat.col = dat.index;
+            dat.name = dat.text;
+            fireEvent($(this).get(0), "COL_CLICK", dat);
         });
-        
-        
+         
         //点击 排序
-        this.head.find(".sort-field").unbind("click").click(function(evt){
+        _this.head.find(".sort-field").unbind("click").click(function(evt){
             evt.stopImmediatePropagation();
             $(this).find("i").toggleClass("active");
             $(this).parent().siblings().find("i.glyphicon-triangle-top").removeClass("active").siblings().addClass("active");
-        });        
+            var dat = $(this).parent().data();
+            dat.col = dat.index;
+            dat.name = dat.text;
+            dat.order = $(this).find("i.glyphicon-triangle-top").hasClass("active")?0:1;
+            fireEvent($(this).get(0), "SORT_CHANGE",dat);
+        });
+        
+        //down  分割线
+        _this.head.find(".split-field").unbind("mousedown").mousedown(function(e){
+            var the = $(this).get(0).getBoundingClientRect();
+            var th = $(this).parent();
+            var sl =  _this.elem.find(".split-line");
+            var index = th.data("index");
+            var tho = th.get(0).getBoundingClientRect();
+            sl.css("left",(parseFloat(the.right)-o.left-5.5)+"px").removeClass("hidden");
+            $(document).unbind("mousemove").mousemove(function(e){
+                var w = Math.abs(parseFloat(e.clientX) - tho.left);
+                sl.css("left",(parseFloat(e.clientX)-o.left-5)+"px");
+                _this.elem.find("tr>th[data-index="+index+"],tr>td[data-col="+index+"]").css("width",w+"px");
+            });
+            
+        });
+        
+        
+        $(document).mouseup(function(){
+            _this.elem.find(".split-line").addClass("hidden");
+            $(document).unbind("mousemove");
+        });
     };
 
     /***
@@ -64,7 +95,7 @@
     Table2.prototype.build = function() {
         var _this = this;
         var html = "";
-        this.config.head.forEach(function(item,index){
+        _this.config.head.forEach(function(item,index){
             if(typeof(item)=="string") {
                 var txt = item; 
             }else{
@@ -73,16 +104,16 @@
             var val = item.value||item.val||txt;
             html += "<th data-index="+index+" data-text="+txt+" data-val="+val+">"+txt+"</th>";
         });
-        this.body = $("<div class='body-wrapper'><table class='table table-body'><thead><tr></tr></thead><tbody></tbody></table></div>");
-        this.body.find("thead>tr").append(html);  
-        this.buildBody(this.config.data);
+        _this.body = $("<div class='body-wrapper'><table class='table table-body'><thead><tr></tr></thead><tbody></tbody></table></div>");
+        _this.body.find("thead>tr").append(html);  
+        _this.buildBody(this.config.data);
         
         var head = this.body.clone();
         head.find("table").removeClass("table-body").addClass("table-head");
         //head.find("tbody>tr:first").siblings().remove();
         head.find("thead>tr>th").append("<span class='split-field'></span>");
-        this.head = head.removeClass("body-wrapper").addClass("header-wrapper");
-        this.elem.append(this.head).append(this.body);
+        _this.head = head.removeClass("body-wrapper").addClass("header-wrapper");
+        _this.elem.append(_this.head).append(_this.body).append("<div class='split-line hidden'></div>");
     };
 
     /**
@@ -94,16 +125,22 @@
             var rid = rdata.id||index
             var tr = $("<tr data-row="+index+" data-id="+rid+" />");
             var html = '';
-            Object.keys(rdata).forEach(function(key,idx){
-                if(idx<_this.config.head.length){
-                    var val = rdata[key];
-                    html += "<td data-val="+val+" data-col="+idx+" >"+val+"</td>"
+            var keys = Object.keys(rdata);
+            keys.forEach(function(key,idx){
+                if(_this.config.head.length>keys.length && idx == keys.length-1){
+                    var val = rdata[key]||"";
+                    html += "<td data-val="+val+" data-col="+idx+" title="+val+" >"+val+"</td>"                    
+                    for(var j=idx+1;j<_this.config.head.length;j++){
+                       html += "<td data-val='' data-col="+j+" title='' > </td>";   
+                    }
+                }else if(idx<_this.config.head.length){
+                    val = rdata[key]||"";
+                    html += "<td data-val="+val+" data-col="+idx+" title="+val+" >"+val+"</td>";
                 }
             });
             tr.html(html);
             _this.body.find("tbody").append(tr);
         });
-        
     };
 
     /***
@@ -111,16 +148,16 @@
      **/
     Table2.prototype.initConfig = function() {
         var _this = this;
-        var cfg = this.config;
+        var cfg = _this.config;
         //行选中
         if(cfg.rowNail){
-            this.elem.find(".table-body tbody>tr[data-row='"+cfg.activeRow+"']").addClass("active");
+            _this.elem.find(".table-body tbody>tr[data-row='"+cfg.activeRow+"']").addClass("active");
         }
         
         //列 选中
         if(cfg.colNail){
-            this.elem.find(".table-body tbody>tr>td[data-col='"+cfg.activeCol+"']").addClass("active");
-            this.elem.find(".table-head thead>tr>th[data-index='"+cfg.activeCol+"']").addClass("active");
+            _this.elem.find(".table-body tbody>tr>td[data-col='"+cfg.activeCol+"']").addClass("active");
+            _this.elem.find(".table-head thead>tr>th[data-index='"+cfg.activeCol+"']").addClass("active");
         }  
         
         //排序 sort
@@ -170,7 +207,7 @@
     // table NO CONFLICT
     // ===============
     $.fn.table2.noConflict = function() {
-        $.fn.table = old;
+        $.fn.table2 = old;
         return this;
     }
 

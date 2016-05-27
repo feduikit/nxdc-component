@@ -118,7 +118,7 @@ require(['./config'],function(){
                           }
                 ];
             
-            var hwd = $(".ndp-table2-wrapper").table2({
+            var hwd = $(".ndp-table2-wrapper[name='hello1']").table2({
                 head:["cpm","conversion","cpc","impression","cpa","cvr","bid_success_rate","click","date","cost","ctr"],
                 data:data3,
                 rowNail:true,
@@ -126,12 +126,23 @@ require(['./config'],function(){
                 colNail:true,
                 activeCol:1,
                 sort:[1,3,5]
+            }).on("COL_CLICK",function(e){
+                console.log(e.originalEvent.data);
+            }).on("ROW_CLICK",function(e){
+                console.log(e.originalEvent.data);
+            }).on("SORT_CHANGE",function(e){
+                console.log(e.originalEvent.data);
             });
             
             $("#update").click(function(){
                 hwd.update(data2);
             });
-			 			
+			 	
+            
+           $(".ndp-table2-wrapper[name='hello2']").table2({
+                head:["cpm","conversion","cpc","impression","cpa","cvr","bid_success_rate","click","date","cost","ctr"],
+                data:data3
+           });    
         });
     });
 });

@@ -1,5 +1,5 @@
 .ndp-table2-wrapper{
-
+    position: relative;
 }
 .ndp-table2-wrapper>.header-wrapper{
     height: 36px;
@@ -43,6 +43,9 @@
     border-bottom: 1px solid #ddd;
     cursor: pointer;
     border:1px solid #ddd;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .ndp-table2-wrapper .table-head{
     z-index: 100;
@@ -126,4 +129,13 @@
 ****/
 .ndp-table2-wrapper .table-head .sort-field>i.active{
     color:#fd9611;
+}
+
+/****
+** split-line 分割拖拽线
+****/
+.ndp-table2-wrapper>.split-line{
+    position: absolute;
+    border:1px dashed #fd9611;
+    z-index: 200;
 }
