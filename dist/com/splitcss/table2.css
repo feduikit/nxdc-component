@@ -57,17 +57,13 @@
 }
 
 .ndp-table2-wrapper .table-head>thead>tr>th{
-    border-bottom-width: 0;
+/*    border-bottom-width: 0;*/
     position: relative;
     height: 36px;
-}
-.ndp-table2-wrapper .table-head>thead>tr{
-    border:0;
 }
 
 .ndp-table2-wrapper .table-body{
     border:0;
-    margin-top:1px;
 }
 /****
 ** 列表头部分割线 拖拽区域
@@ -112,7 +108,6 @@
     overflow: hidden;
 }
 .ndp-table2-wrapper .table-head>thead>tr>th.active{
-    border-collapse: collapse;
     border-left:1px solid transparent;
     border-right:1px solid transparent;
 }

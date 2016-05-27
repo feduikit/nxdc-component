@@ -24,6 +24,7 @@
     
     Table.prototype.setListener = function(){
         var _this = this;
+        if(!_this.elem.get(0)) return;
         _this.head.find("thead>tr>th").on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
         
         var o = _this.elem.get(0).getBoundingClientRect();
