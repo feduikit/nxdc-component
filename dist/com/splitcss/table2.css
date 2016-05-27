@@ -26,6 +26,7 @@
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
+    border:0;
 }
 
 /****
@@ -45,6 +46,7 @@
     border:1px solid #ddd;
     white-space: nowrap;
     text-overflow: ellipsis;
+    font-size: 13px;
     overflow: hidden;
 }
 .ndp-table2-wrapper .table-head{
@@ -108,6 +110,11 @@
 .ndp-table2-wrapper .table-body>thead>tr>th{
     pointer-events: none;
     overflow: hidden;
+}
+.ndp-table2-wrapper .table-head>thead>tr>th.active{
+    border-collapse: collapse;
+    border-left:1px solid transparent;
+    border-right:1px solid transparent;
 }
 /***
 ** 下半部分向上平移 1px
