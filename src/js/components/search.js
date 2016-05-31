@@ -61,7 +61,7 @@
 		**/
 		this.icon.click(function(){
 			if(_this.elem.hasClass("disabled")) return false;//如果是 disabled  不起作用
-			fireEvent(_this.elem.get(0),"do_search",{text:_this.input.val()});
+			fireEvent(_this.elem.get(0),"do_search",{text:_this.input.val(),id:_this.input.attr("cid")});
 		});
 		/***
 		** 回车键
@@ -113,7 +113,7 @@
 		** 里面输入内容发生改变
 		**/
 		_this.input.on("input",function(e){
-			var input = $(this);
+			var input = $(this).removeAttr("cid");
 			e.stopImmediatePropagation();
 			if(_this.config.type==3||_this.config.type==4){
 				_this.wrapper.addClass("loading");
@@ -188,11 +188,11 @@
 							return false;
 						}
 						if($(this).hasClass("selected")) return false;
-						if(_this.config.clickhide) _this.input.val($(this).data('text'));//点击之后隐藏
+						if(_this.config.clickhide) _this.input.val($(this).data('text')).attr("cid",$(this).data('id'));//点击之后隐藏
 						if(_this.config.clickhide)_this.dropmenu.addClass("hidden");//点击之后隐藏
 						_this.wrapper.find(".close-cus").removeClass("hide");// 显示右侧的 x 删除号
 						//modify by sisi 为了保证数据尽可能完整的返回 故修改成 $(this).data("info")
-						fireEvent(_this.elem.get(0),"ITEM_SELECT",$(this).data());
+						fireEvent(_this.elem.get(0),"ITEM_SELECT",$(this).data("info"));
 						if(!_this.config.clickhide){
 							$(this).addClass("selected");
 						}
