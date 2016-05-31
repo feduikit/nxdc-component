@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
+	<meta charset="UTF-8" >
 	<title>Document</title>
     <link href="../lib/bootstrap/dist/css/bootstrap.min.css" type="text/css" rel="stylesheet">
      <link href=../com/css/body.min.css rel="stylesheet" type="text/css">
@@ -42,9 +42,40 @@
             </div>    	    
     	    
     	</div>	
+        <div class="container">
+            <div class="ndp-search-wrapper" name="picTemplateSearch"></div>
+        </div>
+        
+        
+        
         <script>
             var sh = $("<div class='ndp-search-wrapper' >");
             sh.search();
+
+
+$(".ndp-search-wrapper[name=picTemplateSearch]").search({
+        type:4,
+        dropList:[{text:"name"},{text:"tag"}],
+        ajaxOptions: {
+            type: "GET",
+            url: '',
+            xhrFields: { withCredentials: true}
+        }
+    }).on("INPUT_CHANGE",function(e){//输入内容发生改变 触发
+        console.log(e.originalEvent.data);//{text:输入内容}
+    }).on("do_search",function(e){
+        //用户输入内容，回车 或者点击搜索(放大镜) 触发这个事件
+        console.log(e.originalEvent.data);//数据
+    }).on("ITEM_SELECT",function(e){//点击下拉菜单内容，针对有ajax 请求的情况
+        console.log(e.originalEvent.data);//{text:内容}
+    }).on("INPUT_CLEAR",function(e){//点击x 清除内容
+        console.log(e.originalEvent.data);//{text:内容}
+    }).on("SCOPE_CHANGE",function(e){//前置下来菜单，选择后
+        //前置下拉菜单 更新
+        console.log(e.originalEvent.data);//{index:索引，value:值}
+});
+
+
 
             $(document.body).append(sh);
         </script>

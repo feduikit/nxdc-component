@@ -13,21 +13,44 @@
     transition: border-color ease-in-out .2s, box-shadow ease-in-out .2s;
 }
 
+/****
+** 右侧部分的包装
+****/
 .search-decoration {
     position: relative;
+    display:inline-block;
     width: 100%;
     height: 100%;
     padding: 0;
-    float: left;
+/*    float: left;*/
+}
+
+
+.ndp-search-wrapper[typecode='4'] .search-decoration,.ndp-search-wrapper[typecode='2'] .search-decoration{
+    width: 70%;
+}
+
+/****
+**左侧部分的包装
+****/
+.search-drop {
+    position: relative;
+    display: inline-block;
+    width: 30%;
+    height: 100%;
+    margin: 0;
+/*    float: left;*/
 }
 
 .ndp-search-wrapper.focus {
     box-shadow: 0 0 2px #ccc;
 }
 
-.ndp-search-wrapper .search-decoration>input[type] {
+.ndp-search-wrapper .search-decoration>input.form-control.search-input[type] {
     position: relative;
     height: 100%;
+    width: -webkit-calc(100% - 28px);
+    width: -moz-calc(100% - 28px);
     width: calc(100% - 28px);
     margin: 0;
     float: left;
@@ -37,6 +60,7 @@
     font-size: 12px;
     box-shadow: 0 0 0;
 	vertical-align: top;
+    left: 0;
 }
 
 .search-decoration>input[type][disabled] {
@@ -81,14 +105,6 @@
     background-color: #f6f6f6;
 }
 
-.search-drop {
-    position: relative;
-    display: inline-block;
-    width: 30%;
-    height: 100%;
-    margin: 0;
-    float: left;
-}
 
 .search-drop.disabled {
     cursor: not-allowed;

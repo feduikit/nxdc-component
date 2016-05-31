@@ -252,6 +252,7 @@
 	**/
 	Search.prototype.concrate = function(data){
 		var _this = this;
+        this.elem.attr("typecode",_this.config.type);
 		this.wrapper = $("<div class='search-decoration' />");
 		this.input = $("<input class='form-control search-input' type='text' />");
 		
