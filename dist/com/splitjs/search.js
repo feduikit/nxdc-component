@@ -142,7 +142,7 @@
 					var _datas = result.data;
 					if (_datas && _datas.length){
 						_datas.forEach(function(item,index){
-							var txt = (typeof(item)=="string")?item:(item.text||item.label||item.name);
+							var txt = (typeof(item)=="string")?item:(item.text||item.label||item.name||item.tagName);
 							var val = item.val || item.value || txt;
 							var id = item.id;
 							var re2 = new RegExp("["+key+"]+","i");
@@ -173,11 +173,12 @@
 							li.data("info", item);
 							_this.dropmenu.append(li);
 						});
-					} else {
+					} else if (_this.config.formatNoMatches) {
 						_this.dropmenu.append('<li class="no-result">' +  _this.config.formatNoMatches + '</li>');
 					}
-
-					_this.dropmenu.removeClass("hidden");
+                    if(_this.dropmenu.children().length>0){
+					   _this.dropmenu.removeClass("hidden");
+                    }
 					_this.wrapper.removeClass("loading");
 					
 					_this.dropmenu.find("li").unbind("click").click(function(e){
@@ -401,6 +402,7 @@
 		clickhide:true,//点击或者选择 下拉菜单一项，是否消失下拉菜单,true 点击消失，false 点击不消失
 		dropList:[],
 		rowdec:null,// 回调函数  装饰下拉菜单中的一行，数据的呈现
+        formatNoMatches:null,
         ajaxOptions: {
             type: "GET",
             url: "../data/search.json",
