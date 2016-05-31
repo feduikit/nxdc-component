@@ -5369,7 +5369,7 @@ if (!Object.keys) Object.keys = function(o) {
 						if(_this.config.clickhide)_this.dropmenu.addClass("hidden");//点击之后隐藏
 						_this.wrapper.find(".close-cus").removeClass("hide");// 显示右侧的 x 删除号
 						//modify by sisi 为了保证数据尽可能完整的返回 故修改成 $(this).data("info")
-						fireEvent(_this.elem.get(0),"ITEM_SELECT",$(this).data("info"));
+						fireEvent(_this.elem.get(0),"ITEM_SELECT",$(this).data());
 						if(!_this.config.clickhide){
 							$(this).addClass("selected");
 						}
