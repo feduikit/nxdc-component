@@ -96,7 +96,7 @@
     position: absolute;
     display: block;
     transform: scale(0.55);
-    left: -50%;
+    left: -30%;
     top:9px;
 }
 .ndp-table2-wrapper .table-head>thead>tr>th>.sort-field>i.glyphicon-triangle-bottom{

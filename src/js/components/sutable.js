@@ -244,11 +244,16 @@
 		_this.head.find(".sort-wrapper").click(function(e){
 			e.stopImmediatePropagation();
 			var fa = $(this).parent();
-			$(this).children().toggleClass("hi");
-			var siblings = fa.siblings();
-			siblings.find(".sort-wrapper").children("i").removeClass("hi");
-			siblings.find(".sort-wrapper").children("i.glyphicon-triangle-bottom").addClass("hi");
-			fireEvent(_this.elem.get(0),"SORT_CLICK",{col:parseInt(fa.attr("col")),val:fa.text()});
+            if($(this).hasClass("sorted")){
+                $(this).children().toggleClass("hi");
+            }else{
+                $(this).addClass("sorted").children("i.glyphicon-triangle-bottom").addClass("hi");
+                var siblings = fa.siblings().removeClass("sorted");
+                siblings.find(".sort-wrapper").children("i").removeClass("hi");
+//                siblings.find(".sort-wrapper").children("i.glyphicon-triangle-bottom").addClass("hi");                
+            }
+            var order= $(this).children("i.glyphicon-triangle-bottom").hasClass("hi")?1:0;//1 正序，0 反序
+			fireEvent(_this.elem.get(0),"SORT_CLICK",{col:parseInt(fa.attr("col")),val:fa.text(),order:order});
 		});	
 		/***
 		**鼠标按下 列缩放
@@ -323,7 +328,8 @@
 		var cfg = this.config;
 		//构建列表头部
 		if(cfg.head){
-			var st = "<span class='sort-wrapper'><i class='glyphicon glyphicon-triangle-top'></i><i class='glyphicon glyphicon-triangle-bottom hi'></i></span>";				
+            //默认不加 hi， 默认没有排序
+			var st = "<span class='sort-wrapper'><i class='glyphicon glyphicon-triangle-top'></i><i class='glyphicon glyphicon-triangle-bottom'></i></span>";				
 			cfg.head.forEach(function(item,index){
 				var col = $("<span class='sutable-col' col="+index+" />");
 				if(index==0) {
