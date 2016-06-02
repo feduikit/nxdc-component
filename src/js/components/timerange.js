@@ -188,7 +188,7 @@
 		});
 		
 		/***
-		** 
+		** 拖动开始
 		***/
 		_this.celllist.mousedown(function(e){
 			e.stopImmediatePropagation();
@@ -252,14 +252,14 @@
 		var _this = this;
 		var cfg = _this.config;
 		_this.head = $("<div class='timerange-head' />");
-		var droplist = $("<div class='ndp-drop-wrapper'  />").drop({
+		_this.zoneList = $("<div class='ndp-drop-wrapper'  />").drop({
 			caret:"glyphicon-menu-right",
 			data:ZONEARR,
 			textKey:cfg.lan
-		}).val(ZONEARR[3]);
+		}).val(ZONEARR[_this.config.timezone]);
 		var txt = $("<span class='timerange-desc'  />").html("按住鼠标左键滑动，选取时间目标。");
 		var reset = $("<span class='timerange-reset'>重置</span>");
-		_this.head.append(droplist).append(txt).append(reset);
+		_this.head.append(_this.zoneList).append(txt).append(reset);
 		_this.body = $("<div class='timerange-body' />");
 		var xq  = $("<ul class='timerange-xq' >");
 		DAYARR.forEach(function(item,index){
@@ -311,6 +311,19 @@
 		this.getVal = function(){
 			return timerange.selectTime();// {timeStart: 开始时间， timeEnd:结束时间，星期几, zone:{text:}}
 		}
+        
+        //填充数据
+        /****
+        **@params {Array} // [{day:0,timeStart:1,timeEnd:2},{day:1,timeStart:2,timeEnd:3}] 
+        ***/
+        this.fill = function(arr){
+            arr.forEach(function(item){
+                var c = (item.day==7)?0:item.day;
+                var r = item.timeStart;
+                timerange.celllist.find("span[row="+r+"][col="+c+"]").addClass("active");
+            });
+            return timerange.elem;
+        }
     }
 	
 	  var old = $.fn.timerange;
@@ -325,6 +338,7 @@
 	** outside accessible default setting
 	**/
 	$.fn.timerange.defaults = {
-		lan:"cn"// en:英语， cn 汉语
+		lan:"cn",// en:英语， cn 汉语
+        timezone:0//默认下拉列表里的第1个
 	};
 }(jQuery));
