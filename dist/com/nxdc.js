@@ -6162,7 +6162,7 @@ if (!Object.keys) Object.keys = function(o) {
 			tooltip.addClass("in");
 			tooltip.unbind("webkitTransitionEnd oTransitionEnd otransitionend transitionend").on("webkitTransitionEnd oTransitionEnd otransitionend transitionend",function(){
 				var to = $(this).get(0).getBoundingClientRect();
-				console.log(to.right + " : " + o.right);
+//				console.log(to.right + " : " + o.right);
 				if(to.right>=o.right){
 					$(this).css({"right":0,"left":"inherit"});
 					$(this).find(".tooltip-arrow").css("left","90%");
@@ -6262,7 +6262,7 @@ if (!Object.keys) Object.keys = function(o) {
 		$(window).resize(function(e){
 			_this.config.wi = _this.elem.width();
 			_this.allocate(_this.config.wi);
-		});
+		}); 
     };
 
 	/**

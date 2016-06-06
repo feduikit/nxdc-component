@@ -337,7 +337,8 @@ li.sutable-item.open[deep='2']>.sutable-row-wrapper.asparent{
 ***/
 .sutable-row .sutable-col-oc{
 	position: relative;
-	width: 72px!important;
+	width: 70px!important;
+    overflow: hidden;
 }
 .sutable-col-oc>span.switcher{
 	position: absolute;
@@ -347,15 +348,17 @@ li.sutable-item.open[deep='2']>.sutable-row-wrapper.asparent{
 	padding-top:5px;
 	left:50%;
 	margin-left: -15px;
+    overflow: hidden;
 }
 .sutable-col-oc>span.switcher>label{
 	background-color: transparent;
 }
 
 .sutable-row .sutable-col-operation{
-	position: absolute;
+/*	position: absolute;*/
+    padding-right: 0;
 	padding-left: 10px;
-	width: 62px!important;
+	width: 60px!important;
 	z-index: 900;
 }
 .sutable-row .sutable-col-operation>i{
