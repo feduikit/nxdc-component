@@ -9,6 +9,7 @@
     FileUpload.prototype = {
         constructor: 'FileUpload',
         init: function(config) {
+            this.elem = config.container;
             this.$wrapper = $(this.html);
             this.$num = this.$wrapper.find('.upload-num');
             this.$msg = this.$wrapper.find('.upload-msg');
@@ -77,7 +78,7 @@
         fileErrorDetect: function(files) {
             var msg = [];
             var file = files[0];
-            var dtd = $.Deferred();;
+            var dtd = $.Deferred();
             var self = this;
             var url = null;
             if (files.length < 1) {
@@ -316,6 +317,23 @@
         }
 
     }
+    
+    /***
+    **和其他插件的交互
+	** factory Class
+    **@param {Class} fileupload :  instacne of the plugin builder
+    **/
+    function exchange(fu){
+        /***
+        ** 
+        ***/
+        this.createPreview = function(fl,src){
+            fu.createPreview(fl,src);
+            return fu.elem;
+        }
+    }  
+    
+
 
     $.fn.fileupload = function(options) {
         var returnVal = this;
@@ -388,6 +406,8 @@
                     </div>\
                 </div>'
     }
+    
+    
 
     //模板生成函数
     function tplLink() {
