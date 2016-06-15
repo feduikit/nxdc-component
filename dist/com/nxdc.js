@@ -3443,7 +3443,7 @@ if (!Object.keys) Object.keys = function(o) {
 		var drop2 = new Drop2(the, options);
 		the = $.extend(true,{},the,new exchange(drop2));
 		return the;
-	};
+	};caret
 
 	/***
 	 **和其他插件的交互

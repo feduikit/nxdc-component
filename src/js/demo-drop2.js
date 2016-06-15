@@ -80,7 +80,22 @@ require(['./config'],function(){
 				//下拉选项被点击
 				console.log(e.originalEvent.data);//{value:选中的值 string}
 			});		
-			
+		
+            
+			$(".dropdown[name='button']").drop2({
+				id:"meme4",
+				showcaret:false,
+				label:"<button class='btn btn-success'>添加新内容</button>",
+				data:[
+					  {label:"用户设置"},
+					  {label:"修改密码"},
+					  {label:"接触绑定"},
+					  {label:"退出"}
+					 ]
+			}).on("ITEM_CLICK",function(e){
+				//下拉选项被点击
+				console.log(e.originalEvent.data);//{value:选中的值 string}
+			});	            
 			
 		});
 	});

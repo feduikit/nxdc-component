@@ -163,6 +163,10 @@
         "/Users/ericever/Desktop/develop/nxdc_ui/lib/hicharts/NVis.min.js",
         "demo-tip.js",
         "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-tip.js",
-        "demo-timerange.js"
+        "demo-timerange.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-search.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-sidepanel.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-sinput.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-sutable.js"
     ]
 }

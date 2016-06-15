@@ -64,7 +64,7 @@ require(['./config'],function(){
 					  "加拿大","澳大利亚","法国","爱尔兰","以色列"]
             });
 			
-            $("div.ndp-drop-wrapper[name=checkbox-drop2]").drop({
+            $("div.ndp-drop-wrapper[name=checkbox-drop]").drop({
 				type:4,
                 data:["中国sdfdfdsf","加拿大sdfdsfsdfds哇哇哇全文","澳大利亚人玩儿完任务二","法去尾王企鹅我去额外全额国"]
             }).on("APPLY_CLICK",function(e){

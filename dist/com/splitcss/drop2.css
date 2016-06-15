@@ -26,6 +26,16 @@
 	color:#fd9611;
 }
 
+.dropdown.drop2-wrapper>button>span>button.btn{
+    color:white;
+    border-radius: 0;
+    background-color: #fd9611;
+    border-color: #fd9611;
+}
+.dropdown.drop2-wrapper.open>button>span>button.btn{
+    background-color: #fc7408;
+}
+
 .dropdown.drop2-wrapper.open {
     color: #fc7408;
 }
