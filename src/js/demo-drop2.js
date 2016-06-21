@@ -4,6 +4,7 @@ require(['./config'],function(){
 			//$('[data-toggle="popover"]').popover();
 			$(".dropdown[name='aa']").drop2({
 				id:"meme",
+                showcaret:true,
 				caret:"<i class='glyphicon glyphicon-menu-down'></i>",
 				label:"文字drop测试",
 				data:[
@@ -20,7 +21,8 @@ require(['./config'],function(){
 			
 			
 			$(".dropdown.drop2-wrapper[name='bb']").drop2({
-				id:"meme",
+                id:"meme",
+                showcaret:true,
 				caret:"<i class='glyphicon glyphicon-menu-down'></i>",
 				label:"多级菜单",
 				data:[
@@ -44,6 +46,7 @@ require(['./config'],function(){
 			
 			$(".dropdown.drop2-wrapper[name='cc']").drop2({
 				type:2,
+                 showcaret:true,
 				id:"meme2",
 				caret:"<i class='glyphicon glyphicon-menu-down'></i>",
 				label:{label:"用户设置"},
@@ -68,6 +71,7 @@ require(['./config'],function(){
 			//glyphicon glyphicon-tag
 			$(".dropdown[name='tag']").drop2({
 				id:"meme3",
+                 showcaret:true,//默认显示caret
 				caret:"<i class='glyphicon glyphicon-menu-down'></i>",
 				label:"<i class='glyphicon glyphicon-th-list'></i>",
 				data:[

@@ -356,10 +356,12 @@ li.sutable-item.open[deep='2']>.sutable-row-wrapper.asparent{
 
 .sutable-row .sutable-col-operation{
 /*	position: absolute;*/
+    min-width: 50px!important;
     padding-right: 0;
 	padding-left: 10px;
-	width: 60px!important;
+	width: 55px!important;
 	z-index: 900;
+    text-overflow: inherit;
 }
 .sutable-row .sutable-col-operation>i{
 	cursor: pointer;
