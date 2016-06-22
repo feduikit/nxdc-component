@@ -399,6 +399,7 @@
 	** 宽度发生变化
 	***/
 	Sutable.prototype.allocate = function(w){
+        var _this = this;
 		var w = w||this.elem.width();
 		var dom = this.elem
 		var cfg = this.config;
@@ -410,6 +411,13 @@
 		});
 		cfg.colDims.push(72,62);
 		
+        if(this.elem.find(".sutable-body .sutable-col").length){
+            cfg.colDims.forEach(function(val,index){
+                _this.elem.find(".sutable-body .sutable-col[col='"+index+"']").css("width",val+"px");
+            });
+        }
+        
+        
 //		this.foot.css("width",w+"px");//最下面的 
 //		this.scroll.css("width",w+"px");//横向滚动条
 	};
