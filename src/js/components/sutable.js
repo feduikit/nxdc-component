@@ -143,6 +143,7 @@
 						li.toggleClass("open");
 					}
 					spinner.removeClass("active");
+                    _this.allocate();// 重新设置宽度
 				},function(err){
 					li.toggleClass("open");
 					spinner.removeClass("active");
@@ -151,7 +152,6 @@
 				spinner.removeClass("active");
 			}
 		});
-		
 		/***
 		** 点击 开启/暂停 按钮
 		***/
@@ -201,6 +201,7 @@
 		
 		//显示隐藏 tooltip
 		_this.elem.find('[data-toggle=tooltip]').unbind("mouseover").mouseover(function(e){
+           e.stopImmediatePropagation();
 			var tooltip = _this.elem.find(".tooltip-cus");
 			tooltip.find(".tooltip-inner").html($(e.target).data('title'));
 			
@@ -222,6 +223,7 @@
 		});
 		
 		_this.elem.find('[data-toggle=tooltip]').unbind("mouseout").mouseout(function(e){
+            e.stopImmediatePropagation();
 			_this.elem.find(".tooltip-cus").removeClass("in");
 		});		
 	
@@ -365,7 +367,7 @@
 		if(cfg.body){
 			Help.recursive(_this.elem,cfg.body,cfg);
 		}
-        this.allocate(cfg.wi);//分配宽度   
+        this.allocate();//分配宽度   
 		//构建列表尾部
 		if(cfg.tail){
 			_this.tail(cfg.tail);
@@ -377,7 +379,9 @@
 		//_this.head.find(".sutable-col:gt(0):not(:eq(11))").append("<i class='font-icon font-icon-help'></i>");
 		
 		//this.scrollV();//是否显示滚动条
-            _this.allocate();//分配宽度  重新allocate列表
+//        setTimeout(function(){
+//             _this.allocate();//分配宽度  重新allocate列表
+//        });
     }
 	
 	
