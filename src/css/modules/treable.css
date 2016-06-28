@@ -82,7 +82,7 @@
 **列表尾
 ***/
 .treable-footer{
-	position: fixed;
+	position: relative;
 /*	position: absolute;*/
 	height: 50px;
 	background-color: #e7e7e7;
@@ -102,8 +102,8 @@
 /***
 ** 横向滚动条
 ***/
-.horiz-scroll{
-	position: fixed;
+.ndp-treable-wrapper .horiz-scroll{
+	position: relative;
 	z-index: 200;
 	width: calc(100% - 15px - 15px - 200px - 6px);
 	bottom: 0;
@@ -148,7 +148,7 @@
 /*	overflow: hidden;*/
 }
 
-.treable-header>.treable-row{
+.treable-header>.treable-row,.treable-header.set-head>.treable-row{
 	position: relative;
 /*	width: 100%;*/
 	margin: 0;
@@ -379,7 +379,7 @@
 	overflow: hidden;
 	transition:width 0.1s;
 }
-.ndp-treable-wrapper .treable-header>.treable-row>.sutable-col{
+.ndp-treable-wrapper .treable-header>.treable-row>.sutable-col,.ndp-treable-wrapper .treable-header.set-head>.treable-row>.sutable-col{
     border-width: 0;
     line-height: 36px;
 }
@@ -394,7 +394,7 @@
 	width: 70px!important;
 	overflow: hidden;
 }
-.ndp-treable-wrapper .treable-header .treable-row>.sutable-col-status{
+.ndp-treable-wrapper .treable-header.set-head .treable-row>.sutable-col-status{
 	margin-left: 41px;/*****修正问题****/
 }
 .treable-row[deep='1']>.sutable-col-status{
@@ -428,7 +428,7 @@
 /***
 ** 排序
 ***/
-.ndp-treable-wrapper .treable-header .sutable-col>.sort-wrapper{
+.ndp-treable-wrapper .treable-header .sutable-col>.sort-wrapper,.ndp-treable-wrapper .treable-header.set-head .sutable-col>.sort-wrapper{
 	position: absolute;
 	height: 100%;
     width: 8px;
@@ -439,7 +439,7 @@
     padding-top:7px;
 }
 
-.ndp-treable-wrapper .treable-header .sutable-col>.sort-wrapper>i.glyphicon{
+.ndp-treable-wrapper .treable-header .sutable-col>.sort-wrapper>i.glyphicon,.ndp-treable-wrapper .treable-header.set-head .sutable-col>.sort-wrapper>i.glyphicon{
     position:relative;
     display:block;
     width: 8px;
@@ -461,7 +461,7 @@
 	line-height: 40px;
 }
 
-.treable-row .sutable-col-name,.treable-header .sutable-col-name{
+.treable-row .sutable-col-name,.treable-header .sutable-col-name,.treable-header.set-head .sutable-col-name{
 	min-width: 130px!important;
 	padding-right: 15px;
 /*	width: 15%;*/
@@ -485,7 +485,7 @@
 }
 
 .dropdown-menu.dropdown-menu-money{
-	position: absolute;
+	position: fixed;
 	z-index: 850;
 	display: block;
 	top:65px;
@@ -609,4 +609,39 @@
 
 .ndp-treable-wrapper .switcher>label:before{
     background-color:#b9c3cd;
+}
+
+.treable-footer.set-foot{
+	position: fixed;
+	bottom: 0px;
+}
+
+.horiz-scroll.set-scroll{
+	position: fixed;
+	bottom:0;
+	height:14px;
+	z-index:500
+}
+
+.ndp-treable-wrapper .horiz-scroll.set-scroll .horiz-thumb {
+	position: relative;
+	z-index: 100;
+	width: 0;
+	background-color: #ccc;
+	border-radius: 5px;
+	cursor: default;
+}
+
+.show-set-scroll .horiz-thumb{
+	height: 60%;
+}
+
+.treable-header.set-head{
+	position: fixed;
+	width: 400%;
+	white-space: nowrap;
+	margin: 0;
+	padding: 0;
+	top:0px;
+	background-color:white;
 }
