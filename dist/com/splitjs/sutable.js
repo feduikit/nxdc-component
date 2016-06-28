@@ -360,22 +360,24 @@
 			});
 		}
 		
-		this.allocate(cfg.wi);//分配宽度
 		
 		//构建列表内容
 		if(cfg.body){
 			Help.recursive(_this.elem,cfg.body,cfg);
 		}
+        this.allocate(cfg.wi);//分配宽度   
 		//构建列表尾部
 		if(cfg.tail){
 			_this.tail(cfg.tail);
-			
 		}	
 		
+	                
+        
 		_this.elem.append('<div class="tooltip tooltip-cus bottom fade" role="tooltip"> <div class="tooltip-arrow"></div> <div class="tooltip-inner"> Tooltip on the bottom </div> </div>');
 		//_this.head.find(".sutable-col:gt(0):not(:eq(11))").append("<i class='font-icon font-icon-help'></i>");
 		
 		//this.scrollV();//是否显示滚动条
+            _this.allocate();//分配宽度  重新allocate列表
     }
 	
 	
