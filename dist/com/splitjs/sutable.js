@@ -200,8 +200,8 @@
 		});
 		
 		//显示隐藏 tooltip
-		_this.elem.find('[data-toggle=tooltip]').unbind("mouseover").mouseover(function(e){
-           e.stopImmediatePropagation();
+		_this.elem.find('[data-toggle=tooltip]').unbind("mouseenter").mouseover(function(e){
+//           e.stopImmediatePropagation(); 
 			var tooltip = _this.elem.find(".tooltip-cus");
 			tooltip.find(".tooltip-inner").html($(e.target).data('title'));
 			
@@ -222,8 +222,8 @@
 			})
 		});
 		
-		_this.elem.find('[data-toggle=tooltip]').unbind("mouseout").mouseout(function(e){
-            e.stopImmediatePropagation();
+		_this.elem.find('[data-toggle=tooltip]').unbind("mouseleave").mouseout(function(e){
+//            e.stopImmediatePropagation();
 			_this.elem.find(".tooltip-cus").removeClass("in");
 		});		
 	
