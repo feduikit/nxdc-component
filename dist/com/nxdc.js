@@ -6424,7 +6424,9 @@ if (!Object.keys) Object.keys = function(o) {
 			Help.recursive(sutable.elem,data,sutable.config);
 			if(tail){
 				_this.sum(tail);
-			}
+			}else{//如果tail 数据不存在 2016-6-30
+                sutable.elem.find(".sutable-footer").remove();
+            }
 			sutable.listenBody();
 			return sutable.elem;
 		};

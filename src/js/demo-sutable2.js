@@ -256,7 +256,7 @@ var data2 = [{
 			
 			$("#update").click(function(){
 				bool = !bool;
-				hwd.update((bool?data2:data1),sum);
+				hwd.update((bool?data2:data1));
 			});
 			
 			
