@@ -7814,6 +7814,7 @@ if (!Object.keys) Object.keys = function(o) {
 		_this.elem.find("button.close.chart-close").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
 			$(this).parents(".chart-wrapper.open:first").removeClass("open");
+			$(_this.config.scrollDOM).trigger("scroll");
 		});
 		/***
 		 **事件  收起/展开按钮  树桩菜单的 展开/收起
@@ -7878,7 +7879,10 @@ if (!Object.keys) Object.keys = function(o) {
 
 		//打开的 图表层，关闭
 		_this.elem.unbind("click").click(function(e){
+			console.log("关闭图表")
 			$(this).find(".chart-wrapper.open").removeClass("open");
+			$(_this.config.scrollDOM).trigger("scroll");
+
 		});
 		/***
 		 ** 点击了，下拉菜单中的选项
@@ -7892,6 +7896,7 @@ if (!Object.keys) Object.keys = function(o) {
 			if(id=="chart"){
 				_this.elem.find(".chart-wrapper.open").removeClass("open");
 				$(this).parents(".treable-row:first").siblings(".chart-wrapper").addClass("open");
+				$(_this.config.scrollDOM).trigger("scroll");
 			}
 			var dataid = $(this).parents("li.treable-item[deep]").data("id");
 			var o = $(this).data();
@@ -7925,6 +7930,7 @@ if (!Object.keys) Object.keys = function(o) {
 		_this.elem.find("button[data-id=chart]").unbind("click").click(function(e){
 			_this.elem.find(".treable-row-wrapper>.treable-row.focus+.chart-wrapper").addClass("open");
 			_this.elem.find(".treable-row-wrapper>.treable-row:not(.focus)+.chart-wrapper.open").removeClass("open");//关闭其他的
+			$(_this.config.scrollDOM).trigger("scroll")
 		});
 
 
@@ -7982,6 +7988,8 @@ if (!Object.keys) Object.keys = function(o) {
 			var start = (the.left-el.left + the.width);
 			_this.elem.find(".split-line").css("left",(start-1)+"px").addClass("active");
 			_this.elem.addClass("resize-cursor");
+			_this.elem.addClass("extend");
+
 			_this.elem.unbind("mousemove").mousemove(function(e){
 				e.stopImmediatePropagation();
 				var end = e.clientX - el.left - 2;
@@ -8125,26 +8133,28 @@ if (!Object.keys) Object.keys = function(o) {
 			//横向滚动条
 			if (_this.scroll.offset().top + _this.scroll.height()> $(window).height()){
 				_this.elem.find(".set-scroll").length == 0 ? _this.elem.append( _this.scroll.clone(true).addClass('set-scroll' ).removeAttr("visibility") ) : '';
-				_this.elem.find(".set-scroll").show();
+				_this.elem.find(".set-scroll").css("visibility", "visible");
 				_this.scroll.css("visibility", "hidden");
 			} else {
-				_this.elem.find(".set-scroll").hide();
+				_this.elem.find(".set-scroll").css("visibility", "hidden");
 				_this.scroll.css("visibility", "visible");
 			}
 
 			//表底
 			if (_this.foot.offset().top + _this.foot.height()> $(window).height()){
 				_this.elem.find(".set-foot").length == 0 ? _this.elem.append( _this.foot.clone( false ).addClass('set-foot' ).removeAttr("visibility") ) : '';
-				_this.elem.find(".set-foot").show();
+				_this.elem.find(".set-foot").css("visibility", "visible");
 				_this.foot.css("visibility", "hidden");
 			} else {
-				_this.elem.find(".set-foot").hide();
+				_this.elem.find(".set-foot").css("visibility", "hidden");
 				_this.foot.css("visibility", "visible");
 			}
 
 		});
 
 		$(_this.config.scrollDOM).trigger("scroll");
+
+		_this.scrollV();//是否显示滚动条
 	};
 
 	/**
@@ -8221,8 +8231,6 @@ if (!Object.keys) Object.keys = function(o) {
 				_this.head.find(".sutable-col").append(st);
 			}
 		};
-
-		this.scrollV();//是否显示滚动条
 	}
 
 	/***

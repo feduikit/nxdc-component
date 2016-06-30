@@ -226,9 +226,6 @@
 	position: relative;
 	overflow: hidden;
 	height: 0;
-	-webkit-transition: all 0.4s ease-in-out;
-	-moz-transition: all 0.4s ease-in-out;
-	transition:all 0.4s ease-in-out;
 }
 
 /****
@@ -620,7 +617,13 @@
 	position: fixed;
 	bottom:0;
 	height:14px;
-	z-index:500
+	z-index:500;
+	padding-top:2.8px;
+	background-color:#e7e7e7;
+}
+
+.horiz-scroll.set-scroll.show-set-scroll{
+	background-color:white;
 }
 
 .ndp-treable-wrapper .horiz-scroll.set-scroll .horiz-thumb {
