@@ -174,7 +174,8 @@
 				$(this).parent().addClass("hidden");
 				var per = parseInt($(this).text());
 				if(_this.pagetext.text()!=per){
-					_this.pagetext.text(per);_this.num.html(per);
+					_this.pagetext.text(per);
+					_this.num.html(per);
 					_this.config.perPage = parseInt(per);//每页显示多少条
 					_this.config.totalPages = Math.ceil(_this.config.totalItems/_this.config.perPage)
 					buildPageList(_this);
@@ -248,7 +249,7 @@
 			var more = $("<i class='glyphicon glyphicon-menu-hamburger' />");
 			var down = $("<i class='glyphicon glyphicon-triangle-bottom' />");
 			var drop = $("<ul class='page-dropdown hidden'/>");//
-			_this.num = $("<div class='page-now' />").text(cfg.perPages[cfg.defItems]);
+			_this.num = $("<div class='page-now' />").text(cfg.defItems ? cfg.perPages[cfg.defItems] : cfg.perPage);
 			if(cfg.type==2){
 				_this.dropwrapper.append(more).append(down);
 			}else if(cfg.type==3){
@@ -295,7 +296,8 @@
 		var cfg = _this.config;
 		var cp = _this.config.currentPage||1;
 		if(cfg.type!=4 && (cfg.currentPage||1)){
-			_this.list.find("li.page-item[value="+cp+"]").addClass("active");			
+			_this.list.find("li.page-item").removeClass("active");
+			_this.list.find("li.page-item[value="+cp+"]").addClass("active");
 		}
 		
 		if(cfg.type==2 && cfg.perPage){
