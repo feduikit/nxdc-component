@@ -6326,7 +6326,7 @@ if (!Object.keys) Object.keys = function(o) {
 					col.append(st);
 				}
 				
-				if(index!=0 && index!=12){
+				if(index!=0 && index!=12 && item.desc){
 					col.append("<i class='font-icon font-icon-help' data-toggle='tooltip' data-title="+item.desc+"></i>");
 				} 				
  				//分割线

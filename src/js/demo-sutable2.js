@@ -205,7 +205,7 @@ var data2 = [{
 			
 			
 			var hwd = $(".ndp-sutable-wrapper").sutable({
-				head:[{label:"广告活动"},{label:"状态",desc:"这一列用来说明处于什么状态"},
+				head:[{label:"广告活动"},{label:"状态",desc:""},
 					  {label:"展示数",desc:"这一列用来说明展示的数目"},
 					  {label:"点击数",desc:"这一列用来说明展示的数目"},
 					  {label:"点击率",desc:"这一列用来说明展示的数目"},
