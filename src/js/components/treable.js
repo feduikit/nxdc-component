@@ -131,10 +131,11 @@
 
 	function Treable(element, options) {
 		var self = this;
-		this.elem = element;
-		this.config = $.extend(true,{},$.fn.treable.defaults,element.data(),options);
-		this.config.wi = this.elem.width();
-		this.init();
+		self.elem = element;
+		self.elem.addClass("extend")
+		self.config = $.extend(true,{},$.fn.treable.defaults,element.data(),options);
+		self.config.wi = this.elem.width();
+		self.init();
 	};
 	/***
 	 **	横向滚动条
@@ -142,7 +143,7 @@
 	Treable.prototype.scrollV = function(){
 		var _this = this;
 		_this.elem = $('.ndp-treable-wrapper');
-		var sdim = _this.scroll.get(0).getBoundingClientRect();//上下左右
+		var sdim = _this.elem.find(".origin-scroll").get(0).getBoundingClientRect();//上下左右
 		var thumb = _this.elem.find(".horiz-thumb");
 		var tdim = thumb.get(0).getBoundingClientRect();
 		var w = this.elem.width(); // 不包括border的宽度
@@ -157,9 +158,10 @@
 		}else if(tdim.right>sdim.right){
 			thumb.css("left",(sdim.right-sdim.width)+"px");
 		}
-		_this.scroll.toggleClass("show",colW>w?true:false).css("width",w+"px");
+		//_this.scroll.toggleClass("show",colW>w?true:false).css("width",w+"px");
+		_this.elem.find(".origin-scroll").toggleClass("show",colW>w?true:false).css("width",w+"px");
 		_this.elem.find(".set-scroll").toggleClass("show-set-scroll",colW>w?true:false).css("width",w+"px");
-		_this.elem.toggleClass("extend",colW>w?true:false)
+		//_this.elem.toggleClass("extend",colW>w?true:false)
 		if(colW>w){
 //			thumb.css("width",(w/colW)*100+"%");
 			thumb.css("width",(w-colW+w)+"px");
@@ -238,18 +240,25 @@
 			$(this).find(".dropdown-menu-money").addClass("hidden");
 		});
 
+		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("click").click(function(e){
+			console.log("关闭图表")
+			_this.elem.find(".chart-wrapper.open").removeClass("open");
+			$(_this.config.scrollDOM).trigger("scroll");
+		});
+
+
 		//事件不再抛出来， 图标区域内的
 		_this.elem.find(".tab-content.tab-content-cus").unbind("click").click(function(e){
 			e.stopImmediatePropagation();
 		});
 
 		//打开的 图表层，关闭
-		_this.elem.unbind("click").click(function(e){
-			console.log("关闭图表")
-			$(this).find(".chart-wrapper.open").removeClass("open");
-			$(_this.config.scrollDOM).trigger("scroll");
-
-		});
+		// _this.elem.unbind("click").click(function(e){
+		// 	console.log("关闭图表")
+		// 	$(this).find(".chart-wrapper.open").removeClass("open");
+		// 	$(_this.config.scrollDOM).trigger("scroll");
+		//
+		// });
 		/***
 		 ** 点击了，下拉菜单中的选项
 		 ***/
@@ -322,8 +331,8 @@
 	 **/
 	Treable.prototype.init = function () {
 		var _this = this;
-		this.concrate();//构建下来菜单的样子
-		this.initConfig();
+		_this.concrate();//构建下来菜单的样子
+		_this.initConfig();
 
 		_this.elem.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
 		_this.scroll.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
@@ -390,8 +399,9 @@
 			_this.elem.unbind("mousemove");
 			_this.scrollV();// 是否显示横向滚动条
 			_this.elem.trigger("RESIZE_DONE");//鼠标拖动resize 列宽完成
-			var w1 = eval(_this.config.colDims.join("+"));//获得宽度
-			_this.elem.find(".chart-wrapper").css("width",(w1+5)+"px");
+			// var w1 = eval(_this.config.colDims.join("+"));//获得宽度
+			// console.log(w1)
+			// _this.elem.find(".chartwrapper-").css("width",(w1+5)+"px");
 		});
 
 
@@ -399,12 +409,13 @@
 		 ** 横向滚动条拖动  thumb 拖动
 		 ****/
 		_this.elem.off("mousedown", ".horiz-thumb").on("mousedown", ".horiz-thumb", function(e){
-//			e.stopImmediatePropagation();
+			e.stopImmediatePropagation();
 			var thumb = $(this);
-			var sdim = _this.scroll.get(0).getBoundingClientRect();
+			var sdim = thumb.parents(".horiz-scroll").get(0).getBoundingClientRect();
 			var start = e.clientX;
 			_this.elem.off("mousemove", ".horiz-scroll").on("mousemove", '.horiz-scroll', function(e){
 				e.stopImmediatePropagation();
+
 				var tdim = thumb.get(0).getBoundingClientRect();
 				var end  = e.clientX;
 				var m = end - start;
@@ -420,14 +431,13 @@
 				}
 
 				var w = tdim.left - sdim.left; if(w<0) w = 0;
-
 				_this.elem.children("[role=table]").css("left",-w+"px");
 			});
 		});
 		_this.elem.off("mouseleave", ".horiz-scroll").on("mouseleave", '.horiz-scroll', function(e){
-			//_this.scroll.unbind("mousemove");
-			var lf = _this.scroll.find(".horiz-thumb").css("left");
-			_this.scroll.find(".horiz-thumb").css("left",lf+"px");
+			$(this).unbind("mousemove");
+			var lf = $(this).find(".horiz-thumb").css("left");
+			$(this).find(".horiz-thumb").css("left",lf+"px");
 		});
 
 		/****
@@ -435,6 +445,7 @@
 		 ****/
 		_this.elem.off("mouseup",".horiz-scroll").on("mouseup", '.horiz-scroll', function(e){
 			//_this.scroll.unbind("mousemove");
+			$(this).unbind("mousemove");
 			var thumb = $(this).children(":first");
 			var dim1 = $(this).get(0).getBoundingClientRect();
 			var dim2 = thumb.get(0).getBoundingClientRect();
@@ -578,7 +589,7 @@
 			_this.elem.append(_this.foot);
 		}
 
-		_this.scroll = $("<div class='horiz-scroll' />").html("<div class='horiz-thumb' />");
+		_this.scroll = $("<div class='horiz-scroll origin-scroll' />").html("<div class='horiz-thumb' />");
 		_this.elem.append(_this.scroll);
 
 
