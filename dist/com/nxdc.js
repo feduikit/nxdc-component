@@ -6002,7 +6002,7 @@ if (!Object.keys) Object.keys = function(o) {
 				}
 				if(idx<=(temparr.length-3)){
 					var val = col.label||col.text||col.name;	
-					column.html(val); if(idx!=1 && idx!=temparr.length-2) column.attr("title",val);
+					column.html(val); if(idx!=temparr.length-2) column.attr("title",val);
 					if(idx==0){
 						column.html("<span>"+val+"</span>");
 					}else if(idx==1 && col.value==2){// 处理 状态， 审核未通过
@@ -6155,6 +6155,7 @@ if (!Object.keys) Object.keys = function(o) {
 		//显示隐藏 tooltip
 		_this.elem.find('[data-toggle=tooltip]').unbind("mouseenter").mouseenter(function(e){
 //           e.stopImmediatePropagation(); 
+            if(!$(e.target).data('title')) return false;
 			var tooltip = _this.elem.find(".tooltip-cus");
 			tooltip.find(".tooltip-inner").html($(e.target).data('title'));
 			
@@ -6193,23 +6194,40 @@ if (!Object.keys) Object.keys = function(o) {
 		_this.elem.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
 //		_this.scroll.on("dragstart",function(){  return false; });//消除 默认h5 拖拽产生的影响
 		
-		/***
-		** 表头 某一列的排序按钮被点击
-		***/
-		_this.head.find(".sort-wrapper").click(function(e){
+        
+        // 点击 列表头部 进行排序
+        _this.head.find("span.sutable-col:has(span.sort-wrapper)").click(function(e){
+            console.log("col:" + $(this).attr("col"));
 			e.stopImmediatePropagation();
-			var fa = $(this).parent();
-            if($(this).hasClass("sorted")){
-                $(this).children().toggleClass("hi");
+            var  arrow =  $(this).find("span.sort-wrapper");
+            if(arrow.hasClass("sorted")){
+                arrow.children().toggleClass("hi");
             }else{
-                $(this).addClass("sorted").children("i.glyphicon-triangle-bottom").addClass("hi");
-                var siblings = fa.siblings().removeClass("sorted");
+                arrow.addClass("sorted").children("i.glyphicon-triangle-bottom").addClass("hi");
+                var siblings = $(this).siblings().removeClass("sorted");
                 siblings.find(".sort-wrapper").children("i").removeClass("hi");
 //                siblings.find(".sort-wrapper").children("i.glyphicon-triangle-bottom").addClass("hi");                
             }
-            var order= $(this).children("i.glyphicon-triangle-bottom").hasClass("hi")?1:0;//1 正序，0 反序
-			fireEvent(_this.elem.get(0),"SORT_CLICK",{col:parseInt(fa.attr("col")),val:fa.text(),order:order});
-		});	
+            var order= arrow.children("i.glyphicon-triangle-bottom").hasClass("hi")?1:0;//1 正序，0 反序
+			fireEvent(_this.elem.get(0),"SORT_CLICK",{col:parseInt($(this).attr("col")),val:$(this).text(),order:order});            
+        });
+		/***
+		** 表头 某一列的排序按钮被点击
+		***/
+//		_this.head.find(".sort-wrapper").click(function(e){
+//			e.stopImmediatePropagation();
+//			var fa = $(this).parent();
+//            if($(this).hasClass("sorted")){
+//                $(this).children().toggleClass("hi");
+//            }else{
+//                $(this).addClass("sorted").children("i.glyphicon-triangle-bottom").addClass("hi");
+//                var siblings = fa.siblings().removeClass("sorted");
+//                siblings.find(".sort-wrapper").children("i").removeClass("hi");
+////                siblings.find(".sort-wrapper").children("i.glyphicon-triangle-bottom").addClass("hi");                
+//            }
+//            var order= $(this).children("i.glyphicon-triangle-bottom").hasClass("hi")?1:0;//1 正序，0 反序
+//			fireEvent(_this.elem.get(0),"SORT_CLICK",{col:parseInt(fa.attr("col")),val:fa.text(),order:order});
+//		});	
 		/***
 		**鼠标按下 列缩放
 		***/
@@ -6362,9 +6380,9 @@ if (!Object.keys) Object.keys = function(o) {
 		var w = w||this.elem.width();
 		var dom = this.elem
 		var cfg = this.config;
-		var rw  = w - 226 - 96 - 40 - 72 - 62;//150 第一列的宽度， 第二列宽度100px ,40 : margin-left
+		var rw  = w - 212 - 110 - 40 - 72 - 62;//150 第一列的宽度， 第二列宽度100px ,40 : margin-left
 		var ew = rw/(cfg.head.length - 4);
-		cfg.colDims = [226,96];//列宽度 存储 
+		cfg.colDims = [212,110];//列宽度 存储 
 		dom.find(".sutable-col:gt(1):lt("+(cfg.head.length-3)+")").css("width",ew+"px").each(function(){
 			cfg.colDims.push(ew);
 		});
