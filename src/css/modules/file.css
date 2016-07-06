@@ -1,0 +1,10 @@
+.btn-file{
+    background-color: #5eb6f7;
+    color:white;
+}
+.btn-file:hover{
+    color:inherit;
+}
+.btn-file>input[type=file]{
+    display:none;
+}

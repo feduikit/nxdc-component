@@ -313,7 +313,7 @@ li.sutable-item.open[deep='2']>.sutable-row-wrapper.asparent{
 .sutable-row .sutable-col-name{
 	padding-left:20px;
 	margin-left: 41px;
-	width: 226px!important;
+	width: 212px!important;
 }
 .sutable-body .sutable-row .sutable-col-name>span:hover{
 	text-decoration: underline;
@@ -423,8 +423,11 @@ li.sutable-item.open[deep='2']>.sutable-row-wrapper.asparent{
 }
 
 .sutable-row .sutable-col-status,.sutable-header .sutable-col-status{
-	width: 96px!important;
+	width: 110px!important;
 /*	width: 15%;*/
+}
+.sutable-body .sutable-row .sutable-col-status{
+    font-size: 13px;
 }
 /*
 .sutable-row[deep='2']>.sutable-col-name{

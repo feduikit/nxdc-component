@@ -8,7 +8,7 @@ var data1 = [{
 		label: [{
 				name: "中华人民共和国",
 			}, {
-				text: "运行中",
+				text: "广告活动已暂停",
 				value:0//0 y运行中，1暂停，2审核未通过
 			}, {
 				text:"9000"
@@ -108,7 +108,7 @@ var data2 = [{
 		label: [{
 				name: "好23 中国网站 在看法",
 			}, {
-				text: "运行中",
+				text: "广告活动已暂停",
 				value:0//0 y运行中，1暂停，2审核未通过
 			}, {
 				text:"9000"
@@ -205,7 +205,7 @@ var data2 = [{
 			
 			
 			var hwd = $(".ndp-sutable-wrapper").sutable({
-				head:[{label:"广告活动"},{label:"状态",desc:"这一列用来说明处于什么状态"},
+				head:[{label:"广告活动"},{label:"状态",desc:""},
 					  {label:"展示数",desc:"这一列用来说明展示的数目"},
 					  {label:"点击数",desc:"这一列用来说明展示的数目"},
 					  {label:"点击率",desc:"这一列用来说明展示的数目"},
