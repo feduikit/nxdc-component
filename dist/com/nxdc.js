@@ -4440,7 +4440,7 @@ if (!Object.keys) Object.keys = function(o) {
 ;(function ($) { //start with a [;] because if our code is combine or minification  with other code,AND other code not terminated with [;] then it will not infect ours.
     var self = this;
 	var Static = {option:{}};
-	
+
     /**
     **下拉菜单展示的方向问题
     **/
@@ -4456,7 +4456,7 @@ if (!Object.keys) Object.keys = function(o) {
 			dp.css({"top":-(ls.height)+"px"});
 			peal.find("i.glyphicon-triangle-bottom").addClass("turnback");
 		}
-    };	
+    };
 	/***
 	** 构建可点击页面列表 html
 	**/
@@ -4489,27 +4489,27 @@ if (!Object.keys) Object.keys = function(o) {
 				if(gap>=2){
 					var html = listHtml((list_1-2),_this);
 				}else{
-					html = listHtml((list_1-1),_this);	
+					html = listHtml((list_1-1),_this);
 				}
 				list.find("li.page-item:not([role])").remove();
 				$(html).insertAfter(list.find("li.page-item[role=begin]"));
 				list.find("li[value="+current+"]").addClass("active");
 				cb(_this);
 			}
-			
+
 			if($(this).text() == list_n && list_n!=cfg.totalPages){
 				gap = cfg.totalPages  - list_n;
 				if(gap>=2){
-					 html = listHtml((list_1+2),_this);					
+					 html = listHtml((list_1+2),_this);
 				}else{
-					html = listHtml((list_1+1),_this);	
+					html = listHtml((list_1+1),_this);
 				}
 				list.find("li.page-item:not([role])").remove();
 				$(html).insertAfter(list.find("li.page-item[role=begin]"));
 				list.find("li[value="+current+"]").addClass("active");
 				cb(_this);
 			}
-			
+
 			if(current == cfg.totalPages){
 				list.find("li.page-item[role=end]").addClass("disabled");
 			}else if(current == 1){
@@ -4519,9 +4519,9 @@ if (!Object.keys) Object.keys = function(o) {
 			}
 			//val:第几页
 			fireEvent(_this.elem.get(0),"PAGE_CHANGE",{currentPage:parseInt(current)});
-		});	
+		});
 	};
-	
+
 	function buildPageList(_this){
 		var cfg = _this.config;
 		if(_this.list && _this.list.children().length){
@@ -4530,10 +4530,10 @@ if (!Object.keys) Object.keys = function(o) {
 			_this.list = $("<ul class='pagination'/>");
 		}
 		_this.beginButton = $("<li class='page-item' role='begin' >"+cfg.begin+"</li>");
-		if(cfg.currentPage==1) _this.beginButton.addClass("disabled"); 
+		if(cfg.currentPage==1) _this.beginButton.addClass("disabled");
 		// 尾页
 		_this.endButton = $("<li class='page-item' role='end'>"+cfg.end+"</li>");
-		var len = Math.min(cfg.totalPages,cfg.showPage);	
+		var len = Math.min(cfg.totalPages,cfg.showPage);
 		var html = listHtml(1,_this);
 		_this.list.append(_this.beginButton).append(html).append(_this.endButton);
 		_this.list.find("li.page-item:not([role]):first").addClass("active");
@@ -4553,7 +4553,7 @@ if (!Object.keys) Object.keys = function(o) {
 					 html = listHtml(1,_this);
 					_this.list.find("li.page-item:not([role])").remove();
 					$(html).insertAfter(_this.list.find("li.page-item[role=begin]"));
-					itemClick(_this);				
+					itemClick(_this);
 				}
 				_this.list.find("li.page-item:not([role]):first").addClass("active")												.siblings().removeClass("active");
 				$(this).addClass("disabled").siblings().removeClass("disabled");;
@@ -4563,7 +4563,7 @@ if (!Object.keys) Object.keys = function(o) {
 					 html = listHtml((cfg.totalPages-cfg.showPage + 1),_this);
 					_this.list.find("li.page-item:not([role])").remove();
 					$(html).insertAfter(_this.list.find("li.page-item[role=begin]"));
-					itemClick(_this);				
+					itemClick(_this);
 				}
 				_this.list.find("li.page-item:not([role]):last").addClass("active")
 																.siblings().removeClass("active");
@@ -4571,10 +4571,10 @@ if (!Object.keys) Object.keys = function(o) {
 				page = _this.config.totalPages;
 			}
 			fireEvent(_this.elem.get(0),"PAGE_CHANGE",{currentPage:page});
-		});		
+		});
 	}
-	
-    
+
+
     function Page(element, options) {
 		var self = this;
 		this.elem = element;
@@ -4584,7 +4584,7 @@ if (!Object.keys) Object.keys = function(o) {
 			this.config.totalPages = Math.ceil(this.config.totalItems/this.config.perPage);
 		}
 		this.config.showPage=5,//最大显示几页
-		this.init();	
+		this.init();
     };
 
 	/**
@@ -4593,9 +4593,9 @@ if (!Object.keys) Object.keys = function(o) {
     Page.prototype.init = function () {
         var _this = this;
 		_this.concrate();
-		_this.initConfig();		
+		_this.initConfig();
 
-		
+
 		//如果是 带有选择每页显示多少页的 分页组件
 		if(_this.config.type ==2 || _this.config.type == 3){
 			_this.dropwrapper.mouseenter(function(e){
@@ -4606,7 +4606,7 @@ if (!Object.keys) Object.keys = function(o) {
 			_this.dropwrapper.mouseleave(function(e){
 				e.stopImmediatePropagation();
 				$(this).find("ul.page-dropdown").addClass("hidden");
-			});	
+			});
 			_this.dropwrapper.find("ul.page-dropdown>li").click(function(e){
 				e.stopImmediatePropagation();
                 $(this).addClass("active").siblings().removeClass("active");
@@ -4628,7 +4628,7 @@ if (!Object.keys) Object.keys = function(o) {
 				$(this).find("ul").toggleClass("hidden");
 				setDirect(_this.elem);
 			});
-			
+
 			/***
 			**  页数项 被点击
 			***/
@@ -4638,7 +4638,7 @@ if (!Object.keys) Object.keys = function(o) {
 				var p = parseInt($(this).attr("val"));
 				fireEvent(_this.elem.get(0),"PAGE_CHANGE",{currentPage:p});
 			});
-			
+
 			//上一页 按钮 点击
 			_this.elem.find(".pre-page").click(function(e){
 				e.stopImmediatePropagation();
@@ -4651,8 +4651,8 @@ if (!Object.keys) Object.keys = function(o) {
 				}
 				fireEvent(_this.elem.get(0),"PAGE_CHANGE",{currentPage:n});
 			});
-			
-			
+
+
 			//下一页 按钮 点击
 			_this.elem.find(".next-page").click(function(e){
 				e.stopImmediatePropagation();
@@ -4667,13 +4667,13 @@ if (!Object.keys) Object.keys = function(o) {
 				fireEvent(_this.elem.get(0),"PAGE_CHANGE",{currentPage:n});
 			});
 		};
-		
+
 		$(document).click(function(e){
 			_this.elem.find(".drop-wrapper>.page-dropdown").addClass("hidden");
 		});
-		
+
     };
-	
+
 	/**
 	** 构建下来菜单样子
 	**/
@@ -4712,7 +4712,7 @@ if (!Object.keys) Object.keys = function(o) {
 			}
 		}
 		if(cfg.type<4) buildPageList(_this);
-		
+
 		if(cfg.type==4){
 			var pre = $("<span class='pre-page' />").html(cfg.pre);
 			var drop = $("<ul class='page-dropdown hidden' />");
@@ -4721,10 +4721,10 @@ if (!Object.keys) Object.keys = function(o) {
 			if(cfg.currentPage||1) dropbox.find(".text-show").text("第"+(cfg.currentPage||1)+"页");
 			for(var i=1;i<=cfg.totalPages;i++){
 				var li = $("<li index="+i+"  val="+i+" >第"+i+"页</li>");
-				if(cfg.currentPage == i) li.addClass("active"); 
+				if(cfg.currentPage == i) li.addClass("active");
 				drop.append(li);
 			};
-				
+
 			_this.elem.append(pre).append(dropbox).append(next).addClass("special");
 		}
 	};
@@ -4734,27 +4734,27 @@ if (!Object.keys) Object.keys = function(o) {
 		var cfg = _this.config;
 		var cp = _this.config.currentPage||1;
 		if(cfg.type!=4 && (cfg.currentPage||1)){
-			_this.list.find("li.page-item[value="+cp+"]").addClass("active");			
+			_this.list.find("li.page-item[value="+cp+"]").addClass("active");
 		}
-		
-		if(cfg.type==2 && cfg.perPage){
+
+		if ((cfg.type == 2 && cfg.perPage) || (cfg.type == 3 && cfg.perPage)) {
 			_this.pagetext.text(cfg.perPage);
 		}
     }
-	
+
 	/***
 	** 设置 具体的页数
 	**@params {int} num
 	***/
 	Page.prototype.setpage = function(num){
 		var total = this.config.totalPages;
-		
+
 	};
-	
+
     /**
      * jquery 提供了一个objct 即 fn，which is a shotcut of jquery object prototype
      * or you can call it jquery plugin shell  == fn
-     *  类似于  Class.prototype.jqplugin = function(){};0  
+     *  类似于  Class.prototype.jqplugin = function(){};0
      *  the   $.fn  [same as] Class.prototype
      * plugin entrance
      */
@@ -4764,7 +4764,7 @@ if (!Object.keys) Object.keys = function(o) {
         the = $.extend(true,{},the,new exchange(page));
 		return the;
     };
-	
+
     /***
     **和其他插件的交互
 	** factory Class
@@ -4781,7 +4781,7 @@ if (!Object.keys) Object.keys = function(o) {
 			return page.elem;
 		}
     }
-	
+
 	  var old = $.fn.page;
 	  $.fn.page.Constructor = Page;
 	  // page NO CONFLICT
@@ -4802,7 +4802,7 @@ if (!Object.keys) Object.keys = function(o) {
 		perPage:10,//每页显示多少条
 		defItems:0,//默认每页展示多少条，下来数组中的第几个选项，必须和perPages联用
 		perPages:[10,20,30],//每页显示条数选择区间
-		totalItems:0,//总共有多少条数据  如果这个数据存在，则totalPages 的数据就不用了，使用这里计算的结果	
+		totalItems:0,//总共有多少条数据  如果这个数据存在，则totalPages 的数据就不用了，使用这里计算的结果
 		pre:"上一页",
 		next:"下一页"
 	};
