@@ -411,7 +411,8 @@
 		this.foot.find(".sutable-item>.sutable-col:gt(0)").empty();
 		var arr = this.config.colDims.slice(2);
 		dat.forEach(function(item,index){
-			var col = $("<span class='sutable-col' />").text(item.text||item.label||item.value||item);
+            var txt = item.text||item.label||item.value||item;
+			var col = $("<span class='sutable-col' data-col="+index+" title="+txt+" />").text(txt);
 			if(arr[index]) col.css("width",arr[index]+"px");
 			_this.foot.find(".sutable-item").append(col);
 		});
@@ -434,10 +435,17 @@
 			cfg.colDims.push(ew);
 		});
 		cfg.colDims.push(72,62);
-		
+		var arr = cfg.colDims.slice(2,cfg.colDims.length-2);
+        
         if(this.elem.find(".sutable-body .sutable-col").length){
             cfg.colDims.forEach(function(val,index){
                 _this.elem.find(".sutable-body .sutable-col[col='"+index+"']").css("width",val+"px");
+            });
+        }
+        // 处理尾部的缩放问题
+        if(_this.elem.find(".sutable-footer .sutable-col").length){
+            arr.forEach(function(val){
+               _this.elem.find(".sutable-footer .sutable-col[data-col]").css("width",val+"px"); 
             });
         }
         

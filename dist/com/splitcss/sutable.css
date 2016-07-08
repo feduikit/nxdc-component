@@ -110,6 +110,9 @@
 	float: left;
 	line-height: 40px;
 	color:white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .sutable-footer .sutable-col.sutable-col-sum{
 	width: 362px!important;
