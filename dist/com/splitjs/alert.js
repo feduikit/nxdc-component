@@ -1,4 +1,4 @@
-;(function ($,win) { //start with a [;] because if our code is combine or minification  with other code,AND other code not terminated with [;] then it will not infect ours.
+;(function ($,win) { //start with
     var self = this;
     var pa, wrapper,header,footer;
 	var defaults = {

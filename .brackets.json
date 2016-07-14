@@ -173,6 +173,8 @@
         "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-table2.js",
         "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-tabs.js",
         "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-timerange.js",
-        "demo-prompt.js"
+        "demo-prompt.js",
+        "components/progressbar.js",
+        "/Users/ericever/Desktop/develop/nxdc_ui/dist/demo/js/demo-progressbar.js"
     ]
 }

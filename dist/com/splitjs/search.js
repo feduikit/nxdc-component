@@ -126,7 +126,7 @@
 				}
 				//opt.processResults = null;
 				if (_this.xhr != null) {
-					//终止上一次的请求
+					//终止上一次的请求abort
 					_this.xhr.abort();
 
 					_this.xhr = null;

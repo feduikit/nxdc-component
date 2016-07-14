@@ -29,7 +29,8 @@ require.config({
 		'bubble':'./components/bubble',
 		'bootdrop':'./components/bootDrop',
 		'datepicker':'./components/daterangepicker',
-        'field':'./components/field'
+        'field':'./components/field',
+        'upload2':'./components/upload2'
     },
     shim:{
 		bootstrap:{
@@ -88,6 +89,9 @@ require.config({
 		},
 		datepicker:{
 			deps:['moment']
-		}
+		},
+		upload2:{
+			deps:['bootstrap']
+		}        
     }
 });
