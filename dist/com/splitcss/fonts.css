@@ -187,6 +187,16 @@ i.font-icon{
 .font-icon-pie:before { content:"\e657"; }
 .font-icon-conf:before { content:"\e658"; }
 .font-icon-expt:before { content:"\e656"; }
+
+.font-icon-hot:before { content:"\e659"; }
+.font-icon-beauty:before { content:"\e65a"; }
+.font-icon-camera:before { content:"\e65b"; }
+.font-icon-child:before { content:"\e65c"; }
+.font-icon-cloth:before { content:"\e65d"; }
+.font-icon-diamond:before { content:"\e65e"; }
+.font-icon-household:before { content:"\e65f"; }
+.font-icon-shoes:before { content:"\e660"; }
+
 .size-2x{
 	font-size: 24px;
 }
