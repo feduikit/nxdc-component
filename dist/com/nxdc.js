@@ -150,7 +150,8 @@ if (!Object.keys) Object.keys = function(o) {
 			//生成面包屑
 			if(o.path) bread.bread({
 				list:o.path,
-				spliter:">"					
+				spliter:">",
+				forbidClick : true
 			}).attr("data-path",o.path.join("#").replace(/\s/g,""));
 			li.attr("data-path",o.path.join("#").replace(/\s/g,""));
 			var tagbox = $('<div class="tag-box"  />');
@@ -296,7 +297,9 @@ if (!Object.keys) Object.keys = function(o) {
 						var val1 = arr.join("");
 						var asize = item.audienceSize||item.audience_size;
 						var li = $('<li val="'+val+'"  tabIndex='+index+' >\
-					<a class="txt-mark" href="#" data-type="'+(item.type)+'" data-id="'+(item.id)+'" data-val="'+val+'" index="'+index+'" data-name="'+txt+'" data-path="'+item.path.join("#").replace(/\s/g,"") +'" data-size="'+asize+'" >'+(val1||txt)+'<span class="aud-class">'+asize+'</span></a></li>');
+					<a class="txt-mark" href="#" data-type="'+(item.type)+'" data-id="'+(item.id)+'" data-val="'+val+'" index="'+index+'" ' +
+							'data-name="'+txt+'" data-path="'+item.path.join("#").replace(/\s/g,"")
+							+'" data-size="'+asize+'" >'+(val1||txt)+'<span class="aud-class">'+asize+'</span></a></li>');
 						item.path = item.path.join("#").replace(/\s/g,"");
 						li.find(".txt-mark").data("info", item);
 						_this.drop1.append(li);
@@ -317,7 +320,10 @@ if (!Object.keys) Object.keys = function(o) {
 			e.preventDefault();
 			e.stopImmediatePropagation();
 			var the = $(e.target);
-			if(e.target.tagName=="A" && the.hasClass("txt-mark")){
+			if(the.hasClass("txt-mark") || the.parents(".txt-mark").length){
+				if (!the.hasClass("txt-mark")){
+					the = the.parents(".txt-mark");
+				}
 				if(the.hasClass("selected")) return false;//如果是已经selected  就不要加了
 				//modify by sisi 为了保证数据尽可能完整的返回 故修改成 .data("info")
 				_this.selectDAT([the.data("info")]);
@@ -498,7 +504,6 @@ if (!Object.keys) Object.keys = function(o) {
 		if (!$element){
 			$element = _this;
 		}
-		console.log($element)
 		$element.input.val("");
 		$element.drop1.addClass("hidden").empty();
 		$element.drop2.addClass("hidden");
@@ -923,19 +928,22 @@ if (!Object.keys) Object.keys = function(o) {
 		this.initConfig();
       
 		//监听事件
-		_this.breadwrapper.find("li:has(a)").click(function(e){
-			e.stopImmediatePropagation();
-			var index = parseInt($(this).attr("deep"));
-			var value =  $(this).text();
-			if(_this.config.home && index==0){
-				$(this).addClass("active").empty().text(_this.config.list[index]).prepend(_this.config.home);
-			}else{
-				$(this).addClass("active").empty().text(_this.config.list[index]);
-			}
-			_this.breadwrapper.find("li:gt("+index+")").remove();
-			//面包屑的层级发生改变
-			fireEvent(_this.elem.get(0),"LAYER_CHANGE",{index:index,text:value});
-		});
+		if (!_this.config.forbidClick){
+			_this.breadwrapper.find("li:has(a)").click(function(e){
+				e.stopImmediatePropagation();
+				var index = parseInt($(this).attr("deep"));
+				var value =  $(this).text();
+				if(_this.config.home && index==0){
+					$(this).addClass("active").empty().text(_this.config.list[index]).prepend(_this.config.home);
+				}else{
+					$(this).addClass("active").empty().text(_this.config.list[index]);
+				}
+				_this.breadwrapper.find("li:gt("+index+")").remove();
+				//面包屑的层级发生改变
+				fireEvent(_this.elem.get(0),"LAYER_CHANGE",{index:index,text:value});
+			});
+		}
+
 		
 		$(window).resize(function(){
 			ellipsis(_this);
@@ -2945,6 +2953,9 @@ if (!Object.keys) Object.keys = function(o) {
 
 		_this.peal.click(function(e){
 			e.stopImmediatePropagation();
+			if ($(this).hasClass("disabled")){
+				return;
+			}
 			$(".ndp-drop-wrapper[id!="+_this.config.id+"]").removeClass("focus");
 			$(".ndp-drop-wrapper[id!="+_this.config.id+"] ul.drop-list").addClass("hidden");
 			_this.elem.toggleClass("focus");
@@ -2970,19 +2981,18 @@ if (!Object.keys) Object.keys = function(o) {
 				var oldV = _this.peal.find("input").val();
 				var newV = $(this).attr("title");
 				var gp = $(this).parents(".drop-one-item[deep='0']:first");
+				_this.peal.find("input").attr('data-val',value).val(newV);
 				if (oldV !== newV){
 					fireEvent(_this.elem.get(0),"ITEM_CHANGE",{val:value,text:newV,group:gp.index(),gpname:gp.attr("title")});
 				}
-				_this.peal.find("input").attr('data-val',value).val(newV);
 				fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,text:newV,group:gp.index(),gpname:gp.attr("title")});
 			}else {
 				var oldV = _this.peal.find("input").val();
 				var newV = $(this).attr("title");
+				_this.peal.find("input").attr('data-val',value).val(newV);
 				if (oldV != newV){
 					fireEvent(_this.elem.get(0),"ITEM_CHANGE",{val:value,text:newV});
 				}
-
-				_this.peal.find("input").attr('data-val',value).val(newV);
 				fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,text:newV});
 			}
 		});
@@ -3157,6 +3167,9 @@ if (!Object.keys) Object.keys = function(o) {
 		this.list = $("<ul class='drop-list hidden' tabIndex='-1' tabIndex='-1' />");
 		this.peal.html('<input type="text" readonly="true"><span class="caret-wrapper" tabIndex=-1><span class="caret glyphicon '+_this.config.caret+'"></span></span>');
 		this.elem.append(_this.peal).append(_this.list);
+		if (_this.config.disabled){
+			this.peal.addClass("disabled");
+		}
 // 2016-3-18 去掉 all 按钮
 //		if(_this.config.type == 4){
 //			var all = $("<li class='drop-one-item checkbox-item all-banner'><span>All</span><input type='checkbox'/></li>");
@@ -7684,7 +7697,7 @@ if (!Object.keys) Object.keys = function(o) {
 	var self = this;
 	function newbody(fa,arr,cfg,deep){
 		var deep = arguments[3]||0;
-		var gap = arguments[4]||5;
+		var count = arguments[4]||0;
 		deep++;
 		var rec = arguments.callee;
 		var ul = $("<ul role='table' />");
@@ -7695,14 +7708,21 @@ if (!Object.keys) Object.keys = function(o) {
 			var root = fa;
 		}
 		for(var i=0;i<arr.length;i++){
+			count++;
 			var o = arr[i];
 			var array = o[cfg.subKey]||o.sub||o.son||o.next||o.group;
 			var cols = o[cfg.textKey]||o.text||o.label||o.title||o.name;
 			var id = o.id;
 			var li = $("<li class='treable-item'  deep="+deep+" />");
+			
+			if (o.customClass){
+				li.addClass(o.customClass);
+			}
+
 			if(id){
 				li.attr('data-id',id);
 			}
+			li.data("info", o);
 			var wrapper = $('<div class="treable-row-wrapper">');
 			var row = $('<div class="treable-row" deep='+deep+'></div>');
 			if(deep==1){//对第一级加租
@@ -7710,13 +7730,16 @@ if (!Object.keys) Object.keys = function(o) {
 			}
 			//添加 弹出下拉菜单，点击money 符号的时候
 			var html = $('<ul class="dropdown-menu dropdown-menu-money hidden" />');
-			cfg.todata.forEach(function(item,index){
+			//如果当前行todo，则覆盖
+			var cTodata = o.todata || cfg.todata;
+			cTodata.forEach(function(item,index){
 				var txt = item.name||item.label||item.text||item;
 				var val = item.val||item.value||txt;
 				var id = item.id;
 				var li = '<li data-id='+id+' data-name='+txt+' data-val='+val+' ><a href="javascript:void(0)">'+txt+'</a></li>';
 				html.append(li);
 			});
+			
 			row.append(html);
 			var chartWrapper = $("<div class='chart-wrapper' data-id="+id+" />");//图表层
 			var chartClose = '<button type="button" class="close chart-close"><span aria-hidden="true">&times;</span></button>';//图标层关闭按钮
@@ -7730,6 +7753,7 @@ if (!Object.keys) Object.keys = function(o) {
 			});
 			chartWrapper.append(chart).append(panels).append(chartClose);//显示到层上
 			wrapper.append(row).append(chartWrapper);
+
 			cols.forEach(function(col,idx){
 				var switcher = '<span class="switcher">\
 					<label class = "active" ><input type = "checkbox" class = "scheckbox"> </label></span>';
@@ -7740,14 +7764,18 @@ if (!Object.keys) Object.keys = function(o) {
 				if(idx==0) {
 					column.addClass("sutable-col-status");
 					column.html(switcher);
-					if(typeof(col)=="object" && col.status===false){
-						column.find('[type="checkbox"]').attr("checked",false);
-						column.find('label.active').removeClass('active');
+					if(typeof(col)=="object"){
+						if (col.status===false){
+							column.find('[type="checkbox"]').attr("checked",false);
+							column.find('label.active').removeClass('active');
+						}
 						if (col.disabled){
 							column.find('.switcher').addClass("disabled");
+							column.find('.switcher label').addClass("disabled");
+							column.find('.switcher input.scheckbox').attr("disabled", "disabled");
 						}
-
 					}
+
 				}else if(idx==1){
 					column.addClass("sutable-col-name");
 				}
@@ -7764,6 +7792,12 @@ if (!Object.keys) Object.keys = function(o) {
 				}
 				row.append(column);
 			});
+			//复选框的那一列
+			var _checkedColum = $('<div style="display: inline-block;position:absolute"><input type="checkbox" ' +
+				'id="' + (cfg.tableName + '-' + deep + '-' + i + '-' + count) + '" class="form-input s-checkbox"> <label for="' + (cfg.tableName + '-' + deep + '-' + i + '-' + count) + '">' +
+				'<span class="checkbox-mark"></span> </label></div>');
+			var ml = 60 - (deep - 1) * 20;
+			_checkedColum.css('margin-left', ml + 'px');
 
 			if(array && array instanceof Array){
 				var html = $('<span class="btn-plus-minus" />');
@@ -7772,9 +7806,16 @@ if (!Object.keys) Object.keys = function(o) {
 				}else{
 					html.html('<i class="line-hor"></i><i class="line-ver"></i>');
 				}
-				li.append(html).append(wrapper).addClass("open");//row
-				rec(li,array,cfg,deep);
+				li.append(html);
+				if (o.checked){
+					li.append(_checkedColum);
+				}
+				li.append(wrapper).addClass("open");//row
+				rec(li,array,cfg,deep,count);
 			}else{
+				if (o.checked){
+					li.append(_checkedColum);
+				}
 				li.append(wrapper);//row
 			}
 			ul.append(li);
@@ -7820,13 +7861,13 @@ if (!Object.keys) Object.keys = function(o) {
 	 ***/
 	Treable.prototype.scrollV = function(){
 		var _this = this;
-		_this.elem = $('.ndp-treable-wrapper');
+		// _this.elem = $('.ndp-treable-wrapper');
 		var sdim = _this.elem.find(".origin-scroll").get(0).getBoundingClientRect();//上下左右
 		var thumb = _this.elem.find(".horiz-thumb");
 		var tdim = thumb.get(0).getBoundingClientRect();
 		var w = this.elem.width(); // 不包括border的宽度
 		var colW = 41;//41 margin-left:41    10 border-right
-		$('.treable-header .sutable-col').each(function(index,item){
+		_this.elem.find('.treable-header .sutable-col').each(function(index,item){
 			colW += $(item).get(0).getBoundingClientRect().width;
 		});
 //		colW = colW + eval(_this.config.colDims.join("+"));//获得内部内容的总宽度
@@ -7896,7 +7937,8 @@ if (!Object.keys) Object.keys = function(o) {
 			//	fa.find("ul .switcher>label").removeClass("active");
 			//}
 			$(this).trigger('STATUS_UPDATE');
-			fireEvent(_this.elem.get(0),"STATUS_CHANGE",{status:the.hasClass("active"), dataId : $(this).parents(".treable-item").attr("data-id")});
+			var _li = $(this).parents(".treable-item");
+			fireEvent(_this.elem.get(0),"STATUS_CHANGE",{status:the.hasClass("active"), dataId : _li.attr("data-id"), info : _li.data("info")});
 		});
 
 		// 点击 选中一行， 显示 toolbar   2016-4-8 取消
@@ -7919,7 +7961,9 @@ if (!Object.keys) Object.keys = function(o) {
 		});
 
 		_this.elem.find(".treable-row-wrapper>.treable-row").unbind("click").click(function(e){
-			console.log("关闭图表")
+			console.log("关闭图表-关闭细分数据");
+			_this.elem.find(".chart-wrapper.open").removeClass("open");
+			_this.elem.find(".subdivide").remove();
 			_this.elem.find(".chart-wrapper.open").removeClass("open");
 			$(_this.config.scrollDOM).trigger("scroll");
 		});
@@ -7951,9 +7995,12 @@ if (!Object.keys) Object.keys = function(o) {
 				$(this).parents(".treable-row:first").siblings(".chart-wrapper").addClass("open");
 				$(_this.config.scrollDOM).trigger("scroll");
 			}
-			var dataid = $(this).parents("li.treable-item[deep]").data("id");
+			var _li = $(this).parents("li.treable-item[deep]");
+			var dataid = _li.data("id");
+			var _info = _li.data("info");
 			var o = $(this).data();
 			o.dataID = dataid;
+			o.info = _info;
 			fireEvent(_this.elem.get(0),"TOOLBAR_CLICK",o);
 			var dat = _this.config.todata[1];
 			dat.dataID = dataid;
@@ -8002,6 +8049,20 @@ if (!Object.keys) Object.keys = function(o) {
 			});
 			$(this).trigger('DROPDOWN_MENU_MONEY_SHOW', {dom:dp});
 		});
+
+		_this.elem.off('change', 'input.s-checkbox').on('change', 'input.s-checkbox', function(e){
+			var _li = $(this).parents("li.treable-item[deep]");
+			var dataid = _li.data("id");
+			var _info = _li.data("info");
+			var o = {
+				dataId : dataid,
+				info : _info,
+				checked : $(this).prop('checked')
+			}
+
+			fireEvent(_this.elem.get(0),"CHECKBOX_CHANGE",o);
+		})
+
 	};
 
 	/**
@@ -8018,14 +8079,14 @@ if (!Object.keys) Object.keys = function(o) {
 		/***
 		 ** 表头 某一列的排序按钮被点击
 		 ***/
-		_this.head.find(".sort-wrapper").click(function(e){
+		_this.head.find(".sort-wrapper i").click(function(e){
 			e.stopImmediatePropagation();
-			var fa = $(this).parent();
-			$(this).children().toggleClass("hi");
+			var fa = $(this).parent().parent();
+			$(this).parent().find("i").removeClass("hi");
+			$(this).addClass("hi");
 			var siblings = fa.siblings();
 			siblings.find(".sort-wrapper").children("i").removeClass("hi");
-			siblings.find(".sort-wrapper").children("i.glyphicon-triangle-bottom").addClass("hi");
-			var sort = $(this).find('.hi').hasClass('glyphicon-triangle-top') ? 'up' : 'down';
+			var sort = $(this).hasClass('glyphicon-triangle-top') ? 'up' : 'down';
 			fireEvent(_this.elem.get(0), "SORT_CLICK", {col: fa.attr("col"), val: fa.text(), sort: sort});
 		});
 		/***
@@ -8034,7 +8095,7 @@ if (!Object.keys) Object.keys = function(o) {
 		_this.elem.find("span.inspliter").mousedown(function(e){
 			var column = $(this).parent();
 			var c = parseInt(column.attr("col"));
-			var theCol = $(".sutable-col[col="+c+"]");
+			var theCol = _this.elem.find(".sutable-col[col="+c+"]");
 			var minw = window.getComputedStyle(theCol.get(0)).minWidth;
 			var the = $(this).get(0).getBoundingClientRect();
 			var el = _this.elem.get(0).getBoundingClientRect();
@@ -8053,7 +8114,7 @@ if (!Object.keys) Object.keys = function(o) {
 					theCol.css("width",w + "px");
 				}else{//缩小
 					var d = (parseInt(c)+1);
-					var next = $(".sutable-col[col="+d+"]");
+					var next = _this.elem.find(".sutable-col[col="+d+"]");
 					theCol.css("width",w + "px");
 				}
 				_this.config.colDims[c] = w;
@@ -8262,9 +8323,10 @@ if (!Object.keys) Object.keys = function(o) {
 			Help.recursive(_this.elem,cfg.body,cfg);
 		}
 		//构建列表尾部
+		_this.foot = $("<ul class='treable-footer hide'  />");
+		_this.elem.append(_this.foot);
 		if(cfg.tail){
-			_this.foot = $("<ul class='treable-footer'  />");
-			_this.elem.append(_this.foot);
+			_this.foot.removeClass('hide');
 		}
 
 		_this.scroll = $("<div class='horiz-scroll origin-scroll' />").html("<div class='horiz-thumb' />");
@@ -8277,9 +8339,9 @@ if (!Object.keys) Object.keys = function(o) {
 		 ** 显示 排序图标
 		 ***/
 		if(cfg.sort){
-			var st = "<span class='sort-wrapper'><i class='glyphicon glyphicon-triangle-top'></i><i class='glyphicon glyphicon-triangle-bottom hi'></i></span>";
+			var st = "<span class='sort-wrapper'><i class='glyphicon glyphicon-triangle-top'></i><i class='glyphicon glyphicon-triangle-bottom'></i></span>";
 			if(cfg.sort instanceof Array){
-				cfg.sort.forEach(function(num,idx){
+				cfg.sort.forEach(function(num){
 					_this.head.find(".sutable-col[col="+num+"]").append(st);
 				});
 			}else if(cfg.sort == ""){
@@ -8298,6 +8360,8 @@ if (!Object.keys) Object.keys = function(o) {
 		var rw  = w - 70 - 130 - 40 - 2;//80 第一列的宽度， 120 名称咧的宽度,40 : margin-left  2 是border
 		var ew = rw/(cfg.head.length - 2);
 		cfg.colDims = [70,130];//列宽度 存储
+		dom.find(".sutable-col:gt(0)").css("width","70px");
+		dom.find(".sutable-col:gt(1)").css("width","130px");
 		if(ew>60){
 			this.head.find(".sutable-col:gt(1)").css("width",ew+"px").each(function(){
 				cfg.colDims.push(ew);
@@ -8362,11 +8426,41 @@ if (!Object.keys) Object.keys = function(o) {
 		/***
 		 ** 更新列表
 		 ***/
-		this.update = function(data){
+		this.update = function(data, _checked){
+			treable.config.checked = _checked
 			var body = newbody(treable.elem,data,treable.config);
 			treable.elem.find(".treable-body").replaceWith(body);
+
+			//按照列头的宽度重新渲染列表体的宽度
+			// $.each(treable.elem.find(".treable-header .sutable-col[col]"), function(i, _headCol){
+			// 	var _col = $(_headCol).attr('col');
+			// 	treable.elem.find(".treable-body .sutable-col[col='" + _col + "']").css('width', $(_headCol).outerWidth() + 'px');
+			// })
+			//恢复滚动条位置
+			treable.elem.children("[role=table]").css("left","0px");
+			treable.elem.find(".horiz-thumb").css("left","0px");
+
 			treable.listenBody();
+
 			return treable.elem;
+		}
+
+		this.updateFoot = function(_foot){
+			treable.elem.find('.treable-footer').removeClass('hide');
+			treable.elem.find('.treable-footer').html(_foot);
+			$(treable.config.scrollDOM).trigger("scroll");
+			treable.elem.find('.treable-footer').width(treable.elem.width());
+		}
+
+		this.sort = function(_col, _sort){
+			treable.elem.find(".treable-header .sort-wrapper i").removeClass('hi');
+
+			var _sort_wrapper = treable.elem.find(".treable-header .sutable-col[col='" + _col + "'] .sort-wrapper");
+			if (_sort == "up"){
+				_sort_wrapper.find(".glyphicon-triangle-top").addClass("hi");
+			} else {
+				_sort_wrapper.find(".glyphicon-triangle-bottom").addClass("hi");
+			}
 		}
 	}
 

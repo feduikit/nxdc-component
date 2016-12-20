@@ -79,6 +79,9 @@
 
 		_this.peal.click(function(e){
 			e.stopImmediatePropagation();
+			if ($(this).hasClass("disabled")){
+				return;
+			}
 			$(".ndp-drop-wrapper[id!="+_this.config.id+"]").removeClass("focus");
 			$(".ndp-drop-wrapper[id!="+_this.config.id+"] ul.drop-list").addClass("hidden");
 			_this.elem.toggleClass("focus");
@@ -104,19 +107,18 @@
 				var oldV = _this.peal.find("input").val();
 				var newV = $(this).attr("title");
 				var gp = $(this).parents(".drop-one-item[deep='0']:first");
+				_this.peal.find("input").attr('data-val',value).val(newV);
 				if (oldV !== newV){
 					fireEvent(_this.elem.get(0),"ITEM_CHANGE",{val:value,text:newV,group:gp.index(),gpname:gp.attr("title")});
 				}
-				_this.peal.find("input").attr('data-val',value).val(newV);
 				fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,text:newV,group:gp.index(),gpname:gp.attr("title")});
 			}else {
 				var oldV = _this.peal.find("input").val();
 				var newV = $(this).attr("title");
+				_this.peal.find("input").attr('data-val',value).val(newV);
 				if (oldV != newV){
 					fireEvent(_this.elem.get(0),"ITEM_CHANGE",{val:value,text:newV});
 				}
-
-				_this.peal.find("input").attr('data-val',value).val(newV);
 				fireEvent(_this.elem.get(0),"ITEM_CLICK",{val:value,text:newV});
 			}
 		});
@@ -291,6 +293,9 @@
 		this.list = $("<ul class='drop-list hidden' tabIndex='-1' tabIndex='-1' />");
 		this.peal.html('<input type="text" readonly="true"><span class="caret-wrapper" tabIndex=-1><span class="caret glyphicon '+_this.config.caret+'"></span></span>');
 		this.elem.append(_this.peal).append(_this.list);
+		if (_this.config.disabled){
+			this.peal.addClass("disabled");
+		}
 // 2016-3-18 去掉 all 按钮
 //		if(_this.config.type == 4){
 //			var all = $("<li class='drop-one-item checkbox-item all-banner'><span>All</span><input type='checkbox'/></li>");

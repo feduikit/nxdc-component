@@ -24,7 +24,8 @@
 			//生成面包屑
 			if(o.path) bread.bread({
 				list:o.path,
-				spliter:">"					
+				spliter:">",
+				forbidClick : true
 			}).attr("data-path",o.path.join("#").replace(/\s/g,""));
 			li.attr("data-path",o.path.join("#").replace(/\s/g,""));
 			var tagbox = $('<div class="tag-box"  />');
@@ -170,7 +171,9 @@
 						var val1 = arr.join("");
 						var asize = item.audienceSize||item.audience_size;
 						var li = $('<li val="'+val+'"  tabIndex='+index+' >\
-					<a class="txt-mark" href="#" data-type="'+(item.type)+'" data-id="'+(item.id)+'" data-val="'+val+'" index="'+index+'" data-name="'+txt+'" data-path="'+item.path.join("#").replace(/\s/g,"") +'" data-size="'+asize+'" >'+(val1||txt)+'<span class="aud-class">'+asize+'</span></a></li>');
+					<a class="txt-mark" href="#" data-type="'+(item.type)+'" data-id="'+(item.id)+'" data-val="'+val+'" index="'+index+'" ' +
+							'data-name="'+txt+'" data-path="'+item.path.join("#").replace(/\s/g,"")
+							+'" data-size="'+asize+'" >'+(val1||txt)+'<span class="aud-class">'+asize+'</span></a></li>');
 						item.path = item.path.join("#").replace(/\s/g,"");
 						li.find(".txt-mark").data("info", item);
 						_this.drop1.append(li);
@@ -191,7 +194,10 @@
 			e.preventDefault();
 			e.stopImmediatePropagation();
 			var the = $(e.target);
-			if(e.target.tagName=="A" && the.hasClass("txt-mark")){
+			if(the.hasClass("txt-mark") || the.parents(".txt-mark").length){
+				if (!the.hasClass("txt-mark")){
+					the = the.parents(".txt-mark");
+				}
 				if(the.hasClass("selected")) return false;//如果是已经selected  就不要加了
 				//modify by sisi 为了保证数据尽可能完整的返回 故修改成 .data("info")
 				_this.selectDAT([the.data("info")]);
@@ -372,7 +378,6 @@
 		if (!$element){
 			$element = _this;
 		}
-		console.log($element)
 		$element.input.val("");
 		$element.drop1.addClass("hidden").empty();
 		$element.drop2.addClass("hidden");

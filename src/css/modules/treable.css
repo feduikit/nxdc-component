@@ -447,6 +447,10 @@
     left: -28%;
 }
 
+.ndp-treable-wrapper .treable-header .sutable-col>.sort-wrapper>i.glyphicon.hi{
+	color: #fc7408;
+}
+
 .ndp-treable-wrapper .sutable-col>.sort-wrapper>i.glyphicon-triangle-bottom{
 	top:2px;
 }
