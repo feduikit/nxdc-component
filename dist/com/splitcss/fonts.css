@@ -88,7 +88,7 @@ i.font-icon{
 .font-icon-restart1:before { content: "\e704"; }
 .font-icon-setting:before { content: "\e705"; }
 .font-icon-setting1:before { content: "\e706"; }
-.font-icon-web:before { content: "\e707"; }ring
+.font-icon-web:before { content: "\e707"; }
 .font-icon-web1:before { content: "\e708"; }
 .font-icon-shoppting:before { content: "\e709"; }
 .font-icon-shopping1:before { content: "\e70a"; }
@@ -196,6 +196,8 @@ i.font-icon{
 .font-icon-diamond:before { content:"\e65e"; }
 .font-icon-household:before { content:"\e65f"; }
 .font-icon-shoes:before { content:"\e660"; }
+.font-icon-image:before { content:"\e7ca"; }
+.font-icon-video:before { content:"\e7cb"; }
 
 .size-2x{
 	font-size: 24px;
