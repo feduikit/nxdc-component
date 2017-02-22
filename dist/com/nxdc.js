@@ -5722,7 +5722,10 @@ if (!Object.keys) Object.keys = function(o) {
         self.$root = $(tpl);
         self.$root.find('.panel-title').text(self.config.title);
         self.$root.find('.panel-body').html(self.config.content);
-        $('.sidepanel-panel').remove();
+
+        if (self.config.isNew){
+            $('.sidepanel-panel').remove();
+        }
         this.$elem.append(self.$root);
     }
 
@@ -5777,6 +5780,7 @@ if (!Object.keys) Object.keys = function(o) {
         title: 'title', //标题
         content: 'content', //内容
         callback: null, //点击确定后的回调
+        isNew:true
     };
 }(jQuery));
 
