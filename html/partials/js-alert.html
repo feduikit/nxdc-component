@@ -1,0 +1,76 @@
+<div class="pa-header">
+<h2>对话框Alert</h2>
+<p>此插件依赖bootstrap的modal控件，务必确保使用前加载bootstrap@3</p>
+<p class="bg-info" style="padding:10px;">
+	alert组件使用<strong>不需要</strong>在DOM上预先插入DOM节点
+</p>
+</div>
+<h4 class="yellow">定义 & 应用场景</h4>
+<p>使用对话框的alert向用户发起警告提示，展现需要高度关注的信息。</p>
+<h4 class="lead">
+    基本样式
+</h4>
+<div class="bs-example">
+        <button type="button" class="btn btn-primary">点击显示Alert</button>
+</div>
+<div class="highlight">
+    <pre class="prettyprint">
+        <code class="language-js">
+showAlert({
+    callback:function(modal){//关闭alert 回调在这里写
+        console.log("关闭alert 窗口 回调函数");
+    }
+});     
+        </code>
+    </pre>
+</div>
+<div class="pa-header">
+</div>
+<h4 class="lead">
+    带装饰图标、有回调函数的Alert
+</h4>
+<div class="bs-example">
+        <button type="button" class="btn btn-warning">点击显示rich  Alert</button>
+</div>
+<div class="highlight">
+    <pre class="prettyprint">
+        <code class="language-js">
+showAlert({
+    icon:"&lt;i class='glyphicon glyphicon-globe'&gt;&lt;/i&gt;",
+    content:"这里显示的是一个地球，用来测试图片在右边，文字在左边问题！dddddddd！dsfdfbdshjfdfdhfdsfhdjfdshfdsfhjdfdsjfhdsfjdhfdjfkdhsfjdfhdsjfdshfjdsfhdsjfhdsjfdhsfjdshfdsjfdhsfjdshfjdsfhdsjfdsfhdjfdhdsjfhdsjkfdhskfdhsghdgdsjdshjhdsjhdsjgkdlsdsldhdsfdskfhdsfjdsfjdfhdjfhdfjdfhdsjfvdsjddfdsfdsfdfdsfdsfhdsfdsfdbdb db",
+    btnOK:"确定",
+    /**
+    ** 点击确定按钮或者，点击x会调用这里的函数
+    **@param {jQuery} dom
+    **/
+    callback:function(dom){ 
+        alert("hello 这里是回调显示");
+    }
+}); 
+        </code>
+    </pre>
+</div>
+<h4 class="lead">
+    alert--不显示灰色背景
+<div class="bs-example">
+        <button type="button" class="btn btn-info">点击显示alert(不带背景色)</button>
+</div>
+<div class="highlight">
+    <pre class="prettyprint">
+        <code class="language-js">
+showAlert({
+    icon:"&lt;i class='glyphicon glyphicon-globe'&gt;&lt;/i&gt;",
+    content:"这里显示的是一个地球，用来测试图片在右边，文字在左边问题！dddddddd！dsfdfbdshjfdfdhfdsfhdjfdshfdsfhjdfdsjfhdsfjdhfdjfkdhsfjdfhdsjfdshfjdsfhdsjfhdsjfdhsfjdshfdsjfdhsfjdshfjdsfhdsjfdsfhdjfdhdsjfhdsjkfdhskfdhsghdgdsjdshjhdsjhdsjgkdlsdsldhdsfdskfhdsfjdsfjdfhdjfhdfjdfhdsjfvdsjddfdsfdsfdfdsfdsfhdsfdsfdbdb db",
+    btnOK:"确定",
+    backdrop:false,//不显示背景色
+    /**
+    ** 点击确定按钮或者，点击x会调用这里的函数
+    **@param {jQuery} dom
+    **/
+    callback:function(dom){ 
+        alert("hello 这里是回调显示");
+    }
+}); 
+        </code>
+    </pre>
+</div>

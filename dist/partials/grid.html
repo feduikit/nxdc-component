@@ -1,0 +1,83 @@
+<div class="pa-header">
+	<h3>栅格系统</h3>
+</div>
+<p class="lead">NDXC使用Bootstrap@3 原生的12格栅格系统，没有额外添加过扩展这个功能。</p>
+<div class="bs-callout bs-callout-warning alert aler-warning">
+	<p>
+		<i class="glyphicon glyphicon-alert"></i>
+		<strong>Bootstrap@3 原先支持的less 这里不再支持，也不提供相关下载.</strong>
+	</p>
+</div>
+<div class="bs-callout bs-callout-info">
+          <h4>栅格与全宽布局Grids and full-width layouts</h4>
+          <p>对于需要占据整个浏览器视口（viewport）的页面，需要将内容区域包裹在一个容器元素内，并且赋予<code>padding: 0 15px;</code>，为的是抵消掉为<code>.row</code>所设置的<code>margin: 0 -15px;</code>（如果不这样的话，你的页面会左右超出视口15px，页面底部出现横向滚动条）。</p>
+</div>
+<h3>栅格选项</h3>
+<p>栅格的写法和之前相同，这里只简单罗列如下</p>
+<div class="table-responsive">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th></th>
+                <th> 超小屏幕设备 <small>手机 (&lt;768px)</small> </th>
+                <th> 小屏幕设备 <small>平板 (≥768px)</small> </th>
+                <th> 中等屏幕设备 <small>桌面 (≥992px)</small> </th>
+                <th> 大屏幕设备 <small>桌面 (≥1200px)</small> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>栅格系统行为</th>
+                <td>总是水平排列</td>
+                <td colspan="3">开始是堆叠在一起的，超过这些阈值将变为水平排列</td>
+              </tr>
+              <tr>
+                <th>最大<code>.container</code>宽度</th>
+                <td>None (自动)</td>
+                <td>750px</td>
+                <td>970px</td>
+                <td>1170px</td>
+              </tr>
+              <tr>
+                <th>class前缀</th>
+                <td><code>.col-xs-</code></td>
+                <td><code>.col-sm-</code></td>
+                <td><code>.col-md-</code></td>
+                <td><code>.col-lg-</code></td>
+              </tr>
+              <tr>
+                <th>列数</th>
+                <td colspan="4">12</td>
+              </tr>
+              <tr>
+                <th>最大列宽</th>
+                <td class="text-muted">自动</td>
+                <td>60px</td>
+                <td>78px</td>
+                <td>95px</td>
+              </tr>
+              <tr>
+                <th>槽宽</th>
+                <td colspan="4">30px (每列左右均有15px)</td>
+              </tr>
+              <tr>
+                <th>可嵌套</th>
+                <td colspan="4">Yes</td>
+              </tr>
+              <tr>
+                <th>偏移（Offsets）</th>
+                <td colspan="4">Yes</td>
+              </tr>
+              <tr>
+                <th>列排序</th>
+                <td colspan="4">Yes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+<div class="alert alert-info" role="alert">
+	<strong>点击：</strong>
+  	<a href="http://bootstrap.evget.com/css.html#grid" class="alert-link">
+   详细参考文档请移步BootStrap 官方Grid System说明
+   </a>
+    </div>        

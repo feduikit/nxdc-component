@@ -1,0 +1,78 @@
+<div class="pa-header">
+<h2>面包屑控件<span class="js-specific">Crumbs</span></h2>
+</div>
+<h4 class="yellow">定义 & 应用场景</h4>
+<p>
+	面包屑（Crumbs）用来在一个带有层次的导航结构中标明当前页面的位置，它可以帮助用户明确自己所在的页面位置，以及是怎么到达的，并且能提供返回以上任一层级的可能。<br /><br />
+
+在信息结构超过两层的站点里，面包屑非常有必要，它能助于用户对网站地图的记忆，不会迷失。
+</p>
+<h4 class="lead">
+	基本样式
+</h4>
+<div class="bs-example">
+	<div class="ndp-bread-wrapper" name="plain-bread"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-bread-wrapper&quot; name=&quot;plain-bread&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-bread-wrapper[name=plain-bread]").bread({
+	list:["Home","Library","Data"]
+}).on("LAYER_CHANGE",function(e){//层级发生改变,即 点击了某一个面包屑
+	console.log(e.originalEvent.data);//{index:当前位于第几层，int,  text:层级的名称 string}
+});		
+		</code>
+	</pre>
+</div>
+<h4 class="lead">
+	自定义分隔符
+</h4>
+<div class="bs-example">
+	<div class="ndp-bread-wrapper" name="split-bread"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-bread-wrapper&quot; name=&quot;split-bread&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-bread-wrapper[name=split-bread]").bread({
+	list:["Home","Library","Data"],
+	spliter:">"
+}).on("LAYER_CHANGE",function(e){//层级发生改变
+	console.log(e.originalEvent.data);//{index:当前位于第几层，int,  text:层级的名称 string}
+});		
+		</code>
+	</pre>
+</div>
+<h4 class="lead">
+	自定义首页图标
+</h4>
+<div class="bs-example">
+	<div class="ndp-bread-wrapper" name="home-bread"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-bread-wrapper&quot; name=&quot;home-bread&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-bread-wrapper[name=home-bread]").bread({
+	home:"&lt;i class='glyphicon glyphicon-home'&gt;&lt;/i&gt;",
+	list:["Home","Library","Data"],
+	spliter:">"
+}).on("LAYER_CHANGE",function(e){//层级发生改变
+	console.log(e.originalEvent.data);//{index:当前位于第几层，int,  text:层级的名称 string}
+});	
+		</code>
+	</pre>
+</div>

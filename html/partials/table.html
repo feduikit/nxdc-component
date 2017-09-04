@@ -1,0 +1,24 @@
+<div class="pa-header">
+<h3>表格</h3>
+<p>用户如何自定义修改表格外观</p>
+</div>
+<p>row斑驳色</p>
+<div class="bs-example">
+<div class="ndp-table-wrapper ndp-table2-wrapper" name="motley"><div class="header-wrapper"><table class="table table-head"><thead><tr><th data-index="0" data-text="第一列" data-val="第一列">第一列<span class="split-field"></span></th><th data-index="1" data-text="第二列" data-val="第二列">第二列<span class="split-field"></span></th><th data-index="2" data-text="第三列" data-val="第三列">第三列<span class="split-field"></span></th><th data-index="3" data-text="第四列" data-val="第四列">第四列<span class="split-field"></span></th></tr></thead><tbody><tr data-row="0" data-id="1101"><td data-val="1101" data-col="0" title="1101">1101</td><td data-val="hello123" data-col="1" title="hello123">hello123</td><td data-val="hello" -china="" 123="" data-col="2" title="hello">hello -china 123</td><td data-val="man" data-col="3" title="man">man</td></tr><tr data-row="1" data-id="1102"><td data-val="1102" data-col="0" title="1102">1102</td><td data-val="hello_23" data-col="1" title="hello_23">hello_23</td><td data-val="hello" -="" japan="" 34="" data-col="2" title="hello">hello - japan 34</td><td data-val="woman" data-col="3" title="woman">woman</td></tr><tr data-row="2" data-id="1103"><td data-val="1103" data-col="0" title="1103">1103</td><td data-val="hello_34" data-col="1" title="hello_34">hello_34</td><td data-val="hello" -="" euro="" 23="" data-col="2" title="hello">hello - euro 23</td><td data-val="no" sign="" data-col="3" title="no">no sign</td></tr></tbody></table></div><div class="body-wrapper"><table class="table table-body"><thead><tr><th data-index="0" data-text="第一列" data-val="第一列">第一列</th><th data-index="1" data-text="第二列" data-val="第二列">第二列</th><th data-index="2" data-text="第三列" data-val="第三列">第三列</th><th data-index="3" data-text="第四列" data-val="第四列">第四列</th></tr></thead><tbody><tr data-row="0" data-id="1101"><td data-val="1101" data-col="0" title="1101">1101</td><td data-val="hello123" data-col="1" title="hello123">hello123</td><td data-val="hello" -china="" 123="" data-col="2" title="hello">hello -china 123</td><td data-val="man" data-col="3" title="man">man</td></tr><tr data-row="1" data-id="1102"><td data-val="1102" data-col="0" title="1102">1102</td><td data-val="hello_23" data-col="1" title="hello_23">hello_23</td><td data-val="hello" -="" japan="" 34="" data-col="2" title="hello">hello - japan 34</td><td data-val="woman" data-col="3" title="woman">woman</td></tr><tr data-row="2" data-id="1103"><td data-val="1103" data-col="0" title="1103">1103</td><td data-val="hello_34" data-col="1" title="hello_34">hello_34</td><td data-val="hello" -="" euro="" 23="" data-col="2" title="hello">hello - euro 23</td><td data-val="no" sign="" data-col="3" title="no">no sign</td></tr><tr data-row="2" data-id="1103"><td data-val="1103" data-col="0" title="1103">1103</td><td data-val="hello_34" data-col="1" title="hello_34">hello_34</td><td data-val="hello" -="" euro="" 23="" data-col="2" title="hello">hello - euro 23</td><td data-val="no" sign="" data-col="3" title="no">no sign</td></tr><tr data-row="2" data-id="1103"><td data-val="1103" data-col="0" title="1103">1103</td><td data-val="hello_34" data-col="1" title="hello_34">hello_34</td><td data-val="hello" -="" euro="" 23="" data-col="2" title="hello">hello - euro 23</td><td data-val="no" sign="" data-col="3" title="no">no sign</td></tr></tbody></table></div><div class="split-line hidden"></div></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code>
+.table-body>tr:nth-child(even){
+	background-color: #f6f6f6;
+}
+
+.table-body>tr:nth-child(odd){
+		background-color: white;
+}
+		</code>
+	</pre>
+</div>
+<script type="text/javascript">
+	prettyPrint();//渲染 代码 
+</script>

@@ -1,0 +1,41 @@
+<div class="pa-header">
+<h2>时间范围选择器</h2>
+</div>
+<h4 class="yellow">定义 & 应用场景</h4>
+<p>该控件适用于在一周范围内选择非连续的多段时间</p>
+<h4 class="lead">
+	展示如下：
+</h4>
+<p class="bg-warning" style="padding:10px;">timerange 依赖 drop 插件的支持，请使用前加载好相关依赖</p>
+<div class="bs-example">
+	<button class="btn btn-info" style="margin:10px;" id="data">点击这里输出数据</button>
+	<button class="btn btn-info" style="margin:10px;" id="data2">设置数据</button>
+	<div class="ndp-timerange-wrapper" name="plain-tab"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-timerange-wrapper&quot; name=&quot;plain-tab&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+var the = $(".ndp-timerange-wrapper").timerange({
+	lan:"en",// 中英文 "en", "cn"
+	timezone:0  //下拉菜单里面的时区，序号 默认选第一个
+});
+
+
+//调用这个函数 获取选择的数据，当面第一个按钮，点击会调用这个函数
+the.getVal();// 获得选取的数据   数据格式如下
+//[{},{}]  {timeStart:"开始时间"，timeEnd:结束时间,day:星期几,zone:{}} 		
+	
+
+//上面第二个按钮点击会调用这个函数，设置数据
+//arr  = [{day:1,timeStart:1,timeEnd:2},{day:2,timeStart:1,timeEnd:2},{day:7,timeStart:1,timeEnd:2}];
+//day：星期几，1 星期一，   timeStart:1 1点开始， timeEnd:几点结束 
+the.fill(arr);	
+			
+		</code>
+	</pre>
+</div>

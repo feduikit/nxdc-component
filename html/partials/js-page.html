@@ -1,0 +1,99 @@
+<div class="pa-header">
+<h2>分页<span class="js-specific">Pages</span></h2>
+</div>
+<h4 class="yellow">定义 & 应用场景</h4>
+<p>分页控件能将待展示内容分批次显示出来。在待展示特别多，会对阅读、加载速度产生不友好体验的时候，可以使用分页控件。<br /></p>
+<p>一般情况下，每页展示的内容条数不宜超过10条，避免阅读障碍和页面冗长。如有特殊需求，也可允许用户自定义每页展示内容的条目数。</p>
+<h4 class="lead">
+	数字分页
+</h4>
+<div class="bs-example">
+	<div class="ndp-page-wrapper" name="plain-page"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-page-wrapper&quot; name=&quot;plain-page&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-page-wrapper[name=plain-page]").page({
+	totalPages:15
+}).on("PAGE_CHANGE",function(e){//页数点击 事件
+	console.log(e.originalEvent.data);//{currentPage: 第几页 int}
+});		
+		</code>
+	</pre>
+</div>
+<!-- <h4 class="lead">
+	分页--每页显示条数可自定义
+</h4>
+<div class="bs-example">
+	<div class="ndp-page-wrapper" name="drop-page"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-page-wrapper&quot; name=&quot;drop-page&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-page-wrapper[name=drop-page]").page({
+	type:2,//1 普通，2 带显示条数
+	totalItems:200,//总共有n条数据
+	perPage:10//每页默认显示10条
+}).on("SHOW_ITEMS_CHANGE",function(e){
+	console.log(e.originalEvent.data);//{currentPage:第几页，int,  perpage:每页显示多少条，int}
+}).on("PAGE_CHANGE",function(e){
+	console.log(e.originalEvent.data);
+});	
+		</code>
+	</pre>
+</div> -->
+<h4 class="lead">
+	可自定义每页显示条数
+</h4>
+<div class="bs-example">
+	<div class="ndp-page-wrapper" name="drop-page2"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-page-wrapper&quot; name=&quot;drop-page2&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-page-wrapper[name=drop-page2]").page({
+	type:3,//1 普通，2 带显示条数，3，简洁紧凑格式的菜单
+	totalItems:200,//总共有n条数据
+	perPage:10//每页默认显示10条
+});		
+		</code>
+	</pre>
+</div>
+
+
+<h4 class="lead">
+	上下翻页
+</h4>
+<div class="bs-example" style="min-height:100px;">
+	<div class="ndp-page-wrapper" name="drop-page3" style="margin:10px 5px"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-page-wrapper&quot; name=&quot;drop-page3&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$(".ndp-page-wrapper[name=drop-page3]").page({
+	type:4,//类似微博的翻页
+	totalPages:100
+});		
+		</code>
+	</pre>
+</div>

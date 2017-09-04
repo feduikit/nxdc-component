@@ -1,0 +1,23 @@
+{
+    "name": "NDPUI",
+    "type": 1,
+    "version": "1.0.0",
+    "author": "ericever",
+    "frame": "unknow",
+    "structure": [
+        "NDPUI",
+        "/src",
+        "/src/css",
+        "/src/css/global",
+        "/src/css/modules",
+        "/src/css/pages",
+        "/src/js",
+        "/src/css/fonts",
+        "/html",
+        "/src/imgs",
+        "/lib",
+        "/test",
+        "/test/spec",
+        "/test/report"
+    ]
+}

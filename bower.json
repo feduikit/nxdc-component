@@ -1,20 +1,17 @@
 {
-  "name": "NDPUI",
-  "version": "1.0.0",
-  "author": "ericever",
-  "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "lib",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "requirejs": "*",
-    "respond": "*",
-    "jquery": "1.9.*",
-    "bootstrap": "^3.*"
-  }
+    "name": "ProjectA",
+    "version": "1.0.0",
+    "author": "ericever",
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "lib",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+		
+	}
 }

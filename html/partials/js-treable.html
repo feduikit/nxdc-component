@@ -1,0 +1,226 @@
+<div class="pa-header">
+<h2>树状二维表<span class="js-specific">Treable</span></h2>
+</div>
+<h4 class="yellow">定义 & 应用场景</h4>
+<p>适合用于展示有父子集关系的对象的数据。</p>
+<h4 class="lead">
+	树状二维表1
+</h4>
+<p>这个组件依赖tabs组件，务必在使用前加载好依赖的库</p>
+<div class="bs-example">
+	<div style="margin:10px auto">
+	<button class="btn btn-danger" id="danger">显示/隐藏 编辑栏</button>
+	<button class="btn btn-info" id="info">展开/折叠树状菜单</button>
+	<button class="btn btn-success" id="success">更新数据</button>
+	</div>
+ 	<div class="ndp-treable-wrapper" name="plain"> 	  	   	 	   	  		
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+var bool = false;
+var data1 = [{id:"1111",label: [{status:true},{name:"中华人民共和国"},{text:2000},{text:2},{text:20},{text:2000},
+		   {text:2},{text:20},{text:2},{text:20}],
+		 sub:[{id:"11110",label:[{status:true},{name:"美国"},{text:1100},{text:2},{text:20},{text:2000},{text:2},{text:20},{text:2},{text:20}],
+			 sub:[{id:"111101",label:[{status:true},{name:"11-11-11"},{text:910},{text:2},{text:20},{text:2000},{text:2},{text:20},{text:2},{text:20}]}]  	
+			},
+			{id:"11111",label:[{status:true},{name:"美国"},{text:3000},{text:2},{text:20},{text:2000},{text:2},{text:20},{text:2},{text:20}]}]
+	  },
+	  {id:"1112",label:[{status:true},{name:"美国"},{text:2100},{text:2},{text:20},{text:2000},{text:2},{text:20},{text:2},{text:20}],
+	   sub:[{id:"11120",label:[{status:true},{name:"美国1"},{text:2200},{text:2},{text:20},{text:2000},{text:2},{text:20},{text:2},{text:20}]},
+			{id:"11121",label:[{status:true},{name:"美国2"},{text:2300},{text:4},{text:20},{text:2000},{text:2},{text:20},{text:2},{text:20}]},
+			{id:"11122",label:[{status:true},{name:"美国3"},{text:2400},{text:5},{text:20},{text:2000},{text:2},{text:20},{text:2},{text:20}]},
+			{id:"11123",label:[{status:true},{name:"美国4"},{text:2500},{text:2},{text:20},{text:2000},{text:2},{text:20},{text:2},{text:20}]}
+		   ]
+	  },
+	  {id:"1113",label:[{status:true},{name:"美国"},{text:1300},{text:2},{text:20},{text:2000},{text:2},{text:20},{text:2},{text:20}],
+	   sub:[{id:"11131",label:[{status:true},{name:"美国3-2"},{text:1000},{text:2},{text:10},{text:9000},{text:2},{text:20},{text:2},{text:20}]},
+			{id:"11132",label:[{status:true},{name:"美国4"},{text:1001},{text:2},{text:30.5},{text:2300},{text:2},{text:20},{text:2},{text:20}]},
+			{id:"11133",label:[{status:true},{name:"美国5-1"},{text:1002},{text:2},{text:11},{text:2000},{text:2},{text:20},{text:2},{text:20}]},
+			{id:"11134",label:[{status:true},{name:"美国6"},{text:1003},{text:9},{text:22},{text:2000},{text:2},{text:20},{text:2},{text:30}]},
+			{id:"11135",label:[{status:true},{name:"美国7-1"},{text:1004},{text:2},{text:20},{text:1000},{text:2},{text:20},{text:2},{text:20}]},
+			{id:"11136",label:[{status:true},{name:"美国8"},{text:1005},{text:2},{text:20},{text:9000},{text:2},{text:20},{text:2},{text:22}]}]
+	  }
+];
+
+var data2 = [{id:"1114",label: [{status:true},{name:"美利坚和中国"},{text:100},{text:"我是"},{text:20},{text:1000},
+		   {text:902},{text:20},{text:112},{text:20}],
+		 sub:[{id:"11141",label:[{status:true},{name:"china china1"},{text:1100},{text:111},{text:222},{text:2000},{text:92},{text:660},{text:72},{text:50}],
+			 sub:[{id:"111410",label:[{status:true},{name:"33-22-11"},{text:900},{text:211},{text:10},{text:2000},{text:52},{text:20},{text:12},{text:40}]}]  	
+			},
+			{id:"11142",label:[{status:true},{name:"china22"},{text:4100},{text:233},{text:720},{text:2000},{text:12},{text:20},{text:32},{text:27}]}]
+	  },
+	  {id:"1115",label:[{status:true},{name:"中国ssd"},{text:2100},{text:222},{text:20},{text:200},{text:2},{text:20},{text:2},{text:20}],
+	   sub:[{id:"11151",label:[{status:true},{name:"中华民国"},{text:2400},{text:21},{text:22},{text:42000},{text:2},{text:20},{text:92},{text:620}]},
+			{id:"11152",label:[{status:true},{name:"美国2-1"},{text:200},{text:2222},{text:31},{text:12000},{text:12},{text:20},{text:12},{text:320}]},
+			{id:"11153",label:[{status:true},{name:"美国3"},{text:240},{text:1900},{text:19.5},{text:52000},{text:22},{text:20},{text:52},{text:120}]},
+			{id:"11154",label:[{status:true},{name:"美国4"},{text:2500},{text:200},{text:20.2},{text:62000},{text:2},{text:20},{text:72},{text:50}]}
+		   ]
+	  },
+	  {id:"1116",label:[{status:true},{name:"大比例饿点"},{text:1300},{text:4},{text:10},{text:5000},{text:2},{text:20},{text:332},{text:20}],
+	   sub:[{id:"111610",label:[{status:true},{name:"美国3-2"},{text:1000},{text:82},{text:40},{text:2000},{text:2},{text:20},{text:2},{text:20}]},
+			{id:"111611",label:[{status:true},{name:"美国4"},{text:1001},{text:233},{text:50},{text:1200},{text:42},{text:20},{text:12},{text:11.2}]},
+			{id:"111612",label:[{status:true},{name:"美国5"},{text:1002},{text:112},{text:20},{text:32000},{text:72},{text:20},{text:92},{text:13.5}]},
+			{id:"111613",label:[{status:true},{name:"美国6"},{text:1003},{text:212},{text:20},{text:42000},{text:2},{text:20},{text:2},{text:40}]},
+			{id:"111614",label:[{status:true},{name:"美国7-3"},{text:1004},{text:52},{text:420},{text:52000},{text:12},{text:20},{text:2},{text:50}]},
+			{id:"111615",label:[{status:true},{name:"美国8-2"},{text:1005},{text:72},{text:40},{text:62000},{text:92},{text:20},{text:2},{text:21.2}]}]
+	  }
+];	
+	
+	//以上 是数据部分，  下面是实现部分
+
+var tre = $(".ndp-treable-wrapper").treable({
+//	caret:"&lt;i class='glyphicon glyphicon-triangle-bottom'&gt;&lt;/i&gt;", //修改折叠，展开的图标，默认是+，- 号
+	head:[{label:"状态"},{label:"名称"},{label:"安装"},
+		  {label:"花费"},{label:"成本"},{label:"点击量"},
+		  {label:"点击率"},{label:"总花费"},{label:"预算"},
+		  {label:"出价"},{label:"转化率"},{label:"留存率"}
+		 ],//列表 头部  列标题				
+	body:data1, //列表内容数据
+	tail:[{},{}], //列表最底部的 数据部分
+	sort:[3,5,7,9],//base from 0  第几列显示排序按钮
+	//这个配置是用来显示，图表层展开时 tab项的，有几个项就有几个数组元素，name是tab上显示的名字
+	tabs:[
+		  {id:"1101",name:'线状图',type:"line"},
+		  {id:"1102",name:"饼状图",type:"pie"},
+		  {id:"1103",name:"堆积图",type:'dui'}
+		 ],
+	todata:[{name:"调整预算出价",id:"price"},{name:"编辑",id:"edit"},{name:"看图表",id:"chart"}]//工具条上的按钮
+}).on("SORT_CLICK",function(e){//点击 排序按钮
+	var evt = e.originalEvent;
+
+}).on("TOOLBAR_CLICK",function(e){// 点击最上面浮出的toolbar 或者，每一行的下拉菜单，[调整预算出价，编辑，看图表] 
+	console.log(e.originalEvent.data);//返回数据如下
+	//{id: "chart", val: "看图表", name: "看图表", dataID: 11110}
+	//id 点击的是哪个按钮，name：按钮的名字， dataID: 选中行(所在行)的数据id 
+}).on("STATUS_CHANGE",function(e){//点击 switch 按钮
+	var evt = e.originalEvent;
+
+}).on("TAB_SHOW CHART_LAYER_INIT",function(e){//处理图表或者其他。。
+	var da = e.originalEvent.data; // 返回数据如下
+	//{name: "编辑", id: "edit", dataID: 11110, GD: jQUERY}
+	// name 选中的tab的名称， dataID :所在行数据id   GD: JQUERY对象，图表的绘图区域DOM
+	if(e.type == "CHART_LAYER_INIT"){//首次打开图表层
+		var chartWidget = new ChartWidget();
+		chartWidget.placeAt(da.GD);
+		chartWidget.setVisJson(gdata);					
+	}else{//切换 tab 时，判断当下是否有图表，有图表，就不需要重绘了
+		if(da.GD.children().length==0){
+			var chartWidget = new ChartWidget();
+			chartWidget.placeAt(da.GD);
+			chartWidget.setVisJson(gdata);
+		}
+	}
+});
+
+//显示 隐藏 头部工具栏
+$("#danger").click(function(){
+	bool = !bool;
+	tre.toolbar(bool);
+});
+
+//展开收起 树状菜单 
+$("#info").click(function(){
+	tre.fold();
+});	
+
+//更新列表数据
+$("#success").click(function(){
+	bool = !bool;
+	tre.update(bool?data2:data1);
+});				
+		</code>
+	</pre>
+
+
+<h4 class="lead">
+	树状二维表2-带分析图表
+</h4>
+
+<div class="bs-example">
+	<div style="margin:10px auto">
+	<button class="btn btn-success" id="update">更新数据</button>
+	<button class="btn btn-danger" id="ajax">更新ajax</button>
+	</div>
+	<div class="doc-html-wrapper">
+		<div class="ndp-sutable-wrapper" name="plain">
+	</div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+var data1=[{id:1001,label:[{name:"中华人民共和国"},{text:"运行中",value:0},{text:"9000"},{text:"10-1"},{text:"2000-1"},{text:"1100"},{text:"4000"},{text:"987"},{text:"601"},{text:"107"},{text:"222"},{text:1100},{status:!1}],hasChild:!0},{id:1002,label:[{name:"美国"},{text:"审核未通过",value:2,reason:"活动已经被对方暂停"},{text:2},{text:20},{text:2e3},{text:2},{text:20},{text:2},{text:20},{text:100},{text:200},{text:1100},{status:!0}],hasChild:!0},{id:1003,label:[{name:"美国"},{text:"运行中",value:0},{text:2},{text:20},{text:2e3},{text:2},{text:20},{text:2},{text:20},{text:100},{text:200},{text:1100},{status:!0}],hasChild:!0}];
+
+var hwd = $(".ndp-sutable-wrapper").sutable({
+	ajaxOptions: {//ajax 请求设置
+		type: "GET",
+		url: "../data/sutable.json",
+		xhrFields: { withCredentials: true}
+	},
+	dataProxy: null, //需要对ajax请求后处理返回值是调用
+	head:[{label:"广告活动"},{label:"状态",desc:"这一列用来说明处于什么状态"},//label 列表标题
+		  {label:"展示数",desc:"这一列用来说明展示的数目"},//desc 用来显示tooltip
+		  {label:"点击数",desc:"这一列用来说明展示的数目"},
+		  {label:"点击率",desc:"这一列用来说明展示的数目"},
+		  {label:"转化数",desc:"这一列用来说明展示的数目"},
+		  {label:"转化率",desc:"这一列用来说明展示的数目"},
+		  {label:"CPC",desc:"这一列用来说明展示的数目"},
+		  {label:"CPM",desc:"这一列用来说明展示的数目"},
+		  {label:"CPA",desc:"这一列用来说明展示的数目"},
+		  {label:"花费",desc:"这一列用来说明展示的数目"}
+		  ,{label:"赢价率",desc:"这一列用来说明展示的赢价率"},
+		  {label:"开启/暂停",desc:"这一列用来说明展示的赢价率"},
+		  {label:"操作",desc:"这一列是用户用来操作的项目"}
+		 ],
+	body:data1,
+	//列表 最下面 总计数据
+	tail:[{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000},{text:1000}],
+	sort:[3,5,7,9]// 第4列，6列，8页  10页显示 排序按钮  默认从0开始
+}).on("SORT_CLICK",function(e){//用户点击排序按钮
+	//返回数据，包含，第几列，默认0； 列名
+	console.log(e.originalEvent.data);//{col: 3, val: "点击数"}
+}).on("OPERATE_ACTION",function(e){//点击，编辑按钮，拷贝按钮，点击广告活动名称，点击新增
+	var dat = e.originalEvent.data;
+	switch(dat.action){
+		case "edit"://用户点击编辑按钮
+			console.log(dat.id);//dat.id所在行的 数据id
+			break;
+		case "copy"://用户点击copy按钮
+			console.log(dat.id);//所在行的 数据id
+			break;
+		case "name"://用户点击广告活动名称 按钮
+			console.log(dat.id);//所在行的 数据id
+			break;
+		case "addnew":
+			console.log(dat.preid+" : " + dat.type);//preid上一行数据的id, type: 0(新增广告组)1(新增广告) >2(未知)
+			break;
+		case "switch":// 点击 "开启/暂停" 列的 switch 按钮
+			console.log("状态:" + dat.value + " : id:" + dat.id, dat.hwd);// value 0 关闭，1开启， id：所在行的数据id
+			//dat.hwd   是 switcher 的句柄
+			//抛出这个事件，意味着用户点击了， 按钮switcher  滑块发生了变化，
+			//如果返回状态发生变化，需要重置滑块（回到上次的状态） hwd.switchBack(dat.hwd); //hwd 是sutable实例，dat.hwd 是switcher
+			//如果想手动处理switcher 可以    dat.hwd.children("label").addClass("active") 打开，removeClass("active")关闭
+			break;
+		case "nextlayer"://点击加好 + 按钮，加载下一级数据
+			console.log("deep(深度层次):" + dat.deep + " : 上一级数据id" + dat.id + " : DOM fa(上一级DOM 节点) "+  dat.fa);// value 0 关闭，1开启， id：所在行的数据id
+			break;
+	}
+});
+
+
+$("#update").click(function(){
+	bool = !bool;
+	hwd.update((bool?data2:data1),sum);
+});
+
+//更新ajax 请求的参数
+$("#ajax").click(function(){
+    hwd.updateAjaxOption({
+         url: "../data/sutable2.json"
+    });
+});
+
+		</code>
+	</pre>
+
+</div> 

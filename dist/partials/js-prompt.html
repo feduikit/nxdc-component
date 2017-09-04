@@ -1,0 +1,239 @@
+<div class="pa-header">
+<h2>对话框Prompt</h2>
+<p>此插件依赖bootstrap的modal控件，务必确保使用前加载bootstrap@3</p>
+<p class="bg-info" style="padding:10px;">
+	prompt组件使用<strong>不需要</strong>在DOM上预先插入DOM节点
+</p>
+</div>
+<h4 class="yellow">定义 & 应用场景</h4>
+<p>在需要打开的图文信息或表单内容不要求用户有复杂操作的情况下，使用prompt以模态窗口的形式承载这些内容，可以让使用体验更轻快、友好，避免因为要查看这些信息而要在页面间跳转。</p>
+<h4 class="lead">
+	空白prompt
+</h4>
+<div class="bs-example">
+		<button type="button" class="btn btn-primary">点击显示空白表单</button>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+showPrompt({					
+	onOk:function(){//点击确认按钮
+		console.log("点击了ok按钮");
+	},
+	onCancel:function(){//点击x 或者取消按钮
+		console.log("点击了 取消 按钮");
+	}
+});		
+		</code>
+	</pre>
+</div>
+<div class="pa-header">
+</div>
+<h4 class="lead">
+	表单于prompt内居中
+</h4>
+<div class="bs-example">
+		<button type="button" class="btn btn-warning">点击显示登陆窗口</button>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+showPrompt({
+	title:"登陆",
+	body:function(body,wrapper){
+		//DOM构建
+		var form = $("&lt;form class='form-horizontal' /&gt;");
+		var user = $('&lt;div class=&quot;form-group&quot;&gt;\
+					&lt;label for=&quot;inputUser&quot; class=&quot;col-sm-2 control-label col-sm-offset-2&quot;&gt;用户名&lt;/label&gt;\
+						&lt;div class=&quot;col-sm-5&quot;&gt;\
+						  &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;inputUser&quot; placeholder=&quot;username&quot;&gt;\
+						&lt;/div&gt;\
+					&lt;/div&gt;');
+		var pwd = $('&lt;div class=&quot;form-group &quot;&gt;\
+				&lt;label for=&quot;inputPwd&quot; class=&quot;col-sm-2 control-label col-sm-offset-2&quot;&gt;密&amp;nbsp;&amp;nbsp;&amp;nbsp;码&lt;/label&gt;\
+				&lt;div class=&quot;col-sm-5&quot;&gt;\
+				  &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;inputPwd&quot; placeholder=&quot;Password&quot;&gt;\
+				&lt;/div&gt;\
+			  &lt;/div&gt;');
+
+		form.append(user).append(pwd);
+		body.append(form);
+	},
+	footer:function(footer){
+		footer.addClass("footer-login");
+	},
+	btnOK:"登陆",
+	btnCANCAEL:"取消",
+	onOk:function(){//点击确认按钮
+		console.log("点击了ok按钮");
+	},
+	onCancel:function(){//点击x 或者取消按钮
+		console.log("点击了 取消 按钮");
+	}	
+});			
+		</code>
+	</pre>
+</div>
+<h4 class="lead">
+	表单于prompt内左对齐
+</h4>
+<div class="bs-example">
+		<button type="button" class="btn btn-success">点击显示表单</button>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+showPrompt({
+	title:"个人信息",
+	body:function(body,wrapper){
+		var form = $("&lt;form class='form-horizontal' /&gt;");
+		var user = $('&lt;div class=&quot;form-group&quot;&gt;
+				&lt;label for=&quot;inputUser&quot; class=&quot;col-sm-2 control-label&quot;&gt;用户名&lt;/label&gt;
+					&lt;div class=&quot;col-sm-5&quot;&gt;
+					  &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;inputUser&quot;&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;');
+
+		var email = $('&lt;div class=&quot;form-group&quot;&gt;
+				&lt;label for=&quot;inputEmail&quot; class=&quot;col-sm-2 control-label&quot;&gt;Email&lt;/label&gt;\
+					&lt;div class=&quot;col-sm-8&quot;&gt;
+					  &lt;input type=&quot;email&quot; class=&quot;form-control&quot; id=&quot;inputEmail&quot; placeholder=&quot;Email&quot;&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;');
+		var pwd = $('&lt;div class=&quot;form-group&quot;&gt;
+			&lt;label for=&quot;inputPwd&quot; class=&quot;col-sm-2 control-label&quot;&gt;密&amp;nbsp;&amp;nbsp;&amp;nbsp;码&lt;/label&gt;
+			&lt;div class=&quot;col-sm-5&quot;&gt;
+			  &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;inputPwd&quot; placeholder=&quot;Password&quot;&gt;
+			&lt;/div&gt;\
+				&lt;div class=&quot;checkbox col-sm-5&quot;&gt;&lt;label&gt;
+				&lt;input type=&quot;checkbox&quot;&gt; Remember me
+				&lt;/label&gt;
+				&lt;/div&gt;
+		  &lt;/div&gt;');
+		var gender = $('&lt;div class=&quot;form-group&quot;&gt;
+		&lt;label for=&quot;inputPwd&quot; class=&quot;col-sm-2 control-label&quot;&gt;性&amp;nbsp;&amp;nbsp;&amp;nbsp;别&lt;/label&gt;
+					 &lt;div class=&quot;col-sm-6&quot;&gt;&lt;label class=&quot;radio-inline&quot;&gt;
+					  &lt;input type=&quot;radio&quot; id=&quot;gman&quot; value=&quot;man&quot; name=&quot;gender&quot;&gt; 男
+					&lt;/label&gt;
+					&lt;label class=&quot;radio-inline&quot;&gt;
+					  &lt;input type=&quot;radio&quot; id=&quot;gwoman&quot; value=&quot;woman&quot; name=&quot;gender&quot;&gt; 女
+					&lt;/label&gt;
+					&lt;label class=&quot;radio-inline&quot;&gt;
+					  &lt;input type=&quot;radio&quot; id=&quot;grother&quot; value=&quot;other&quot; name=&quot;gender&quot;&gt; 其他
+					&lt;/label&gt;&lt;/div&gt;
+					&lt;/div&gt;');
+		var desc = $('&lt;div class=&quot;form-group&quot;&gt;
+				&lt;label for=&quot;inputDesc&quot; class=&quot;col-sm-2 control-label&quot;&gt;个人描述&lt;/label&gt;
+					&lt;div class=&quot;col-sm-8&quot;&gt;
+					  &lt;textarea class=&quot;form-control&quot; rows=&quot;4&quot; id=&quot;inputDesc&quot;&gt;&lt;/textarea&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;');
+
+	form.append(user).append(pwd).append(email).append(gender).append(desc);
+	body.append(form);
+}
+});				
+		</code>
+	</pre>
+</div>
+<h4 class="lead">
+	包含可折叠内容的prompt
+</h4>
+<div class="bs-example">
+		<button type="button" class="btn btn-danger">点击显示复杂表单</button>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+showPrompt({
+	title:"&lt;i class='glyphicon glyphicon-home'&gt;&lt;/i&gt;&nbsp;复杂表单",
+	body:function(body){
+		body.addClass("body-fixed-height");
+		var form = $("&lt;form class='form-horizontal' /&gt;");
+		var user = $('&lt;div class=&quot;form-group&quot;&gt;
+					&lt;label for=&quot;inputUser&quot; class=&quot;col-sm-2 control-label&quot;&gt;用户名&lt;/label&gt;
+						&lt;div class=&quot;col-sm-5&quot;&gt;
+						  &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;inputUser&quot;&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;');
+
+		var email = $('&lt;div class=&quot;form-group&quot;&gt;
+					&lt;label for=&quot;inputEmail&quot; class=&quot;col-sm-2 control-label&quot;&gt;Email&lt;/label&gt;
+						&lt;div class=&quot;col-sm-8&quot;&gt;
+						  &lt;input type=&quot;email&quot; class=&quot;form-control&quot; id=&quot;inputEmail&quot; placeholder=&quot;Email&quot;&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;');
+		var pwd = $('&lt;div class=&quot;form-group&quot;&gt;
+				&lt;label for=&quot;inputPwd&quot; class=&quot;col-sm-2 control-label&quot;&gt;密&amp;nbsp;&amp;nbsp;&amp;nbsp;码&lt;/label&gt;
+				&lt;div class=&quot;col-sm-5&quot;&gt;
+				  &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;inputPwd&quot; placeholder=&quot;Password&quot;&gt;
+				&lt;/div&gt;
+					&lt;div class=&quot;checkbox col-sm-5&quot;&gt;&lt;label&gt;
+					&lt;input type=&quot;checkbox&quot;&gt; Remember me
+					&lt;/label&gt;
+					&lt;/div&gt;
+			  &lt;/div&gt;');
+		var gender = $('&lt;div class=&quot;form-group&quot;&gt;
+			&lt;label for=&quot;inputPwd&quot; class=&quot;col-sm-2 control-label&quot;&gt;性&amp;nbsp;&amp;nbsp;&amp;nbsp;别&lt;/label&gt;
+						 &lt;div class=&quot;col-sm-6&quot;&gt;&lt;label class=&quot;radio-inline&quot;&gt;
+						  &lt;input type=&quot;radio&quot; id=&quot;gman&quot; value=&quot;man&quot; name=&quot;gender&quot;&gt; 男
+						&lt;/label&gt;
+						&lt;label class=&quot;radio-inline&quot;&gt;
+						  &lt;input type=&quot;radio&quot; id=&quot;gwoman&quot; value=&quot;woman&quot; name=&quot;gender&quot;&gt; 女\
+						&lt;/label&gt;
+						&lt;label class=&quot;radio-inline&quot;&gt;
+						  &lt;input type=&quot;radio&quot; id=&quot;grother&quot; value=&quot;other&quot; name=&quot;gender&quot;&gt; 其他\
+						&lt;/label&gt;&lt;/div&gt;
+						&lt;/div&gt;');
+		var desc = $('&lt;div class=&quot;form-group&quot;&gt;
+					&lt;label for=&quot;inputDesc&quot; class=&quot;col-sm-2 control-label&quot;&gt;个人描述&lt;/label&gt;\
+						&lt;div class=&quot;col-sm-8&quot;&gt;
+						  &lt;textarea class=&quot;form-control&quot; rows=&quot;3&quot; id=&quot;inputDesc&quot;&gt;&lt;/textarea&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;');
+		var advanced = $('&lt;div class=&quot;panel-group&quot; id=&quot;accordion&quot;&gt;
+&lt;div class=&quot;panel panel-default&quot;&gt;
+&lt;div class=&quot;advanced-label&quot; id=&quot;headingOne&quot;&gt;
+&lt;a data-toggle=&quot;collapse&quot; data-parent=&quot;#accordion&quot; href=&quot;#collapseOne&quot; aria-expanded=&quot;true&quot; aria-controls=&quot;collapseOne&quot;&gt;高级设置&lt;/a&gt;
+&lt;/div&gt;
+&lt;div id=&quot;collapseOne&quot; class=&quot;panel-collapse collapse&quot;  aria-labelledby=&quot;headingOne&quot;&gt;
+&lt;form class=&quot;form-horizontal&quot;&gt;
+&lt;div class=&quot;form-group&quot;&gt;
+&lt;label for=&quot;inputAge&quot; class=&quot;col-sm-2 control-label&quot;&gt;年&amp;nbsp;&amp;nbsp;&amp;nbsp;龄&lt;/label&gt;
+&lt;div class=&quot;col-sm-5&quot;&gt;
+	&lt;div class=&quot;ndp-drop-wrapper&quot; name=&quot;age-drop&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;form-group&quot;&gt;
+&lt;label for=&quot;inputAddr&quot; class=&quot;col-sm-2 control-label&quot;&gt;住&amp;nbsp;&amp;nbsp;&amp;nbsp;址&lt;/label&gt;
+&lt;div class=&quot;col-sm-8&quot;&gt;
+  &lt;textarea class=&quot;form-control&quot; rows=&quot;3&quot; id=&quot;inputAddr&quot;&gt;&lt;/textarea&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;form-group&quot;&gt;
+&lt;label for=&quot;inputEdu&quot; class=&quot;col-sm-2 control-label&quot;&gt;学&amp;nbsp;&amp;nbsp;&amp;nbsp;历&lt;/label&gt;
+&lt;div class=&quot;col-sm-8&quot;&gt;
+  &lt;input type=&quot;text&quot; id=&quot;inputEdu&quot; class=&quot;form-control&quot; name=&quot;edu&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/form&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;');
+		advanced.find("div[name=age-drop]").drop({
+			data:[18,20,30,40,50,60]
+		});
+
+		form.append(user).append(pwd).append(email).append(gender).append(desc).append(advanced);
+
+		body.append(form);
+
+	},
+	footer:function(footer){
+		footer.addClass("footer-login");
+	}
+});
+});						
+		</code>
+	</pre>
+</div>

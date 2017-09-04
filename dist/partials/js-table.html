@@ -1,0 +1,211 @@
+<div class="pa-header">
+<h2>列表<span class="js-specific">Table</span></h2>
+</div>
+<h4 class="yellow">定义 & 应用场景</h4>
+<p>    表格用于展示一组始终可见的由数据或图像构成的有限序列，可以同时展示多条或大量具有相同属性的同类项目。</p>
+<h5 class="yellow">基本构成</h5>
+<p>
+	    表格由表头和列表共同组成。实际应用时需联合翻页控件形成关联关系，用翻页控件控制列表的分页。
+</p>
+<h4 class="lead">
+	基本样式
+</h4>
+<div class="bs-example">
+	<div class="ndp-table-wrapper" name="plain-table"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-table-wrapper&quot; name=&quot;plain-table&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$(".ndp-table-wrapper[name='plain-table']").table({
+	head:{col1:"第一列",col2:"第二列",col3:"第三列",col4:"第四列"},//列表头数据，
+	//列表头的数据 支持 数组里面是字符串
+	//列如：head:{"第一列","第二列","第三列","第四列"}
+	//也支持 混排，字符串和{} 都有的形式， 下面的列表数据也是一样
+	data:[//列表数据，数据格式数组，数组里面可以是{}  也可以是字符串或者数字
+		{id:1101,name:"hello123",info:"hello -china 123",gender:"man"},
+		{id:1102,name:"hello_23",info:"hello - japan 34",gender:"woman"},
+		{id:1103,name:"hello_34",info:"hello - euro 23",gender:"no sign"}
+	]	
+});
+		</code>
+	</pre>
+</div>
+<h4 class="lead">
+	可固定选中行
+</h4>
+<div class="bs-example">
+	<div class="ndp-table-wrapper" name="solid-row-table"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+	<code>
+&lt;div class=&quot;ndp-table-wrapper&quot; name=&quot;solid-row-table&quot;&gt;&lt;/div&gt;
+	</code>
+	</pre>
+	<pre class="prettyprint">
+	<code>
+$(".ndp-table-wrapper[name='solid-row-table']").table({
+	head:["第一列","第二列","第三列","第四列"],
+	data:[{id:1101,name:"hello123",info:"hello -china 123",gender:"man"},
+		  {id:1102,name:"hello_23",info:"hello - japan 34",gender:"woman"},
+		  {id:1103,name:"hello_34",info:"hello - euro 23",gender:"no sign"}],
+	rowNail:true,//允许选中行
+	activeRow:1//默认选中的行索引，base 0
+}).on("ROW_CLICK",function(e){//行被点击
+		console.log(e.originalEvent.data);// {row：第几行 int}//第几行
+});	
+	</code>
+	</pre>	
+</div>
+<h4 class="lead">
+	可固定选中列
+</h4>
+<div class="bs-example">
+	<div class="ndp-table-wrapper" name="solid-col-table"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+	<code>
+&lt;div class=&quot;ndp-table-wrapper&quot; name=&quot;solid-col-table&quot;&gt;&lt;/div&gt;
+	</code>
+	</pre>
+	<pre class="prettyprint">
+	<code>
+$(".ndp-table-wrapper[name='solid-col-table']").table({
+	head:["第一列","第二列","第三列","第四列"],
+	data:[{id:1101,name:"hello123",info:"hello -china 123",gender:"man"},
+		  {id:1102,name:"hello_23",info:"hello - japan 34",gender:"woman"},
+		  {id:1103,name:"hello_34",info:"hello - euro 23",gender:"no sign"}],
+	colNail:true,//允许选中列
+	activeCol:1//默认选中的列索引，base 0
+}).on("COL_CLICK",function(e){//列被点击
+	console.log(e.originalEvent.data); //{col:第几列 int ,name: 列名 string}
+});		
+	</code>
+	</pre>	
+</div>
+<h4 class="lead">
+	表头固定，仅滚动数据行
+</h4>
+<div class="bs-example">
+	<div class="ndp-table-wrapper" name="solid-h-table"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+	<code>
+&lt;div class=&quot;ndp-table-wrapper&quot; name=&quot;solid-h-table&quot;&gt;&lt;/div&gt;
+	</code>
+	</pre>
+	<pre class="prettyprint">
+	<code>
+$(&quot;.ndp-table-wrapper[name='solid-col-table']&quot;).table({
+	head:[&quot;第一列&quot;,&quot;第二列&quot;,&quot;第三列&quot;,&quot;第四列&quot;],
+	data:[{id:1101,name:&quot;hello123&quot;,info:&quot;hello -china 123&quot;,gender:&quot;man&quot;},
+		  {id:1102,name:&quot;hello_23&quot;,info:&quot;hello - japan 34&quot;,gender:&quot;woman&quot;},
+		  {id:1103,name:&quot;hello_34&quot;,info:&quot;hello - euro 23&quot;,gender:&quot;no sign&quot;}],
+	listHeight:"250px"//通过设置列表的整体高度即可
+});		
+	</code>
+	</pre>	
+</div>
+<h4 class="lead">
+	数据列可排序
+</h4>
+<div class="bs-example">
+	<div class="ndp-table-wrapper" name="solid-sort-table"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+	<code>
+&lt;div class=&quot;ndp-table-wrapper&quot; name=&quot;solid-sort-table&quot;&gt;&lt;/div&gt;
+	</code>
+	</pre>
+	<pre class="prettyprint">
+	<code>
+$(".ndp-table-wrapper[name='solid-sort-table']").table({
+	head:{col1:"第一列",col2:"第二列",col3:"第三列",col4:"第四列",col5:"第五列"},
+	data:[{id:1101,name:"hello123",info:"hello -china 123",gender:"man",nation:"USA"},
+	{id:1102,name:"dllo_23",info:"clo - japan 34",gender:"woman",nation:"CANADA"},
+	{id:1103,name:"hello_34",info:"allo - euro 23",gender:"no sign",nation:"USA"},
+	{id:1104,name:"alo_35",info:"blo - japn",gender:"no sign",nation:"Japan"},
+	{id:1105,name:"bllo_36",info:"Alo - usa 23",gender:"woman",nation:"USA"},
+	{id:1106,name:"clo_37",info:"Do - usa 23",gender:"man",nation:"china"},
+	{id:1107,name:"hello_38",info:"dllo - usa 23",gender:"man",nation:"USA"}
+	],								
+	sort:[1,3,4]//按照第一列，第三列，第四列排序，这三列会出现排序按钮，全部排序 sort:"All"
+}).on("SORT_CHANGE",function(e){//用户点击排序
+	console.log(e.originalEvent.data);//{col:第几列（from 0）int， name:列名 字符串}
+});		
+	</code>
+	</pre>	
+</div>
+<h4 class="lead">
+	可调整列宽
+</h4>
+<div class="bs-example">
+	<div class="ndp-table-wrapper" name="solid-split-table"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+	<code>
+&lt;div class=&quot;ndp-table-wrapper&quot; name=&quot;solid-split-table&quot;&gt;&lt;/div&gt;
+	</code>
+	</pre>
+	<pre class="prettyprint">
+	<code>
+$(".ndp-table-wrapper[name='solid-split-table']").table({
+   head:{col1:"第一列",col2:"第二列",col3:"第三列",col4:"第四列",col5:"第五列"},
+   data:[	{id:1101,name:"hello123",info:"hello -china 123",gender:"man",nation:"USA"},
+		  	{id:1102,name:"dllo_23",info:"clo - japan 34",gender:"woman",nation:"USA"},
+		  	{id:1103,name:"hello_34",info:"allo - euro 23",gender:"no sign",nation:"USA"},
+		 	{id:1104,name:"alo_35",info:"blo - japn",gender:"no sign",nation:"USA"},
+		 	{id:1105,name:"bllo_36",info:"Alo - usa 23",gender:"woman",nation:"USA"},
+		 	{id:1106,name:"clo_37",info:"Do - usa 23",gender:"man",nation:"USA"},
+		 	{id:1107,name:"hello_38",info:"dllo - usa 23",gender:"man",nation:"USA"}
+		 ]
+});		
+	</code>
+	</pre>	
+</div>
+
+<h4 class="lead">
+	更新列表数据
+</h4>
+<div class="bs-example">
+	<button class="btn btn-info" id="btn-update">点击更新列表数据</button>
+	<div class="ndp-table-wrapper" name="update"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+	<code>
+&lt;div class=&quot;ndp-table-wrapper&quot; name=&quot;update&quot;&gt;&lt;/div&gt;
+	</code>
+	</pre>
+	<pre class="prettyprint">
+	<code>
+var tb = $(".ndp-table-wrapper[name='update']").table({
+	head:{col1:"第一列",col2:"第二列",col3:"第三列",col4:"第四列"},
+	data:[{id:1101,name:"hello123",info:"hello -china 123",gender:"man"},
+	{id:1102,name:"dllo_23",info:"clo - japan 34",gender:"woman"},
+	{id:1103,name:"hello_34",info:"allo - euro 23",gender:"no sign"},
+	{id:1104,name:"alo_35",info:"blo - japn",gender:"no sign"},
+	{id:1105,name:"bllo_36",info:"Alo - usa 23",gender:"woman"},
+	{id:1106,name:"clo_37",info:"Do - usa 23",gender:"man"},
+	{id:1107,name:"hello_38",info:"dllo - usa 23",gender:"man"}
+	]
+});	
+//点击按钮的回调
+$("button#btn-update").click(function(){
+	//data 新的数据
+	tb.update(data);
+});		
+	</code>
+	</pre>	
+</div>
+
+

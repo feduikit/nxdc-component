@@ -1,0 +1,171 @@
+<div class="pa-header">
+<h2>下拉菜单 / Dropdowns</span></h2>
+</div>
+<h4 class="yellow">定义 & 应用场景</h4>
+<p>下拉菜单是常用的表单控件之一，用于收纳和提供一组同类型的选项供用户选择。呈现：以逻辑顺序排列列表项，比如将高度相关的选项放在一起，或将最常用的选项放在前面，或者以字母顺序排列。名称以字母顺序排列，数值则以数字大小排序，日期则以时间顺序排列。12 个或 12 个以上的列表项就应该以字母顺序排列以使其更易于查找。当禁用下拉列表或组合框时，应当同时禁用所有相关联的标签和命令按钮。</p>
+<h4 class="lead">
+	基本功能
+</h4>
+<div class="bs-example">
+	<div class="ndp-drop-wrapper" name="inline-drop"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-drop-wrapper&quot; name=&quot;inline-drop&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-drop-wrapper[name=inline-drop]").drop({
+	data:["亚洲","欧洲","美洲","大洋洲","南极洲"],
+	name:"country"//为了方便serialize 建议设置name 属性
+}).on("ITEM_CLICK",function(e){//下拉选择项点击事件
+	//返回的数据有   
+	console.log(e.originalEvent.data);//{val:选中项的值,  text:"显示的文字",  deep:深度(如果是多级) }
+});		
+		</code>
+	</pre>
+	<pre class="bg-warning">
+		<code>
+返回数据说明： 用户点击，或者回车键选择了下拉选项后，选中的文字会显示在 input中
+input DOM 对象上有两个属性可以供用户自由的获取最终的值。value 和 data-val 如下所示：
+&lt;input value="显示的内容"  data-val="数值" &gt;
+		</code>
+	</pre>		
+</div>
+
+<!---Disable--->
+<h4 class="lead">
+	禁用某个选项
+</h4>
+<div class="bs-example">
+	<div class="ndp-drop-wrapper" name="disable-drop"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-drop-wrapper&quot; name=&quot;disable-drop&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-drop-wrapper[name=disable-drop]").drop({
+	data:[{name:"中国",disable:true},{name:"美国"},"德国","加拿大","澳大利亚"]
+});
+		</code>
+	</pre>
+</div>
+
+<!---对选项进行分组--->
+<h4 class="lead">
+	对选项进行分组
+</h4>
+<div class="bs-example">
+	<div class="ndp-drop-wrapper" name="group-drop"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-drop-wrapper&quot; name=&quot;group-drop&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-drop-wrapper[name=group-drop]").drop({
+	type:3,
+	data:[
+		  {name:"中国区",group:[{text:"四川省"},
+						  {text:"河北省"}]},
+		  {name:"东亚区",group:[{text:"日本"},
+						  {text:"韩国"}]},
+		  {name:"美洲区",group:[{name:"加拿大"},
+							 {name:"美国"},
+							 {name:"阿根廷"}]}],
+	caret:"glyphicon-menu-right"// 设置下拉图标的样式
+});
+		</code>
+	</pre>
+</div>
+
+<!--分割线-->
+<h4 class="lead">
+	添加分割线
+</h4>
+<div class="bs-example">
+	<div class="ndp-drop-wrapper" name="line-drop"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-drop-wrapper&quot; name=&quot;line-drop&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-drop-wrapper[name=line-drop]").drop({
+	data:["中国",{name:"美国"},{name:"德国",split:true}, //split:true 显示分割线
+		  "加拿大","澳大利亚","法国","爱尔兰","以色列"]
+});
+		</code>
+	</pre>
+</div>
+<!--对选项进行分组-->
+<h4 class="lead">
+	选项是树状结构
+</h4>
+<div class="bs-example">
+	<div class="ndp-drop-wrapper" name="tree-drop"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-drop-wrapper&quot; name=&quot;tree-drop&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-drop-wrapper[name=tree-drop]").drop({
+	data:[{text:"新疆"},
+		  {text:"陕西",sub:[{text:"西安"},
+						  {text:"咸阳"}]},
+		  {text:"四川",sub:[{text:"成都"},
+						  {text:"宜宾"}]},
+		  {text:"浙江",sub:[{name:"杭州",
+						   sub:[{name:"西溪"},
+								{name:"武林"}]}]},
+		  {text:"湖北"},
+		  {text:"湖南"}],
+	caret:"glyphicon-menu-right"
+}).on("ITEM_CLICK",function(e){//下拉菜单一个选项被点击了
+	console.log(e.originalEvent.data);
+}).val("新疆"); //设置 显示在input 里面的值 		
+		</code>
+	</pre>
+</div>
+<!--checkbox 下来菜单-->
+<h4 class="lead">
+	可多选选项
+</h4>
+<div class="bs-example">
+	 <div class="ndp-drop-wrapper" name="checkbox-drop"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-drop-wrapper&quot; name=&quot;checkbox-drop&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-drop-wrapper[name=checkbox-drop]").drop({
+	type:4,
+	data:["中国","加拿大","澳大利亚","法国"]// 也支持这种数组 [{text:"中国"},{},{}]
+}).on("APPLY_CLICK",function(e){
+	//多选 点击 “应用” 按钮
+	//data = {checkedArr:cksArr}  返回 值 数组
+	console.log(e.originalEvent.data);
+}); 		
+		</code>
+	</pre>
+</div>

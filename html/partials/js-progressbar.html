@@ -1,0 +1,78 @@
+<div class="pa-header">
+    <h2>进度条<span class="js-specific">Progress Bar</span></h2>
+</div>
+<h4 class="yellow">定义 & 应用场景</h4>
+<h4 class="lead">
+	环状进度条
+</h4>
+<div class="bs-example">
+    <div class="progressbar-sample"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+&lt;div class="progressbar-sample" &gt;&lt;/div&gt;			
+		</code>
+	</pre>   
+    <pre class="prettyprint">
+		<code class="language-js">			
+//选中指定的dom元素进行初始化
+$('.progressbar-sample').progressbar({
+	//给进度条最外层指定样式
+	css: 'progressbar-test-style',
+	//需要设置的初始化的进度的百分比
+	progress: '40%',
+	//可选default 条形和 circle环形
+	shape: 'circle',
+	//宽度，单位px，默认100
+	width: 100,
+	//进度条的尺寸, 单位px, 默认5
+	size: 5
+});
+
+//初始化后，可以这样设置和读取参数
+//可以读取修改 progress 进度百分比, shape 形状, size 进度条尺寸, width 进度条宽度
+/*
+	$('.progressbar-sample').progressbar('progress')         //读取参数
+	$('.progressbar-sample').progressbar('progress', '70%')  //设置参数
+*/
+		</code>
+	</pre>
+</div>
+<h4 class="lead">
+	横向进度条
+</h4>
+<div class="bs-example">
+    <div class="progressbar-sample1" name="line"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+&lt;div class="progressbar-sample1" name="line"&gt;&lt;/div&gt;			
+		</code>
+	</pre>  
+    <pre class="prettyprint">
+		<code class="language-js">			
+//选中指定的dom元素进行初始化
+$('.progressbar-sample1').progressbar({
+	//给进度条最外层指定样式
+	css: 'progressbar-test-style',
+	//需要设置的初始化的进度的百分比
+	progress: '40%',
+	//可选default 条形和 circle环形
+	shape: 'circle',
+	//宽度，单位px，默认100
+	width: 100,
+	//进度条的尺寸, 单位px, 默认5
+	size: 5
+});
+
+//初始化后，可以这样设置和读取参数,
+//可以读取修改 progress 进度百分比, shape 形状, size 进度条尺寸, width 进度条宽度
+/*
+	$('.progressbar-sample1').progressbar('progress')         //读取参数
+	$('.progressbar-sample1').progressbar('progress', '70%')  //设置参数
+*/
+		</code>
+	</pre>
+</div>

@@ -1,0 +1,153 @@
+<div class="pa-header">
+<h2>搜索输入框<span class="js-specific">Search</span></h2>
+</div>
+<h4 class="yellow">定义 & 应用场景</h4>
+<p>面对信息量较大的业务场景，应用搜索输入框可以通过关键词在大量信息中精准筛选目标对象，提高用户的查阅效率。
+<br /></p>
+<p>具有即时搜索能力的输入框，因其可以即时根据用户输入的内容显示匹配目标，既能降低用户的记忆成本，又能避免执行搜索后发现查无对象的情况，具有更佳的用户体验。</p>
+<h4 class="lead">
+	基本功能
+</h4>
+<div class="bs-example">
+		<div class="ndp-search-wrapper" name="plain"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+&lt;div class="ndp-search-wrapper" name="plain"&gt;&lt;/div&gt;		
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$(".ndp-search-wrapper[name=plain]").search({
+	placeholder:"请输入字符",
+	name:"password"//为了方便serialize 建议设置name 属性
+}).val("hello");//设置input 显示的值;;		
+		</code>
+	</pre>
+</div>
+<h4 class="lead">
+	禁用
+</h4>
+<div class="bs-example">
+		<div class="ndp-search-wrapper" name="disable"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+&lt;div class="ndp-search-wrapper" name="disable"&gt;&lt;/div&gt;		
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$(".ndp-search-wrapper[name=disable]").search({
+	placeholder:"请输入字符",
+	disabled:true//不可用 不可选择 
+});		
+		</code>
+	</pre>
+</div>
+
+
+
+<h4 class="lead">
+	可选搜索范围
+</h4>
+<div class="bs-example">
+		<div class="ndp-search-wrapper" name="mix"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+&lt;div class="ndp-search-wrapper" name="mix"&gt;&lt;/div&gt;		
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$(".ndp-search-wrapper[name=mix]").search({
+	type:2,
+	dropList:[{text:"中国"},{text:"美国"},{text:"德国"}],
+	disabled:true
+}).on("SCOPE_CHANGE",function(e){//前置下来菜单，选择后
+	//前置下拉菜单 更新
+	console.log(e.originalEvent.data);//{index:索引，value:值}
+});		
+		</code>
+	</pre>
+</div>
+
+
+<h4 class="lead">
+	即时搜索的输入框
+</h4>
+<div class="bs-example">
+		<div class="ndp-search-wrapper" name="plain2"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+&lt;div class="ndp-search-wrapper" name="plain2"&gt;&lt;/div&gt;		
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$(".ndp-search-wrapper[name=plain2]").search({
+	type:3,
+	ajaxOptions: {
+		type: "GET",
+		url: "../data/search.json"
+	}
+}).on("INPUT_CHANGE",function(e){//input输入内容发生改变 触发
+	console.log(e.originalEvent.data);//{text:输入内容}
+}).on("do_search",function(e){
+	//用户输入内容，回车 或者点击搜索(放大镜) 触发这个事件
+	console.log(e.originalEvent.data);//数据
+}).on("ITEM_SELECT",function(e){//点击下拉菜单内容，针对有ajax 请求的情况
+	console.log(e.originalEvent.data);//{text:内容}
+}).on("INPUT_CLEAR",function(e){//点击x 清除内容
+	console.log(e.originalEvent.data);//{text:内容}
+});		
+		</code>
+	</pre>
+</div>
+
+<h4 class="lead">
+	可选搜索范围+即时搜索
+</h4>
+<div class="bs-example">
+		<div class="ndp-search-wrapper" name="mixall" style="width:300px"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+&lt;div class="ndp-search-wrapper" name="mixall"&gt;&lt;/div&gt;		
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$(".ndp-search-wrapper[name=mixall]").search({
+	type:4,
+	dropList:[{text:"china"},{text:"USA"},{text:"德国"}],
+	ajaxOptions: {
+		type: "GET",
+		url: "../data/search.json",
+		xhrFields: { withCredentials: true}
+	}
+}).on("INPUT_CHANGE",function(e){//输入内容发生改变 触发
+	console.log(e.originalEvent.data);//{text:输入内容}
+}).on("do_search",function(e){
+	//用户输入内容，回车 或者点击搜索(放大镜) 触发这个事件
+	console.log(e.originalEvent.data);//数据
+}).on("ITEM_SELECT",function(e){//点击下拉菜单内容，针对有ajax 请求的情况
+	console.log(e.originalEvent.data);//{text:内容}
+}).on("INPUT_CLEAR",function(e){//点击x 清除内容
+	console.log(e.originalEvent.data);//{text:内容}
+}).on("SCOPE_CHANGE",function(e){//前置下来菜单，选择后
+	//前置下拉菜单 更新
+	console.log(e.originalEvent.data);//{index:索引，value:值}
+});		
+		</code>
+	</pre>
+</div>
+
+

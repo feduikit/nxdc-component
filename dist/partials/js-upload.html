@@ -1,0 +1,125 @@
+<div class="pa-header">
+    <h2>文件上传组件</h2>
+</div>
+<h4 class="yellow">定义 & 应用场景</h4>
+<p>目前提供了上传单个文件最通用的样式，当系统需要用户上传图片、文件时使用。可以拖拽上传。</p>
+<h4 class="lead">
+	上传图片
+</h4>
+<div class="bs-example">
+    <div class="upload-container">
+    </div>
+</div>
+<div class="highlight">
+    <pre class="prettyprint">
+		<code class="language-js">
+//以下的配置项，需要那个改那个
+//不需要的就不管了
+$('.upload-container').fileupload({
+    //以下是上传处理的ajax
+    //所有的参数参照jquery
+    ajax: {
+        url: 'xxx',
+        data: 'xxx'
+    },
+    //上传文件的翻译，或者文本提醒
+    text: {
+        upload: {
+            uploading: '正在上传',
+            success: '添加成功',
+            tips: '文件拖放到这里',
+            linkword: '或者',
+            descUploading: '上传中',
+            descButton: '上传',
+            agButton: '重新上传'
+        },
+        error: {
+            type: '文件类型不正确',
+            size: '文件大小超过限制',
+            number: '文件数超过一个',
+            none: '没有要上传的文件',
+            allowSize: '宽高尺寸有问题'
+        }
+    },
+    //这里是上传按钮,需要上传一个选择器字符串或者jquery对象
+    //如果有,则给按钮绑定上传事件，当按钮点击时则上传
+    //如果没有，则拖放后立即上传
+    button: false,
+    //可以通过form来初始化上传数据
+    form: false,
+    name: 'file',   //上传拖拽区域的字段
+    type: 'image',  //上传文件的MIME Type的正则字符串或者正则表达式对象
+    width: 560,     //上传拖拽区域宽度
+    height: 250,    //上传拖拽区域高度
+    size: 10485760, //默认上传大小不超过10M
+    allowSize: [], //这是里默认什么尺寸的，只针对图片起效，类似['320*50', '1024*768']
+    //区域的预览模板
+    //必须包含upload-wrapper、upload-content、upload-desc、upload-preview、upload-mask 这几个class的dom
+    html: '&lt;div class="upload-wrapper" data-state="prepare"&gt;\
+            &lt;div class="upload-content"&gt;\
+                &lt;div class="upload-desc"&gt;\
+                    &lt;div class="upload-desc-inner"&gt;\
+                        &lt;p class="upload-icon"&gt;&lt;/p&gt;\
+                        &lt;p&gt;图片拖放到这里&lt;/p&gt;\
+                        &lt;p class="small"&gt;或&lt;/p&gt;\
+                        &lt;button class="upload-button" type="button"&gt;上传&lt;/button&gt;\
+                    &lt;/div&gt;\
+                &lt;/div&gt;\
+                &lt;div class="upload-preview"&gt;&lt;/div&gt;\
+                &lt;div class="upload-mask"&gt;\
+                    &lt;div class="upload-mask-inner"&gt;\
+                        &lt;p class="upload-num"&gt;0&lt;/p&gt;\
+                        &lt;p&gt;上传中&lt;/p&gt;\
+                    &lt;/div&gt;\
+                &lt;/div&gt;\
+            &lt;/div&gt;\
+            &lt;div class="upload-footer"&gt;\
+                &lt;span class="upload-msg"&gt;&lt;/span&gt;\
+                &lt;a herf="javascript:void(0);" class="upload-button btn-link" type="button"&gt;重新上传&lt;/a&gt;\
+            &lt;/div&gt;\
+        &lt;/div&gt;',
+    //预览的模板，如果没有指定，则根据type确定，
+    //如果指定了一个字符串,占位符{{src}}预览文件的url
+    //如果指定了一个函数，则会有两个参数一个是文件的File对象，一个是File对象对应的预览url
+    previewTpl: false,         
+    onprogress: function(){},   //上传进度
+    onerror: function(){},      //上传出错
+    onload: function(){},       //上传成功后的事件
+    ondragenter: function(){},  //鼠标拖入区域
+    ondragleave: function(){},  //鼠标脱离区域
+    ondragover: function(){},   //鼠标进入区域
+    ondrop: function(){},       //拖拽放下文件
+});
+		</code>
+	</pre>
+</div>
+<div class="pa-header">
+</div>
+<h4 class="lead">
+    上传文本(.txt和.csv)
+</h4>
+<div class="bs-example">
+    <div class="upload-container1">
+    </div>
+</div>
+<div class="highlight">
+    <pre class="prettyprint">
+        <code class="language-js">
+            $('.upload-container1').fileupload({
+                ajax: {
+                    url: '/upload.php'
+                },
+                width: 500,
+                height: 150,
+                //文件类型
+                type:  /text\/comma-separated-values|text\/plain/,
+                //预览处理，可以是函数也可以是字符串
+                previewTpl: function(file, src){
+                    return '&lt;p&gt;' + file.name + '&lt;/p&gt;' + 
+                        '&lt;p class="small"&gt;文件大小：' + file.size + 'B&lt;/p&gt;' + 
+                        '&lt;p class="small"&gt;最后修改：' + new Date(file.lastModified).toLocaleString()  + '&lt;/p&gt;';
+                }
+            });     
+        </code>
+    </pre>
+</div>

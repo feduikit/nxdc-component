@@ -1,0 +1,233 @@
+<h3>项目源码详细结构</h3>
+<p>
+	以下列出项目完整的目录结构和相关文件，其中ProjectA 是项目创建时的名字。
+</p>
+<div class="bs-callout bs-callout-info bg-info" >
+<h4>gitlab</h4>
+<p>
+<a href="http://git.dy/vigo.feng/nxdc-component-library.git">http://git.dy/vigo.feng/nxdc-component-library.git</a>
+</p>
+</div>
+<div class="highlight">
+<pre class="prettyprint"><code>
+  1│  ProjectA                                  ProjectA
+  2│  ProjectA/.DS_Store                        ┊﹍﹎.DS_Store
+  3│  ProjectA/.bowerrc                         ┊﹍﹎.bowerrc
+  4│  ProjectA/.git                             ┊﹍﹎.git
+  5│  ProjectA/.git/COMMIT_EDITMSG              ┊    ┊﹍﹎COMMIT_EDITMSG
+  6│  ProjectA/.git/HEAD                        ┊    ┊﹍﹎HEAD
+  7│  ProjectA/.git/ORIG_HEAD                   ┊    ┊﹍﹎ORIG_HEAD
+  8│  ProjectA/.git/config                      ┊    ┊﹍﹎config
+  9│  ProjectA/.git/description                 ┊    ┊﹍﹎description
+ 10│  ProjectA/.git/hooks                       ┊    ┊﹍﹎hooks
+ 11│  ProjectA/.git/index                       ┊    ┊﹍﹎index
+ 12│  ProjectA/.git/info                        ┊    ┊﹍﹎info
+ 13│  ProjectA/.git/logs                        ┊    ┊﹍﹎logs
+ 14│  ProjectA/.git/objects                     ┊    ┊﹍﹎objects
+ 15│  ProjectA/.git/refs                        ┊    ┊﹍﹎refs
+ 16│  ProjectA/.gitignore                       ┊﹍﹎.gitignore
+ 17│  ProjectA/Gruntfile.js                     ┊﹍﹎Gruntfile.js
+ 18│  ProjectA/README.md                        ┊﹍﹎README.md
+ 19│  ProjectA/bower.json                       ┊﹍﹎bower.json
+ 20│  ProjectA/dist                             ┊﹍﹎dist
+ 21│  ProjectA/dist/css                         ┊    ┊﹍﹎css
+ 22│  ProjectA/dist/css/.DS_Store               ┊    ┊    ┊﹍﹎.DS_Store
+ 23│  ProjectA/dist/css/fonts                   ┊    ┊    ┊﹍﹎fonts
+ 24│  ProjectA/dist/css/fonts/glyphicon...      ┊    ┊    ┊    ┊﹍﹎glyphicons-halflings-regular.eot
+ 25│  ProjectA/dist/css/fonts/glyphicon...      ┊    ┊    ┊    ┊﹍﹎glyphicons-halflings-regular.svg
+ 26│  ProjectA/dist/css/fonts/glyphicon...      ┊    ┊    ┊    ┊﹍﹎glyphicons-halflings-regular.ttf
+ 27│  ProjectA/dist/css/fonts/glyphicon...      ┊    ┊    ┊    ┊﹍﹎glyphicons-halflings-regular.woff
+ 28│  ProjectA/dist/css/fonts/glyphicon...      ┊    ┊    ┊    ┊﹍﹎glyphicons-halflings-regular.woff2
+ 29│  ProjectA/dist/css/pages                   ┊    ┊    ┊﹍﹎pages
+ 30│  ProjectA/dist/css/pages/.DS_Store         ┊    ┊    ┊    ┊﹍﹎.DS_Store
+ 31│  ProjectA/dist/css/pages/img               ┊    ┊    ┊    ┊﹍﹎img
+ 32│  ProjectA/dist/css/pages/img/diy           ┊    ┊    ┊    ┊    ┊﹍﹎diy
+ 33│  ProjectA/dist/css/pages/img/diy/1...      ┊    ┊    ┊    ┊    ┊    ┊﹍﹎1_close.png
+ 34│  ProjectA/dist/css/pages/img/diy/1...      ┊    ┊    ┊    ┊    ┊    ┊﹍﹎1_open.png
+ 35│  ProjectA/dist/css/pages/img/diy/2...      ┊    ┊    ┊    ┊    ┊    ┊﹍﹎2.png
+ 36│  ProjectA/dist/css/pages/img/diy/3...      ┊    ┊    ┊    ┊    ┊    ┊﹍﹎3.png
+ 37│  ProjectA/dist/css/pages/img/diy/4...      ┊    ┊    ┊    ┊    ┊    ┊﹍﹎4.png
+ 38│  ProjectA/dist/css/pages/img/diy/5...      ┊    ┊    ┊    ┊    ┊    ┊﹍﹎5.png
+ 39│  ProjectA/dist/css/pages/img/diy/6...      ┊    ┊    ┊    ┊    ┊    ┊﹍﹎6.png
+ 40│  ProjectA/dist/css/pages/img/diy/7...      ┊    ┊    ┊    ┊    ┊    ┊﹍﹎7.png
+ 41│  ProjectA/dist/css/pages/img/diy/8...      ┊    ┊    ┊    ┊    ┊    ┊﹍﹎8.png
+ 42│  ProjectA/dist/css/pages/img/diy/9...      ┊    ┊    ┊    ┊    ┊    ┊﹍﹎9.png
+ 43│  ProjectA/dist/css/pages/img/line_...      ┊    ┊    ┊    ┊    ┊﹍﹎line_conn.gif
+ 44│  ProjectA/dist/css/pages/img/loadi...      ┊    ┊    ┊    ┊    ┊﹍﹎loading.gif
+ 45│  ProjectA/dist/css/pages/img/zTree...      ┊    ┊    ┊    ┊    ┊﹍﹎zTreeStandard.gif
+ 46│  ProjectA/dist/css/pages/img/zTree...      ┊    ┊    ┊    ┊    ┊﹍﹎zTreeStandard.png
+ 47│  ProjectA/dist/css/pages/nxdc.css          ┊    ┊    ┊    ┊﹍﹎nxdc.css
+ 48│  ProjectA/dist/imgs                        ┊    ┊﹍﹎imgs
+ 49│  ProjectA/dist/imgs/bg.jpg                 ┊    ┊    ┊﹍﹎bg.jpg
+ 50│  ProjectA/dist/imgs/logo.png               ┊    ┊    ┊﹍﹎logo.png
+ 51│  ProjectA/dist/js                          ┊    ┊﹍﹎js
+ 52│  ProjectA/dist/js/index.js                 ┊    ┊    ┊﹍﹎index.js
+ 53│  ProjectA/dist/js/index.js.map             ┊    ┊    ┊﹍﹎index.js.map
+ 54│  ProjectA/dist/lib                         ┊    ┊﹍﹎lib
+ 55│  ProjectA/dist/nxdc.html                   ┊    ┊﹍﹎nxdc.html
+ 56│  ProjectA/dist/partials                    ┊    ┊﹍﹎partials
+ 57│  ProjectA/dist/partials/ack.html           ┊    ┊    ┊﹍﹎ack.html
+ 58│  ProjectA/dist/partials/browser.html       ┊    ┊    ┊﹍﹎browser.html
+ 59│  ProjectA/dist/partials/button.html        ┊    ┊    ┊﹍﹎button.html
+ 60│  ProjectA/dist/partials/custom.html        ┊    ┊    ┊﹍﹎custom.html
+ 61│  ProjectA/dist/partials/demo.html          ┊    ┊    ┊﹍﹎demo.html
+ 62│  ProjectA/dist/partials/dl.html            ┊    ┊    ┊﹍﹎dl.html
+ 63│  ProjectA/dist/partials/form.html          ┊    ┊    ┊﹍﹎form.html
+ 64│  ProjectA/dist/partials/grid.html          ┊    ┊    ┊﹍﹎grid.html
+ 65│  ProjectA/dist/partials/js-bread.h...      ┊    ┊    ┊﹍﹎js-bread.html
+ 66│  ProjectA/dist/partials/js-dialog....      ┊    ┊    ┊﹍﹎js-dialog.html
+ 67│  ProjectA/dist/partials/js-drop.html       ┊    ┊    ┊﹍﹎js-drop.html
+ 68│  ProjectA/dist/partials/js-page.html       ┊    ┊    ┊﹍﹎js-page.html
+ 69│  ProjectA/dist/partials/js-table.h...      ┊    ┊    ┊﹍﹎js-table.html
+ 70│  ProjectA/dist/partials/js-tabs.html       ┊    ┊    ┊﹍﹎js-tabs.html
+ 71│  ProjectA/dist/partials/js-warning...      ┊    ┊    ┊﹍﹎js-warning.html
+ 72│  ProjectA/dist/partials/overview.h...      ┊    ┊    ┊﹍﹎overview.html
+ 73│  ProjectA/dist/partials/pic.html           ┊    ┊    ┊﹍﹎pic.html
+ 74│  ProjectA/dist/partials/table.html         ┊    ┊    ┊﹍﹎table.html
+ 75│  ProjectA/dist/partials/temp.html          ┊    ┊    ┊﹍﹎temp.html
+ 76│  ProjectA/dist/temp.html                   ┊    ┊﹍﹎temp.html
+ 77│  ProjectA/grunt.js                         ┊﹍﹎grunt.js
+ 78│  ProjectA/html                             ┊﹍﹎html
+ 79│  ProjectA/html/nxdc.html                   ┊    ┊﹍﹎nxdc.html
+ 80│  ProjectA/html/partials                    ┊    ┊﹍﹎partials
+ 81│  ProjectA/html/partials/ack.html           ┊    ┊    ┊﹍﹎ack.html
+ 82│  ProjectA/html/partials/browser.html       ┊    ┊    ┊﹍﹎browser.html
+ 83│  ProjectA/html/partials/button.html        ┊    ┊    ┊﹍﹎button.html
+ 84│  ProjectA/html/partials/custom.html        ┊    ┊    ┊﹍﹎custom.html
+ 85│  ProjectA/html/partials/demo.html          ┊    ┊    ┊﹍﹎demo.html
+ 86│  ProjectA/html/partials/dl.html            ┊    ┊    ┊﹍﹎dl.html
+ 87│  ProjectA/html/partials/form.html          ┊    ┊    ┊﹍﹎form.html
+ 88│  ProjectA/html/partials/grid.html          ┊    ┊    ┊﹍﹎grid.html
+ 89│  ProjectA/html/partials/js-alert.h...      ┊    ┊    ┊﹍﹎js-alert.html
+ 90│  ProjectA/html/partials/js-bread.h...      ┊    ┊    ┊﹍﹎js-bread.html
+ 91│  ProjectA/html/partials/js-confirm...      ┊    ┊    ┊﹍﹎js-confirm.html
+ 92│  ProjectA/html/partials/js-drop.html       ┊    ┊    ┊﹍﹎js-drop.html
+ 93│  ProjectA/html/partials/js-gallery...      ┊    ┊    ┊﹍﹎js-gallery.html
+ 94│  ProjectA/html/partials/js-page.html       ┊    ┊    ┊﹍﹎js-page.html
+ 95│  ProjectA/html/partials/js-progres...      ┊    ┊    ┊﹍﹎js-progressbar.html
+ 96│  ProjectA/html/partials/js-prompt....      ┊    ┊    ┊﹍﹎js-prompt.html
+ 97│  ProjectA/html/partials/js-search....      ┊    ┊    ┊﹍﹎js-search.html
+ 98│  ProjectA/html/partials/js-sinput....      ┊    ┊    ┊﹍﹎js-sinput.html
+ 99│  ProjectA/html/partials/js-table.h...      ┊    ┊    ┊﹍﹎js-table.html
+100│  ProjectA/html/partials/js-tabs.html       ┊    ┊    ┊﹍﹎js-tabs.html
+101│  ProjectA/html/partials/js-tip.html        ┊    ┊    ┊﹍﹎js-tip.html
+102│  ProjectA/html/partials/js-tree.html       ┊    ┊    ┊﹍﹎js-tree.html
+103│  ProjectA/html/partials/js-vList.h...      ┊    ┊    ┊﹍﹎js-vList.html
+104│  ProjectA/html/partials/js-warning...      ┊    ┊    ┊﹍﹎js-warning.html
+105│  ProjectA/html/partials/overview.h...      ┊    ┊    ┊﹍﹎overview.html
+106│  ProjectA/html/partials/table.html         ┊    ┊    ┊﹍﹎table.html
+107│  ProjectA/html/partials/temp.html          ┊    ┊    ┊﹍﹎temp.html
+108│  ProjectA/html/temp.html                   ┊    ┊﹍﹎temp.html
+109│  ProjectA/imgs                             ┊﹍﹎imgs
+110│  ProjectA/imgs/bg.jpg                      ┊    ┊﹍﹎bg.jpg
+111│  ProjectA/imgs/cover1.jpg                  ┊    ┊﹍﹎cover1.jpg
+112│  ProjectA/imgs/cover2.jpg                  ┊    ┊﹍﹎cover2.jpg
+113│  ProjectA/imgs/cover3.jpg                  ┊    ┊﹍﹎cover3.jpg
+114│  ProjectA/imgs/cover4.jpg                  ┊    ┊﹍﹎cover4.jpg
+115│  ProjectA/imgs/list1.jpg                   ┊    ┊﹍﹎list1.jpg
+116│  ProjectA/imgs/list2.jpg                   ┊    ┊﹍﹎list2.jpg
+117│  ProjectA/imgs/list3.jpg                   ┊    ┊﹍﹎list3.jpg
+118│  ProjectA/imgs/list4.jpg                   ┊    ┊﹍﹎list4.jpg
+119│  ProjectA/imgs/list5.jpg                   ┊    ┊﹍﹎list5.jpg
+120│  ProjectA/imgs/list6.jpg                   ┊    ┊﹍﹎list6.jpg
+121│  ProjectA/imgs/logo.png                    ┊    ┊﹍﹎logo.png
+122│  ProjectA/imgs/show1.jpg                   ┊    ┊﹍﹎show1.jpg
+123│  ProjectA/imgs/show10.jpg                  ┊    ┊﹍﹎show10.jpg
+124│  ProjectA/imgs/show11.jpg                  ┊    ┊﹍﹎show11.jpg
+125│  ProjectA/imgs/show12.jpg                  ┊    ┊﹍﹎show12.jpg
+126│  ProjectA/imgs/show13.jpg                  ┊    ┊﹍﹎show13.jpg
+127│  ProjectA/imgs/show14.jpg                  ┊    ┊﹍﹎show14.jpg
+128│  ProjectA/imgs/show2.jpg                   ┊    ┊﹍﹎show2.jpg
+129│  ProjectA/imgs/show3.jpg                   ┊    ┊﹍﹎show3.jpg
+130│  ProjectA/imgs/show4.jpg                   ┊    ┊﹍﹎show4.jpg
+131│  ProjectA/imgs/show5.jpg                   ┊    ┊﹍﹎show5.jpg
+132│  ProjectA/imgs/show6.jpg                   ┊    ┊﹍﹎show6.jpg
+133│  ProjectA/imgs/show7.jpg                   ┊    ┊﹍﹎show7.jpg
+134│  ProjectA/imgs/show8.jpg                   ┊    ┊﹍﹎show8.jpg
+135│  ProjectA/imgs/show9.jpg                   ┊    ┊﹍﹎show9.jpg
+136│  ProjectA/js-page.html                     ┊﹍﹎js-page.html
+137│  ProjectA/lib                              ┊﹍﹎lib
+138│  ProjectA/lib/NXDC                         ┊    ┊﹍﹎NXDC
+139│  ProjectA/lib/angular                      ┊    ┊﹍﹎angular
+140│  ProjectA/lib/bootstrap                    ┊    ┊﹍﹎bootstrap
+141│  ProjectA/lib/code-prettify                ┊    ┊﹍﹎code-prettify
+142│  ProjectA/lib/highlight                    ┊    ┊﹍﹎highlight
+143│  ProjectA/lib/jquery                       ┊    ┊﹍﹎jquery
+144│  ProjectA/lib/jquery1.9                    ┊    ┊﹍﹎jquery1.9
+145│  ProjectA/lib/requirejs                    ┊    ┊﹍﹎requirejs
+146│  ProjectA/lib/select2v4                    ┊    ┊﹍﹎select2v4
+147│  ProjectA/lib/ztree                        ┊    ┊﹍﹎ztree
+148│  ProjectA/node_modules                     ┊﹍﹎node_modules
+149│  ProjectA/node_modules/.bin                ┊    ┊﹍﹎.bin
+150│  ProjectA/node_modules/bower               ┊    ┊﹍﹎bower
+151│  ProjectA/node_modules/grunt               ┊    ┊﹍﹎grunt
+152│  ProjectA/node_modules/grunt-cli           ┊    ┊﹍﹎grunt-cli
+153│  ProjectA/node_modules/grunt-contr...      ┊    ┊﹍﹎grunt-contrib-clean
+154│  ProjectA/node_modules/grunt-contr...      ┊    ┊﹍﹎grunt-contrib-concat
+155│  ProjectA/node_modules/grunt-contr...      ┊    ┊﹍﹎grunt-contrib-copy
+156│  ProjectA/node_modules/grunt-contr...      ┊    ┊﹍﹎grunt-contrib-cssmin
+157│  ProjectA/node_modules/grunt-contr...      ┊    ┊﹍﹎grunt-contrib-watch
+158│  ProjectA/node_modules/grunt-requi...      ┊    ┊﹍﹎grunt-requirejs
+159│  ProjectA/package.json                     ┊﹍﹎package.json
+160│  ProjectA/skeleton.json                    ┊﹍﹎skeleton.json
+161│  ProjectA/src                              ┊﹍﹎src
+162│  ProjectA/src/.DS_Store                    ┊    ┊﹍﹎.DS_Store
+163│  ProjectA/src/css                          ┊    ┊﹍﹎css
+164│  ProjectA/src/css/fonts                    ┊    ┊    ┊﹍﹎fonts
+165│  ProjectA/src/css/global                   ┊    ┊    ┊﹍﹎global
+166│  ProjectA/src/css/global/reset.css         ┊    ┊    ┊    ┊﹍﹎reset.css
+167│  ProjectA/src/css/modules                  ┊    ┊    ┊﹍﹎modules
+168│  ProjectA/src/css/modules/docs.css         ┊    ┊    ┊    ┊﹍﹎docs.css
+169│  ProjectA/src/css/modules/drop-cus...      ┊    ┊    ┊    ┊﹍﹎drop-custom.css
+170│  ProjectA/src/css/modules/nxdc-bod...      ┊    ┊    ┊    ┊﹍﹎nxdc-body.css
+171│  ProjectA/src/css/modules/nxdc-foo...      ┊    ┊    ┊    ┊﹍﹎nxdc-footer.css
+172│  ProjectA/src/css/modules/nxdc-hea...      ┊    ┊    ┊    ┊﹍﹎nxdc-header.css
+173│  ProjectA/src/css/pages                    ┊    ┊    ┊﹍﹎pages
+174│  ProjectA/src/css/pages/nxdc.css           ┊    ┊    ┊    ┊﹍﹎nxdc.css
+175│  ProjectA/src/js                           ┊    ┊﹍﹎js
+176│  ProjectA/src/js/config.js                 ┊    ┊    ┊﹍﹎config.js
+177│  ProjectA/src/js/index.js                  ┊    ┊    ┊﹍﹎index.js
+178│  ProjectA/src/js/kernel                    ┊    ┊    ┊﹍﹎kernel
+179│  ProjectA/src/js/kernel/core.js            ┊    ┊    ┊    ┊﹍﹎core.js
+180│  ProjectA/src/js/model                     ┊    ┊    ┊﹍﹎model
+181│  ProjectA/src/js/model/Note.js             ┊    ┊    ┊    ┊﹍﹎Note.js
+182│  ProjectA/src/js/model/parser.js           ┊    ┊    ┊    ┊﹍﹎parser.js
+183│  ProjectA/src/js/model/static.js           ┊    ┊    ┊    ┊﹍﹎static.js
+184│  ProjectA/src/js/utils                     ┊    ┊    ┊﹍﹎utils
+185│  ProjectA/src/js/utils/http.js             ┊    ┊    ┊    ┊﹍﹎http.js
+186│  ProjectA/src/js/view                      ┊    ┊    ┊﹍﹎view
+187│  ProjectA/src/js/view/page-nxdc.js         ┊    ┊    ┊    ┊﹍﹎page-nxdc.js
+188│  ProjectA/src/js/view/pieces               ┊    ┊    ┊    ┊﹍﹎pieces
+189│  ProjectA/src/js/view/pieces/confi...      ┊    ┊    ┊    ┊    ┊﹍﹎config-sub-piece.js
+190│  ProjectA/src/js/view/pieces/copyr...      ┊    ┊    ┊    ┊    ┊﹍﹎copyright-sub-piece.js
+191│  ProjectA/src/js/view/pieces/globa...      ┊    ┊    ┊    ┊    ┊﹍﹎global-piece-header.js
+192│  ProjectA/src/js/view/pieces/globa...      ┊    ┊    ┊    ┊    ┊﹍﹎global-piece-main.js
+193│  ProjectA/src/js/view/pieces/home-...      ┊    ┊    ┊    ┊    ┊﹍﹎home-sub-piece.js
+194│  ProjectA/src/js/view/pieces/segs          ┊    ┊    ┊    ┊    ┊﹍﹎segs
+195│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊﹍﹎elements
+196│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊    ┊﹍﹎comb-tab.js
+197│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊    ┊﹍﹎comp-menu.js
+198│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊    ┊﹍﹎demo-alert.js
+199│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊    ┊﹍﹎demo-bread.js
+200│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊    ┊﹍﹎demo-confirm.js
+201│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊    ┊﹍﹎demo-drop.js
+202│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊    ┊﹍﹎demo-gallery.js
+203│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊    ┊﹍﹎demo-page.js
+204│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊    ┊﹍﹎demo-progressbar.js
+205│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊    ┊﹍﹎demo-prompt.js
+206│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊    ┊﹍﹎demo-search.js
+207│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊    ┊﹍﹎demo-sinput.js
+208│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊    ┊﹍﹎demo-table.js
+209│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊    ┊﹍﹎demo-tabs.js
+210│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊    ┊﹍﹎demo-tip.js
+211│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊    ┊﹍﹎demo-tree.js
+212│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊    ┊﹍﹎demo-vList.js
+213│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊﹍﹎seg-download.js
+214│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊﹍﹎seg-head.js
+215│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊﹍﹎seg-showcase.js
+216│  ProjectA/src/js/view/pieces/segs/...      ┊    ┊    ┊    ┊    ┊    ┊﹍﹎seg-split.js
+217│  ProjectA/test                             ┊﹍﹎test
+218│  ProjectA/test/report                      ┊    ┊﹍﹎report
+219│  ProjectA/test/spec                        ┊    ┊﹍﹎spec		   	
+</code></pre>
+</div>

@@ -1,0 +1,102 @@
+<div class="pa-header">
+<h2>组合选择器</h2>
+</div>
+<h4 class="yellow">定义 & 应用场景</h4>
+<p>组合选择控件适用于从广泛的大类目中精选更细分的条件，用户可选的大类目及细分条件数量不限。使用该控件可以根据各项组合筛选出符合条件的目标。
+</p>
+<h4 class="lead">
+	展示如下：
+</h4>
+<div class="bs-example">
+	<div class="ndp-blend-wrapper"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-blend-wrapper&quot; &gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+var the = $(".ndp-blend-wrapper").blend({
+	ajaxOptions: {
+		type: "GET",
+		url: "../data/blend.json",
+		xhrFields: { withCredentials: true}
+	},				
+	recdata:rec,//推荐下拉菜单数据，点击手型
+	reajaxOptions:{//点击手型，出现下拉菜单里面的搜索
+		type: "GET",
+		url: "../data/blend.json",
+		xhrFields: { withCredentials: true}				
+	},
+	//粘帖事件，配置的回调
+	pastecallback:function(key,dropup,dat,Tool){//dom 是 选中数据显示的列表，dat 是选中 显示的数据
+		$.ajax({        // key 输入的关键字信息
+			type: "GET",
+			url: (val%2==0)?"../data/paste.json":"../data/paste2.json", //模拟随机数据
+			xhrFields: { withCredentials: true},
+			data:{key:key}
+		}).then(function(result){
+			if(typeof(result)=="string") result = JSON.parse(result);
+			result.data.forEach(function(item,index){
+				//返回数据的处理  数据格式见 paste.json
+				var li = dropup.find("li[data-path="+item.path.join('#')+"]");
+				if(li.length){//返回的数据 分类条目 已经存在了，
+					//只需在这个 条目下加一个tag即可   一步
+					var box = li.find(".tag-box");//存放tag的 盒子
+					var serial = parseInt(li.data("serial"));// 第几个分类， 路径进行分类
+					//Tool.tag() 会创建一个函数，item是数据， serial 是第几个分类
+					box.append(Tool.tag(item,serial));// 显示在DOM 上
+					//下面加入数据中
+					dat[serial].tags.push({name:dat.name,id:dat.id,audience_size:dat.size});			
+				}else{//返回的数据 分类条目 还不存在
+					//需要先加一个条目，再在这个条目下加一个tag  两步
+					item.tags = [item.name];
+					//Tool.addClassify 会创建一个分类条目，并添加一个tag 如果是时间，则会添加两个下拉菜单
+					Tool.addClassify(item,dat.length,dropup);// 出现在DOM上
+					dat.push(item);	//加入数据中									
+				}
+			});
+		});
+	},
+	seldata:[
+			{path:["个人情况","学历","教育程度"],
+			 type:"education_statuses",
+			 tags:[{name:"硕士学位",id:"11",audience_size: 10000},
+				   {name:"本科学历",id:22,audience_size: 10032},
+				   {name:"教育学硕士",id:33,audience_size: 21000}]
+			 },
+			 {path:["兴趣", "健身养生"],
+			  type:"interests",
+			  tags:[{name:"健身房",id:1,audience_size: 10000},
+					{name:"跑步",id:2,audience_size: 10000},
+					{name:"登山",id:3,audience_size: 10000},
+					{name:"马拉松",id:4,audience_size: 10000},
+					{name:"铅球",id:5,audience_size: 10000},
+					{name:"羽毛球",id:6,audience_size: 10000},
+					{name:"素食主义者",id:7,audience_size: 10000},
+					{name:"环保主义者",id:8,audience_size: 10000}
+				   ]
+			 },
+			 {path:["个人情况", "学历","大学就读年份"],
+			  type:"education_statuses",// 时间范围选择
+			  start:2016,
+			  end:2020
+			 }
+			]
+}).on("TAG_RESIGN",function(e){// 点击tag前面的x 删除一个tag
+	console.log(e.originalEvent.data); //删除的数据
+}).on("SERIAL_RESIGN",function(e){//删除一行
+	console.log(e.originalEvent.data); //删除的数据
+}).on("ITEM_CLICK",function(e){//下拉列表里 点击一行的数据
+	console.log(e.originalEvent.data);
+});
+	
+			
+the.seldata();//获得选择的数据，即出现在输入框上面选中的数据
+the.updateOption(o);// 更新 reajaxOption 配置 用于搜索	
+//o  数据格式 于 reajaxOption 配置类似								
+		</code>
+	</pre>
+</div>

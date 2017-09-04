@@ -1,0 +1,38 @@
+<div class="pa-header">
+	<h3>概览</h3>
+</div>
+<h3 class="lead">为了确保组件显示的正确，以下文档格式是必须的</h3>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code>
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-cn&quot;&gt;
+  ...
+&lt;/html&gt;
+		</code>
+	</pre>	
+</div>
+<h3 class="lead">为了确保适当的绘制和触屏缩放，需要在&lt;head&gt;之中添加viewport元数据标签</h3>
+<div class="highlight">
+	<pre class="prettyprint">
+	<code>
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;renderer&quot; content=&quot;webkit&quot;&gt;&lt;!--360 浏览器支持--&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge,chrome=1&quot; /&gt;
+    &lt;meta content=&quot;width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=1;&quot; name=&quot;viewport&quot; /&gt;
+    &lt;meta content=&quot;yes&quot; name=&quot;apple-mobile-web-app-capable&quot; /&gt;
+    &lt;meta content=&quot;black&quot; name=&quot;apple-mobile-web-app-status-bar-style&quot; /&gt;
+    &lt;meta name=&quot;format-detection&quot; content=&quot;telephone=yes&quot; /&gt;
+    &lt;meta content=&quot;false&quot; name=&quot;twcClient&quot; id=&quot;twcClient&quot; /&gt;
+	&lt;!--[if lt IE 9]&gt;
+		&lt;script src=&quot;http://html5shim.googlecode.com/svn/trunk/html5.js&quot;&gt;&lt;/script&gt;
+		&lt;script src=&quot;//cdn.bootcss.com/respond.js/1.4.2/respond.min.js&quot;&gt;&lt;/script&gt;
+	&lt;![endif]--&gt;
+&lt;/head&gt;		
+	</code>
+	</pre>
+</div>
+<script type="text/javascript">
+	prettyPrint();//渲染 代码 
+</script>

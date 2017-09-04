@@ -1,0 +1,107 @@
+<div class="pa-header">
+<h2>侧边栏菜单<span class="js-specific">vList2.js</span></h2>
+</div>
+<h4 class="lead">
+	vList2--折叠/展开功能
+</h4>
+<div class="bs-example">
+		<button class="btn btn-warning" id="ok">收起/展开</button>
+		<div class="ndp-vList2-wrapper" name="plain" style="margin-top:-60px;left:150px"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+&lt;div class="ndp-vList2-wrapper" name="plain"&gt;&lt;/div&gt;	
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+var vl = $(".ndp-vList2-wrapper[name=plain]").vList2({
+	data:[{label:"广告投放",
+		   icon:"&lt;i class='glyphicon glyphicon-home'&gt;&lt;/i&gt;",
+		   sub:[
+			{label:"河北"},
+			{label:"河南"},
+			{label:"陕西"},
+			{label:"北京"}
+		 ]},
+		 {label:"资源监控",icon:"&lt;i class='glyphicon glyphicon-book'&gt;&lt;/i&gt;",
+		  sub:[
+				{label:"法国"},
+				{label:"意大利"},
+				{label:"德国"},
+				{label:"卢森堡"},
+				{label:"荷兰"}
+		 ]},
+		 {label:"美洲每周",icon:"&lt;i class='glyphicon glyphicon-knight'&gt;&lt;/i&gt;",
+		  sub:[
+				{label:"美国"},
+				{label:"加拿大"},
+				{label:"巴西"},
+				{label:"阿根廷"}
+		 ]}					  
+		]
+});
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("button#ok").click(function(){
+	vl.fold();
+});			
+		</code>
+	</pre>
+</div>
+
+<h4 class="lead">
+	vList2-- 支持图片格式的图标
+</h4>
+<div class="bs-example">
+		<button class="btn btn-warning" id="ok">收起/展开</button>
+		<div class="ndp-vList2-wrapper" name="plain" style="margin-top:-60px;left:150px"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+&lt;div class="ndp-vList2-wrapper" name="plain"&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+var vl = $(".ndp-vList2-wrapper[name=plain]").vList2({
+	data:[{label:"广告投放",
+		   icon:"&lt;i class='glyphicon glyphicon-home'&gt;&lt;/i&gt;",
+		   sub:[
+			{label:"河北"},
+			{label:"河南"},
+			{label:"陕西"},
+			{label:"北京"}
+		 ]},
+		 {label:"资源监控",icon:"&lt;i class='glyphicon glyphicon-book'&gt;&lt;/i&gt;",
+		  sub:[
+				{label:"法国"},
+				{label:"意大利"},
+				{label:"德国"},
+				{label:"卢森堡"},
+				{label:"荷兰"}
+		 ]},
+		 {label:"美洲每周",icon:"&lt;i class='glyphicon glyphicon-knight'&gt;&lt;/i&gt;",
+		  sub:[
+				{label:"美国"},
+				{label:"加拿大"},
+				{label:"巴西"},
+				{label:"阿根廷"}
+		 ]}					  
+		]
+});
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("button#ok").click(function(){
+	vl.fold();
+});			
+		</code>
+	</pre>
+</div>
+<script src="../../lib/NDPUI/dist/com/splitjs.js"></script>
