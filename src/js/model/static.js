@@ -10,17 +10,24 @@ define(function() {
 
     Static.TABS = [
         [
-            { name: "简介", part: "ack" },
-            { name: "项目结构", part: "dl" },
-            { name: "基本模板", part: "temp" },
-            { name: "浏览器支持", part: "browser" }
+            {
+                name: "简介",
+                id: "ack",
+                part: "ack" ,
+                submenu: [
+                    { name: "简介", part: "ack" },
+                    { name: "项目结构", part: "dl" },
+                    { name: "基本模板", part: "temp" },
+                    { name: "浏览器支持", part: "browser" }
+                ]
+            }
         ],
         [
 
-            { name: "如何使用", part: "js-start", id:"start", submenu:[] },
+            { name: "如何使用", part: "js-start", id: "start", submenu: [] },
             {
                 name: "导航类",
-                id:"nav",
+                id: "nav",  
                 submenu: [
                     { name: "面包屑", part: "js-bread" },
                     { name: "Tabs", part: "js-tabs" },
@@ -32,7 +39,7 @@ define(function() {
                 ]
             }, {
                 name: "视图类",
-                id:"view",
+                id: "view",
                 submenu: [
                     { name: "表格", part: "table" },
                     { name: "树状二维表1", part: "js-treable" },
@@ -43,7 +50,7 @@ define(function() {
                 ]
             }, {
                 name: "表格类",
-                id:"table",
+                id: "table",
                 submenu: [
                     { name: "下拉菜单", part: "js-drop" },
                     { name: "文字下拉菜单", part: "js-drop2" },
@@ -56,7 +63,7 @@ define(function() {
                 ]
             }, {
                 name: "反馈类",
-                id:"feedback",
+                id: "feedback",
                 submenu: [
                     { name: "Tip", part: "js-tip" },
                     { name: "Alert", part: "js-alert" },

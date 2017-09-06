@@ -16,9 +16,11 @@
 }
 
 h4.lead:nth-child(n + 1) {
-    margin-top: 50px;
+    margin-top: 30px;
     font-size: 16px;
-    color: #404952
+    color: #404952;
+    border-top: 1px solid #eee;
+    padding-top: 30px;
 }
 
 h4.lead {
@@ -65,6 +67,8 @@ h4.lead {
 
 
 
+
+
 /***
 树状二维表2  特殊处理
 ***/
@@ -92,6 +96,8 @@ h4.lead {
 
 
 
+
+
 /***
 **
 **/
@@ -103,6 +109,8 @@ h4.lead {
     /*  overflow-y: auto;*/
     /*  top:80px;*/
 }
+
+
 
 
 
@@ -193,6 +201,8 @@ h4.lead {
 
 
 
+
+
 /**
 ** 第二屏
 **/
@@ -200,8 +210,8 @@ h4.lead {
 .sec-wrapper {
     position: relative;
     height: 100%;
-    background-image: url(/imgs/bg_detail.png);
-    background-color: #f5fdfb;
+    background-image: url(../../../imgs/bg_detail.png);
+    background-color: #f6fbfc;
     background-repeat: no-repeat;
     background-position: left 84px;
 }
@@ -286,34 +296,31 @@ h4.lead {
 
 
 
+
+
 /***
 ** 包裹 tab 原件的 容器
 **/
 
 div.nxdc-config.container {
     position: relative;
-    height: calc(100% - 40px);
-    overflow-y: auto;
+    top: 0;
 }
 
 .nxdc-config div.row {
     position: relative;
-    padding-right: 1px;
-    /*  height: 100%;*/
-    min-height: -webkit-calc(100%);
-    min-height: -moz-calc(100%);
-    min-height: calc(100%);
-    overflow: hidden;
 }
 
 .nxdc-config div[data-combine="tab"]>.nav-wrapper {
     position: absolute;
     padding: 0;
     display: inline-block;
-    top: 0;
+    top: 80px;
     left: 0;
     background-color: #fff;
 }
+
+
 
 
 /**
@@ -330,16 +337,16 @@ ul.ndp-nav-tabs {
     padding: 25px 0;
 }
 
-li[role="presentation"] {
+.nav-wrapper li[role="presentation"] {
     padding: 0 30px 0 27px;
     border-left: 3px solid transparent;
 }
 
-li[role="presentation"]:hover a {
+.nav-wrapper li[role="presentation"]:hover a {
     color: #00b8d2;
 }
 
-li[role="presentation"]:hover {
+.nav-wrapper li[role="presentation"]:hover {
     background: #f7fdff;
     color: #00b8d2;
     border-left: 3px solid #00b8d2;
@@ -369,6 +376,7 @@ li[role="presentation"]:hover {
     cursor: pointer;
     margin: 0 30px;
     padding-left: 30px;
+    background-size: 50% 50%;
 }
 
 
@@ -393,11 +401,11 @@ li[role="presentation"]:hover {
 }
 
 .unexpand .menu_icon::after {
-    border-right: 0.4em solid;
+    border-left: .4em solid;
     border-top: .3em solid transparent;
     border-bottom: .3em solid transparent;
-    margin-left: 0;
-    right: 2px;
+    margin-right: 0;
+    right: -3px;
 }
 
 .icon_start::after,
@@ -406,26 +414,36 @@ li[role="presentation"]:hover {
 }
 
 .icon_start {
-    color: #000;
-    background: url(/imgs/icon2.png) 0 center no-repeat;
+    background: url(../../../imgs/icons/1.svg) -24px center no-repeat;
     margin: 0;
+    background-size: 50% 50%;
 }
 
 .icon_nav {
-    background: url(/imgs/icon3.png) no-repeat 0px center;
+    background: url(../../../imgs/icons/2.svg) -24px center no-repeat;
+    background-size: 50% 50%;
 }
 
 .icon_view {
-    background: url(/imgs/icon4.png) no-repeat 0px center;
+    background: url(../../../imgs/icons/3.svg) -24px center no-repeat;
+    background-size: 50% 50%;
 }
 
 .icon_table {
-    background: url(/imgs/icon1.png) no-repeat 0px center;
+    background: url(../../../imgs/icons/4.svg) -24px center no-repeat;
+    background-size: 50% 50%;
 }
 
 .icon_feedback {
-    background: url(/imgs/icon4.png) no-repeat 0px center;
+    background: url(../../../imgs/icons/5.svg) -24px center no-repeat;
+    background-size: 50% 50%;
 }
+
+.icon_ack {
+    background: url(../../../imgs/icons/6.svg) -24px center no-repeat;
+    background-size: 50% 50%;
+}
+
 
 
 
@@ -441,11 +459,14 @@ li[role="presentation"]:hover {
 div.tab-content {
     position: relative;
     display: inline-block;
-    background-color: #fff;
-    margin: 30px 0 0 230px;
-    padding: 20px 10px 10px 30px;
-    border: 1px solid #e3ebee;
+    padding: 30px 0 30px 30px;
     overflow-y: auto;
+}
+
+.tab-pane {
+    border: 1px solid #e3ebee;
+    background: #FFF;
+    padding: 30px;
 }
 
 ul.ndp-nav-tabs>li,
@@ -473,15 +494,14 @@ ul.ndp-nav-tabs>li.active>a:hover {
     margin: 0;
     border-width: 0;
     border-radius: 0;
-    border-left: 3px solid #ffbd0a;
+    border-left: none;
     line-height: 1.4em;
     color: black;
 }
 
 .pa-header {
     padding-bottom: 9px;
-    margin: 0 0 20px;
-    border-bottom: 1px solid #eee;
+    margin: 0;
 }
 
 .pa-header h3 {
@@ -496,6 +516,10 @@ ul.ndp-nav-tabs>li.active>a:hover {
 
 .tab-pane p {
     color: #89949d
+}
+
+.text-right {
+    text-align: right !important;
 }
 
 .bs-callout {
@@ -543,6 +567,8 @@ div.ndp-search-wrapper[name="mix"] {
 
 
 
+
+
 /****
 **
 *****/
@@ -567,7 +593,6 @@ div.ndp-search-wrapper[name="mix"] {
     text-align: center;
     background-color: #f5fdfb;
     padding: 85px 0 100px;
-    background-image: url(/imgs/support_bg_02.png);
     background-repeat: no-repeat;
     background-position: center 50px;
 }
@@ -575,7 +600,7 @@ div.ndp-search-wrapper[name="mix"] {
 .designer_wrapper {
     background-color: #67b1f3;
     color: #fff;
-    background-image: url(/imgs/support_bg_01.png);
+    background-image: url(../../../imgs/support_bg_01.png);
 }
 
 .feedback_wrapper {
@@ -596,10 +621,11 @@ div.ndp-search-wrapper[name="mix"] {
 
 .dever_wrapper .bg-img {
     position: absolute;
-    left: 90px;
-    bottom: -200px;
+    left: 30px;
+    bottom: -170px;
     z-index: 0;
     display: block;
+    max-width: 1100px;
 }
 
 .dever_wrapper .cont {
@@ -623,6 +649,7 @@ div.ndp-search-wrapper[name="mix"] {
     color: #333;
     text-decoration: none;
 }
+
 .feedback_wrapper .desc a:hover,
 .feedback_wrapper .desc a:active {
     text-decoration: none;
@@ -682,7 +709,7 @@ div.ndp-search-wrapper[name="mix"] {
     margin: 0 50px 0 0;
     border-radius: 4px;
     color: #3e4850;
-    height: 300px;
+    height: 310px;
     background: #f5fdfb;
 }
 
@@ -703,7 +730,7 @@ div.ndp-search-wrapper[name="mix"] {
     border-radius: 4px;
     text-align: left;
     background: #fff;
-    height: 100px;
+    height: 85px;
     width: 500px;
     margin: 0 auto 15px;
     box-shadow: 0px 0px 20px rgba(137, 148, 157, 0.3);
@@ -712,6 +739,7 @@ div.ndp-search-wrapper[name="mix"] {
 .feedback-list li .job_title {
     color: #88959e
 }
+
 .feedback-list li .email {
     font-size: 16px;
 }
@@ -733,4 +761,20 @@ div.ndp-search-wrapper[name="mix"] {
 .yellow {
     color: #ff6600;
     font-weight: 600;
+}
+
+.nav-wrapper .nav>li>a,
+.nav-wrapper .nav>li>a:focus,
+.nav-wrapper .nav>li>a:hover {
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+}
+
+
+
+.nav-wrapper ul.ndp-nav-tabs>li,
+.nav-wrapper ul.ndp-nav-tabs>li.active {
+    border-left: 3px solid transparent;
+    padding: 0 30px 0 27px;
 }

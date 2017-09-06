@@ -213,10 +213,10 @@ define(['static','http','note',
 				case Note.STATIC_HTML:
 					var na = _this.currentPart;//模板的名字
 					if(na && $(_this._SUB_DOM2).find(".tab-"+na).length){
-						$(_this._SUB_DOM2).find(".tab-"+na).html(msg.data||noti.data);//填充 返回的dom 模板
+						$(_this._SUB_DOM2).find(".tab-"+na).addClass("active").html(msg.data||noti.data);//填充 返回的dom 模板
 
 					}else{
-						$(_this._SUB_DOM2).children().eq(0).html(msg.data||noti.data);//填充 返回的dom 模板
+						$(_this._SUB_DOM2).children().eq(0).addClass("active").html(msg.data||noti.data);//填充 返回的dom 模板
 
 					}
 					dom.live(na,_this._tabIndex);

@@ -26,7 +26,7 @@ body {
 	outline: none;
 }
 ::-webkit-scrollbar {
-    width: 6px!important;
+    width: 10px!important;
     height: 6px;
 }
 scrollbar {
