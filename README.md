@@ -1,7 +1,1 @@
-## skeleton
- 
-`项目名称NDPUI`
-
-# description
-
-undefined
+Please visit https://feduikit.github.io/nxdc-component/dist/index.html 
