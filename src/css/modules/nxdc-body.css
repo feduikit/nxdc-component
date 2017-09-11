@@ -66,6 +66,13 @@ h4.lead {
 
 
 
+.fork_github {
+    position: absolute;
+    left: 0;
+    top: 130px;
+    width: 72px;
+    z-index: 111
+}
 
 
 
@@ -80,6 +87,7 @@ h4.lead {
     overflow-x: auto;
     margin-bottom: 20px;
 }
+
 
 
 
@@ -126,6 +134,7 @@ h4.lead {
 
 
 
+
 /**
 ** 第一屏
 **/
@@ -154,13 +163,14 @@ h4.lead {
 
 .home-wrapper .btn-list li {
     float: left;
-    width: 140px;
+    width: 160px;
     text-align: center;
     background: #00b8d2;
     color: #fff;
     margin-right: 20px;
     border-radius: 3px;
     cursor: pointer;
+    font-size: 16px;
 }
 
 .home-wrapper .btn-list li:hover {
@@ -188,19 +198,53 @@ h4.lead {
 }
 
 
+.home-wrapper .img-bg {
+    position: relative;
+    margin-top: 132px;
+    max-width: 1300px;
+    width: 100%;
+    margin: 132px auto;
+}
 
 
 
 
 
+.highlight {
+    padding: 9px 14px;
+    margin-bottom: 14px;
+    background-color: #f7f7f9;
+    border: 1px solid #e1e1e8;
+    border-radius: 0
+}
 
+.highlight pre {
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    background-color: transparent;
+    border: 0;
+    white-space: nowrap
+}
 
+.highlight pre code {
+    font-size: inherit;
+    color: #333
+}
 
+.highlight pre .lineno {
+    display: inline-block;
+    width: 22px;
+    padding-right: 5px;
+    margin-right: 10px;
+    text-align: right;
+    color: #bebec5
+}
 
-
-
-
-
+.highlight pre.prettyprint {
+    border: 0;
+    padding: 0;
+}
 
 
 /**
@@ -213,7 +257,7 @@ h4.lead {
     background-image: url(../../../imgs/bg_detail.png);
     background-color: #f6fbfc;
     background-repeat: no-repeat;
-    background-position: left 84px;
+    background-position: center 235px
 }
 
 .nxdc-kitchen {
@@ -227,12 +271,7 @@ h4.lead {
 
 
 
-.home-wrapper .img-bg {
-    position: relative;
-    margin-top: 132px;
-    max-width: 1240px;
-    margin-left: -50px;
-}
+
 
 .nxdc-kitchen>.row {
     position: relative;
@@ -298,6 +337,7 @@ h4.lead {
 
 
 
+
 /***
 ** 包裹 tab 原件的 容器
 **/
@@ -323,6 +363,7 @@ div.nxdc-config.container {
 
 
 
+
 /**
 **左侧菜单列表
 **/
@@ -342,10 +383,12 @@ ul.ndp-nav-tabs {
     border-left: 3px solid transparent;
 }
 
+.nav-wrapper li[role="presentation"].active a,
 .nav-wrapper li[role="presentation"]:hover a {
     color: #00b8d2;
 }
 
+.nav-wrapper li[role="presentation"].active,
 .nav-wrapper li[role="presentation"]:hover {
     background: #f7fdff;
     color: #00b8d2;
@@ -443,6 +486,7 @@ ul.ndp-nav-tabs {
     background: url(../../../imgs/icons/6.svg) -24px center no-repeat;
     background-size: 50% 50%;
 }
+
 
 
 
@@ -569,6 +613,7 @@ div.ndp-search-wrapper[name="mix"] {
 
 
 
+
 /****
 **
 *****/
@@ -587,11 +632,18 @@ div.ndp-search-wrapper[name="mix"] {
     margin-top: 100px;
 }
 
+
+.support-wrapper small {
+    display: block;
+    text-align: left;
+    padding-left: 4px;
+}
+
 .dever_wrapper,
 .designer_wrapper,
 .feedback_wrapper {
     text-align: center;
-    background-color: #f5fdfb;
+    background-color: #f6fbfc;
     padding: 85px 0 100px;
     background-repeat: no-repeat;
     background-position: center 50px;
@@ -601,6 +653,7 @@ div.ndp-search-wrapper[name="mix"] {
     background-color: #67b1f3;
     color: #fff;
     background-image: url(../../../imgs/support_bg_01.png);
+    background-size: 60%;
 }
 
 .feedback_wrapper {
@@ -773,8 +826,11 @@ div.ndp-search-wrapper[name="mix"] {
 
 
 
-.nav-wrapper ul.ndp-nav-tabs>li,
-.nav-wrapper ul.ndp-nav-tabs>li.active {
+.nav-wrapper ul.ndp-nav-tabs>li {
     border-left: 3px solid transparent;
+    padding: 0 30px 0 27px;
+}
+
+.nav-wrapper ul.ndp-nav-tabs>li.active {
     padding: 0 30px 0 27px;
 }

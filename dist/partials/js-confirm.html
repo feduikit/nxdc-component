@@ -2,73 +2,62 @@
 <h2>对话框confirm</h2>
 <p>此插件依赖bootstrap的modal控件，务必确保使用前加载bootstrap@3</p>
 <p class="bg-info" style="padding:10px;">
-	confirm组件使用<strong>不需要</strong>在DOM上预先插入DOM节点
+    confirm组件使用<strong>不需要</strong>在DOM上预先插入DOM节点
 </p>
 </div>
 
 <p>“confirm”是一种询问用户是否想继续执行某个动作的对话框。<br /></p>
-<p>[ 特点是 ]<br />
-1.直接出现在用户刚刚发起的某个操作之后；<br />
-2.询问并确认用户是否想要继续之前的操作；<br />
-3.一般会包含一个简单的问题和两到三个操作；<br />
+<p>1.若不存在两个以上的动作选择，不要使用二次确认；<br />
+2.重要但是恢复成本低的，和不重要但是恢复成本高的，不建议使用二次确认；<br />
+3.高频触发的任务不要使用二次确认；<br />
 </p>
-<p>[ 什么时候用 ]<br />
-1.若不存在两个以上的动作选择——不要使用确认页，可以是成功提示，或者错误提醒，设计成不需要用户操作的样子；<br />
-2.考虑重要性和恢复成本：重要但是恢复成本低的，和不重要但是恢复成本高的，不建议使用二次确认，提供撤销操作更人性化。重要且恢复成本高的，最好二次确认，避免损失和误操作；<br />
-3.是否是频繁使用的操作：一般情况下，若频繁使用，重要性就不是特别高，而且频繁出现的确认页会让人抓狂的，这种情况下，最好不用二次确认页；<br />
-4.若存在两个以上的选择，但是90%的用户都会选择默认的选项——二次确认也是可以考虑去除的。可以加注一些提示来避免那5%的用户出现损失，但是不要用一个确认页去干扰这90%的用户；<br /></p>
-<p>* 如果需要更轻量级的确认操作，可以使用气泡对话框（Bubble）就地询问。<br /><br /></p>
-<p class="yellow">呈现</p>
-<p>使用confirm时切忌出现询问文案与执行按钮的文案语义有偏差的情况。）<br /></p>
-<p>
-[ 反面案例 ]<br />
-询问：是否要删除该项目？<br />
-执行按钮：确定 / 取消<br />
-（“确定”后，究竟是“确定删除”还是“确定不删除”？应使用“是/否”或“删除/取消”来作为执行按钮文案）<br /></p>
+
+<p>* 如果需要更轻量级的确认操作，可以使用气泡对话框（popconfirm）就地询问。<br /><br /></p>
+
 <h4 class="lead">
-	基本样式
+    基本样式
 </h4>
 <div class="bs-example">
-		<button type="button" class="btn btn-primary">点击显示Confirm</button>
+        <button type="button" class="btn btn-primary">点击显示Confirm</button>
 </div>
 <div class="highlight">
-	<pre class="prettyprint">
-		<code class="language-js">
+    <pre class="prettyprint">
+        <code class="language-js">
 showConfirm({
-	content:"你的报告已经准备完毕，提交之后无法修改，你确定提交？",
-	onOK:function(){// 点击 “确认” 按钮回调函数
-		console.log("ok 了");
-	},
-	onCancel:function(){// 点击 “取消” 或者x 按钮回调函数
-		console.log("取消");
-	}					
-});			
-		</code>
-	</pre>
+    content:"你的报告已经准备完毕，提交之后无法修改，你确定提交？",
+    onOK:function(){// 点击 “确认” 按钮回调函数
+        console.log("ok 了");
+    },
+    onCancel:function(){// 点击 “取消” 或者x 按钮回调函数
+        console.log("取消");
+    }                   
+});         
+        </code>
+    </pre>
 </div>
 <div class="pa-header">
 </div>
 <h4 class="lead">
-	带装饰图标、有回调函数的case(此标题要明月审核下)
+    带装饰图标、有回调函数的case(此标题要明月审核下)
 </h4>
 <div class="bs-example">
-		<button type="button" class="btn btn-warning">点击显示rich  Confirm</button>
+        <button type="button" class="btn btn-warning">点击显示rich  Confirm</button>
 </div>
 <div class="highlight">
-	<pre class="prettyprint">
-		<code class="language-js">
+    <pre class="prettyprint">
+        <code class="language-js">
 showConfirm({
-	icon:"&lt;i class='glyphicon glyphicon-globe'&gt;&lt;/i&gt;",
-	content:"这里显示的是一个地球，用来测试图片在?",
-	btnOK:"确定",//确定按钮文字
-	btnCANCEL:"取消",//关闭按钮文字
-	onOK:function(){// 点击 “确认” 按钮回调函数
-		console.log("ok 了");
-	},
-	onCancel:function(){// 点击 “取消” 或者x 按钮回调函数
-		console.log("取消");
-	}	
-});			
-		</code>
-	</pre>
+    icon:"&lt;i class='glyphicon glyphicon-globe'&gt;&lt;/i&gt;",
+    content:"这里显示的是一个地球，用来测试图片在?",
+    btnOK:"确定",//确定按钮文字
+    btnCANCEL:"取消",//关闭按钮文字
+    onOK:function(){// 点击 “确认” 按钮回调函数
+        console.log("ok 了");
+    },
+    onCancel:function(){// 点击 “取消” 或者x 按钮回调函数
+        console.log("取消");
+    }   
+});         
+        </code>
+    </pre>
 </div>

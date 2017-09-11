@@ -217,6 +217,7 @@ define(['static','http','note',
 
 					}else{
 						$(_this._SUB_DOM2).children().eq(0).addClass("active").html(msg.data||noti.data);//填充 返回的dom 模板
+						$(".nav-wrapper [data-toggle=tab]:first").click()
 
 					}
 					dom.live(na,_this._tabIndex);

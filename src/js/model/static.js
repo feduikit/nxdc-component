@@ -34,14 +34,14 @@ define(function() {
                     { name: "搜素输入框", part: "js-search" },
                     { name: "分页", part: "js-page" },
                     { name: "树状菜单", part: "js-tree" },
-                    { name: "导航菜单", part: "js-vList" },
+                    { name: "垂直菜单", part: "js-vList" },
 
                 ]
             }, {
                 name: "视图类",
                 id: "view",
                 submenu: [
-                    { name: "表格", part: "table" },
+                    { name: "列表", part: "js-table" },
                     { name: "树状二维表1", part: "js-treable" },
                     { name: "树状二维表2", part: "js-sutable" },
                     { name: "进度条", part: "js-progressbar" },
@@ -49,7 +49,7 @@ define(function() {
                     { name: "Gallery", part: "js-gallery" },
                 ]
             }, {
-                name: "表格类",
+                name: "表单类",
                 id: "table",
                 submenu: [
                     { name: "下拉菜单", part: "js-drop" },
