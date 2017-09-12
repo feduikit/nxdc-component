@@ -1,0 +1,33 @@
+.font-kitchen{
+	position: relative;
+	min-height: 40px;
+}
+.font-kitchen>li{
+	position: relative;
+	width: 200px;
+	float: left;
+	text-align: center;
+}
+.font-kitchen>li>span{
+	position: absolute;
+}
+
+.bs-glyphicons-list>li>span.font-icon{
+	margin-bottom: 10px;
+	margin-top:5px;
+	font-size: 18px;
+}
+
+.glyphicon-class{
+	
+}
+
+.bs-glyphicons{
+	margin-top:30px;
+}
+
+.glyphicon-content-code{
+	position: relative;
+	display: block;
+	margin-top:10px;
+}

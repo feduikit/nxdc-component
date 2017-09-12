@@ -1,0 +1,212 @@
+<div class="pa-header">
+<h2>超级文本输入框<span class="js-specific">sinput.js</span></h2>
+</div>
+<h4 class="lead">
+	普通文本输入框
+</h4>
+<div class="bs-example">
+	<div class="ndp-sinput-wrapper" name="plain-sinput"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-sinput-wrapper&quot; name=&quot;plain-sinput&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-sinput-wrapper[name=plain-sinput]").sinput({
+	placeholder:"请输入",
+	name:"username",//为了方便serialize 建议设置name 属性
+	default:"hello world"// 默认显示在 input 中字符串
+});	
+		</code>
+	</pre>
+</div>
+<h4 class="lead">
+	文本输入--带图标
+</h4>
+<div class="bs-example">
+	<div class="ndp-sinput-wrapper" name="icon-sinput1"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-sinput-wrapper&quot; name=&quot;icon-sinput1&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-sinput-wrapper[name=icon-sinput1]").sinput({
+	xion:"&lt;span&gt;&lt;i class='glyphicon glyphicon-lock'&gt;&lt;/i&gt;&lt;/span&gt;",
+	placeholder:"请输入"
+}).on("ICON_CLICK",function(e){ //点击图标时 触发
+	console.log("点击了图标");
+});		
+		</code>
+	</pre>
+</div>
+<h4 class="lead">
+	文本输入--带图标 用户可自定图标位置
+</h4>
+<div class="bs-example">
+	<div class="ndp-sinput-wrapper" name="icon-sinput2"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-sinput-wrapper&quot; name=&quot;icon-sinput2&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-sinput-wrapper[name=icon-sinput2]").sinput({
+	xion:"&lt;span&gt;&lt;i class='glyphicon glyphicon-folder-open'&gt;&lt;/i&gt;&lt;/span&gt;",
+	placeholder:"请输入",
+	pos:"left"//图标显示在左边  “left”, "right"
+});	
+		</code>
+	</pre>
+</div>
+<h4 class="lead">
+	文本输入--带标题提示
+</h4>
+<div class="bs-example">
+	<div class="ndp-sinput-wrapper" name="plain-title"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-sinput-wrapper&quot; name=&quot;plain-title&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-sinput-wrapper[name=plain-title]").sinput({
+	title:"user name"
+});		
+		</code>
+	</pre>
+</div>
+<h4 class="lead">
+	文本输入--累加器
+</h4>
+<div class="bs-example">
+	<div class="ndp-sinput-wrapper" name="stepper" style="width:60px"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-sinput-wrapper&quot; name=&quot;stepper&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-sinput-wrapper[name=stepper]").sinput({
+	type:2,
+	max:100,//最大值
+	placeholder:"请输入数字",
+	step:1,//每次加1 或者 减1
+	min:1,//最小值 1
+	default:1
+}).on("STEP_CHANGE",function(e){//点击step 按钮
+	console.log(e.originalEvent.data);//{val:当前值 float}
+});	
+		</code>
+	</pre>
+</div>
+<h4 class="lead">
+	文本输入--密码
+</h4>
+<div class="bs-example">
+	<div class="ndp-sinput-wrapper" name="plain-pwd"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-sinput-wrapper&quot; name=&quot;plain-pwd&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-sinput-wrapper[name=plain-pwd]").sinput({	
+	inputType:"password",
+	name:"pwd",//为了方便serialize 建议设置name 属性
+	xion:'&lt;span class="switcher"&gt;&lt;label&lt;&lt;input type="checkbox" class="scheckbox"&gt;&lt;/label&gt;&lt;/span&gt;'
+});	
+		</code>
+	</pre>
+</div>
+<h4 class="lead">
+	文本输入--不可用状态
+</h4>
+<div class="bs-example">
+	<div class="ndp-sinput-wrapper" name="plain-disabled"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-sinput-wrapper&quot; name=&quot;plain-pwd&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-sinput-wrapper[name=plain-disabled]").sinput({	
+	xion:"&lt;span&gt;&lt;i class='glyphicon glyphicon-folder-open'&gt;&lt;/i&gt;&lt;/span&gt;",
+	placeholder:"请输入",
+	pos:"left",
+	disabled:true
+});		
+		</code>
+	</pre>
+</div>
+
+
+<h4 class="lead">
+	文本输入--校验失败
+</h4>
+<div class="bs-example">
+	<div class="ndp-sinput-wrapper" name="val-fail"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-sinput-wrapper&quot; name=&quot;val-fail&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+var the1 = $("div.ndp-sinput-wrapper[name=val-fail]").sinput({
+	xion:"&lt;span&gt;&lt;i class='glyphicon glyphicon-remove-circle'>&lt;/i&gt;&lt;/span&gt;",
+	placeholder:"请输入",
+	pos:"right"
+});
+the1.fail(true);//默认值是true 显示校验错误提示	  发现校验失败，调用此函数
+		</code>
+	</pre>
+</div>
+
+<h4 class="lead">
+	文本输入--校验警告
+</h4>
+<div class="bs-example">
+	<div class="ndp-sinput-wrapper" name="val-warning"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-sinput-wrapper&quot; name=&quot;val-warning&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+var the2 = $("div.ndp-sinput-wrapper[name=val-warning]").sinput({
+	xion:"&lt;span&gt;&lt;i class='glyphicon glyphicon-warning-sign'&gt;&lt;/i&gt;&lt;/span&gt;",
+	placeholder:"请输入",
+	pos:"right"
+});
+the2.warning(true);//默认值是true     警告 调用此方法	
+		</code>
+	</pre>
+</div>
+

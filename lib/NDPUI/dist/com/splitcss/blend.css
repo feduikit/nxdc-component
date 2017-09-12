@@ -1,0 +1,262 @@
+.ndp-blend-wrapper{
+	position: relative;
+	display: inline-block;
+	width: 500px;
+	height: auto;
+}
+.ndp-blend-wrapper>.down-wrapper{
+	position: relative;
+	display: block;
+	top:0;
+	min-height: 30px;
+	height: 30px;
+	width: 100%;
+	overflow: visible;
+}
+
+.ndp-blend-wrapper li>a[data-val]>em{
+	color: inherit;
+	text-decoration: underline;
+}
+
+
+.ndp-blend-wrapper>.down-wrapper>.blend-input{
+	position: relative;
+	margin: 0;
+	line-height: 30px;
+	height: 30px;
+	width: -webkit-calc(100% - 30px);
+	width: calc(100% - 30px);
+	border:1px solid #e0e0e0;
+	vertical-align: top;
+}
+.ndp-blend-wrapper .icon-wrapper{
+	position: relative;
+	top:0;
+	left:10px;
+	display: inline-block;
+	width: auto;
+	height: 30px;
+	margin: 0;
+}
+.ndp-blend-wrapper .icon-wrapper>i{
+	font-size: 20px;
+	margin: 4px auto;
+	color:#707070;
+}
+.ndp-blend-wrapper .icon-wrapper>i:hover{
+	color:black;
+}
+
+/*****
+*** 下拉菜单部分
+*****/
+
+.dropdown-menu.blend-search-drop{
+	position: relative;
+	width: -webkit-calc(100% - 30px);
+	width: calc(100% - 30px);
+	margin: 0;
+	margin-top:-1px;
+	display: block;
+	box-shadow: 0 0 1px rgba(224, 224, 224, 0.5);
+	overflow-y: auto;
+	overflow-x: hidden;
+	max-height: 300px;
+}
+
+.dropdown-menu.blend-search-drop>li>a{
+	position: relative;
+	border-bottom: 1px solid #e0e0e0;
+}
+.dropdown-menu.blend-search-drop>li>a:hover{
+	background-color: #f7f0e8;
+}
+.dropdown-menu.blend-search-drop>li>a>.aud-class{
+	position: absolute;
+	right: 15px;
+}
+
+.dropdown-menu.blend-search-drop>li:nth-last-child(1)>a{
+	border-bottom: 1px solid transparent;
+}
+
+.dropdown-menu.blend-search-drop em{
+	font-style: normal;
+	color:#fd9611;
+}
+
+
+.dropdown-menu .blend-search-drop .no-result{
+	text-align: center;
+	padding-top: 15px;
+	width: 100%;
+	height: 50px;
+	font-weight: 700;
+	background-color: #F7F7F7;
+	color: #A7A7A7;
+}
+
+/****
+**
+****/
+.blend-classify-drop{
+	max-height: 300px;
+	width: -webkit-calc(100% - 30px);
+	width: calc(100% - 30px);
+	margin: 0;
+	margin-top:-1px;
+	display: block;
+	box-shadow: 0 0 1px rgba(224, 224, 224, 0.5);	
+	overflow: hidden;
+}
+.blend-classify-drop.search-mode{
+	height: 300px;
+	overflow: hidden;/*** 修复 search-mod 出现滚动条 ***/
+}
+
+/****
+**向上的飘窗
+***/
+.ndp-blend-wrapper .dropdown-menu.blend-dropup{
+	position: relative;
+	display: block;
+	clear: both!important;
+	max-height: 300px;
+	width: -webkit-calc(100% - 30px);
+	width: calc(100% - 30px);
+	float: none;
+	border:1px solid #e0e0e0;
+	border-bottom-width: 0;
+	overflow: auto;
+	z-index: 9999;
+}
+
+.dropdown-menu.blend-dropup>.blend-sel-item{
+	position: relative;
+	border-radius: 0;
+	padding: 10px;
+}
+.dropdown-menu.blend-dropup>.blend-sel-item:hover{
+	background-color: #f9f9f9;
+}
+
+.dropdown-menu.blend-dropup>.blend-sel-item>.ndp-bread-wrapper{
+	position: relative;
+	display: block;
+	width: 100%;
+	margin: 0;
+}
+
+.dropdown-menu.blend-dropup>.blend-sel-item>.ndp-bread-wrapper>ol.breadcrumb{
+	position: relative;
+	border-radius: 0;
+	background-color: transparent;
+	padding: 0 20px;
+	height: 30px;
+	line-height: 30px;
+	overflow: hidden;
+}
+
+/***
+**  tag box
+***/
+.dropdown-menu.blend-dropup>.blend-sel-item>.tag-box{
+	position: relative;
+	padding: 0 20px;
+	padding-top:5px;
+	min-height: 30px;
+}
+.dropdown-menu.blend-dropup>.blend-sel-item .tag-box>.tag-wrapper{
+	position: relative;
+	display: inline-block;
+	padding: 2px 6px;
+	padding-top:3px;
+	margin-right: 10px;
+	color: #fc7408;
+	background-color: #f7f0e8;
+	padding-left: 20px;
+	margin-bottom:5px;
+}
+
+.blend-sel-item .tag-box .tag-wrapper>button.close{
+	position: absolute;
+	left: 0;
+	top:0;
+	width: 15px;
+	text-align: center;
+	padding: 0;
+	opacity: 0.5;
+	height: 100%;
+	overflow: hidden;
+}
+.blend-sel-item .tag-box .tag-wrapper>button.close>span{
+	position: absolute;
+	display: inline-block;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	left: 5px;
+	top:4px;
+	color: #fc7408;
+}
+
+.blend-sel-item .tag-box .tag-wrapper>.tag-txt-wrapper{
+	cursor: default;
+}
+
+.blend-sel-item:hover>button.close.close1{
+	display: inline-block;
+}
+.blend-sel-item>button.close.close1{
+	position:absolute;
+	display: none;
+	top:0;
+	right: 0;
+	width: 20px;
+	height: 20px;
+	z-index: 100;
+}
+.blend-sel-item button.close.close1>.x1{
+	position: absolute;
+	padding: 0;
+	height: 100%;
+	left:0;
+	top:0;
+	width: 100%;
+	padding-top:4px;
+	font-size: 16px;
+}
+
+/****
+*** 选中之后 字体颜色
+****/
+.blend-search-drop .txt-mark.selected,.blend-search-drop .txt-mark.selected:hover{
+	color:#ccc;
+	cursor: not-allowed;
+}
+
+/****
+**  入学年份
+****/
+.ndp-blend-wrapper .ndp-drop3-wrapper{
+	position: relative;
+	display: inline-block;
+	margin: 0;
+	min-width: 20px;
+	width: 80px;
+	min-height: 10px;
+	height: 30px;
+	z-index: 9999;
+}
+.ndp-blend-wrapper .tag-box>hr{
+	position: relative;
+	display: inline-block;
+	width: 40px;
+	margin: 12px;
+	border-color:black;
+	vertical-align: top;
+}
+.ndp-blend-wrapper .drop-peal+ul.drop-list{
+	max-height: 150px;
+}

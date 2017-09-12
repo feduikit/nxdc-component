@@ -1,0 +1,95 @@
+<div class="pa-header">
+<h3>控件的使用</h3>
+</div>
+<p class="bg-warning" style="padding:10px">
+	控件库依赖jquery@1.9+库和bootstrap@3+ 库，请务必在使用前确保这两个库安装完成
+</p>
+<h5><strong>第一步:</strong></h5>
+<p>下载安装nxdc（需要预先安装bower）</p>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+			bower install http://git.dy/vigo.feng/nxdc-component-library.git
+		</code>
+	</pre>	
+</div>
+<h5><strong>第二步:</strong></h5>
+<p>页面嵌入nxdc.min.js 和 nxdc.min.css (假设上一步把nxdc库安装到了lib目录下)</p>	
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+			&lt;script type="text/javascript" src="lib/NDPUI/com/nxdc.min.js"&gt;&lt;/script&gt;
+		</code>
+	</pre>	
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+			&lt;link  rel="stylesheet" src="lib/NDPUI/com/css/nxdc.min.css" type="text/css"&gt;
+		</code>
+	</pre>	
+</div>
+<h5>确保安装完成后的页面结构如下</h5>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge,chrome=1&quot; /&gt;
+    &lt;meta content=&quot;width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=1;&quot; name=&quot;viewport&quot; /&gt;
+    &lt;meta content=&quot;yes&quot; name=&quot;apple-mobile-web-app-capable&quot; /&gt;
+    &lt;meta content=&quot;black&quot; name=&quot;apple-mobile-web-app-status-bar-style&quot; /&gt;
+    &lt;meta name=&quot;format-detection&quot; content=&quot;telephone=yes&quot; /&gt;
+    &lt;meta content=&quot;false&quot; name=&quot;twcClient&quot; id=&quot;twcClient&quot; /&gt;
+    &lt;link href=&quot;lib/bootstrap/dist/css/bootstrap.min.css&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot;&gt;
+    <strong class="bg-danger">&lt;link href=&quot;lib/NDPUI/com/css/nxdc.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;</strong>
+    <strong class="bg-danger">&lt;script type="text/javascript" src="lib/NDPUI/com/nxdc.min.js"&gt;&lt;/script&gt;</strong>
+    &lt;!--[if lt IE 9]&gt;
+		&lt;script src=&quot;http://html5shim.googlecode.com/svn/trunk/html5.js&quot;&gt;&lt;/script&gt;
+		&lt;script src=&quot;//cdn.bootcss.com/respond.js/1.4.2/respond.min.js&quot;&gt;&lt;/script&gt;
+	&lt;![endif]--&gt;       
+    &lt;title&gt;NDP media web ui lib&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	   	 	   	  	   	 	   	  
+&lt;/body&gt;
+&lt;/html&gt;			
+		</code>
+	</pre>	
+</div>
+<h5><strong>第三步：</strong></h5>
+<p>大部分组件的使用都需要预先在DOM 中插入一个wrapper节点。例如：需要在页面中生成一个列表组件</p>
+<h5>首先在dom中插入一个节点</h5>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+&lt;div class="ndp-table-wrapper" name="plain"&gt;&lt;/div&gt;		
+		</code>
+	</pre>
+</div>
+<h5>然后调用相关插件，实例化组件</h5>
+<div class="bs-example">
+	<div class="ndp-table-wrapper" name="plain"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+$(".ndp-table-wrapper[name='plain']").table({
+	head:{col1:"第一列",col2:"第二列",col3:"第三列",col4:"第四列"},
+	data:[
+		{id:1101,name:"hello123",info:"hello -china 123",gender:"man"},
+		{id:1102,name:"hello_23",info:"hello - japan 34",gender:"woman"},
+		{id:1103,name:"hello_34",info:"hello - euro 23",gender:"no sign"}
+	]	
+});		
+		</code>
+	</pre>
+</div>
+<div class="bs-callout bs-callout-danger bg-warning" id="callout-images-ie-rounded-corners"> 
+<h4>特别注意：以下几个组件不需要预先在dom上预设wrapper节点，直接使用即可</h4>
+<p class="lead">
+	<h3>tip, alert, confirm, prompt  </h3>
+</p>  
+</div>			

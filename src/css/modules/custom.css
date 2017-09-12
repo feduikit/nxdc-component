@@ -1,0 +1,51 @@
+.ndp-drop-wrapper{
+	width:200px;
+}
+
+
+
+.ndp-table-wrapper[name='motley']{
+	
+} 
+
+.ndp-table-wrapper[name='motley'] .table-body tr:nth-child(even){
+	background-color: #f6f6f6;/*****#ececec****/;
+}
+
+.ndp-table-wrapper[name='motley'] .table-body tr:nth-child(odd){
+		background-color: white;
+}
+
+.ndp-table-wrapper[name='border'] .ndp-table-row{
+	border-left:1px solid #ccc;
+	border-right:1px solid #ccc;
+}
+
+.ndp-table-wrapper[name='col'] .ndp-table-col:nth-child(n+2){
+	border-left: 1px solid #ccc;
+}
+
+div.ndp-tab-wrapper[name='vertical']>ul.nav.nav-tabs-cus>li{
+	width: 150px;
+	clear:both;
+}
+div[name='vertical'].ndp-tab-wrapper>ul.nav.nav-tabs-cus>li.active>a{
+	border-width: 0;
+	border-left:2px solid #fac925;
+	border-top:1px solid #ccc;
+	border-bottom:1px solid #ccc;
+}
+
+/***
+**分页
+**/
+/*** 修改边框颜色***/
+.ndp-page-wrapper[name='plain'] ul>li.page-item{
+	border-color:#2c9be1;
+	color:#ce6c0a; /**文字颜色***/
+}
+/***修改选中背景色****/
+.ndp-page-wrapper[name='plain'] ul.pagination>li.page-item.active{
+	background-color:#2782bb;
+	color:white;
+}

@@ -1,67 +1,74 @@
 require.config({
-     urlArgs:"rnd="+(new Date()).getTime(),
+    urlArgs:"rnd="+(new Date()).getTime(),
     paths:{
-        'jquery':'../../lib/jquery/jquery.min',
+		//第三方支持库 alias
+        'jquery':'../../lib/jquery1.9/jquery.min',
         'bootstrap':'../../lib/bootstrap/dist/js/bootstrap.min',
-		'moment':'../../lib/moment/min/moment.min',
+		'pretty':'../../lib/code-prettify/loader/prettify',
+		'moment':'../../lib/moment/moment.min',
 		'NVis':'../../lib/hicharts/NVis.min',
-		'utils':'./Compatibility/utils',
+		'com/ndpmedia/vis/ChartWidget':'../../lib/hicharts/NVis.min',
+		//本地全局使用的模块，alias
+		'note':'./model/Note',//全局使用
+		'http':'./utils/http',//全局使用
+		'parser':'./model/parser',
+		'static':'./model/static',
 		
-		'table2':'./components/table2',
-		'tabs':'./components/tabs',
-		'bread':'./components/bread',
-		'alert':'./components/alert',
-		'confirm':'./components/confirm',
-		'prompt':'./components/prompt',
-		'drop':'./components/drop',
-		'search':'./components/search',
-		'gallery':'./components/gallery',
-		'progressbar':'./components/progressbar',
-		'drop2':'./components/drop2',
-		'drop3':'./components/drop3',
-		'treable':'./components/treable',
-		'treable2':'./components/treable2',
-		'sutable':'./components/sutable',
-		'timerange':'./components/timerange',
-		'blend':'./components/blend',
-		'vList':'./components/vList',
-		'vList3':'./components/vList3',
-		'bubble':'./components/bubble',
-		'bootdrop':'./components/bootDrop',
-		'datepicker':'./components/daterangepicker',
-        'field':'./components/field',
-        'upload2':'./components/upload2'
+		//插件
+		'table':'../../lib/NDPUI/dist/com/splitjs/table',
+		'drop':'../../lib/NDPUI/dist/com/splitjs/drop',
+		'page':'../../lib/NDPUI/dist/com/splitjs/page',
+		'bread':'../../lib/NDPUI/dist/com/splitjs/bread',
+		'tabs':'../../lib/NDPUI/dist/com/splitjs/tabs',
+		'sinput':'../../lib/NDPUI/dist/com/splitjs/sinput',
+		'tip':'../../lib/NDPUI/dist/com/splitjs/tip',
+		'alert':'../../lib/NDPUI/dist/com/splitjs/alert',
+		'confirm':'../../lib/NDPUI/dist/com/splitjs/confirm',
+		'prompt':'../../lib/NDPUI/dist/com/splitjs/prompt',
+		'tree':'../../lib/NDPUI/dist/com/splitjs/tree',
+		'vList':'../../lib/NDPUI/dist/com/splitjs/vList',
+		'search':'../../lib/NDPUI/dist/com/splitjs/search',
+		'gallery':'../../lib/NDPUI/dist/com/splitjs/gallery',
+		'progressbar':'../../lib/NDPUI/dist/com/splitjs/progressbar',
+		'vList2':'../../lib/NDPUI/dist/com/splitjs/vList2',
+		'drop2':'../../lib/NDPUI/dist/com/splitjs/drop2',
+		'drop3':'../../lib/NDPUI/dist/com/splitjs/drop3',
+		'daterangepicker':'../../lib/NDPUI/dist/com/splitjs/daterangepicker',
+		
+		'treable':'../../lib/NDPUI/dist/com/splitjs/treable',
+		'sutable':'../../lib/NDPUI/dist/com/splitjs/sutable',
+		'popconfirm':'../../lib/NDPUI/dist/com/splitjs/popconfirm',
+		'timerange':'../../lib/NDPUI/dist/com/splitjs/timerange',
+		'upload':'../../lib/NDPUI/dist/com/splitjs/upload',
+		'vList3':'../../lib/NDPUI/dist/com/splitjs/vList3',
+		'blend':'../../lib/NDPUI/dist/com/splitjs/blend',
+        'field':'../../lib/NDPUI/dist/com/splitjs/field',
+        'upload2':'../../lib/NDPUI/dist/com/splitjs/upload2'
     },
     shim:{
-		bootstrap:{
-			deps:['jquery']
-		},
-		drop:{
-			deps:['jquery']
-		},
-		drop2:{
+        'bootstrap':{
+            deps:['jquery']
+        },
+		'alert':{
 			deps:['bootstrap']
 		},
-		alert:{
+		'drop2':{
+			deps:['bootstrap']
+		},		
+		'confirm':{
 			deps:['bootstrap']
 		},
-		confirm:{
+		'gallery':{
 			deps:['bootstrap']
-		},
-		prompt:{
-			deps:['bootstrap']
-		},
-		gallery:{
-			deps:['bootstrap']
+		},		
+		'prompt':{
+			deps:['bootstrap','drop']
+		},		
+		'daterangepicker':{
+			deps:['bootstrap', 'moment']
 		},
 		treable:{
-			deps:['bootstrap','tabs','drop2']
-		},
-		treable2:{
-			deps:['bootstrap','tabs','drop2']
-		},		
-		sutable:{
-			deps:['bootstrap']
+			deps:['bootstrap', 'tabs']
 		},
 		bubble:{
 			deps:['bootstrap']
@@ -77,21 +84,15 @@ require.config({
 		},
 		NVis:{
 			deps:['jquery']
-		},
+		},		
 		'com/ndpmedia/vis/ChartWidget':{
 			deps:['NVis']
 		},
 		'com/ndpmedia/vis/ChartEventListener':{
 			deps:['NVis']
 		},
-		bootdrop:{
-			deps:['bootstrap']
-		},
-		datepicker:{
-			deps:['moment']
-		},
-		upload2:{
-			deps:['bootstrap']
-		}        
+        upload2:{
+            deps:['bootstrap']
+        }
     }
 });

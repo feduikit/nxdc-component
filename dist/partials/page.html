@@ -1,0 +1,38 @@
+<div class="pa-header">
+<h3>分页</h3>
+<p>用户如何自定义修改分页外观</p>
+</div>
+<p>修改颜色</p>
+<div class="bs-example">
+	<div class="ndp-page-wrapper" name="plain">
+		<ul class="pagination">
+			<li class="page-item" role="begin"><i class="glyphicon glyphicon-step-backward"></i></li>
+			<li class="page-item" value="11">11</li>
+			<li class="page-item" value="12">12</li>
+			<li class="page-item" value="13">13</li>
+			<li class="page-item" value="14">14</li>
+			<li class="page-item active" value="15">15</li>
+			<li class="page-item disabled" role="end"><i class="glyphicon glyphicon-step-forward"></i></li>
+		</ul>
+	</div>	
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code>
+/*** 修改边框颜色***/
+ul>li.page-item{
+	border-color:#2c9be1;
+	color:#ce6c0a; /**文字颜色***/
+}
+/***修改选中背景色****/
+ul.pagination>li.page-item.active{
+	background-color:#2782bb;
+	color:white;
+}		
+		</code>
+	</pre>
+</div>	
+	
+<script type="text/javascript">
+	prettyPrint();//渲染 代码 
+</script>	

@@ -1,0 +1,165 @@
+<div class="pa-header">
+<h2>Tip</h2>
+</div>
+<p class="bg-info" style="padding:10px;">
+	tip组件使用<strong>不需要</strong>在DOM上预先插入DOM节点
+</p>
+
+<p>通过提供一些灵活的预定义消息，为常见的用户动作在页面固定位置提供反馈消息。</p>
+<h4 class="lead">
+	基本样式
+</h4>
+<div class="bs-example">
+	<button type="button" class="btn btn-primary btn-info">消息</button>
+	<button type="button" class="btn btn-primary btn-warning">警告</button>
+	<button type="button" class="btn btn-primary btn-success">成功</button>
+	<button type="button" class="btn btn-primary btn-danger">报错/失败</button>
+</div>
+<div class="hidden highlight" id="btn-info">
+	<pre class="prettyprint">
+		<code class="language-js">
+		showTip({
+			content:"您有一条信息的消息，请注意查收。截止当前时间，您的欠费金额为100元！（默认30秒消失）",
+			closeCallback:function(){//回调，用户关闭tip或者时间到期
+				console.log("关闭 info");
+			}
+		});
+		</code>
+	</pre>
+</div>
+<div class="hidden highlight" id="btn-warning">
+	<pre class="prettyprint">
+		<code class="language-js">
+		showTip({
+			type:'warning',
+			content:"警告！您返回数据出错，请检查参数。截止当前时间，您的欠费金额为100元！（默认30秒消失）",
+			closeCallback:function(){//回调，用户关闭tip或者时间到期
+				console.log("关闭 waning");
+			}
+		});
+		</code>
+	</pre>
+</div>
+<div class="hidden highlight" id="btn-success">
+	<pre class="prettyprint">
+		<code class="language-js">
+		showTip({
+			type:'success',
+			content:"成功！恒大在今天晚上的世界俱乐部大赛上成功击败巴塞罗那！",
+			closeCallback:function(){//回调，用户关闭tip或者时间到期
+				console.log("关闭 waning");
+			}
+		});
+		</code>
+	</pre>
+</div>
+<div class="hidden highlight" id="btn-danger">
+	<pre class="prettyprint">
+		<code class="language-js">
+		showTip({
+			type:'danger',
+			content:"注意！恒大在今天晚上的世界俱乐部大赛上成功击败巴塞罗那！",
+			closeCallback:function(){//回调，用户关闭tip或者时间到期
+				console.log("关闭 waning");
+			}
+		});
+		</code>
+	</pre>
+</div>
+
+<h4 class="lead">
+	带装饰图标、关闭按钮、动作按钮
+</h4>
+<div class="bs-example">
+	<button type="button" class="btn btn-success btn-success2">成功</button>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+			showTip({
+				type:"success",
+				content:"成功！恒大在今天晚上的世界俱乐部大赛上成功击败巴塞罗那！",
+				icon:"<i class='glyphicon glyphicon-flag'></i>",
+				close:true,
+				closeCallback:function(){//回调，用户关闭tip或者时间到期
+					console.log("关闭 success");
+				},
+				clickCallback:function(ta,tip){//回调，用户点击了除x 关闭按钮之外的tip区域
+					if(ta.tagName=="BUTTON" && $(ta).hasClass("btn2")){
+						console.log("用户点击了，tip上面的按钮");
+					}
+				}
+			});
+		</code>
+	</pre>
+</div>
+
+<h4 class="lead">
+	除非用户主动关闭，否则用不消失
+</h4>
+<div class="bs-example">
+	<button type="button" class="btn btn-danger btn-danger2">报错/失败</button>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+			showTip({
+				time:null,// 永不消失， 如果需要定时消失，这里写数字，30 （表示30s后自动消失）
+				type:"danger",
+				content:"注意！恒大在今天晚上的世界俱乐部大赛上成功击败巴塞罗那！",
+				icon:"<i class='glyphicon glyphicon-flag'></i>",
+				close:true,
+				closeCallback:function(){//回调，用户关闭tip或者时间到期
+					console.log("关闭 success");
+				},
+				clickCallback:function(ta,tip){//回调，用户点击了除x 关闭按钮之外的tip区域
+					if(ta.tagName=="BUTTON" && $(ta).hasClass("btn2")){
+						console.log("用户点击了，tip上面的按钮");
+					}
+				}
+			});
+		</code>
+	</pre>
+</div>
+<h4 class="lead">
+	非通栏样式
+</h4>
+<div class="bs-example">
+	<button type="button" class="btn btn-info btn-info2">消息</button>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+			showTip({
+				through:false,
+				type:"info",
+				content:"恒大在今天晚上的世界俱乐部大赛上成功击败巴塞罗那！",
+				icon:"<i class='glyphicon glyphicon-flag'></i>",
+				close:true
+			});
+		</code>
+	</pre>
+</div>
+
+<h4 class="lead">
+	出现在指定窗口
+</h4>
+<div class="bs-example">
+	<button type="button" class="btn btn-danger" id="temp-btn">警告</button>
+	<div class="temp-window" id="twin" style="border:1px solid #ccc;">
+	</div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+		showTip({
+			time:null,// 永不消失， 如果需要定时消失，这里写数字，30 （表示30s后自动消失）
+			type:"warning",
+			bind:$(".temp-window"),//显示在哪里，DOM jquery对象
+			content:"注意！恒大在今天晚上的世界俱乐部大赛上成功击败巴塞罗那！",
+			icon:"&lt;i class='glyphicon glyphicon-flag'&gt;&lt;/i&gt;",
+			close:true
+		});
+		</code>
+	</pre>
+</div>

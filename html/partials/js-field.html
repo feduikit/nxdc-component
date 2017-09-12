@@ -1,0 +1,41 @@
+<div class="pa-header">
+<h2>富文本输入框<span class="js-specific">field.js</span></h2>
+</div>
+<h4 class="lead">
+	
+</h4>
+<div class="bs-example bs-example2">
+    <button id="intag" class="btn btn-info" >插入一个tag</button>
+    <button id="intxt" class="btn btn-danger" >获得输入数据(console 显示)</button>
+    <button id="fill" class="btn btn-success" >回填数据</button>
+	<div class="ndp-field-wrapper" ></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class="ndp-field-wrapper" &gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+            var hwd=$("div.ndp-field-wrapper").field();
+
+            $("#intag").click(function(){
+                hwd.addTag({val:"1130",text:'hello world'}); //点击插入一个tag
+            });
+            $("#intxt").click(function(){
+                hwd.getContent();//获得输入的文本数据， #b#n 表示换行  {{数据}}
+            });
+            
+             $("#fill").click(function(){
+               var str = "sdfdsfs{{1130|hello world}} sfsdfdsfds{{1130|hello world}} sdfsdf#b#ndsfdsf{{1130|hello world}}123234234hello"
+                hwd.fill(str);
+            });           
+                
+		</code>
+	</pre>
+</div>
+
+	
+		
+	

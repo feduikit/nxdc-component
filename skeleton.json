@@ -1,11 +1,11 @@
 {
-    "name": "NDPUI",
+    "name": "ProjectA",
     "type": 1,
     "version": "1.0.0",
     "author": "ericever",
     "frame": "unknow",
     "structure": [
-        "NDPUI",
+        "ProjectA",
         "/src",
         "/src/css",
         "/src/css/global",
@@ -18,6 +18,14 @@
         "/lib",
         "/test",
         "/test/spec",
-        "/test/report"
+        "/test/report",
+        "/src/js/view",
+        "/src/js/kernel",
+        "/src/js/view/pages",
+        "/src/js/view/pages/pieces",
+        "/src/js/view/pages/pieces/segs",
+        "/src/js/view/pages/pieces/segs/combs",
+        "/src/js/model",
+        "/src/js/utils"
     ]
 }

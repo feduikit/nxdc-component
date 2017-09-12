@@ -1,0 +1,126 @@
+<div class="pa-header">
+    <h1>日期范围选择器<span class="js-specific">Daterangepicker</span></h1>
+</div>
+
+<p>日期选择器用于帮助用户更方便准确的选择日期和时间。根据实际用途、依据常见场景，又可分为：</p>
+<p>    1.时间点选择器 - 精确到“日”；</p>
+<p>     2.时间点选择器 - 精确到“分”；</p>
+<p>    3.时间段选择器 - </p>
+<p> 用于选择两个时间点的区间（该控件适用于选择一段连续的时间区间。如果需要选择非连续的多段时间，可以参考使用“日期范围选择器”。）；</p>
+<p>&nbsp;</p>
+<p><a href="https://github.com/dangrossman/bootstrap-daterangepicker">daterangepicker</a>是github上优秀的开源项目，其<a href="http://www.daterangepicker.com/">官网</a>上有非常丰富的例子和使用方法。在uikit组件库中，仅对daterangepicker的css样式做了必要的修改。这些修改保存在daterangepicker-theme.css文件中。下面将举一些简单的例子。</p>
+<h4 class="lead">
+	时间段选择--需要手动“apply”
+</h4>
+<div class="bs-example">
+    <input type='text' class="daterangepicker-sample form-control" style="width:300px;" >
+</div>
+<div class="highlight">
+    <pre class="prettyprint">
+		<code class="language-js">
+&lt;input type='text' class="daterangepicker-sample form-control" &gt;			
+		</code>
+	</pre>
+    <pre class="prettyprint">
+		<code class="language-js">			
+$('.daterangepicker-sample').daterangepicker({
+    "ranges": {
+        'Today': [moment(), moment()],
+        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+        'This Month': [moment().startOf('month'), moment().endOf('month')],
+        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    },
+    "startDate": "01/20/2016",
+    "endDate": "01/26/2016"
+}, function(start, end, label) {
+});
+		</code>
+	</pre>
+</div>
+<h4 class="lead">
+    时间段选择--自动“apply”
+</h4>
+<div class="bs-example">
+    <input type='text' class="daterangepicker-sample1 form-control" style="width:300px;">
+</div>
+<div class="highlight">
+    <pre class="prettyprint">
+        <code class="language-js">
+&lt;input type='text' class="daterangepicker-sample1 form-control" &gt;          
+        </code>
+    </pre>
+    <pre class="prettyprint">
+        <code class="language-js">          
+ $('.daterangepicker-sample1').daterangepicker({
+            "ranges": range,
+            "startDate": "01/20/2016",
+            "endDate": "01/26/2016",
+            "opens": "nxdc",
+            "alwaysShowCalendars": true,
+            locale: {
+                "applyLabel": "OK",
+                "cancelLabel": '',
+            },
+            autoApply: true
+        }, function(start, end, label) {           
+        });
+        </code>
+    </pre>
+</div>
+<h4 class="lead">
+    时间点选择--精确到“日”
+</h4>
+<div class="bs-example">
+    <input type='text' class="daterangepicker-sample2 form-control" style="width:300px;">
+</div>
+<div class="highlight">
+    <pre class="prettyprint">
+        <code class="language-js">
+&lt;input type='text' class="daterangepicker-sample2 form-control" &gt;          
+        </code>
+    </pre>
+    <pre class="prettyprint">
+        <code class="language-js">          
+$('.daterangepicker-sample2').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true
+        },
+        function(start, end, label) {
+
+        });
+        </code>
+    </pre>
+</div>
+<h4 class="lead">
+    时间点选择--精确到“分”
+</h4>
+<div class="bs-example">
+    <input type='text' class="daterangepicker-sample3 form-control" style="width:300px;">
+</div>
+<div class="highlight">
+    <pre class="prettyprint">
+        <code class="language-js">
+&lt;input type='text' class="daterangepicker-sample3 form-control" &gt;          
+        </code>
+    </pre>
+    <pre class="prettyprint">
+        <code class="language-js">          
+ $('.daterangepicker-sample3').daterangepicker({
+                "singleDatePicker": true,
+                "showDropdowns": true,
+                "opens": "nxdc-single",
+                "timePicker": true,
+                "timePicker24Hour": true,
+                "timePickerSeconds": true,
+                locale: {
+                    format: 'MM/DD/YYYY h:mm A'
+                }
+            },
+            function(start, end, label) {
+
+            });
+        </code>
+    </pre>
+</div>

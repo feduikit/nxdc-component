@@ -1,0 +1,100 @@
+<div class="pa-header">
+<h2>选项卡<span class="js-specific">Togglable tabs</span></h2>
+</div>
+
+<p>标签页（Togglable tabs）提供了一种将相关且平等关系的信息并列显示在一个页面的组织方法。使用标签页的设计，标签项必须多于1。<br /></p>
+<p>需要注意的是标签项数量越多，越靠后的标签项阅读率越低。所以在应用标签页设计时，请考虑清楚各标签项包含内容的重要程度，我们也因此不建议使用超过三个以上的标签项。</p>
+<h4 class="lead">
+	基本样式
+</h4>
+<div class="bs-example">
+	<div class="ndp-tab-wrapper" name="plain-tab"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-tab-wrapper&quot; name=&quot;plain-tab&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-tab-wrapper[name=plain-tab]").tabs({
+	list:["hello","world","china"]
+}).on("TAB_CHANGE",function(e){//点击其中的一个tab发生事件
+	console.log(e.originalEvent.data);//{index: 第几个tab(默认从0开始) int,name:tab名称 string}
+}).val(1);//设置选中的tab 索引，默认0	
+		</code>
+	</pre>
+</div>
+<h4 class="lead">
+	带badge的Tab
+</h4>
+<div class="bs-example">
+	<div class="ndp-tab-wrapper" name="badge-tab"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-tab-wrapper&quot; name=&quot;badge-tab&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-tab-wrapper[name=badge-tab]").tabs({
+	list:[{text:"China",badge:20},{text:"USA",badge:999},{text:"CANADA",badge:10}],
+	badge:true//是否显示小圆点数据
+});			
+		</code>
+	</pre>
+</div>
+<h4 class="lead">
+	可删除的Tab
+</h4>
+<div class="bs-example">
+	<div class="ndp-tab-wrapper" name="rm-tab"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-tab-wrapper&quot; name=&quot;rm-tab&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-tab-wrapper[name=rm-tab]").tabs({
+	list:[{text:"China",badge:20},{text:"USA",badge:999},{text:"CANADA",badge:10}],
+	badge:false,
+	rm:true//是否在tab上显示删除X按钮
+}).on("TAB_CHANGE",function(e){//点击tab发生事件
+	console.log(e.originalEvent.data);//{index: 第几个tab(默认从0开始) int,name:tab名称 string}
+}).on("TAB_REMOVED",function(e){//点击x 删除事件
+	console.log(e.originalEvent.data);//{rm: 删除的数据, active: 当前选中数据, current: 选中的索引}
+});	
+		</code>
+	</pre>
+</div>
+<h4 class="lead">
+	可翻页的Tab
+</h4>
+<div class="bs-example">
+	<div class="ndp-tab-wrapper" name="more-tab"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class=&quot;ndp-tab-wrapper&quot; name=&quot;more-tab&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$("div.ndp-tab-wrapper[name=more-tab]").tabs({
+	list:[{text:"中华人民共和国",badge:20},
+		  {text:"美利坚和中国",badge:999},
+		  {text:"日本",badge:10},
+		 {text:"德国",badge:10},
+		 {text:"韩国",badge:10},
+		 {text:"泰国",badge:10}]
+});		
+		</code>
+	</pre>
+</div>

@@ -1,0 +1,52 @@
+<div class="pa-header">
+<h2>Popconfirm</h2>
+</div>
+
+<p>和 confirm 弹出的模态对话框相比，就地以popconfirm询问用户，交互形式更轻量。</p>
+<h4 class="lead">
+	标准样式
+</h4>
+<div class="bs-example" style="text-align:center;">
+		<span class="ndp-bubble-wrapper" name="gra2"></span>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+&lt;span class="ndp-bubble-wrapper" name="gra2"&gt;&lt;/span&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$(".ndp-bubble-wrapper[name='gra2']").bubble({
+	type:2,//2 confirm 气泡
+	title:"hello world 123",//显示标题，标题内容是
+	icon:'&lt;i class="glyphicon glyphicon-home"&gt;&lt;/i&gt;',
+	content:'How to position the popover For example, if placement is "auto left", the popover will display to the left when possible, otherwise it will display right.'
+});
+		</code>
+	</pre>
+</div>
+
+<h4 class="lead">
+	简约样式
+</h4>
+<div class="bs-example" style="text-align:center;">
+		<span class="ndp-bubble-wrapper" name="gra"></span>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+&lt;span class="ndp-bubble-wrapper" name="gra"&gt;&lt;/span&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$(".ndp-bubble-wrapper[name='gra']").bubble({
+	type:2,//气泡 包含尾部两个 确定，取消按钮
+	icon:'&lt;i class="glyphicon glyphicon-home"&gt;&lt;/i&gt;',
+	content:'How to position the popover For example, if placement is "auto left", the popover will display to the left when possible, otherwise it will display right.'
+});
+		</code>
+	</pre>
+</div>
+

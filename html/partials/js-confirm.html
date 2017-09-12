@@ -1,0 +1,63 @@
+<div class="pa-header">
+<h2>对话框confirm</h2>
+<p>此插件依赖bootstrap的modal控件，务必确保使用前加载bootstrap@3</p>
+<p class="bg-info" style="padding:10px;">
+    confirm组件使用<strong>不需要</strong>在DOM上预先插入DOM节点
+</p>
+</div>
+
+<p>“confirm”是一种询问用户是否想继续执行某个动作的对话框。<br /></p>
+<p>1.若不存在两个以上的动作选择，不要使用二次确认；<br />
+2.重要但是恢复成本低的，和不重要但是恢复成本高的，不建议使用二次确认；<br />
+3.高频触发的任务不要使用二次确认；<br />
+</p>
+
+<p>* 如果需要更轻量级的确认操作，可以使用气泡对话框（popconfirm）就地询问。<br /><br /></p>
+
+<h4 class="lead">
+    基本样式
+</h4>
+<div class="bs-example">
+        <button type="button" class="btn btn-primary">点击显示Confirm</button>
+</div>
+<div class="highlight">
+    <pre class="prettyprint">
+        <code class="language-js">
+showConfirm({
+    content:"你的报告已经准备完毕，提交之后无法修改，你确定提交？",
+    onOK:function(){// 点击 “确认” 按钮回调函数
+        console.log("ok 了");
+    },
+    onCancel:function(){// 点击 “取消” 或者x 按钮回调函数
+        console.log("取消");
+    }                   
+});         
+        </code>
+    </pre>
+</div>
+<div class="pa-header">
+</div>
+<h4 class="lead">
+    带装饰图标、有回调函数的case(此标题要明月审核下)
+</h4>
+<div class="bs-example">
+        <button type="button" class="btn btn-warning">点击显示rich  Confirm</button>
+</div>
+<div class="highlight">
+    <pre class="prettyprint">
+        <code class="language-js">
+showConfirm({
+    icon:"&lt;i class='glyphicon glyphicon-globe'&gt;&lt;/i&gt;",
+    content:"这里显示的是一个地球，用来测试图片在?",
+    btnOK:"确定",//确定按钮文字
+    btnCANCEL:"取消",//关闭按钮文字
+    onOK:function(){// 点击 “确认” 按钮回调函数
+        console.log("ok 了");
+    },
+    onCancel:function(){// 点击 “取消” 或者x 按钮回调函数
+        console.log("取消");
+    }   
+});         
+        </code>
+    </pre>
+</div>

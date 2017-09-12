@@ -1,0 +1,13 @@
+@import url(../../../lib/bootstrap/dist/css/bootstrap.min.css);
+@import url(../global/reset.css);
+/*@import url(../../../lib/NXDC/src/css/pages/nxdc.css);*/
+@import url(../../../lib/NDPUI/dist/com/css/nxdc.min.css);
+@import url(../../../lib/NDPUI/dist/com/splitcss/blend.css);
+@import url(../modules/nxdc-header.css);
+@import url(../modules/nxdc-body.css);
+@import url(../modules/nxdc-footer.css);
+@import url(../modules/docs.css);
+@import url(../modules/custom.css);
+@import url(../modules/fonts.css);
+@import url(../../../lib/daterangepicker/daterangepicker.css);
+@import url(../../../lib/daterangepicker/daterangepicker-theme.css);

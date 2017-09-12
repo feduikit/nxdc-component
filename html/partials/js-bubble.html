@@ -1,0 +1,54 @@
+<div class="pa-header">
+<h3>Popover</h3>
+</div>
+
+<p>气泡提示在点击后出现，因其体积轻量、能就地展开，适合用作某个界面元素/功能的解释说明，气泡提示带有一个尾部箭头用来指明描述对象。用作解释说明时，气球状提示常被一个"?"图标（代表“点击了解这是什么”）或“info”图标（代表“点击查看相关信息”）触发。</p>
+<h4 class="lead">
+	基本样式
+</h4>
+<div class="bs-example" style="text-align:center;">
+		<span class="ndp-bubble-wrapper" name="pic"></span>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+&lt;span class="ndp-bubble-wrapper" name="pic"&gt;&lt;/span&gt;		
+		</code>
+	</pre>	
+	<pre class="prettyprint">
+		<code class="language-js">
+$(".ndp-bubble-wrapper[name='pic']").bubble({
+	type:1,//默认1 普通的气泡
+	title:"hello world 123",//标题，内容决定 标题是否显示
+	icon:'../assets/cover1.jpg',//触发 显示气泡的dom 内容，图片或者 字体都行
+	//气泡内显示的内容
+	content:'How to position the popover For example, if placement is "auto left", the popover will display to the left when possible, otherwise it will display right.'
+});	
+		</code>
+	</pre>
+</div>
+
+<h4 class="lead">
+	配置出现的方向
+</h4>
+<div class="bs-example" style="text-align:center;">
+		<span class="ndp-bubble-wrapper" name="gra1"></span>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-js">
+&lt;span class="ndp-bubble-wrapper" name="gra1"&gt;&lt;/span&gt;		
+		</code>
+	</pre>	
+	<pre class="prettyprint">
+		<code class="language-js">
+$(".ndp-bubble-wrapper[name='gra1']").bubble({
+	type:1,
+	placement:"top",//气泡显示的位置  top, left,bottom,right   四个值
+	icon:'&lt;i class="glyphicon glyphicon-home"&gt;&lt;/i&gt;',//显示一个字体图标
+	content:'How to position the popover For example, if placement is "auto left", the popover will display to the left when possible, otherwise it will display right.'
+});
+		</code>
+	</pre>
+</div>
+

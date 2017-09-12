@@ -1,0 +1,59 @@
+<div class="pa-header">
+    <h2>文件上传组件2<span class="js-specific">upload2.js</span></h2>
+</div>
+<h4 class="lead">
+	通用上传(所有文件都能上传)
+</h4>
+<div class="bs-example">
+      <label class="btn btn-file" name="all">
+           <input type="file" >
+      </label> 
+</div>
+<div class="highlight">
+    <pre class="prettyprint">
+		<code class="language-js">
+	   $("label.btn-file[name=all]").upload2({
+               title:"文件上传",
+               delCallback:function(file,index){
+                   //用户点击了，"删除" 按钮的处理
+                   console.log("删除文件:");
+                   console.log(file);// file 是上传文件的信息，包括上传路径，文件名，修改时间.....
+               },
+               dealResult:function(code,file,index,yon){
+                   if(code=="30000"){//出现上传问题的后续处理，重名问题，上传失败重新上传问题
+                       
+                   }else if(code=="30001"){//重名，是否覆盖，yon ： true:false
+                       console.log();//用户点击了“是” 怎么处理。点击了“否”怎么处理
+                   }
+               },
+               progressCallback:function(file,index){
+                   //进度条的处理问题
+               },
+               cancelCallback:function(file,index){
+                   //用户点击了 "取消" 按钮的文件处理
+               }
+        });
+		</code>
+	</pre>
+</div>
+<div class="pa-header">
+    只上传图片文件 
+</div>
+<h4 class="lead">
+    ".jpeg,.jpg,.bmp,.png,.gif"
+</h4>
+<div class="bs-example">
+      <label class="btn btn-file" name="justpic">
+           <input type="file" >
+      </label>
+</div>
+<div class="highlight">
+    <pre class="prettyprint">
+        <code class="language-js">
+	   $("label.btn-file[name=justpic]").upload2({
+               title:"图片上传",
+               accept:".jpeg,.jpg,.bmp,.png,.gif"
+        });      
+        </code>
+    </pre>
+</div>

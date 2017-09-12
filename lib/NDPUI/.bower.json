@@ -1,0 +1,29 @@
+{
+  "name": "NDPUI",
+  "author": "ericever",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "*",
+    "respond": "*",
+    "jquery": "1.9.*",
+    "bootstrap": "^3.*"
+  },
+  "_release": "069779a652",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "069779a65219e8474f5310abfd5d8d49ef244720"
+  },
+  "_source": "http://git.dy/vigo.feng/nxdc-component-library.git",
+  "_target": "*",
+  "_originalSource": "http://git.dy/vigo.feng/nxdc-component-library.git",
+  "_direct": true
+}

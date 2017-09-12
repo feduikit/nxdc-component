@@ -1,0 +1,181 @@
+<div class="pa-header">
+<h2>文字下拉菜单</h2>
+</div>
+
+<p>在实际应用中，我们有时会需要视觉效果更贴合内容的下拉控件，隐藏边框，可以简单的达成这一效果。</p>
+<h4 class="lead">
+	基本样式
+</h4>
+<div class="bs-example bs-example2">
+	<div class="dropdown drop2-wrapper" name="aa"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class="dropdown drop2-wrapper" name="aa"&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$(".dropdown[name='aa']").drop2({
+	id:"meme1",
+	showcaret:true,//是否显示下拉符号
+	caret:"&lt;i class='glyphicon glyphicon-menu-down'&gt;&lt;/i&gt;",
+	label:"文字drop测试",
+	data:[
+		  {label:"用户设置"},
+		  {label:"修改密码"},
+		  {label:"接触绑定"},
+		  {label:"退出"}
+		 ]
+}).on("ITEM_CLICK",function(e){
+	//下拉选项被点击
+	console.log(e.originalEvent.data);//{value:选中的值 string}
+});
+		</code>
+	</pre>
+</div>
+
+
+<h4 class="lead">
+	用图标代替文字
+</h4>
+<div class="bs-example bs-example2">
+	<div class="dropdown drop2-wrapper" name="bbc"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class="dropdown drop2-wrapper" name="bbc"&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">
+$(".drop2-wrapper[name='bbc']").drop2({
+	id:"meme3",
+	caret:"&lt;i class='glyphicon glyphicon-menu-down'&gt;&lt;/i&gt;",//下拉三角形的图标
+	label:"&lt;i class='glyphicon glyphicon-th-list'&gt;&lt;/i&gt;",//显示的图标
+	showcaret:true,
+	data:[
+		  {label:"用户设置"},
+		  {label:"修改密码"},
+		  {label:"接触绑定"},
+		  {label:"退出"}
+		 ]
+}).on("ITEM_CLICK",function(e){
+	//下拉选项被点击
+	console.log(e.originalEvent.data);//{value:选中的值 string}
+});
+		</code>
+	</pre>
+</div>
+
+<h4 class="lead">
+	对选项进行分组
+</h4>
+<div class="bs-example bs-example2">
+	<div class="dropdown drop2-wrapper" name="bb"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class="dropdown drop2-wrapper" name="bb"&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">			
+$(".dropdown.drop2-wrapper[name='bb']").drop2({
+	id:"meme",
+	caret:"&lt;i class='glyphicon glyphicon-menu-down'&gt;&lt;/i&gt;",
+	label:"多级菜单",
+	showcaret:true,
+	data:[
+		  {label:"标题1",
+		   sub:[
+			  {label:"中国"},
+			   {label:"美国"},
+			   {label:"饿国"}
+		  ]},
+		  {label:"标题2",
+		   sub:[
+			 {label:"中国1"},
+			  {label:"中国2"},
+			  {label:"中国3"}
+		  ]}
+		 ]
+}).on("ITEM_CLICK",function(e){
+	console.log(e.originalEvent.data); //{value:选中的值 string}
+});			
+		</code>
+	</pre>
+</div>
+
+
+
+
+<h4 class="lead">
+	选择/更新
+</h4>
+<div class="bs-example bs-example2">
+	<div class="dropdown drop2-wrapper" name="cc"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class="dropdown drop2-wrapper" name="cc"&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">			
+$(".dropdown.drop2-wrapper[name='cc']").drop2({
+	type:2,
+	id:"meme2",
+	caret:"&lt;i class='glyphicon glyphicon-menu-down'&gt;&lt;/i&gt;",
+	label:{label:"用户设置"},
+	showcaret:true,
+	data:[
+		  {label:"用户设置"},
+		  {label:"修改密码"},
+		  {label:"接触绑定"},
+		  {label:"退出"}
+		 ]
+}).on("SELECT_CHANGE",function(e){
+	console.log(e.originalEvent.data);//{value:选中的值 string}
+}).val("修改密码"); //默认 显示的值 默认显示下拉列表中的第一个		
+		</code>
+	</pre>
+</div>
+
+<h4 class="lead">
+	下拉选项--按钮样式
+</h4>
+<div class="bs-example bs-example2">
+	<div class="dropdown drop2-wrapper" name="button"></div>
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code class="language-html">
+&lt;div class="dropdown drop2-wrapper" name="button"&quot;&gt;&lt;/div&gt;
+		</code>
+	</pre>
+	<pre class="prettyprint">
+		<code class="language-js">			
+$(".dropdown.drop2-wrapper[name='button']").drop2({
+	id:"meme4",
+	showcaret:false,//不显示>
+	label:"&le;button class='btn btn-default'&gt;点击下拉&le;/button&gt;",
+	data:[
+		  {label:"用户设置"},
+		  {label:"修改密码"},
+		  {label:"接触绑定"},
+		  {label:"退出"}
+		 ]
+}).on("SELECT_CHANGE",function(e){
+	console.log(e.originalEvent.data);//{value:选中的值 string}
+});	
+		</code>
+	</pre>
+</div>			
+	
+		
+	

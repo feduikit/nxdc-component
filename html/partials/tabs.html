@@ -1,0 +1,55 @@
+<div class="pa-header">
+<h3>tabs</h3>
+</div>
+<h5>默认样式</h5>
+<div class="bs-example">
+	<div class="ndp-tab-wrapper" name="plain-tab">
+		<ul class="nav nav-tabs nav-tabs-cus" style="left:0;">
+			<li role="presentation" value="hello" index="0" class="active"><a href="#">hello</a></li>
+			<li role="presentation" value="world" index="1"><a href="#">world</a></li>
+			<li role="presentation" value="china" index="2"><a href="#">china</a></li>
+		</ul>
+	</div>	
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code>
+	&lt;div class=&quot;ndp-tab-wrapper&quot; name=&quot;plain-tab&quot;&gt;
+		&lt;ul class=&quot;nav nav-tabs nav-tabs-cus&quot; style=&quot;left:0;&quot;&gt;
+			&lt;li role=&quot;presentation&quot; value=&quot;hello&quot; index=&quot;0&quot; class=&quot;active&quot;&gt;&lt;a href=&quot;#&quot;&gt;hello&lt;/a&gt;&lt;/li&gt;
+			&lt;li role=&quot;presentation&quot; value=&quot;world&quot; index=&quot;1&quot;&gt;&lt;a href=&quot;#&quot;&gt;world&lt;/a&gt;&lt;/li&gt;
+			&lt;li role=&quot;presentation&quot; value=&quot;china&quot; index=&quot;2&quot;&gt;&lt;a href=&quot;#&quot;&gt;china&lt;/a&gt;&lt;/li&gt;
+		&lt;/ul&gt;
+	&lt;/div&gt;			
+		</code>
+	</pre>
+</div>
+<h5>纵向的tabs</h5>
+<div class="bs-example">
+	<div class="ndp-tab-wrapper" name="vertical">
+		<ul class="nav nav-tabs nav-tabs-cus" style="left:0;">
+			<li role="presentation" value="hello" index="0" class="active"><a href="#">hello</a></li>
+			<li role="presentation" value="world" index="1"><a href="#">world</a></li>
+			<li role="presentation" value="china" index="2"><a href="#">china</a></li>
+		</ul>
+	</div>		
+</div>
+<div class="highlight">
+	<pre class="prettyprint">
+		<code>
+ul.nav.nav-tabs-cus>li{
+	width: 150px;
+	clear:both;
+}
+ul.nav.nav-tabs-cus>li.active>a{
+	border-width: 0;
+	border-left:2px solid #fac925;
+	border-top:1px solid #ccc;
+	border-bottom:1px solid #ccc;
+}		
+		</code>
+	</pre>
+</div>
+<script type="text/javascript">
+	prettyPrint();//渲染 代码 
+</script>
